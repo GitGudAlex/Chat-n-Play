@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+// Server
+const express = require('express');
+const app = express();
+const server = require('http').createServer(app); 
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+app.use(express.static(__dirname + '/public'));
 
-export default App;
+//add default route to always return index.html if no matching api target (SPA)
+app.get('/getText', (req, res)=>{
+    res.send({text: "Hallo :)"});
+})
+
+server.listen(8080, function() {
+    console.log(`Server running on Port 8080...`);
+});
