@@ -1,15 +1,21 @@
 // Server
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app); 
+const server = require('http').createServer(app);
 
-app.use(express.static(__dirname + '/public'));
+const PORT = 8080;
 
-//add default route to always return index.html if no matching api target (SPA)
-app.get('/getText', (req, res)=>{
-    res.send({text: "Hallo :)"});
-})
+// Routes
+app.use('/', require('./routes/routesIndex'))
 
-server.listen(8080, function() {
-    console.log(`Server running on Port 8080...`);
+// static files
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Socket.io
+const io = require("socket.io")(server);
+require('./sockets/socket')(io);
+
+server.listen(PORT, function() {
+    console.log(`Server running on Port ${PORT}...`);
 });
