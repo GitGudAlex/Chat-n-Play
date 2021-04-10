@@ -47,10 +47,16 @@ const isHost = (socketId) => {
     return (room === undefined) ? false : true;
 }
 
+// checks if a given player is the current host in a game
+const getHost = (roomId) => { 
+    let room = rooms.find((room) => room.roomId === roomId);
+    return room.hostId;
+}
+
 // sets the new host for a room
 const setHost = (roomId, hostId) => { 
     let roomIndex = rooms.findIndex((room) => room.roomId === roomId);
     rooms[roomIndex].hostId = hostId;
 }
  
-module.exports = { addRoom, removeRoom, getRoom, isHost, setHost };
+module.exports = { addRoom, removeRoom, getRoom, isHost, getHost, setHost };

@@ -21,8 +21,8 @@ module.exports = (io, socket, data, callback) => {
     socket.join(player.roomId);
 
     // Im Chat anzeigen, dass man gejoint ist (einem selbst und Mitspieler)
-    socket.to(player.roomId).emit('chat:message', { player: '', text: `${player.username} ist dem Spiel beigetreten!` });
-    socket.emit('chat:message', { player: '', text: `Du bist dem Spiel beigetreten!` });
+    socket.to(player.roomId).emit('chat:message', { username: '', text: `${player.username} ist dem Spiel beigetreten!` });
+    socket.emit('chat:message', { username: '', text: `Du bist dem Spiel beigetreten!` });
     
     // allen Spielern die neuen Spieler senden
     const players = getPlayersInRoom(player.roomId).map((player) => {

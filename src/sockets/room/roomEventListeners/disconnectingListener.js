@@ -1,4 +1,4 @@
-const { removeRoom, isHost, setHost } = require('../../../models/rooms');
+const { removeRoom, isHost, getHost, setHost } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom } = require('../../../models/players');
 
 module.exports = (io, socket) => {
@@ -15,7 +15,7 @@ module.exports = (io, socket) => {
             removeRoom(player.roomId);
 
         } else {
-            socket.to(player.roomId).emit('chat:message', { player: '', text: `${player.username} hat das Spiel verlassen!` });
+            socket.to(player.roomId).emit('chat:message', { username: '', text: `${player.username} hat das Spiel verlassen!` });
             
             // Wenn der Spieler der aktuelle Host des Raums ist => Host neu bestimmen
             if(isHost(player.socketId)) {
@@ -25,21 +25,22 @@ module.exports = (io, socket) => {
 
                 // Sends a message to all clients, that the host has changed
                 const newHostSocket = io.of("/").sockets.get(newHost.socketId);
-                newHostSocket.to(newHost.roomId).emit('chat:message', { player: '', text: `${newHost.username} ist der neue Host des Spiels!` });
-                newHostSocket.emit('chat:message', { player: '', text: 'Du bist der neue Host des Spiels!' });
+                newHostSocket.to(newHost.roomId).emit('chat:message', { username: '', text: `${newHost.username} ist der neue Host des Spiels!` });
+                newHostSocket.emit('chat:message', { username: '', text: 'Du bist der neue Host des Spiels!' });
 
                 // extra Event
                 io.in(newHost.roomId).emit("room:hostChanged", { hostId: newHost.socketId});
 
-                // allen Spielern die neuen Spieler senden
-                let playersReturn = getPlayersInRoom(player.roomId).map((player) => {
-                    let playerObj = { socketId: player.socketId, username: player.username };
-                    
-                    return playerObj;
-                });
-
-                io.in(player.roomId).emit('room:update', { players: playersReturn, hostId: newHost.socketId });
             }
+
+            // allen Spielern die neuen Spieler senden
+            let playersReturn = getPlayersInRoom(player.roomId).map((player) => {
+                let playerObj = { socketId: player.socketId, username: player.username };
+                
+                return playerObj;
+            });
+
+            io.in(player.roomId).emit('room:update', { players: playersReturn, hostId: getHost(player.roomId) });
         }
     }
 }

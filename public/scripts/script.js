@@ -144,12 +144,12 @@ socket.on('chat:message', function(data) {
     let text = '';
 
     // Systemnachricht
-    if(data.player == '') {
+    if(data.username == '') {
         text = data.text;
 
     // Nachricht von einem Spieler
     } else {
-        text = data.player + ': ' + data.text;
+        text = data.username + ': ' + data.text;
 
     }
     
