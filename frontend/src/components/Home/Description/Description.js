@@ -1,0 +1,53 @@
+import './Description.css'
+
+function Description() {
+    return (
+        <div id="home-description">
+            <div id='home-description-wrapper'>
+                <h2 className='text-center'>Willkommen zu Chat&nbsp;N'&nbsp;Play</h2>
+                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden auch über Distanz das Spielfeld-Feeling erleben.<br />
+                Erstellt einfach einen Raum und ladet Freunde über einen Link ein<br />
+                oder lasst Ihnen den Zugangscode zukommen</p>
+            </div>
+            <div id='home-description-join-game-btn' className='d-flex justify-content-center'>
+                <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#join-game-modal">Spiel beitreten</button>
+            </div>
+
+            {/* Modal */}
+            <div className="modal fade" id="join-game-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Trete einem Spiel bei</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div>
+                                <div className="form-group">
+                                    <input type="text" className="form-control" placeholder="Username" />
+                                </div>
+                                <div className="form-group">
+                                    <input type="text" className="form-control" id="exampleInputPassword1" placeholder="Code" />
+                                    <small for="exampleInputPassword1">Gebe hier den Code ein, den du von deinem Freund bekommen hast.</small>
+                                </div>
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" value="" id="acceptBtn1" />
+                                    <label className="form-check-label" for="acceptBtn1">
+                                        Hier mit stimme ich zu, dass während des Spiels Aufnahmen gemacht werden dürfen.
+                                    </label>
+                                </div>
+                                <div className='text-center'>
+                                    <button type="submit" className="btn btn-primary">Raum beitreten</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Description;

@@ -11,6 +11,12 @@ module.exports = (io, socket, data, callback) => {
     // Schauen ob der angegebene Raum exestiert
     if (room === undefined) return callback("Der angegebene Raum exestiert nicht!");
 
+    // Anzahl der maximal Spieler ist erreicht
+    if (room.hasStarted)  return callback("Der angegbene Raum hat das Spiel bereits gestartet.");
+
+    // Anzahl der maximal Spieler ist erreicht
+    if (getPlayersInRoom(roomId).length == room.maxPlayers) return callback("Der angegbene Raum hat das Maximum an Spielern bereits erreicht.");
+
     // Spieler in DB speichern
     const { error, player } = addPlayer(socket.id, data.username, data.roomId );
 

@@ -1,7 +1,8 @@
 const uuid = require('uuid');
+const fs = require('fs');
 
 /**
- * { roomId, gameTypeId, hostId }
+ * { roomId, gameTypeId, hostId, maxPlayers, hasStarted }
  */
 const rooms = [];
 
@@ -14,8 +15,14 @@ const addRoom = ( gameTypeId, hostId ) => {
         roomId = uuid.v4();
     }
  
+    // get max players
+    const json = fs.readFileSync(path.join(__dirname + '../../../../data/games.json'));
+    const obj = JSON.parse(json);
+
+    const game = obj.find(game => game.id == gameTypeId);
+
     // adding room
-    const room = { roomId, gameTypeId, hostId };
+    const room = { roomId, gameTypeId, hostId, maxPlayers: game.maxPlayers, hasStarted: false };
     rooms.push(room);
  
     // returning room object

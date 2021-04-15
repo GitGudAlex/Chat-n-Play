@@ -1,0 +1,20 @@
+.game-category-card {
+    height: 210px;
+    color: white;
+}
+
+.game-category-card:hover {
+    cursor: pointer;
+}
+
+.game-category-card-heading {
+    font-weight: 330;
+    font-size: 6.5em;
+    letter-spacing: 3px;
+
+    margin: 0;
+}
+
+.card-body {
+    background-color: white;
+}

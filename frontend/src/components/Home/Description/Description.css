@@ -1,0 +1,27 @@
+#home-description {
+    padding: 5%;
+}
+
+#home-description-wrapper {
+    margin: auto;
+    color: #474747;
+}
+
+#home-description-wrapper h2 {
+    font-size: 5em;
+    margin-bottom: 30px;
+}
+
+#home-description-wrapper p {
+    font-size: 2.2em;
+}
+
+#home-description-join-game-btn {
+    margin-top: 4%;
+    font-size: 0.8em;
+}
+
+#join-game-accept-btn {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}

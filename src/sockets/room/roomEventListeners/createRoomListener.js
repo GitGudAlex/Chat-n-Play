@@ -19,7 +19,7 @@ module.exports = (socket, data, callback) => {
 }
 
 const gameExists = (gameTypeId) => {
-    const json = fs.readFileSync(path.join(__dirname + '../../../../data/gameInfos.json'));
+    const json = fs.readFileSync(path.join(__dirname + '../../../../data/games.json'));
     const obj = JSON.parse(json);
 
     // Check if the game exists the player wants to play

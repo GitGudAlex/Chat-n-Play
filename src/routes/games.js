@@ -6,7 +6,7 @@ const path = require('path');
 
 // get all available games (returns id + gamenames)
 router.get('/', (req, res) => {
-    fs.readFile(path.join(__dirname + '/../data/gameInfos.json'), 'utf8', (err, json) => {
+    fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) throw err;
 
         try {
@@ -21,16 +21,16 @@ router.get('/', (req, res) => {
     });
 })
 
-// get the description to a game (returns name + description)
-router.get('/game', (req, res) => {
-    fs.readFile(path.join(__dirname + '/../data/gameInfos.json'), 'utf8', (err, json) => {
+// get all Game Categories (id + name)
+router.get('/gamecategories', (req, res) => {
+    fs.readFile(path.join(__dirname + '/../data/gameCategories.json'), 'utf8', (err, json) => {
         if (err) throw err;
         
         try {
             const obj = JSON.parse(json);
-            const game = obj.find(game => game.id == req.query.id);
+            const gameGategories = obj.map(gameCategory => ({ gameCategoryId: gameCategory.gameCategoryId, gameCategoryName: gameCategory.gameCategoryName, color: gameCategory.color }));
 
-            res.json(game);
+            res.json(gameGategories);
 
         } catch(err) {
             res.json({ "error": "Ein Fehler ist aufgetreten" });
@@ -38,14 +38,14 @@ router.get('/game', (req, res) => {
     });
 })
 
-// get all games from a specific types{ card, board } (returns gamenames)
-router.get('/type', (req, res) => {
-    fs.readFile(path.join(__dirname + '/../data/gameInfos.json'), 'utf8', (err, json) => {
+// get all games from a specific category{ card, board, ... } (returns game names and descriptions of the games)
+router.get('/category', (req, res) => {
+    fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) throw err;
 
         try {
             const obj = JSON.parse(json);
-            const games = obj.filter(game => game.type == req.query.gameType).map(game => ({ id: game.id, name: game.name }));
+            const games = obj.filter(game => game.gameCategoryId == req.query.gameCategoryId).map(game => ({ id: game.id, name: game.name, description: game.description }));
 
             res.json(games);
 
@@ -55,26 +55,9 @@ router.get('/type', (req, res) => {
     });
 })
 
-// get the description to a game (returns name + description)
-router.get('/description', (req, res) => {
-    fs.readFile(path.join(__dirname + '/../data/gameInfos.json'), 'utf8', (err, json) => {
-        if (err) throw err;
-
-        try {
-            const obj = JSON.parse(json);
-            const game = obj.find(game => game.id == req.query.id);
-            
-            res.json({ "id": game.id, "name": game.name, "description": game.description });
-
-        } catch(err) {
-            res.json({ "error": "Ein Fehler ist aufgetreten" });
-        }
-    });
-})
-
 // get the rules to a game (returns rules)
 router.get('/rules', (req, res) => {
-    fs.readFile(path.join(__dirname + '/../data/gameInfos.json'), 'utf8', (err, json) => {
+    fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) throw err;
         
         try {

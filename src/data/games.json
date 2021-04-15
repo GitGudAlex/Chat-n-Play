@@ -2,22 +2,33 @@
   {
     "id": 0,
     "name": "Uno",
-    "type": "card",
+    "gameCategoryId": 1,
     "description": "Ein Kartenspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt sut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Uno Regeln Beispieltext"
+    "rules": "Uno Regeln Beispieltext",
+    "maxPlayers": 4
   },
   {
     "id": 1,
     "name": "Mensch ärger Dich nicht",
-    "type": "board",
+    "gameCategoryId": 0,
     "description": "Ein Brettspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Menschärgerdichnicht Regeln Beispieltext"
+    "rules": "Menschärgerdichnicht Regeln Beispieltext",
+    "maxPlayers": 4
   },
   {
     "id": 2,
     "name": "Mau Mau",
-    "type": "card",
+    "gameCategoryId": 1,
     "description": "Ein anderes Kartenspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Mau Mau Regeln Beispieltext"
-  }  
+    "rules": "Mau Mau Regeln Beispieltext",
+    "maxPlayers": 4
+  },
+  {
+    "id": 3,
+    "name": "Stadt, Land, Fluss",
+    "gameCategoryId": 2,
+    "description": "Ein anderes Kartenspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+    "rules": "Mau Mau Regeln Beispieltext",
+    "maxPlayers": 4
+  }
 ]
