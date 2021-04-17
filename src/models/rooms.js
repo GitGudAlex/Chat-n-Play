@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const path = require('path');
 const fs = require('fs');
 
 /**
@@ -16,7 +17,7 @@ const addRoom = ( gameTypeId, hostId ) => {
     }
  
     // get max players
-    const json = fs.readFileSync(path.join(__dirname + '../../../../data/games.json'));
+    const json = fs.readFileSync(path.join(__dirname + '/../data/games.json'));
     const obj = JSON.parse(json);
 
     const game = obj.find(game => game.id == gameTypeId);

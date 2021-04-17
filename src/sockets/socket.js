@@ -3,7 +3,7 @@ const chatEvents = require("./chat/chatIndex");
 
 module.exports = function(io) {
     const onConnection = (socket) => {
-
+        console.log("socket connecting");
         // all room events
         roomEvents(io, socket);
 

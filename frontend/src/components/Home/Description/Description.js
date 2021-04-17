@@ -1,6 +1,29 @@
+import { useCallback, useContext } from 'react';
+import $ from 'jquery';
+
 import './Description.css'
 
+import SocketContext from '../../../services/socket';
+
 function Description() {
+
+     // Socket holen
+     const socket = useContext(SocketContext);
+
+    // Einen Raum beitreten
+    const joinRoom = useCallback(() => {
+        let username = $('#join-game-username-input').val();
+        let roomId = $('#join-game-roomid-input').val();
+
+        // Raum joinen
+        socket.emit('room:join', { roomId: roomId, username }, (error) => {
+            if(error) {
+                $('#join-game-error-output').text(error);
+            }
+        });
+
+    }, [socket]);
+
     return (
         <div id="home-description">
             <div id='home-description-wrapper'>
@@ -14,7 +37,7 @@ function Description() {
             </div>
 
             {/* Modal */}
-            <div className="modal fade" id="join-game-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div className="modal fade" id="join-game-modal" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -26,20 +49,23 @@ function Description() {
                         <div className="modal-body">
                             <div>
                                 <div className="form-group">
-                                    <input type="text" className="form-control" placeholder="Username" />
+                                    <input id='join-game-username-input' type="text" className="form-control" placeholder="Username" />
                                 </div>
                                 <div className="form-group">
-                                    <input type="text" className="form-control" id="exampleInputPassword1" placeholder="Code" />
-                                    <small for="exampleInputPassword1">Gebe hier den Code ein, den du von deinem Freund bekommen hast.</small>
+                                    <input id='join-game-roomid-input' type="text" className="form-control" placeholder="Code" />
+                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code ein, den du von deinem Freund bekommen hast.</small>
                                 </div>
                                 <div className="form-check">
                                     <input className="form-check-input" type="checkbox" value="" id="acceptBtn1" />
-                                    <label className="form-check-label" for="acceptBtn1">
+                                    <label className="form-check-label" htmlFor="acceptBtn1">
                                         Hier mit stimme ich zu, dass während des Spiels Aufnahmen gemacht werden dürfen.
                                     </label>
                                 </div>
+                                <div>
+                                    <small id='join-game-error-output' className="text-danger"></small>
+                                </div>
                                 <div className='text-center'>
-                                    <button type="submit" className="btn btn-primary">Raum beitreten</button>
+                                    <button type="submit" className="btn btn-primary" onClick={ joinRoom }>Raum beitreten</button>
                                 </div>
                             </div>
                         </div>

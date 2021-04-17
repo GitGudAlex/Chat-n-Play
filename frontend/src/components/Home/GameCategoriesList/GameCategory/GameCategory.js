@@ -5,18 +5,21 @@ import './GameCategory.css'
 import Game from './Game/Game';
 
 function GameCategory(props) {
-    useEffect(() => {
-        fetchGamesByCategory();
-    }, []);
-
     const [games, setGames] = useState([]);
 
-    const fetchGamesByCategory = async() => {
-        const data = await fetch("/games/category?gameCategoryId=" + props.gameCategoryId);
-        const games = await data.json();
+    
+    useEffect(() => {
+        const fetchGamesByCategory = async() => {
+            const data = await fetch("/games/category?gameCategoryId=" + props.gameCategoryId);
+            const games = await data.json();
+    
+            setGames(games);
+        };
 
-        setGames(games);
-    };
+        fetchGamesByCategory();
+
+    }, [props.gameCategoryId]);
+
 
     const style = {
         backgroundColor: props.color

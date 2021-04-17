@@ -8,8 +8,7 @@ const addPlayer = ( socketId, username, roomId ) => {
     const existingPlayer = players.find((player) => player.roomId === roomId && player.username === username);
 
     // username or RoomId missing
-    if(!username || !roomId) return { error: 'Username and room are required.' };
-    if(existingPlayer) return { error: 'Username is taken.' };
+    if(existingPlayer) return { error: 'Der angegebene Username ist schon in Verwendung.' };
 
     // adding player
     const player = { socketId, username, roomId };
