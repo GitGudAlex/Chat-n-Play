@@ -19,6 +19,7 @@ function Description() {
         socket.emit('room:join', { roomId: roomId, username }, (error) => {
             if(error) {
                 $('#join-game-error-output').text(error);
+
             }
         });
 

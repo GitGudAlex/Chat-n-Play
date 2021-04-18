@@ -17,10 +17,10 @@ function GameCategoriesList() {
         // Usernamen bekommen
         let username = $('#create-game-username-input-' + data.gameId).val();
 
-        // Raum joinen
         socket.emit('room:join', { roomId: data.roomId, username }, (error) => {
             if(error) {
                 $('#create-game-error-output-' + data.gameId).text(error);
+
             }
         });
 

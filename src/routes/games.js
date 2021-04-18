@@ -64,7 +64,7 @@ router.get('/rules', (req, res) => {
             const obj = JSON.parse(json);
             const game = obj.find(game => game.id == req.query.id);
 
-            res.json({ "id": game.id, "name": game.name, "description": game.rules });
+            res.json({ "id": game.id, "name": game.name, "rules": game.rules });
 
         } catch(err) {
             res.json({ "error": "Ein Fehler ist aufgetreten" });

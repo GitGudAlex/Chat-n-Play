@@ -10,7 +10,7 @@ module.exports = (socket, data, callback) => {
 
     // Falls es eine ungültige GameId übergeben wurde
     if(gameExists(data.gameTypeId)) return callback("Das ausgewählte Spiel gibt es nicht.");
-
+    
     // Event emitten, dass ein Raum erstellt wurde
     const room = addRoom(data.gameTypeId, socket.id);
     socket.emit('room:created', { roomId: room.roomId, gameId: data.gameTypeId });
@@ -24,7 +24,7 @@ module.exports = (socket, data, callback) => {
         if (players == 0) {
             removeRoom(room.roomId)
         }
-    }, 3000);
+    }, 1500);
 }
 
 const gameExists = (gameTypeId) => {

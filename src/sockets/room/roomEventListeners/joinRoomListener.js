@@ -39,10 +39,6 @@ module.exports = (io, socket, data, callback) => {
     
     // Spieler joined socket.io Raum
     socket.join(player.roomId);
-
-    // Im Chat anzeigen, dass man gejoint ist (einem selbst und Mitspieler)
-    socket.to(player.roomId).emit('chat:message', { username: '', text: `${player.username} ist dem Spiel beigetreten!` });
-    socket.emit('chat:message', { username: '', text: `Du bist dem Spiel beigetreten!` });
     
     // allen Spielern die neuen Spieler senden
     const players = getPlayersInRoom(player.roomId).map((player) => {
@@ -59,7 +55,10 @@ module.exports = (io, socket, data, callback) => {
     const hostId = room.hostId;
 
     // dem neuen Spieler alle anderen Spieler schicken
-    socket.emit('room:joined', { gameTypeId, hostId, players });
+    socket.emit('room:joined', { gameTypeId, roomId: player.roomId, hostId, players });
+
+    // Im Chat anzeigen, dass man gejoint ist (einem selbst und Mitspieler)
+    socket.to(player.roomId).emit('chat:message', { username: '', text: `${player.username} ist dem Spiel beigetreten!` });
 
     callback();
 }

@@ -23,6 +23,7 @@ function Game(props) {
         socket.emit('room:create', { gameTypeId: gameId }, (error) => {
             if(error) {
                 $('#create-game-error-output-' + gameId).text(error);
+
             }
         });
     }, [socket, gameId]);
