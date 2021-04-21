@@ -26,7 +26,7 @@ function Home() {
         $('#join-game-modal').modal('hide');
 
         history.push({
-            pathname: '/game/' + data.roomId,
+            pathname: '/lobby/' + data.roomId,
             state: { data: data }
         });
 
@@ -49,7 +49,7 @@ function Home() {
     return (
         <div className='p-0'>
             <header className="sticky-top">
-                <Title />
+                <Title text="Chat N' Play" height="150px" fontSize="5em"/>
             </header>
             <main>
                 <div className='container-fluid'>

@@ -3,7 +3,7 @@ import SocketContext, { socket } from "../../services/socket";
 
 import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';
-import Game from '../Game/Game';
+import Lobby from '../Lobby/Lobby';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <Switch>
           <Route path='/' exact component={ Home } />
           <Route path='/invitation/:roomid' exact component={ Invitation } />
-          <Route path='/game/:roomid' component={ Game } />
+          <Route path='/lobby/:roomid' component={ Lobby } />
           <Route component={ PageNotFound } />
         </Switch>
       </Router>

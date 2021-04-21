@@ -1,0 +1,43 @@
+.sidebar-window {
+    position: fixed;
+    z-index: 1;
+    overflow-x: hidden;
+
+    /* Width auf 0 um Flackern zu verhindern beim laden der Seite*/
+    width: 0;
+}
+
+.sidebar-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: lightgrey;
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+}
+
+.sidebar-btn {
+    width: 100%;
+    margin: 12px 0px 12px 0px;
+
+    border: none;
+    background-color: inherit;
+}
+
+.close-rules-btn {
+    border: none;
+    background-color: inherit;
+
+    position: absolute;
+    right: 10px;
+}
+
+.close-rules-btn-icon {
+    color: white;
+}
+
+.close-rules-btn-icon:hover {
+    color: coral;
+}
