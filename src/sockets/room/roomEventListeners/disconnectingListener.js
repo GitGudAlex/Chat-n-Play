@@ -25,6 +25,7 @@ module.exports = (io, socket) => {
 
                 // Sends a message to all clients, that the host has changed
                 const newHostSocket = io.of("/").sockets.get(newHost.socketId);
+                
                 newHostSocket.to(newHost.roomId).emit('chat:message', { username: '', text: `${newHost.username} ist der neue Host des Spiels!` });
                 newHostSocket.emit('chat:message', { username: '', text: 'Du bist der neue Host des Spiels!' });
 

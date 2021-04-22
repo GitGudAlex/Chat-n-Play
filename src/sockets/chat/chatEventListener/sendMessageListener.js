@@ -6,6 +6,5 @@ module.exports = (io, socket, data) => {
         const player = getPlayer(socket.id);
         
         socket.to(player.roomId).emit('chat:message', { username: player.username, text: data.text });
-        socket.emit('chat:message', { username: 'Du', text: data.text });
     }
 }

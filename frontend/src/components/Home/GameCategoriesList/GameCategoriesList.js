@@ -45,6 +45,14 @@ function GameCategoriesList() {
         setGameCategories(gameCategories);
     };
 
+
+    // Events unmounten
+    useEffect(() => {    
+        return () => {
+            socket.off('room:created', handleRoomCreated);
+        }
+    }, [socket, handleRoomCreated])
+
     return (
         <div id='accordion' className='game-category-list'>
             { 

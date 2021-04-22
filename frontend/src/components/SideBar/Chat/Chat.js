@@ -1,9 +1,68 @@
+import { useContext, useEffect, useState, useCallback } from 'react';
+import $ from 'jquery';
+
 import { IoMdClose } from 'react-icons/io';
 import { IconContext } from "react-icons";
 
 import './Chat.css'
 
+import SocketContext from '../../../services/socket';
+import ChatBubble from './ChatBubble/ChatBubble';
+
 function Chat(props) {
+
+  const [messages, setMessages] = useState([]);
+
+  // Socket.io
+  const socket = useContext(SocketContext);
+
+  //Events:
+  // Wenn man eine Nachricht empfangen will
+  const handleMessageEvent = useCallback((data) => {
+    
+    // Nachricht anzeigen
+    setMessages([...messages, <ChatBubble key={ messages.length } username={ data.username } text={ data.text } position='left'/>])
+
+  }, [messages]);
+
+  useEffect(() => {
+    // Wenn man einem Raum gejoint ist -> Lobby laden
+    socket.on("chat:message", handleMessageEvent);
+
+  }, [socket, handleMessageEvent]);
+
+  // Schauen wann eine Nachricht gesendet werden soll
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  }
+
+  // Nachricht senden
+  const sendMessage = () => {
+    let msg = $('#chat-input').val();
+
+    if(msg.length > 0) {
+
+      // Textbox leeren
+      $('#chat-input').val('');
+      
+      // Nachricht senden
+      socket.emit('chat:sendMessage', { text: msg });
+
+      // Nachricht selber anzeigen
+      setMessages([...messages, <ChatBubble key={ messages.length } username="Du" text={ msg } position='right'/>])
+    }
+  }
+
+  // Events unmounten
+  useEffect(() => {    
+    return () => {
+        socket.off('chat:message', handleMessageEvent);
+    }
+  }, [socket, handleMessageEvent])
+
+
   return (
     <div id='chat-wrapper'>
       <div id='sidebar-chat-heading-wrapper'>
@@ -16,10 +75,10 @@ function Chat(props) {
       </div>
       <div id='chat'>
         <div id='chat-text'>
-          
+          { messages }
         </div>
         <div id='chat-input-wrapper'>
-          <input id='chat-input' type="text" placeholder="Tippe deine Nachricht..."/>
+          <input id='chat-input' type="text" placeholder="Tippe deine Nachricht..." onKeyDown={ handleKeyDown }/>
         </div>
       </div>
     </div>

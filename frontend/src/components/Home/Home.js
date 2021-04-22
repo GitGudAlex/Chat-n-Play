@@ -46,6 +46,14 @@ function Home() {
         
     }, [socket, location, handleRoomJoined]);
 
+
+    // Events unmounten
+    useEffect(() => {    
+        return () => {
+            socket.off('room:joined', handleRoomJoined);
+        }
+    }, [socket, handleRoomJoined])
+
     return (
         <div className='p-0'>
             <header className="sticky-top">

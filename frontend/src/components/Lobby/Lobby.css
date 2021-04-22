@@ -11,3 +11,7 @@ html, body, #root, .lobby-wrapper, .container-fluid, .lobby-body-wrapper {
 .lobby-body {
     height: 90vh;
 }
+
+#lobby-content {
+    display: flex;
+}

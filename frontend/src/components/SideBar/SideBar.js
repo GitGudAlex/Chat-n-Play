@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { useHistory } from "react-router-dom";
 import $ from 'jquery';
 
 import { BsFillChatDotsFill } from 'react-icons/bs';
@@ -9,8 +10,16 @@ import './SideBar.css';
 
 import Chat from './Chat/Chat';
 import Rules from './Rules/Rules';
+import SocketContext from '../../services/socket';
+
 
 function SideBar(props) {
+
+  // Router Stuff
+  const history = useHistory();
+
+  // Socket.io
+  const socket = useContext(SocketContext);
 
   function toggleSideBar(sidebarId) {
     // Wenn die Sidebar links plaziert ist
@@ -77,6 +86,21 @@ function SideBar(props) {
 
   }, [props.position, props.sideBarWidth, props.sideBarWindowWidth]);
 
+  
+  // Raum verlassen
+  const leaveRoom = () => {
+
+    // Modal wieder schließen
+    $('#leaveModal').modal('hide');
+    
+    // Serverseitig event auslösen um zu löschen und 'aufzuräumen'
+    socket.emit('room:leave-room');
+
+    // Zur Startseite weiterleiten
+    history.push('/');
+
+  }
+
 
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
@@ -87,7 +111,7 @@ function SideBar(props) {
         <button className="sidebar-btn" onClick={ () => toggleSideBar("#sidebar-rules") }>
           <ImBook size={ 28 } />
         </button>
-        <button className="sidebar-btn">
+        <button id='leave-room-btn' className="sidebar-btn" data-toggle="modal" data-target="#leaveModal">
           <BsBoxArrowLeft size={ 28} />
         </button>
       </div>
@@ -95,8 +119,24 @@ function SideBar(props) {
         <Chat closeFunction={ toggleSideBar }/>
       </div>
       <div id="sidebar-rules" className='sidebar-window'>
-        <Rules closeFunction={ toggleSideBar }/>
+        <Rules closeFunction={ toggleSideBar } text={ props.rules }/>
       </div>
+
+      <div className="modal fade" id="leaveModal" data-backdrop="true">
+        <div className="modal-dialog  modal-dialog-centered">
+            <div className="modal-content">
+                <div className="modal-body"> 
+                  <p id='leave-modal-text'>Willst du den Raum wirklich verlassen?</p>
+                  <div id='leave-modal-btns'>
+                    <button type="button" className="leave-modal-btn btn btn-primary" data-dismiss="modal">Nein</button>
+                    <button type="button" className="leave-modal-btn btn btn-secondary" onClick={ leaveRoom }>Ja</button>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+
     </div>
   );
 }

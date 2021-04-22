@@ -7,7 +7,7 @@ const path = require('path');
 // get all available games (returns id + gamenames)
 router.get('/', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
-        if (err) throw err;
+        if (err) console.log(err);
 
         try {
             const obj = JSON.parse(json);
@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 // get all Game Categories (id + name)
 router.get('/gamecategories', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/gameCategories.json'), 'utf8', (err, json) => {
-        if (err) throw err;
+        if (err) console.log(err);
         
         try {
             const obj = JSON.parse(json);
@@ -41,7 +41,7 @@ router.get('/gamecategories', (req, res) => {
 // get all games from a specific category{ card, board, ... } (returns game names and descriptions of the games)
 router.get('/category', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
-        if (err) throw err;
+        if (err) console.log(err);
 
         try {
             const obj = JSON.parse(json);
@@ -55,16 +55,34 @@ router.get('/category', (req, res) => {
     });
 })
 
-// get the rules to a game (returns rules)
-router.get('/rules', (req, res) => {
+// get the name of a game
+router.get('/name', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
-        if (err) throw err;
+        if (err) console.log(err);
         
         try {
             const obj = JSON.parse(json);
             const game = obj.find(game => game.id == req.query.id);
 
-            res.json({ "id": game.id, "name": game.name, "rules": game.rules });
+            res.json({ name: game.name });
+
+        } catch(err) {
+            res.json({ "error": "Ein Fehler ist aufgetreten" });
+        }
+    });
+})
+
+
+// get tge rules of a game
+router.get('/rules', (req, res) => {
+    fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
+        if (err) console.log(err);
+        
+        try {
+            const obj = JSON.parse(json);
+            const game = obj.find(game => game.id == req.query.id);
+
+            res.json({ rules: game.rules });
 
         } catch(err) {
             res.json({ "error": "Ein Fehler ist aufgetreten" });

@@ -1,26 +1,9 @@
-import { useState, useEffect } from 'react';
-
 import { IoMdClose } from 'react-icons/io';
 import { IconContext } from "react-icons";
 
 import './Rules.css';
 
 function Rules(props) {
-
-  const [rules, setRules] = useState();
-
-  useEffect(() => {
-    const fetchRules = async() => {
-      
-      const data = await fetch("/games/rules?id=" + props.gameId);
-      const rules = await data.json();
-
-      setRules(rules.rules);
-    };
-
-    fetchRules();
-  }, [rules, props.gameId]);
-
   return (
     <div id='rules-wrapper'>
       <div id='sidebar-rules-heading-wrapper'>
@@ -32,9 +15,7 @@ function Rules(props) {
         </button>
       </div>
       <div id='sidebar-rules-content-wrapper'>
-        <p id='sidebar-rules-content'>{ rules }</p>
-        <p>
-        </p>
+        { props.text }
       </div>
     </div>
   );

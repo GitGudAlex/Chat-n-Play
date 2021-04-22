@@ -4,31 +4,27 @@
     "name": "Uno",
     "gameCategoryId": 1,
     "description": "Ein Kartenspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt sut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Uno Regeln Beispieltext",
-    "maxPlayers": 4
+    "rules": "Uno Regeln Beispieltext"
   },
   {
     "id": 1,
     "name": "Mensch ärger Dich nicht",
     "gameCategoryId": 0,
     "description": "Ein Brettspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Menschärgerdichnicht Regeln Beispieltext",
-    "maxPlayers": 4
+    "rules": "Eure 4 Figuren starten immer Anfangskreis und werden in Pfeilrichtung Richtung Endkreis (Ziel) gezogen.\n\nWer an der Reihe ist, würfelt und darf seine Figur, beginnend mit der festgelegten Startfigur, entsprechend des Würfelergebnisses setzen. Danach ist der Nächste von euch an der Reihe.\n\nWährend des Verlaufs kann es passieren, dass ihr eine Zahl würfelt, mit der ihr theoretisch auf ein Feld setzen könntet, das bereits belegt ist. Was im ersten Moment schlecht wirkt, ist gut! Setzt unbedingt eure Figur auf dieses Feld, um den Gegner zu schlagen. Der muss diese nämlich wieder in den Anfangskreis setzen und wird damit einen guten Schritt nach hinten versetzt.\n\nSollte einer von euch eine 6 würfeln, bekommt dieser einen weiteren Wurf und muss eine weitere Figur aus dem Anfangskreis ins Spiel zu bringen und mit dem 2. freien Wurf weiter, entsprechend der Augen, zu setzen. Selbst dann, wenn er eine andere Figur odr seine dadurch aus dem Spiel schlägt.\n\nWürfelt man dagegen z. B. eine 5, so muss man eine andere Figur weiter setzen. Würfelt man eine 6, hat aber bereits alle 4 Figuren auf den Weg gebracht, bzw. bereits teilweise im Ziel, kann man eine beliebige Figur um 6 Felder weiter bringen. Er hat dann einen weiteren Wurf frei.\n\nHat man keine andere Figur mehr auf dem Feld, muss man unbedingt eine 6 würfeln. Gelingt das beim Wurf nicht, muss man den Würfel abgeben.\n\nÜber die im Weg stehenden eigenen und feindlichen Figuren wird gesprungen, das besetzte Feld aber mitgezählt.\n\nHat eine Figur das äußere Kreuz vollständig umrundet, so rückt dieselbe auf die Kreise ihrer Farbe ins Ziel ein. In die Endfelder kann nur eingerückt werden, wenn die exakte Zahl auf die freien Felder gewürfelt wird."
   },
   {
     "id": 2,
     "name": "Mau Mau",
     "gameCategoryId": 1,
     "description": "Ein anderes Kartenspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Mau Mau Regeln Beispieltext",
-    "maxPlayers": 4
+    "rules": "Mau Mau Regeln Beispieltext"
   },
   {
     "id": 3,
     "name": "Stadt, Land, Fluss",
     "gameCategoryId": 2,
     "description": "Ein anderes Kartenspiel - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "rules": "Mau Mau Regeln Beispieltext",
-    "maxPlayers": 4
+    "rules": "Mau Mau Regeln Beispieltext"
   }
 ]
