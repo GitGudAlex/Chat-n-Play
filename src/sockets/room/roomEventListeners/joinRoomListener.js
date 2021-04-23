@@ -48,7 +48,7 @@ module.exports = (io, socket, data, callback) => {
     });
     
     // bei allen anderen Spielern die Spieler updaten
-    socket.to(player.roomId).emit('room:update', { players, hostId: room.hostId });
+    socket.to(player.roomId).emit('room:update', { players });
 
     // gameId bekommmen um die mitzusenden
     const gameTypeId = room.gameTypeId;

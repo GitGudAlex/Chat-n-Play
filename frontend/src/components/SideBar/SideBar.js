@@ -5,6 +5,8 @@ import $ from 'jquery';
 import { BsFillChatDotsFill } from 'react-icons/bs';
 import { ImBook } from 'react-icons/im';
 import { BsBoxArrowLeft } from 'react-icons/bs';
+import { BsDot } from 'react-icons/bs';
+import { IconContext } from "react-icons";
 
 import './SideBar.css';
 
@@ -33,6 +35,9 @@ function SideBar(props) {
         // content zur Seite pushen
         $(props.contentId).animate({ 'margin-left': props.sideBarWindowWidth + 'px' }, { duration: 200, queue: false });
 
+        // Roten Punkt unsichtbar machen, falls eine nachricht kam
+        $('#chat-unread-btn-icon').css({ 'visibility': 'hidden' });
+
       // Sidebar schließen
       } else {
         $(sidebarId).animate({ 'left': '0', 'margin-left': (props.sideBarWidth - props.sideBarWindowWidth) + 'px' }, { duration: 200, queue: false });
@@ -51,6 +56,9 @@ function SideBar(props) {
 
         // content zur Seite pushen
         $(props.contentId).animate({ 'margin-right': props.sideBarWindowWidth + 'px' }, { duration: 200, queue: false });
+
+        // Roten Punkt unsichtbar machen, falls eine nachricht kam
+        $('#chat-unread-btn-icon').css({ 'visibility': 'hidden' });
 
       // Sidebar schließen
       } else {
@@ -102,11 +110,30 @@ function SideBar(props) {
   }
 
 
+  // Wenn die Fenster größe verändert wird, muss auch die Sidebar größe angepasst werden, da position: fixed
+  useEffect(() => {
+    function handleResize() {
+      $('.sidebar-window').height($('.sidebar-wrapper').height());
+    }
+    
+    window.addEventListener('resize', handleResize);
+  });
+
+
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
       <div className='sidebar-bar-wrapper'>
         <button className="sidebar-btn" onClick={ () => toggleSideBar("#sidebar-chat") }>
-          <BsFillChatDotsFill size={ 28 } />
+          <span style={{ display: 'inline-block', position: 'relative' }}>
+            <BsFillChatDotsFill textAnchor="middle" alignmentBaseline="middle" size={ 28 } />
+            <IconContext.Provider value={{ size: '50px', color: 'red' }}>
+              <BsDot
+                id='chat-unread-btn-icon'
+                textAnchor="middle"
+                alignmentBaseline="middle"
+                style={{ fontSize: '.5em', position: 'absolute', left: '0em', bottom: '0em' }} />
+            </IconContext.Provider>
+          </span>
         </button>
         <button className="sidebar-btn" onClick={ () => toggleSideBar("#sidebar-rules") }>
           <ImBook size={ 28 } />
@@ -116,7 +143,7 @@ function SideBar(props) {
         </button>
       </div>
       <div id="sidebar-chat" className='sidebar-window'>
-        <Chat closeFunction={ toggleSideBar }/>
+        <Chat closeFunction={ toggleSideBar } sideBarWidth={ props.sideBarWidth }/>
       </div>
       <div id="sidebar-rules" className='sidebar-window'>
         <Rules closeFunction={ toggleSideBar } text={ props.rules }/>

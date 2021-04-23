@@ -1,0 +1,65 @@
+import { useContext, useEffect, useState, useCallback } from 'react';
+
+import './StartGame.css'
+
+import SocketContext from '../../../services/socket';
+
+function Chat(props) {
+
+  const [isHost, setIsHost] = useState(false);
+
+  // Socket.io
+  const socket = useContext(SocketContext);
+
+  // Events:
+  // Schauen ob man selbst der neue Host ist
+  const handleHostChanged = useCallback((data) => {
+    if(data.hostId === socket.id) {
+        setIsHost(true); 
+
+    }
+
+  }, [socket]);
+
+  useEffect(() => {
+    // Wenn der Host sich ändert
+    socket.on("room:hostChanged", handleHostChanged);
+
+  }, [socket, handleHostChanged]);
+
+
+  // Schauen ob man am Anfang der Host ist
+  useEffect(() => {
+    // Wenn der Host sich ändert
+    if(props.hostId === socket.id) {
+        setIsHost(true); 
+    }
+
+  }, [socket, props]);
+
+
+  // Events unmounten
+  useEffect(() => {    
+    return () => {
+        socket.off('room:hostChanged', handleHostChanged);
+    }
+  }, [socket, handleHostChanged])
+
+
+  if(isHost) {
+    return (
+        <div className='start-game'>
+            <p className='start-game-text'>Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten</p>
+            <input className='start-game-btn btn-xl btn-primary' type='button' value='Spiel starten' />
+        </div>
+      );
+  } else {
+    return (
+        <div className='start-game'>
+            <p className='start-game-text'>Der Host wird das Spiel in kürze starten</p>
+        </div>
+      );
+  }
+}
+
+export default Chat;

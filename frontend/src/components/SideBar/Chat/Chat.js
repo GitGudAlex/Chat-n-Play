@@ -23,7 +23,19 @@ function Chat(props) {
     // Nachricht anzeigen
     setMessages([...messages, <ChatBubble key={ messages.length } username={ data.username } text={ data.text } position='left'/>])
 
-  }, [messages]);
+    // Wenn Chat nicht offen, Roten Punk anzeigen, dass eine ungelesene Nachricht da ist
+    if($('#sidebar-chat').css('margin-left') !== props.sideBarWidth + 'px') {
+      
+      // Schauen, ob der Punkt schon da ist. Dann nicht setzten
+      if($('#chat-unread-btn-icon').css('visibility') === 'hidden') {
+
+        // Roten Punkt setzten
+        $('#chat-unread-btn-icon').css({ 'visibility': 'visible' });
+
+      }
+    }
+
+  }, [messages, props.sideBarWidth]);
 
   useEffect(() => {
     // Wenn man einem Raum gejoint ist -> Lobby laden

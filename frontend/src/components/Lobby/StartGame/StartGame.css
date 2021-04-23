@@ -1,0 +1,19 @@
+.start-game {
+    width: 55%;
+    text-align: center;
+}
+
+.start-game-text {
+    font-size: 3vw;
+    color: #474747;
+}
+
+.start-game-btn {
+    margin-top: 14px;
+}
+
+.btn-xl {
+    padding: 1.6% 10%;
+    font-size: 2vw;
+    border-radius: 10px;
+}

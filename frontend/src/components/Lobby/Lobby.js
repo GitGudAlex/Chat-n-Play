@@ -1,10 +1,12 @@
 import { useContext, useState, useEffect } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
+import $ from 'jquery';
 
 import './Lobby.css'
 
 import SideBar from '../SideBar/SideBar';
 import Title from '../Home/Title/Title';
+import StartGame from './StartGame/StartGame';
 import SocketContext from '../../services/socket';
 
 function Lobby() {
@@ -78,6 +80,18 @@ function Lobby() {
         setRules(rulesData.rules);
     };
 
+    // Kameras immer in der gleichen Proportion anzeigen
+    useEffect(() => {
+        function handleResize() {
+            $('.camera').width($('.camera').height()/9 * 16);
+        }
+
+        // Am Anfang richtige breite setzten
+        $('.camera').width($('.camera').height()/9 * 16);
+
+        window.addEventListener('resize', handleResize);
+    });
+
 
     // Nur anzeigen, wenn man wirklich in einem Raum ist
     if(gameId === undefined) {
@@ -92,7 +106,7 @@ function Lobby() {
         return (
             <div className='lobby-wrapper p-0'>
                 <header className="lobby-header">
-                    <Title text={ gameName } height="10vh" fontSize="4em"/>
+                    <Title text={ gameName } height="10vh" fontSize="4vw"/>
                 </header>
                 <main className='lobby-body'>
                     <div className="container-fluid p-0">
@@ -101,9 +115,21 @@ function Lobby() {
                                 <SideBar position='left' contentId='#lobby-content' sideBarWidth={ 40 } sideBarWindowWidth={ 350 } rules={ rules }/>
                             </div>
                             <div id='lobby-content' className='col p-0'>
-                                sfpojkdsapfjepoafdkjpewoqjfpjwefjEW
-                                FWEjfjoipwjefiopwejfpjwefjwefewjfküo0wefio8ewjorfuoeiuw hfiuopWFHIUPEWHRFHEWUOI FIUEWHfuiohwefhjweü9fhEWOÜUHFOUEWjhfouiüewjhfoüuiewhfoiuüewhfoüiwehfoiewh 
-                                wFHWEFJWEOÜUIFHJEWOUIÜHFOUW hf0oiuewjhf08üoh 9iuhweoiuAWHOIUFHRHWI HFIOUSAFPISgaruzweg  f9uwegr9tuwfg9uifojwrfgpüwhrf9oiu
+                                <div className='start-game-wrapper'>
+                                    <StartGame hostId={ hostId } />
+                                </div>
+                                <div className='top-left camera'>
+                                    
+                                </div>
+                                <div className='top-right camera'>
+                                    
+                                </div>
+                                <div className='bottom-left camera'>
+                                    
+                                </div>
+                                <div className='bottom-right camera'>
+                                    
+                                </div>
                             </div>
                         </div>
                     </div>
