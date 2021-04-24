@@ -119,11 +119,17 @@ function SideBar(props) {
     window.addEventListener('resize', handleResize);
   });
 
+  // Bootstrap Tooltips anzeigen
+  $(document).ready(function() {
+    $('.sidebar-btn-tooltip').tooltip({
+        delay: { show: 1000, hide: 300 }
+    });   
+  });
 
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
       <div className='sidebar-bar-wrapper'>
-        <button className="sidebar-btn" onClick={ () => toggleSideBar("#sidebar-chat") }>
+        <button title='Chat' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-chat") }>
           <span style={{ display: 'inline-block', position: 'relative' }}>
             <BsFillChatDotsFill textAnchor="middle" alignmentBaseline="middle" size={ 28 } />
             <IconContext.Provider value={{ size: '50px', color: 'red' }}>
@@ -135,12 +141,14 @@ function SideBar(props) {
             </IconContext.Provider>
           </span>
         </button>
-        <button className="sidebar-btn" onClick={ () => toggleSideBar("#sidebar-rules") }>
+        <button title='Regeln' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-rules") }>
           <ImBook size={ 28 } />
         </button>
-        <button id='leave-room-btn' className="sidebar-btn" data-toggle="modal" data-target="#leaveModal">
-          <BsBoxArrowLeft size={ 28} />
-        </button>
+        <span className='sidebar-btn-tooltip' title='Verlassen' data-toggle="tooltip" data-placement="right">
+          <button id='leave-room-btn' className="sidebar-btn" data-toggle="modal" data-target="#leaveModal">
+            <BsBoxArrowLeft size={ 28} />
+          </button>
+        </span>
       </div>
       <div id="sidebar-chat" className='sidebar-window'>
         <Chat closeFunction={ toggleSideBar } sideBarWidth={ props.sideBarWidth }/>

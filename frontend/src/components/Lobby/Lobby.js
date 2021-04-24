@@ -7,6 +7,7 @@ import './Lobby.css'
 import SideBar from '../SideBar/SideBar';
 import Title from '../Home/Title/Title';
 import StartGame from './StartGame/StartGame';
+import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import SocketContext from '../../services/socket';
 
 function Lobby() {
@@ -80,14 +81,16 @@ function Lobby() {
         setRules(rulesData.rules);
     };
 
-    // Kameras immer in der gleichen Proportion anzeigen
+    // Kameras und Buttons immer in der gleichen Proportion anzeigen
     useEffect(() => {
         function handleResize() {
-            $('.camera').width($('.camera').height()/9 * 16);
+            $('.camera').height($('.camera').width()/16 * 9);
+            $('.invitation-button').height($('.invitation-button').width());
         }
 
         // Am Anfang richtige breite setzten
-        $('.camera').width($('.camera').height()/9 * 16);
+        $('.camera').height($('.camera').width()/16 * 9);
+        $('.invitation-button').height($('.invitation-button').width());
 
         window.addEventListener('resize', handleResize);
     });
@@ -117,6 +120,7 @@ function Lobby() {
                             <div id='lobby-content' className='col p-0'>
                                 <div className='start-game-wrapper'>
                                     <StartGame hostId={ hostId } />
+                                    <InvitationCopyBoards roomId={ roomId } />
                                 </div>
                                 <div className='top-left camera'>
                                     
