@@ -1,4 +1,4 @@
-const { addPlayer, getPlayersInRoom, getPlayer } = require('../../../models/players');
+const { addPlayer, getPlayersInRoom, getPlayer, getColors } = require('../../../models/players');
 const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket, data, callback) => {
@@ -42,7 +42,7 @@ module.exports = (io, socket, data, callback) => {
     
     // allen Spielern die neuen Spieler senden
     const players = getPlayersInRoom(player.roomId).map((player) => {
-        let playerObj = { socketId: player.socketId, username: player.username };
+        let playerObj = { socketId: player.socketId, username: player.username, position: player.position, color: player.color };
         
         return playerObj;
     });

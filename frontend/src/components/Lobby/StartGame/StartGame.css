@@ -1,6 +1,10 @@
 .start-game {
     width: 55%;
     text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .start-game-text {
@@ -10,10 +14,16 @@
 
 .start-game-btn {
     margin-top: 14px;
+    text-align: center;
 }
 
 .btn-xl {
     padding: 1.6% 10%;
     font-size: 2vw;
     border-radius: 10px;
+}
+
+#start-game-error {
+    margin-top: 18px;
+    height: 20px;
 }

@@ -1,5 +1,5 @@
-const { removeRoom, isHost, getHost, setHost } = require('../../../models/rooms');
-const { removePlayer, getPlayersInRoom } = require('../../../models/players');
+const { removeRoom, isHost, setHost } = require('../../../models/rooms');
+const { removePlayer, getPlayersInRoom, getColors } = require('../../../models/players');
 
 module.exports = (io, socket) => {
     // Spieler löschen
@@ -35,13 +35,14 @@ module.exports = (io, socket) => {
             }
 
             // allen Spielern die neuen Spieler senden
-            let playersReturn = getPlayersInRoom(player.roomId).map((player) => {
-                let playerObj = { socketId: player.socketId, username: player.username };
+            let mappedPlayers = players.map((player) => {
+                let playerObj = { socketId: player.socketId, username: player.username, position: player.position, color: player.color };
                 
                 return playerObj;
             });
 
-            io.in(player.roomId).emit('room:update', { players: playersReturn, hostId: getHost(player.roomId) });
+            io.in(player.roomId).emit('room:update', { players: mappedPlayers });
+            io.in(player.roomId).emit('room:update-color-selector', { colors: getColors(player.roomId) });
         }
     }
 }

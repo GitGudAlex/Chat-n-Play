@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState, useCallback } from 'react';
+import $ from 'jquery';
 
 import './StartGame.css'
 
@@ -45,12 +46,24 @@ function Chat(props) {
     }
   }, [socket, handleHostChanged])
 
+  const startGame = () => {
+    socket.emit('room:start-game', (error) => {
+      $('#start-game-error').text(error);
+
+      setTimeout(() => {
+        $('#start-game-error').text('');
+
+      }, 3000)
+    });
+  }
+
 
   if(isHost) {
     return (
         <div className='start-game'>
             <p className='start-game-text'>Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten</p>
-            <input className='start-game-btn btn-xl btn-primary' type='button' value='Spiel starten' />
+            <input className='start-game-btn btn-xl btn-primary' type='button' value='Spiel starten' onClick={ startGame } />
+            <small id='start-game-error' className="text-danger"></small>
         </div>
       );
   } else {

@@ -1,0 +1,12 @@
+.color-dot {
+    margin: 14px;
+
+    height: 42px;
+    width: 42px;
+
+    border: none;
+}
+
+.color-dot:hover {
+    border: 2px solid black;
+}

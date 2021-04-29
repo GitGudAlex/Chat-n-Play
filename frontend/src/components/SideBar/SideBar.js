@@ -33,7 +33,7 @@ function SideBar(props) {
         $(sidebarId).animate({ 'left': '0', 'margin-left': (props.sideBarWidth) + 'px' });
 
         // content zur Seite pushen
-        $(props.contentId).animate({ 'margin-left': props.sideBarWindowWidth + 'px' }, { duration: 200, queue: false });
+        $(props.contentId).animate({ 'margin-left': props.sideBarWindowWidth + 'px' }, { duration: 200, queue: false, step: () => window.dispatchEvent(new Event('resize')) });
 
         // Roten Punkt unsichtbar machen, falls eine nachricht kam
         $('#chat-unread-btn-icon').css({ 'visibility': 'hidden' });
@@ -43,7 +43,7 @@ function SideBar(props) {
         $(sidebarId).animate({ 'left': '0', 'margin-left': (props.sideBarWidth - props.sideBarWindowWidth) + 'px' }, { duration: 200, queue: false });
 
         // conent wieder richtig stellen
-        $(props.contentId).animate({ 'margin-left': '0px' }, { duration: 200, queue: false });
+        $(props.contentId).animate({ 'margin-left': '0px' }, { duration: 200, queue: false, step: () => window.dispatchEvent(new Event('resize')) });
 
       }
 
@@ -55,7 +55,7 @@ function SideBar(props) {
         $(sidebarId).animate({ 'right': '0', 'margin-right': (props.sideBarWidth) + 'px' });
 
         // content zur Seite pushen
-        $(props.contentId).animate({ 'margin-right': props.sideBarWindowWidth + 'px' }, { duration: 200, queue: false });
+        $(props.contentId).animate({ 'margin-right': props.sideBarWindowWidth + 'px' }, { duration: 200, queue: false, step: () => window.dispatchEvent(new Event('resize')) });
 
         // Roten Punkt unsichtbar machen, falls eine nachricht kam
         $('#chat-unread-btn-icon').css({ 'visibility': 'hidden' });
@@ -65,7 +65,7 @@ function SideBar(props) {
         $(sidebarId).animate({ 'right': '0', 'margin-right': (props.sideBarWidth - props.sideBarWindowWidth) + 'px' }, { duration: 200, queue: false });
         
         // conent wieder richtig stellen
-        $(props.contentId).animate({ 'margin-right': '0px' }, { duration: 200, queue: false });
+        $(props.contentId).animate({ 'margin-right': '0px' }, { duration: 200, queue: false, step: () => window.dispatchEvent(new Event('resize')) });
       }
     }
 

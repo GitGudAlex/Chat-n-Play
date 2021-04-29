@@ -16,45 +16,21 @@ html, body, #root, .lobby-wrapper, .container-fluid, .lobby-body-wrapper {
     position: relative;
 }
 
-.camera {
-    width: 20%;
-
-    border: 2px solid black;
-}
-
-.top-left {
+.players {
     position: absolute;
-    
-    top: 40px;
-    left: 40px;
-}
-
-.top-right {
-    position: absolute;
-
-    top: 40px;
-    right: 40px;
-}
-
-.bottom-left {
-    position: absolute;
-
-    bottom: 40px;
-    left: 40px;
-}
-
-.bottom-right {
-    position: absolute;
-    
-    bottom: 40px;
-    right: 40px;
+    height: 100%;
+    width: 100%;
 }
 
 .start-game-wrapper {
+    position: absolute;
+    z-index: 1;
+    
+    height: 100%;
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    height: 100%;
 }

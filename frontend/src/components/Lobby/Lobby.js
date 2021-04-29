@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useCallback } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import $ from 'jquery';
 
@@ -7,7 +7,9 @@ import './Lobby.css'
 import SideBar from '../SideBar/SideBar';
 import Title from '../Home/Title/Title';
 import StartGame from './StartGame/StartGame';
+import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
+import ColorSelector from './ColorSelector/ColorSelector';
 import SocketContext from '../../services/socket';
 
 function Lobby() {
@@ -29,26 +31,51 @@ function Lobby() {
     // Socket.io
     const socket = useContext(SocketContext);
 
-    useEffect(() => {
-        // Schauen, ob man sich überhaupt in einem Raum befindet 
-        socket.emit('room:is-in-room', (isInRoom) => {
-            if(!isInRoom) {
-                history.push('/');
+    // Positionen der Spieler
+    const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
 
-            // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht
-            } else {
-                let gameData = location.state.data;
+    // Schauen, ob man sich überhaupt in einem Raum befindet
+    const handleInRoomCallback = useCallback((isInRoom) => {
+        if(!isInRoom) {
+            history.push('/');
 
-                setGameId(gameData.gameTypeId);
-                setRoomId(gameData.roomId);
-                setHostId(gameData.hostId);
-                setPlayers(gameData.players);
-            }
+        // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht
+        } else {
+            let gameData = location.state.data;
+
+            setRoomId(gameData.roomId);
+            setHostId(gameData.hostId);
+            setPlayers(gameData.players);
+            setGameId(gameData.gameTypeId);
+
+            // Wenn die Fenstergröße geändert wird
+            // Am Anfang richtige breite setzten
+            $('.player').height($('.player').width()/16 * 9);
+            $('.invitation-button').height($('.invitation-button').width());
+            
+            window.addEventListener('resize', () => {
+                $('.player').height($('.player').width()/16 * 9);
+                $('.invitation-button').height($('.invitation-button').width());
+            });
+        }
+
+    }, [history, location.state]);
+
+
+    // Socket Events
+    useEffect(() => { 
+        socket.emit('room:is-in-room', handleInRoomCallback);
+        socket.on('room:update', (data) => {
+            setPlayers(data.players);
+
+            $('.player').height($('.player').width()/16 * 9);
+            $('.invitation-button').height($('.invitation-button').width());
         });
         
-    }, [socket, history, location.state]);
+    }, [socket, handleInRoomCallback]);
 
 
+    // Spieldaten bekommen
     useEffect(() => {   
         if(gameId !== undefined) {
             fetchGameData(gameId);
@@ -81,19 +108,13 @@ function Lobby() {
         setRules(rulesData.rules);
     };
 
-    // Kameras und Buttons immer in der gleichen Proportion anzeigen
-    useEffect(() => {
-        function handleResize() {
-            $('.camera').height($('.camera').width()/16 * 9);
-            $('.invitation-button').height($('.invitation-button').width());
+
+    // Events unmounten
+    useEffect(() => {    
+        return () => {
+            socket.off('room:update');
         }
-
-        // Am Anfang richtige breite setzten
-        $('.camera').height($('.camera').width()/16 * 9);
-        $('.invitation-button').height($('.invitation-button').width());
-
-        window.addEventListener('resize', handleResize);
-    });
+    }, [socket])
 
 
     // Nur anzeigen, wenn man wirklich in einem Raum ist
@@ -119,20 +140,19 @@ function Lobby() {
                             </div>
                             <div id='lobby-content' className='col p-0'>
                                 <div className='start-game-wrapper'>
+                                    <ColorSelector />
                                     <StartGame hostId={ hostId } />
                                     <InvitationCopyBoards roomId={ roomId } />
                                 </div>
-                                <div className='top-left camera'>
-                                    
-                                </div>
-                                <div className='top-right camera'>
-                                    
-                                </div>
-                                <div className='bottom-left camera'>
-                                    
-                                </div>
-                                <div className='bottom-right camera'>
-                                    
+                                <div className='players'>
+                                    {
+                                        players.map(player => (
+                                            <PlayerCorner key = { player.username  } 
+                                                username = { player.username }
+                                                color = { player.color }
+                                                position = { positions[player.position] } />
+                                        ))
+                                    }
                                 </div>
                             </div>
                         </div>

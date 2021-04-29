@@ -1,7 +1,10 @@
 /**
- * { socketId, username, roomId }
+ * { socketId, username, roomId, position, color }
  */
 const players = [];
+
+// Farben der Spieler
+const colors = ['#2699FB', '#F8D931', '#1ECB40', '#D84545'];
 
 // add a player
 const addPlayer = ( socketId, username, roomId ) => {
@@ -10,8 +13,11 @@ const addPlayer = ( socketId, username, roomId ) => {
     // username or RoomId missing
     if(existingPlayer) return { error: 'Der angegebene Username ist schon in Verwendung.' };
 
+    // get players position. Wenn 2 Spieler bereits im Spiel sind, soll er die position 2 bekommen. (start bei 0)
+    let position = getPlayersInRoom(roomId).length;
+    
     // adding player
-    const player = { socketId, username, roomId };
+    const player = { socketId, username, roomId, position, color: undefined };
     players.push(player);
 
     // returning player object
@@ -26,20 +32,99 @@ const removePlayer = (socketId) => {
         const player = players[playerIndex];
         players.splice(playerIndex, 1)
         
+        reorderPlayerPositions(player.roomId);
         return player;
     }
 
     return false;
 }
- 
+
+
 // get a player with a playerId
 const getPlayer = (socketId) => { 
     return players.find((player) => player.socketId === socketId);
 }
 
+
 // get all players from a room with the roomId
 const getPlayersInRoom = (roomId) => {
-    return players.filter((player) => player.roomId == roomId);
+    let playersInRoom = players.filter((player) => player.roomId == roomId);
+
+    return playersInRoom.sort(function(a, b) {
+        return a.position - b.position;
+    });
 }
 
-module.exports = { addPlayer, removePlayer, getPlayer, getPlayersInRoom };
+// Schaut ob die ausgesucht farbe genommen werden darf 
+// und gibt die farben zurück, die noch übrig sind
+const setColor = (socketId, color) => {
+    let player = getPlayer(socketId);
+    let colorArr = getColors(player.roomId);
+
+    let colorObj = colorArr.find((obj) => obj.color == color);
+
+    // Man selber hat die Farbe schon ausgewählt -> Farbe löschen
+    if(colorObj.socketId == socketId) {
+        let index = players.findIndex((p) => p.socketId === socketId);
+        players[index].color = undefined;
+
+        return true;
+
+    // Die Farbe ist noch von niemanden ausgewählt worden -> Farbe setzten
+    } else if(colorObj.socketId === undefined) {
+
+        // Farbe für den Spieler setzen
+        let index = players.findIndex((p) => p.socketId === socketId);
+        players[index].color = color;
+
+        return true;
+
+    // Farbe wurde schon von jemanen ausgewählt -> nichts machen
+    } else {
+        return false;
+
+    }
+}
+
+// Gibt einen Array von JSON-Objekten zurück. In einem JSON Objekt steht jeweils die farbe und wer diese
+// Farbe ausgesucht hat (undefinded, wenn noch niemand diese Farbe ausgewählt hat)
+const getColors = (roomId) => {
+    let result = []
+    let playersInRoom = players.filter((p) => p.roomId == roomId);
+
+    // Geht jede Farbe durch und schaut ob diese schon im Raum vergeben ist
+    for(color of colors) {
+        let index = playersInRoom.findIndex((player) => player.color === color);
+
+        // Farbe im Raum schon vergeben
+        if(index != -1) {
+            result.push({ color: color, socketId: playersInRoom[index].socketId });
+
+        // Farbe im Raum noch nicht vergeben
+        } else {
+            result.push({ color: color, socketId: undefined});
+
+        }
+    }
+    
+    return result;
+}
+
+
+const reorderPlayerPositions = (roomId) => {
+    let playersInRoom = getPlayersInRoom(roomId);
+    
+    counter = 0;
+
+    for(player of playersInRoom) {
+        let index = playersInRoom.findIndex((p) => p.socketId === player.socketId);
+        players[index].position = counter;
+
+        counter++;
+    }
+
+    playersInRoom = getPlayersInRoom(roomId);
+}
+
+
+module.exports = { addPlayer, removePlayer, getPlayer, getPlayersInRoom, setColor, getColors };
