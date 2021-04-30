@@ -1,8 +1,10 @@
-.color-dot {
-    margin: 14px;
+.color-dot-wrapper {
+    width: 20%;
+}
 
-    height: 42px;
-    width: 42px;
+.color-dot {
+    width: 80%;
+    height: 80%;
 
     border: none;
 }

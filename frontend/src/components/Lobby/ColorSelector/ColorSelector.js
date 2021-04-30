@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
+import $ from 'jquery';
 
 import './ColorSelector.css'
 
@@ -36,6 +37,17 @@ function ColorSelector() {
             }
         })
     }
+
+
+    // Einmal ganz am Anfang resize Event setzten
+    useEffect(() => {
+
+        $('.color-dot-wrapper').height($('.color-dot-wrapper').width());
+        
+        window.addEventListener('resize', () => {
+            $('.color-dot-wrapper').height($('.color-dot-wrapper').width());
+        });
+    });
 
     return (
         <div className='color-selector'>
