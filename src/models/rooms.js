@@ -67,4 +67,10 @@ const setHost = (roomId, hostId) => {
     rooms[roomIndex].hostId = hostId;
 }
  
-module.exports = { addRoom, removeRoom, getRoom, isHost, getHost, setHost };
+// sets the variable, that the game has started
+const setGameStarted = (roomId, hasStarted) => { 
+    let roomIndex = rooms.findIndex((room) => room.roomId === roomId);
+    rooms[roomIndex].hasStarted = hasStarted;
+}
+
+module.exports = { addRoom, removeRoom, getRoom, isHost, getHost, setHost, setGameStarted };

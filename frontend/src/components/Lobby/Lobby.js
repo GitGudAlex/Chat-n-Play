@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useCallback } from 'react';
+import { useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import $ from 'jquery';
 
@@ -33,6 +33,10 @@ function Lobby() {
 
     // Positionen der Spieler
     const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
+
+    // Variable um zu speichern ob das Spiel gerade angefangen wurde. Wird benötige,
+    // damit man nicht aus dem Spiel fliegt wenn der Component unmountet
+    const started = useRef(false);
 
     // Schauen, ob man sich überhaupt in einem Raum befindet
     const handleInRoomCallback = useCallback((isInRoom) => {
@@ -71,8 +75,14 @@ function Lobby() {
             $('.player').height($('.player').width()/16 * 9);
             $('.invitation-button').height($('.invitation-button').width());
         });
+
+        socket.on('room:game-started', (data) => {
+            started.current = true;
+
+            history.push(data.route);
+        });
         
-    }, [socket, handleInRoomCallback]);
+    }, [socket, history, handleInRoomCallback]);
 
 
     // Spieldaten bekommen
@@ -84,13 +94,6 @@ function Lobby() {
         }
     }, [gameId]);
 
-
-    // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
-    useEffect(() => {    
-        return () => {
-            socket.emit('room:leave-room');
-        }
-    }, [socket])
 
     // Den Namen vom Spiel bekommen
     const fetchGameData = async(gameId) => {
@@ -113,6 +116,17 @@ function Lobby() {
     useEffect(() => {    
         return () => {
             socket.off('room:update');
+            socket.off('room:game-started');
+        }
+    }, [socket])
+
+
+    // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
+    useEffect(() => { 
+        return () => {
+            if(!started.current) {
+                socket.emit('room:leave-room');
+            }
         }
     }, [socket])
 

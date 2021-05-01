@@ -32,7 +32,6 @@ const removePlayer = (socketId) => {
         const player = players[playerIndex];
         players.splice(playerIndex, 1)
         
-        reorderPlayerPositions(player.roomId);
         return player;
     }
 
@@ -127,4 +126,4 @@ const reorderPlayerPositions = (roomId) => {
 }
 
 
-module.exports = { addPlayer, removePlayer, getPlayer, getPlayersInRoom, setColor, getColors };
+module.exports = { addPlayer, removePlayer, getPlayer, getPlayersInRoom, reorderPlayerPositions, setColor, getColors };

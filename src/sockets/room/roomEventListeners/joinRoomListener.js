@@ -27,7 +27,7 @@ module.exports = (io, socket, data, callback) => {
 
     // Raum hat das Spiel schon gestartet
     if (room.hasStarted)  return callback("Der angegbene Raum hat das Spiel bereits gestartet.");
-
+    
     // Anzahl der maximal Spieler ist erreicht (4)
     if (getPlayersInRoom(data.roomId).length > 3) return callback("Der angegbene Raum hat das Maximum an Spielern bereits erreicht.");
 

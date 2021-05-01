@@ -1,4 +1,4 @@
-const { getRoom, isHost } = require('../../../models/rooms');
+const { getRoom, isHost, setGameStarted } = require('../../../models/rooms');
 const { getPlayersInRoom, getPlayer, setColor, getColors } = require('../../../models/players');
 
 module.exports = (io, socket, callback) => {
@@ -42,7 +42,15 @@ module.exports = (io, socket, callback) => {
 
     // Mensch Ärger dich nicht
     if(gameTypeId == 0) {
-        console.log("Starte Mensch Ärger dich nicht");
+
+        // Spieler nach Mensch Ärger dich nicht umleiten (Route angeben)
+        io.in(room.roomId).emit('room:game-started', { route: '/' + room.roomId });
+
+        // Spielstatus setzten
+        setGameStarted(room.roomId, true);
+
+        // Start Mehode vom Spiel aufrufen
+        //...
 
     } else {
         return callback("Spiel exestiert noch nicht!");

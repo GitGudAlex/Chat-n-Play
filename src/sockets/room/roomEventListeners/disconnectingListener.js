@@ -1,5 +1,5 @@
-const { removeRoom, isHost, setHost } = require('../../../models/rooms');
-const { removePlayer, getPlayersInRoom, getColors } = require('../../../models/players');
+const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
+const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
 
 module.exports = (io, socket) => {
     // Spieler löschen
@@ -7,6 +7,13 @@ module.exports = (io, socket) => {
 
     // Wenn der Spieler in einem Raum ist
     if(player) {
+
+        // Die Positionen nur dann neu ordnen, wenn das Spiel noch nicht angfangen hat
+        let room = getRoom(player.roomId);
+
+        if(!room.hasStarted) {
+            reorderPlayerPositions(room.roomId);
+        }
 
         // Wenn der Spieler der letzte im Raum ist => Raum löschen
         const players = getPlayersInRoom(player.roomId);
