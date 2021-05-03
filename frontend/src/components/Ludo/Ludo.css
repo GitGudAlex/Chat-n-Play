@@ -1,0 +1,32 @@
+div {
+  text-align: center;
+}
+
+button{
+  padding: 15px 15px;
+  margin: 10px;
+}
+
+.dice{
+  border-color: black;
+}
+
+.blue{
+  background-color: #00008B;
+}
+
+.red{
+  background-color: red;
+}
+
+.green{
+  background-color: green;
+}
+
+.yellow{
+  background-color: yellow;
+}
+
+.white{
+  background-color: white;
+}

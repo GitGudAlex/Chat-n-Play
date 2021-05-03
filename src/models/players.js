@@ -17,7 +17,7 @@ const addPlayer = ( socketId, username, roomId ) => {
     let position = getPlayersInRoom(roomId).length;
     
     // adding player
-    const player = { socketId, username, roomId, position, color: undefined };
+    const player = { socketId, username, roomId, position, color: undefined, active: false };
     players.push(player);
 
     // returning player object
@@ -52,6 +52,29 @@ const getPlayersInRoom = (roomId) => {
     return playersInRoom.sort(function(a, b) {
         return a.position - b.position;
     });
+}
+
+// return aktuellen Spieler
+const getCurrentPlayerInRoom = (roomId) => {
+    const allPlayers = getPlayersInRoom(roomId);
+    let currentPlayer = null;
+    allPlayers.forEach(p => {
+        if(p.active == true){
+            currentPlayer = p;
+        }
+    });
+    return currentPlayer;
+}
+
+//setzt den nächsten Spieler auf active=true
+const nextPlayerInRoom = (roomId) => {
+    const allPlayers = getPlayersInRoom(roomId);
+    const currentPlayer = getCurrentPlayerInRoom(roomId);
+    const indexCurrentPlayer = allPlayers.indexOf(currentPlayer);
+    const indexNextPlayer = (indexCurrentPlayer + 1) % allPlayers.length;
+    allPlayers[indexCurrentPlayer].active = false;
+    allPlayers[indexNextPlayer].active = true;
+    return allPlayers[indexNextPlayer];
 }
 
 // Schaut ob die ausgesucht farbe genommen werden darf 
@@ -126,4 +149,4 @@ const reorderPlayerPositions = (roomId) => {
 }
 
 
-module.exports = { addPlayer, removePlayer, getPlayer, getPlayersInRoom, reorderPlayerPositions, setColor, getColors };
+module.exports = { addPlayer, removePlayer, getPlayer, getPlayersInRoom, reorderPlayerPositions, setColor, getColors, getCurrentPlayerInRoom, nextPlayerInRoom };

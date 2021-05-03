@@ -5,6 +5,7 @@ import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';
 import Lobby from '../Lobby/Lobby';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import Ludo from '../Ludo/Ludo';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path='/' exact component={ Home } />
           <Route path='/invitation/:roomid' exact component={ Invitation } />
           <Route path='/lobby/:roomid' component={ Lobby } />
+          <Route path='/ludo/:roomid' component={Ludo}/>
           <Route component={ PageNotFound } />
         </Switch>
       </Router>

@@ -1,5 +1,6 @@
 const { getRoom, isHost, setGameStarted } = require('../../../models/rooms');
-const { getPlayersInRoom, getPlayer, setColor, getColors } = require('../../../models/players');
+const { getPlayersInRoom, getPlayer, setColor, getColors, getCurrentPlayerInRoom } = require('../../../models/players');
+const { startGameLudo } = require('../../../ludo/startGame');
 
 module.exports = (io, socket, callback) => {
     
@@ -44,13 +45,13 @@ module.exports = (io, socket, callback) => {
     if(gameTypeId == 0) {
 
         // Spieler nach Mensch Ärger dich nicht umleiten (Route angeben)
-        io.in(room.roomId).emit('room:game-started', { route: '/' + room.roomId });
+        io.in(room.roomId).emit('room:game-started', { route: '/ludo/' + room.roomId });
 
         // Spielstatus setzten
         setGameStarted(room.roomId, true);
 
         // Start Mehode vom Spiel aufrufen
-        //...
+        startGameLudo(player.roomId);
 
     } else {
         return callback("Spiel exestiert noch nicht!");
