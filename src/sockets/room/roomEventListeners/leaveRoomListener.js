@@ -1,5 +1,5 @@
-const { removeRoom, isHost, setHost } = require('../../../models/rooms');
-const { removePlayer, getPlayersInRoom, getColors } = require('../../../models/players');
+const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
+const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
 
 module.exports = (io, socket) => {
 
@@ -13,6 +13,14 @@ module.exports = (io, socket) => {
 
     // Spieler ist nicht letzte Spiele rim Raum -> Nachricht
     } else {
+
+        // Die Positionen nur dann neu ordnen, wenn das Spiel noch nicht angfangen hat
+        let room = getRoom(player.roomId);
+
+        if(!room.hasStarted) {
+            reorderPlayerPositions(room.roomId);
+        }
+        
         socket.to(player.roomId).emit('chat:message', { username: '', text: `${player.username} hat das Spiel verlassen!` });
 
         // Wenn der Spieler der aktuelle Host des Raums ist => Host neu bestimmen

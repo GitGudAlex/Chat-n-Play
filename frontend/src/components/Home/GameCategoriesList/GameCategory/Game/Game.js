@@ -15,8 +15,12 @@ function Game(props) {
     useEffect(() => {
         setgameId(props.gameId)
 
-    }, [props.gameId]);
+        // Autofocus für Nameneingabe
+        $(document).on('shown.bs.modal', '#create-game-modal-' + props.gameId, function () {
+            $('#create-game-username-input-' + props.gameId).focus();
+        });
 
+    }, [props.gameId]);
 
     // Einen Raum erstellen
     const createRoom = useCallback(() => {
@@ -42,7 +46,7 @@ function Game(props) {
 
 
             {/* Modal */}
-            <div className="modal fade" id={ "create-game-modal-" + gameId } role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div className="modal fade" id={ "create-game-modal-" + gameId } role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -54,7 +58,7 @@ function Game(props) {
                         <div className="modal-body">
                             <div>
                                 <div className="form-group">
-                                    <input id={ 'create-game-username-input-' + gameId } type="text" className="form-control" placeholder="Username" />
+                                    <input id={ 'create-game-username-input-' + gameId } type="text" className="form-control" placeholder="Username"/>
                                 </div>
                                 <div className="form-check m-4">
                                     <input className="form-check-input" type="checkbox" value="" id={ "acceptBtn-" + gameId } />

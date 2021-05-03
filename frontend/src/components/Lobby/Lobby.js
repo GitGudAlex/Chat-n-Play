@@ -43,7 +43,7 @@ function Lobby() {
         if(!isInRoom) {
             history.push('/');
 
-        // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht
+        // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht)
         } else {
             let gameData = location.state.data;
 
@@ -65,27 +65,47 @@ function Lobby() {
 
     }, [history, location.state]);
 
+    useEffect(() => {
+        socket.emit('room:is-in-room', handleInRoomCallback);
+
+    }, [socket, handleInRoomCallback]);
+
+    // Event wenn ein Spieler joint oder jemand das Spiel verlässt
+    const handleRoomUpdateEvent = useCallback((data) => {
+        setPlayers(data.players);
+        
+        $('.player').height($('.player').width()/16 * 9);
+        $('.invitation-button').height($('.invitation-button').width());
+    }, []);
+
+
+    // Schauen, ob man sich überhaupt in einem Raum befindet
+    const handleGameStartedEvent = useCallback((data) => {
+        started.current = true;
+
+        history.push({
+            pathname: data.route,
+            state: {
+                gameId: gameId
+            }
+        });
+
+    }, [history, gameId]);
 
     // Socket Events
     useEffect(() => { 
-        socket.emit('room:is-in-room', handleInRoomCallback);
-        socket.on('room:update', (data) => {
-            setPlayers(data.players);
+        socket.on('room:update', handleRoomUpdateEvent);
+        socket.on('room:game-started', handleGameStartedEvent);
 
-            $('.player').height($('.player').width()/16 * 9);
-            $('.invitation-button').height($('.invitation-button').width());
-        });
+        return () => {
+            // Events unmounten
+            socket.off('room:update');
+            socket.off('room:game-started');
+        };
 
-        socket.on('room:game-started', (data) => {
-            started.current = true;
+    }, [socket, handleRoomUpdateEvent, handleGameStartedEvent]);
 
-            history.push(data.route);
-        });
-        
-    }, [socket, history, handleInRoomCallback]);
-
-
-    // Spieldaten bekommen
+    // API Calls
     useEffect(() => {   
         if(gameId !== undefined) {
             fetchGameData(gameId);
@@ -95,7 +115,7 @@ function Lobby() {
     }, [gameId]);
 
 
-    // Den Namen vom Spiel bekommen
+    // API Call: Den Namen vom Spiel bekommen
     const fetchGameData = async(gameId) => {
         const data = await fetch("/games/name?id=" + gameId);
         const nameData = await data.json();
@@ -103,7 +123,7 @@ function Lobby() {
         setGameName(nameData.name);
     };
 
-    // Die Regeln von dem Spiel bekommen
+    // API Call: Die Regeln von dem Spiel bekommen
     const fetchRulesData = async(gameId) => {
         const data = await fetch("/games/rules?id=" + gameId);
         const rulesData = await data.json();
@@ -112,18 +132,9 @@ function Lobby() {
     };
 
 
-    // Events unmounten
-    useEffect(() => {    
-        return () => {
-            socket.off('room:update');
-            socket.off('room:game-started');
-        }
-    }, [socket])
-
-
-    // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
     useEffect(() => { 
         return () => {
+            // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
             if(!started.current) {
                 socket.emit('room:leave-room');
             }
@@ -134,8 +145,12 @@ function Lobby() {
     // Nur anzeigen, wenn man wirklich in einem Raum ist
     if(gameId === undefined) {
         return (
-            <div>
-                
+            <div style={{ height: '100%' }}>
+                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                    <div className="spinner-border" style={{ width: '4rem', height: '4rem' }} role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
             </div>
         );
 

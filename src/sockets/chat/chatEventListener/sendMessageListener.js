@@ -5,6 +5,6 @@ module.exports = (io, socket, data) => {
     if(data.text.length > 0) {
         const player = getPlayer(socket.id);
         
-        socket.to(player.roomId).emit('chat:message', { username: player.username, text: data.text });
+        io.in(player.roomId).emit('chat:message', { socketId: socket.id, username: player.username, text: data.text, color: player.color });
     }
 }

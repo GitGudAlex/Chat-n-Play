@@ -26,14 +26,6 @@
     align-self: flex-start;
 }
 
-.blue {
-    background-color: rgb(0, 122, 246);
-}
-
-.grey {
-    background-color: rgb(122, 123, 124);
-}
-
 .chat-bubble-username {
     font-size: 0.7em;
     color: rgb(54, 54, 54);

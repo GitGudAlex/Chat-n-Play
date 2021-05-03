@@ -19,9 +19,18 @@ function Chat(props) {
   //Events:
   // Wenn man eine Nachricht empfangen will
   const handleMessageEvent = useCallback((data) => {
-    
-    // Nachricht anzeigen
-    setMessages([...messages, <ChatBubble key={ messages.length } username={ data.username } text={ data.text } position='left'/>])
+
+    // Eigene Nachricht
+    if(data.socketId === socket.id) {
+      // Nachricht anzeigen
+      setMessages([...messages, <ChatBubble key={ messages.length } username="Du" text={ data.text } color={ data.color } position='right'/>])
+
+    // Nachricht von wem anders
+    } else {
+      // Nachricht anzeigen
+      setMessages([...messages, <ChatBubble key={ messages.length } username={ data.username } text={ data.text } color={ data.color } position='left'/>])
+
+    }
 
     // Wenn Chat nicht offen, Roten Punk anzeigen, dass eine ungelesene Nachricht da ist
     if($('#sidebar-chat').css('margin-left') !== props.sideBarWidth + 'px') {
@@ -35,7 +44,7 @@ function Chat(props) {
       }
     }
 
-  }, [messages, props.sideBarWidth]);
+  }, [socket, messages, props.sideBarWidth]);
 
   useEffect(() => {
     // Wenn man einem Raum gejoint ist -> Lobby laden
@@ -61,9 +70,6 @@ function Chat(props) {
       
       // Nachricht senden
       socket.emit('chat:sendMessage', { text: msg });
-
-      // Nachricht selber anzeigen
-      setMessages([...messages, <ChatBubble key={ messages.length } username="Du" text={ msg } position='right'/>])
     }
   }
 

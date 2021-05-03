@@ -5,6 +5,7 @@ const setColorHandler = require('./roomEventListeners/setColorListener');
 const getColorHandler = require('./roomEventListeners/getColorListener');
 const isInRoomHandler = require('./roomEventListeners/isInRoomListener');
 const startGameHandler = require('./roomEventListeners/startGameListener');
+const getPlayerHandler = require('./roomEventListeners/getPlayersListener');
 const leaveRoomHandler = require('./roomEventListeners/leaveRoomListener');
 const disconnectingHandler = require('./roomEventListeners/disconnectingListener');
 
@@ -20,6 +21,7 @@ module.exports = (io, socket) => {
   socket.on("room:is-in-room", (callback) => isInRoomHandler(socket, callback));
 
   socket.on("room:start-game", (callback) => startGameHandler(io, socket, callback));
+  socket.on("room:get-players", (callback) => getPlayerHandler(socket, callback));
 
   socket.on("room:leave-room", () => leaveRoomHandler(io, socket));
   socket.on("disconnect", () => disconnectingHandler(io, socket));

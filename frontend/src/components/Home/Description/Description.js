@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import $ from 'jquery';
 
 import './Description.css'
@@ -24,6 +24,13 @@ function Description() {
         });
 
     }, [socket]);
+
+    useEffect(() => {
+        // Autofocus für Nameneingabe
+        $(document).on('shown.bs.modal', '#join-game-modal', function () {
+            $('#join-game-username-input').focus();
+        });
+    });
 
     return (
         <div id="home-description">

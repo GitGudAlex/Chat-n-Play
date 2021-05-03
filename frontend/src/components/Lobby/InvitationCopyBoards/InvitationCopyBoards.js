@@ -42,12 +42,21 @@ function InvitationCopyBoards(props) {
     }
 
     // Tooltip nicht bei Hover anzeigen
-        $(document).ready(function() {
-            $('.invitation-button').tooltip({
-                trigger: 'manual',
-                position: 'center right+25'
-            });   
-        });
+    $(document).ready(function() {
+        $('.invitation-button').tooltip({
+            trigger: 'manual',
+            position: 'center right+25'
+        });   
+    });
+
+    // Wenn die Fenstergröße geändert wird
+    // Am Anfang richtige breite setzten
+    $('.invitation-button').width($('.invitation-button').height());
+    console.log($('.invitation-button').height());
+    
+    window.addEventListener('resize', () => {
+        $('.invitation-button').width($('.invitation-button').height());
+    });
 
     return (
         <div className='invitation-copy-clipboards'>
