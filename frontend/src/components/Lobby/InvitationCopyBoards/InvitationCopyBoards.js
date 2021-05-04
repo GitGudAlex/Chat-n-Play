@@ -52,8 +52,6 @@ function InvitationCopyBoards(props) {
     // Wenn die Fenstergröße geändert wird
     // Am Anfang richtige breite setzten
     $('.invitation-button').width($('.invitation-button').height());
-    console.log($('.invitation-button').height());
-    
     window.addEventListener('resize', () => {
         $('.invitation-button').width($('.invitation-button').height());
     });

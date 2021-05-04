@@ -140,7 +140,13 @@ function Ludo() {
                 $('#'+element).html('X');
             })
         });
-    })
+
+        // Events unsubscriben
+        return () => {
+            socket.off('ludo:dicedValue');
+            socket.off('ludo:showMoves');
+        }
+    });
 
     useEffect(() => {
         socket.on('ludo:leaveHouse', move => {
@@ -148,7 +154,12 @@ function Ludo() {
             $("#"+move[1]).css({'background-color':move[2]});
             $("#"+move[0]).css({'background-color':'white'});
         });
-    })
+
+        // Event unsubscriben
+        return () => {
+            socket.off('ludo:leaveHouse');
+        }
+    });
     
     
     const moveFigure = (id) => {
@@ -162,24 +173,35 @@ function Ludo() {
             $("#"+move[2]).css({'background-color':'white'});
             $("#"+move[0]).css({'background-color':move[1]});     
         });
-    })
+
+        // Event unsubscriben
+        return () => {
+            socket.off('ludo:moveFigure');
+        }
+    });
 
     useEffect(() => {
         $(".matchfield").find(":button").click((event)=> {
             const id = $(event.currentTarget).attr('id');
             moveFigure(id);
         });
-    })
+    });
 
     useEffect(() => {
         socket.on('ludo:nextPlayer', color => {
             $('#dice').css({'border-color':color});
         });
+
+        // Event unsubscriben
+        return () => {
+            socket.off('ludo:nextPlayer');
+        }
     });
 
     const setFirstPlayer = () => {
         socket.emit('ludo:firstPlayer');
     }
+
     
     if(rules === undefined) {
         return (
@@ -207,9 +229,9 @@ function Ludo() {
                                 <div className='game-content'>
                                     <div className='game-board'>
                                         <br></br>
-                                        <button id='firstPlayer' onClick = {setFirstPlayer}>Ersten Spieler festlegen</button>
+                                        <button id='firstPlayer' onClick={ setFirstPlayer }>Ersten Spieler festlegen</button>
                                         <br></br>
-                                        <button id = "dice" className = 'dice' onClick = {roll}>Würfeln</button>
+                                        <button id = "dice" className = 'dice' onClick={ roll }>Würfeln</button>
                                         <Matchfield/>
                                         <div id = "blue">
                                             <House first = '101' second = '102' third = '103' fourth = '104' color = 'blue'/>
