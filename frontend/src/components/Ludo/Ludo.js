@@ -117,12 +117,24 @@ function Ludo() {
         }
     }, [socket, history])
 
-
-    socket.once('ludo:current-player', color => {
-        console.log('color' + color);
-        $('.dice').css({'border-color':color});
+    
+    socket.once('ludo:first-player', player => {
+        console.log('color' + player.color);
+        $('.dice').css({'border-color':player.color});
         $('#firstPlayer').css({'display':'none'});
     });
+
+    //Würfel für ersten Spieler entsperren
+    socket.once("ludo:unlockDice-firstPlayer", () =>{
+        $("#dice").prop("disabled",false);
+    });
+
+    //Alle Buttons sperren
+    useEffect(()=>{
+        $(".matchfield").find(":button").prop("disabled", true);
+        $("#dice").prop("disabled", true);
+        $("House").prop("disabled", true);
+   });
 
     const roll = () => {
         socket.emit("ludo:rollDice");   
@@ -148,6 +160,19 @@ function Ludo() {
         }
     });
 
+    useEffect(()=>{
+        socket.on("ludo:unlockMoveFields", figures=>{
+            figures.forEach(element =>{
+                $("#dice").prop("disabled", true);
+                $("#"+element).prop("disabled", false);
+            });
+        });
+        // Event unsubscriben
+        return () => {
+            socket.off('ludo:unlockMoveFields');
+        }
+    });
+
     useEffect(() => {
         socket.on('ludo:leaveHouse', move => {
             console.log("Positionen aus dem Loch: " + move);
@@ -158,6 +183,16 @@ function Ludo() {
         // Event unsubscriben
         return () => {
             socket.off('ludo:leaveHouse');
+        }
+    });
+
+    useEffect(() => {
+        socket.on('ludo:throwFigure', move => {
+            $("#"+move[0]).css({'background-color':move[1]});
+        });
+        // Event unsubscriben
+        return () => {
+            socket.off('ludo:throwFigure');
         }
     });
     
@@ -188,13 +223,32 @@ function Ludo() {
     });
 
     useEffect(() => {
-        socket.on('ludo:nextPlayer', color => {
-            $('#dice').css({'border-color':color});
+        socket.on('ludo:nextPlayer', player => {
+            $("#dice").prop("disabled",true);
+            $(".matchfield").find(":button").prop("disabled", true);
+            setTimeout(function(){
+                $('#dice').css({'border-color':player.color});
+                $('.dice').html('Würfeln');
+            }, 2000);
         });
 
         // Event unsubscriben
         return () => {
             socket.off('ludo:nextPlayer');
+        }
+    });
+
+    //Unlock Dice for current Player
+    useEffect(()=>{
+        socket.on('ludo:unlockDice', (player)=>{
+            setTimeout(function(){
+                $("#dice").prop("disabled",false);
+            }, 2000);
+        });
+
+        // Event unsubscriben
+        return () => {
+            socket.off('ludo:unlockDice');
         }
     });
 

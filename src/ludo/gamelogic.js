@@ -1,3 +1,5 @@
+const {getPlayersInRoom} = require('../models/players.js');
+
 //Überprüfen ob mind. eine Figur im Haus ist
 checkHouse = (currentPlayer) => {
     for(let i = 0; i < 4; i ++){
@@ -96,45 +98,43 @@ moveFigure = (id, currentPlayer) => {
     return buttonid;
 }
 
-/*
-throwFigure(position){
+throwFigure = (position, currentPlayer) => {
+
+    const allPlayers = getPlayersInRoom(currentPlayer.roomId);
 
     console.log("throw Figure wird aufgerufen");
 
     let pos = []
 
-    this.players.forEach(player => {
-        console.log("Schritt 1");
-        if(player !== this.currentPlayer){
-            console.log("Schritt 2");
+    allPlayers.forEach(player => {
+        if(player !== currentPlayer){
             for( let i = 0; i < 4; i ++){
-                if(player.position[i][0] == position){
-                    console.log("Schritt 3");
-                    const housePos = this.getFirstPosHole(player.house);
-                    player.position[i][0] = housePos;
-                    pos.push(housePos, player.color);
-                    console.log("Die Figur: " + housePos + " wird geschmissen: " + player.color);
+                if(player.playerPosition[i][0] == position){
+                    const housePos = getFirstPosHole(player.house);
+                    if(housePos > -1){
+                        player.playerPosition[i][0] = housePos;
+                        pos.push(housePos, player.color);
+                        console.log("Die Figur: " + housePos + " wird geschmissen: " + player.color);
+                    }
                 }
             }
         }
-    })
-    console.log("throwFigure: " + pos);
+    });
     return pos;
 }
-*/
 
 getFirstPosHole = (house) => {
-    house.forEach(pos => {
-        console.log("House-false: " + pos);
-        console.log(pos[1])
-        if (pos[1] === false){
-            console.log("testtesttest")
-            pos[1] = true; 
-            return pos[0]
-        }
-        })
+    housePos = -1;
+    house.find(pos => {
+        if(pos[1]!== true){
+            pos[1] = true;
+            housePos = pos[0];
+            return housePos;
+        };
+        });
+    return housePos;
 }
     
 
 
-module.exports = {checkField, checkHouse, showMove, showFigureFromHouse, moveFigure, getFirstPosHole};
+module.exports = {checkField, checkHouse, showMove, showFigureFromHouse, moveFigure, getFirstPosHole, throwFigure};
