@@ -17,9 +17,10 @@ function Slf(props) {
     // Game Data
     const [gameId, setGameId] = useState();
     const [isHost, setIsHost] = useState();
-    const [players, setPlayers] = useState();
+    const [players, setPlayers] = useState([]);
+    const [scores, setScores] = useState([]);
 
-    // 0: Kategorien auswählen | 1: Wörter finden | 2: Wörter bewerten | 3: Spiel vorbei
+    // 0: Kategorien auswählen | 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     const [gameStatus, setGameStatus] = useState();
 
     // vom api call
@@ -87,11 +88,18 @@ function Slf(props) {
         setPlayers(data.players);
     }, []);
 
+    // Event wenn sich die Scores Updaten
+    const handleScoreUpdateEvent = useCallback((data) => {
+        setGameStatus(1);
+        setScores(data.scores);
+    }, []);
+
     // Socket Events
     useEffect(() => { 
         socket.on('room:update', handleRoomUpdateEvent);
+        socket.on('slf:score-update', handleScoreUpdateEvent);
         
-    }, [socket, handleRoomUpdateEvent]);
+    }, [socket, handleRoomUpdateEvent, handleScoreUpdateEvent]);
 
 
     // Richtiges Verhätniss setzten
@@ -123,6 +131,7 @@ function Slf(props) {
         return () => {
             // Events unmounten
             socket.off('room:update');
+            socket.off('slf:score-update');
 
             // den socket.io raum verlassen
             socket.emit('room:leave-room');
@@ -164,9 +173,34 @@ function Slf(props) {
         // Richtigen Content je nach Spielsatus anzeigen
         let gameContent;
 
+        // Kategorien auswahl
         if(gameStatus === 0) {
             gameContent = <CategorySelection isHost={ isHost } />
 
+        // Spielfeld
+        } else if(gameStatus === 1) {
+            gameContent = '';
+        }
+
+
+        // Richtigen Player Corner anzeigen (Score oder kein Score)
+        let playerCorners;
+
+        if(scores.length === 0) {
+            playerCorners = players.map(player => (
+                <PlayerCorner key = { player.username  } 
+                    username = { player.username }
+                    color = { player.color }
+                    position = { positions[player.position] } />
+            ));
+        } else {
+            playerCorners = players.map(player => (
+                <PlayerCorner key = { player.username  } 
+                    username = { player.username }
+                    color = { player.color }
+                    position = { positions[player.position] }
+                    score = { scores.find(score => score.username === player.username).score } />
+            ))
         }
         
         return (
@@ -185,14 +219,7 @@ function Slf(props) {
                                     { gameContent }
                                 </div>
                                 <div className='players'>
-                                    {
-                                        players.map(player => (
-                                            <PlayerCorner key = { player.username  } 
-                                                username = { player.username }
-                                                color = { player.color }
-                                                position = { positions[player.position] } />
-                                        ))
-                                    }
+                                    { playerCorners }
                                 </div>
                             </div>
                         </div>

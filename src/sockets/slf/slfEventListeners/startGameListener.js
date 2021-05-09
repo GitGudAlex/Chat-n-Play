@@ -7,7 +7,7 @@ module.exports = (io, socket, data, callback) => {
     if(!isHost(socket.id)) return callback('Nur der Host des Raums darf das Spiel starten.');
 
     // 3-5 Kategorien müssen ausgewählt sein
-    if((data.categories).length < 3 || (data.categories).length > 5) return callback('Es dürfen nur 3-5 Kategorien ausgewählt werden!');
+    if((data.categories).length < 3 || (data.categories).length > 6) return callback('Es dürfen nur 3-6 Kategorien ausgewählt werden!');
 
     // Host bekommen
     const player = getPlayer(socket.id);
@@ -20,6 +20,11 @@ module.exports = (io, socket, data, callback) => {
        player['score'] = 0; 
     });
 
-    const allPlayers2 = getPlayersInRoom(player.roomId);
-    console.log(allPlayers2);
+    let playerScores = allPlayers.map((player) => {
+        let playerObj = { username: player.username, score: player.score };
+        
+        return playerObj;
+    });
+    
+    io.in(player.roomId).emit('slf:score-update', { scores: playerScores });
 }

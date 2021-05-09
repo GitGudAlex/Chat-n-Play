@@ -13,7 +13,7 @@ function PlayerCorner(props) {
                 </div>
             </div>
         );
-    } else {
+    } else if(props.score === undefined) {
         return (
             <div className={ props.position + ' player'}>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
@@ -21,6 +21,18 @@ function PlayerCorner(props) {
                 </div>
                 <div className='player-name'>
                     <p>{ props.username }</p>
+                </div>
+            </div>
+        );
+    } else {
+        return (
+            <div className={ props.position + ' player'}>
+                <div style={{ border: '3px solid ' + props.color }} className='camera'>
+    
+                </div>
+                <div className='player-name-score'>
+                    <p>{ props.username }</p>
+                    <p>{ 'Score: ' + props.score }</p>
                 </div>
             </div>
         );

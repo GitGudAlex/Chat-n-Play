@@ -52,6 +52,7 @@ function GameCategoriesList() {
             socket.off('room:created', handleRoomCreated);
         }
     }, [socket, handleRoomCreated])
+    
 
     return (
         <div id='accordion' className='game-category-list'>

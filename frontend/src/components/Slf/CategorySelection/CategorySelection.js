@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import $ from 'jquery';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,8 +8,12 @@ import { BiAddToQueue } from 'react-icons/bi';
 import { IconContext } from "react-icons";
 
 import Category from './Category/Category';
+import SocketContext from '../../../services/socket';
 
 function CategorySelection(props) {
+
+    // Socket.io
+    const socket = useContext(SocketContext);
 
     const [categories, setCategories] = useState(
         [
@@ -39,18 +43,18 @@ function CategorySelection(props) {
 
     // ausgesuchte Wörter übergeben
     const submitCategories = () => {
-        // let newCategoroies = [...categories];
-        // let finalCategories = newCategoroies.filter((entry) => entry.category !== '');
+        let newCategoroies = [...categories];
         
-        
-        
+        socket.emit('slf:start-game', { categories: newCategoroies }, (error) => {
+            console.log(error);
+        });
     }
 
     let newCategoroies = [...categories];
     let emptyCategories = newCategoroies.filter((entry) => entry.category === '');
     let notEmptyCategories = newCategoroies.filter((entry) => entry.category !== '');
 
-    if(emptyCategories.length > 0 || notEmptyCategories >= 3 || notEmptyCategories <= 6) {
+    if(emptyCategories.length > 0 || notEmptyCategories < 3 || notEmptyCategories > 6) {
         $('#slf-submit-categories-btn').prop('disabled', true);
 
     } else {
