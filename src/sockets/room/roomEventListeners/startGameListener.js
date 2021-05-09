@@ -53,6 +53,13 @@ module.exports = (io, socket, callback) => {
         // Start Mehode vom Spiel aufrufen
         startGameLudo(player.roomId);
 
+    } else if(gameTypeId == 2) {
+        // Spieler nach Stadt, Land, Fluss umleiten (Route angeben)
+        io.in(room.roomId).emit('room:game-started', { route: '/slf/' + room.roomId });
+
+        // Spielstatus setzten
+        setGameStarted(room.roomId, true);
+
     } else {
         return callback("Spiel exestiert noch nicht!");
 
