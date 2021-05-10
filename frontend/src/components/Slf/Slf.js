@@ -7,6 +7,7 @@ import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import SideBar from '../SideBar/SideBar';
 
 import CategorySelection from './CategorySelection/CategorySelection';
+import GameBoard from './GameBoard/GameBoard';
 
 import SocketContext from '../../services/socket';
 
@@ -19,6 +20,8 @@ function Slf(props) {
     const [isHost, setIsHost] = useState();
     const [players, setPlayers] = useState([]);
     const [scores, setScores] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [rounds, setRounds] = useState();
 
     // 0: Kategorien auswählen | 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     const [gameStatus, setGameStatus] = useState();
@@ -90,24 +93,23 @@ function Slf(props) {
 
     // Event wenn sich die Scores Updaten
     const handleScoreUpdateEvent = useCallback((data) => {
-        setGameStatus(1);
         setScores(data.scores);
+    }, []);
+
+    // Wenn der Servert die ausgewählten kategorien übermittelt
+    const handleCategoriesSubmitEvent = useCallback((data) => {
+        setCategories(data.categories);
+        setRounds(data.rounds);
+        setGameStatus(1);
     }, []);
 
     // Socket Events
     useEffect(() => { 
         socket.on('room:update', handleRoomUpdateEvent);
         socket.on('slf:score-update', handleScoreUpdateEvent);
+        socket.on('slf:submit-categories', handleCategoriesSubmitEvent);
         
-    }, [socket, handleRoomUpdateEvent, handleScoreUpdateEvent]);
-
-
-    // Richtiges Verhätniss setzten
-    useEffect(() => {
-        // Am Anfang richtiges Verhältniss setzten
-        $('.player').height($('.player').width()/16 * 9);
-
-    }, [players, rules]);
+    }, [socket, handleRoomUpdateEvent, handleScoreUpdateEvent, handleCategoriesSubmitEvent]);
 
 
     // API Call: Den Namen vom Spiel bekommen
@@ -132,6 +134,7 @@ function Slf(props) {
             // Events unmounten
             socket.off('room:update');
             socket.off('slf:score-update');
+            socket.off('slf:submit-categories');
 
             // den socket.io raum verlassen
             socket.emit('room:leave-room');
@@ -179,7 +182,7 @@ function Slf(props) {
 
         // Spielfeld
         } else if(gameStatus === 1) {
-            gameContent = '';
+            gameContent = <GameBoard categories={ categories } rounds={ rounds }/>;
         }
 
 
@@ -191,7 +194,7 @@ function Slf(props) {
                 <PlayerCorner key = { player.username  } 
                     username = { player.username }
                     color = { player.color }
-                    position = { positions[player.position] } />
+                    position = { positions[player.position] }  />
             ));
         } else {
             playerCorners = players.map(player => (
@@ -199,7 +202,8 @@ function Slf(props) {
                     username = { player.username }
                     color = { player.color }
                     position = { positions[player.position] }
-                    score = { scores.find(score => score.username === player.username).score } />
+                    score = { scores.find(score => score.username === player.username).score }
+                    width = { 20 } />
             ))
         }
         

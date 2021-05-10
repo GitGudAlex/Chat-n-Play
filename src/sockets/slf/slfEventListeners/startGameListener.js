@@ -1,4 +1,4 @@
-const { isHost } = require('../../../models/rooms');
+const { isHost, getRoom } = require('../../../models/rooms');
 const { getPlayersInRoom, getPlayer } = require('../../../models/players');
 
 module.exports = (io, socket, data, callback) => {
@@ -27,4 +27,10 @@ module.exports = (io, socket, data, callback) => {
     });
     
     io.in(player.roomId).emit('slf:score-update', { scores: playerScores });
+    
+    const room = getRoom(player.roomId);
+    room['categories'] = data.categories;
+    room['rounds'] = 10;
+
+    io.in(player.roomId).emit('slf:submit-categories', { categories: data.categories, rounds: room.rounds });
 }

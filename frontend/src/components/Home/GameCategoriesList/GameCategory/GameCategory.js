@@ -42,7 +42,7 @@ function GameCategory(props) {
             let elementPosition = elementRect - bodyRect;
             let offsetPosition = elementPosition - headerOffset;
 
-            $('html, body').animate({scrollTop : offsetPosition}, 200);
+            $('html, body').animate({scrollTop : offsetPosition}, 100);
         }
     })
 

@@ -52,11 +52,10 @@ function Lobby() {
             setPlayers(gameData.players);
             setGameId(gameData.gameTypeId);
 
-            // Wenn die Fenstergröße geändert wird
-            // Am Anfang richtige breite setzten
-            $('.player').height($('.player').width()/16 * 9);
+            // Am Anfang richtige Höhe setzten
             $('.invitation-button').height($('.invitation-button').width());
             
+            // Wenn die Fenstergröße geändert wird
             window.addEventListener('resize', () => {
                 $('.player').height($('.player').width()/16 * 9);
                 $('.invitation-button').height($('.invitation-button').width());
@@ -74,7 +73,6 @@ function Lobby() {
     const handleRoomUpdateEvent = useCallback((data) => {
         setPlayers(data.players);
         
-        $('.player').height($('.player').width()/16 * 9);
         $('.invitation-button').height($('.invitation-button').width());
     }, []);
 

@@ -1,10 +1,21 @@
-import './PlayerCorner.css'
+import $ from 'jquery';
+
+import './PlayerCorner.css';
 
 function PlayerCorner(props) {
 
+    const parentElementWidth = $(".players").width();
+    console.log(parentElementWidth);
+    const width = props.width === undefined ? 24 : props.width;
+
+    const playerStyle = {
+        width: width + '%',
+        height: (parentElementWidth / 100 * width) / 16 * 9
+    };
+
     if(props.color === undefined) {
         return (
-            <div className={ props.position + ' player'}>
+            <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid #474747' }} className='camera'>
 
                 </div>
@@ -15,7 +26,7 @@ function PlayerCorner(props) {
         );
     } else if(props.score === undefined) {
         return (
-            <div className={ props.position + ' player'}>
+            <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
     
                 </div>
@@ -26,7 +37,7 @@ function PlayerCorner(props) {
         );
     } else {
         return (
-            <div className={ props.position + ' player'}>
+            <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
     
                 </div>
