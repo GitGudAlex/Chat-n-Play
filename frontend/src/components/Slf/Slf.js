@@ -182,7 +182,7 @@ function Slf(props) {
 
         // Spielfeld
         } else if(gameStatus === 1) {
-            gameContent = <GameBoard categories={ categories } rounds={ rounds }/>;
+            gameContent = <GameBoard categories={ categories } rounds={ rounds }/>
         }
 
 

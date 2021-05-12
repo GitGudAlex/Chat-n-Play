@@ -3,37 +3,29 @@
     width: 100%;
 
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    margin-top: 5%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
 
-#slf-game-table {
-    border-collapse: collapse;
-    width: 50%;
-    max-width: 700px;
-    table-layout: fixed;
+#slf-letter-roulette-wrapper {
+    flex: 0 0 auto;
+    margin: 20px;
 }
 
-#slf-game-table th {
-    background-color: #474747;
-    color: white;
+#slf-categories-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    
+    flex: 1 1 70%;
 
-    text-align: center;
+    margin-top: 14px;
+    margin-bottom: 14px;
 }
 
-#game-table-points {
-    width: 10%;
-}
-
-td, tr {
-    line-height: 40px;
-    height: 40px;
-}
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+#slf-submit-btn-wrapper {
+    flex: 0 0 auto;
+    margin: 28px;
 }

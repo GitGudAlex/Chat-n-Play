@@ -1,5 +1,6 @@
 const { isHost, getRoom } = require('../../../models/rooms');
 const { getPlayersInRoom, getPlayer } = require('../../../models/players');
+const { initilazeGame, chooseLetter } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket, data, callback) => {
     
@@ -12,25 +13,24 @@ module.exports = (io, socket, data, callback) => {
     // Host bekommen
     const player = getPlayer(socket.id);
 
-    // Alle Spieler aus dem Raum des 
-    const allPlayers = getPlayersInRoom(player.roomId);
+    // Spiel initialisieren
+    let initialPlayerScores = initilazeGame(player.roomId, data.categories, 10);
 
-    // Spielern weitere Attribute hinzufügen
-    allPlayers.forEach(player => {
-       player['score'] = 0; 
-    });
+    // Den neuen Score returnen
+    io.in(player.roomId).emit('slf:score-update', { scores: initialPlayerScores });
 
-    let playerScores = allPlayers.map((player) => {
-        let playerObj = { username: player.username, score: player.score };
-        
-        return playerObj;
-    });
-    
-    io.in(player.roomId).emit('slf:score-update', { scores: playerScores });
-    
-    const room = getRoom(player.roomId);
-    room['categories'] = data.categories;
-    room['rounds'] = 10;
+    // Allen Spielern die Kategorien + Runden übergeben
+    io.in(player.roomId).emit('slf:submit-categories', { categories: data.categories, rounds: 10 });
 
-    io.in(player.roomId).emit('slf:submit-categories', { categories: data.categories, rounds: room.rounds });
+    // Buchstabe aussuchen nach einer kurzen Pause, damit sich alle die Kategorien anschauen können
+
+    setTimeout(() => {
+        let letter = chooseLetter(player.roomId);
+
+        io.in(player.roomId).emit('slf:start-round', { letter });
+
+    }, 5000);
+
+    // nach 60 Sekunden...
+
 }

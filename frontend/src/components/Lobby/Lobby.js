@@ -20,6 +20,9 @@ function Lobby() {
     const [hostId, setHostId] = useState();
     const [players, setPlayers] = useState();
 
+    // Design Stuff
+    const isResponsive = useRef();
+
     // vom api call
     const [gameName, setGameName] = useState();
     const [rules, setRules] = useState();
@@ -61,6 +64,42 @@ function Lobby() {
                 $('.invitation-button').height($('.invitation-button').width());
             });
         }
+
+        // Wenn die Sidebar aufgeklappt wird und die Anordnung geändert werden muss, wegen zu wenig Platz
+        // Am Afang richtige werte setzetn für bessere performance
+        if($('#lobby-content').width() < 800) {
+            isResponsive.current = false;
+
+        } else {
+            isResponsive.current = true;
+
+        }
+
+        const heightObserver = new ResizeObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.contentRect.width < 800 && isResponsive.current === false) {
+                    $('.start-game-wrapper').css({ justifyContent: 'center' });
+                    $('.start-game').css({ width: '80% !important;' });
+
+                    isResponsive.current = true;
+
+                } else {
+                    if(entry.contentRect.width >= 800 && isResponsive.current === true) {
+                        $('.start-game-wrapper').css({ justifyContent: 'space-around' });
+                        $('.start-game').css({ width: '55% !important;' });
+
+                        isResponsive.current = false;
+                    }
+                }
+                });
+        });
+
+        const lobbyDivWrapper = document.querySelector('#lobby-content');
+        heightObserver.observe(lobbyDivWrapper);
+
+        return () => {
+            heightObserver.disconnect();
+        };
 
     }, [history, location.state]);
 

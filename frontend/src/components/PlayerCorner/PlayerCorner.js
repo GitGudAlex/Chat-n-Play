@@ -4,13 +4,23 @@ import './PlayerCorner.css';
 
 function PlayerCorner(props) {
 
-    const parentElementWidth = $(".players").width();
-    console.log(parentElementWidth);
-    const width = props.width === undefined ? 24 : props.width;
+    const x_res = 16;
+    const y_res = 9;
 
+    const parentElementWidth = $(".players").width();
+
+    // Falls div Struktur falsch aufgebaut ist
+    if(parentElementWidth === undefined) {
+        return (
+            <div></div>
+        );
+    }
+    const width = props.width === undefined ? 24 : props.width;
     const playerStyle = {
         width: width + '%',
-        height: (parentElementWidth / 100 * width) / 16 * 9
+        height: (parentElementWidth / 100 * width) / x_res * y_res,
+        minWidth: '200px',
+        minHeight: (200 / x_res * y_res) + 'px'
     };
 
     if(props.color === undefined) {
