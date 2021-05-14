@@ -222,8 +222,7 @@ function Slf(props) {
                     username = { player.username }
                     color = { player.color }
                     position = { positions[player.position] }
-                    score = { scores.find(score => score.username === player.username).score }
-                    width = { 20 } />
+                    score = { scores.find(score => score.username === player.username).score } />
             ))
         }
         
