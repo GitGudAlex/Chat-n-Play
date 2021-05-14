@@ -38,10 +38,12 @@
 }
 
 .slf-start-game {
-    height: 15%;
+    position: absolute;
+    bottom: 0;
+
+    height: 90px;
     width: 100%;
 
-    margin-bottom: 4%;
     text-align: center;
 
     display: flex;
@@ -65,10 +67,10 @@
 }
 
 #slf-submit-categories-btn {
-    margin: 2%;
     width: 30%;
-
     max-width: 140px;
+
+    margin-bottom: 10px;
 }
 
 

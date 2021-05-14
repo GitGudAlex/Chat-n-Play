@@ -1,6 +1,27 @@
-.slf-game-category-input {
+.slf-category-input-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    margin: 14px;
+    justify-content: center;
+    align-items: center;
+}
+
+.slf-category-input {
+    width: 35%;
+    min-width: 200px;
+}
+
+.slf-category-lable {
+    margin: 0;
+
+    font-size: large;
+    color: rgb(75, 75, 75);
+}
+
+.slf-category-input-guess {
+    width: 100%;
+
+    font-size: x-large;
+
+    border: 1px solid rgb(126, 126, 126);
+    border-radius: 4px;
 }

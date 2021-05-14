@@ -95,8 +95,10 @@ function Lobby() {
         });
 
         const lobbyDivWrapper = document.querySelector('#lobby-content');
-        console.log('Observer: ' + lobbyDivWrapper);
-        heightObserver.observe(lobbyDivWrapper);
+
+        if (!(lobbyDivWrapper instanceof Element)) {
+            heightObserver.observe(lobbyDivWrapper);
+        }
 
         return () => {
             heightObserver.disconnect();

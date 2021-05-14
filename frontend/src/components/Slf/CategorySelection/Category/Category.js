@@ -4,6 +4,7 @@ import { RiDeleteBack2Fill } from 'react-icons/ri';
 import { IconContext } from "react-icons";
 
 function Category(props) {
+
     return (
         <div className='selector-category'>
             <div className='input-group mb-3'>
@@ -11,7 +12,8 @@ function Category(props) {
                     type='text'
                     defaultValue={ props.categoryValue }
                     onChange={ (event) => props.changeValue(props.index, event) }
-                    placeholder='Kategorie eingeben...'/>
+                    placeholder='Kategorie eingeben...'
+                    autoFocus={ props.focus }/>
                 <div className='input-group-append'>
                     <button className="btn btn-outline-secondary delete-category-btn" type="button" onClick={ () => props.clickDelete(props.index) }>
                         <IconContext.Provider value={{ size: '20px' }}>

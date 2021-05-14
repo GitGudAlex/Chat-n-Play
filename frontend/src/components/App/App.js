@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SocketContext, { socket } from "../../services/socket";
 
+import './App.css';
+
 import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';
 import Lobby from '../Lobby/Lobby';

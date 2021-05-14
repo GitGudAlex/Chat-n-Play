@@ -46,7 +46,12 @@ function CategorySelection(props) {
         let newCategoroies = [...categories];
         
         socket.emit('slf:start-game', { categories: newCategoroies }, (error) => {
-            console.log(error);
+            $('#slf-start-game-error').text(error);
+
+            setTimeout(() => {
+                $('#slf-start-game-error').text('');
+
+            }, 3000)
         });
     }
 
@@ -75,7 +80,8 @@ function CategorySelection(props) {
                                     index = { index }
                                     categoryValue = { category.category }
                                     changeValue={ changeCategoryValue }
-                                    clickDelete = { deleteCategory }/>
+                                    clickDelete = { deleteCategory }
+                                    focus={ category.category === '' && index + 1 === categories.length ? true : false }/>
                             ))
                         }
                         {
@@ -95,6 +101,7 @@ function CategorySelection(props) {
                 </div>
                 <div className='slf-start-game'>
                     <input id='slf-submit-categories-btn' className='btn-lg btn-primary' type='button' value='Fertig' onClick={ submitCategories } />
+                    <small id='slf-start-game-error' className='text-danger'></small>
                 </div>
             </div>
         );

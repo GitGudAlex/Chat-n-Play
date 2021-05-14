@@ -27,7 +27,7 @@ function ColorSelector() {
         return () => {
             socket.off('room:update-color-selector');
         }
-    }, [socket])
+    }, [socket]);
 
     // Farbe setzten
     const setColor = (color) => {
@@ -43,10 +43,17 @@ function ColorSelector() {
     useEffect(() => {
 
         $('.color-dot-wrapper').height($('.color-dot-wrapper').width());
-        
-        window.addEventListener('resize', () => {
+
+        const handleWindowResizeEvent = () => {
             $('.color-dot-wrapper').height($('.color-dot-wrapper').width());
-        });
+        }
+
+        window.addEventListener('resize', handleWindowResizeEvent);
+
+        return() => {
+            window.removeEventListener('resize', handleWindowResizeEvent);
+        }
+
     });
 
     return (

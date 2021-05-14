@@ -1,29 +1,37 @@
 #slf-game-board {
     height: 100%;
-    width: 100%;
-
+    width: 50%;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
 }
 
 #slf-letter-roulette-wrapper {
-    margin: 20px;
+    position: absolute;
+    top: 20px;
 }
 
 #slf-categories-input-wrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
 
-    margin-top: 14px;
-    margin-bottom: 14px;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+
+    height: 60%;
+    width: 100%;
+
+    margin: auto;
 }
 
 #slf-submit-btn-wrapper {
-    margin: 28px;
+    position: absolute;
+    bottom: 20px;
 }
 
 #slf-submit-words-btn:disabled {

@@ -79,7 +79,6 @@ function GameBoard(props) {
 
     }, [socket, handleStartRoundEvent, handleRoundEndedEvent]);
 
-
     if(categories === undefined || rounds === undefined) {
         return (
             <div style={{ height: '100%' }}>
@@ -103,7 +102,8 @@ function GameBoard(props) {
                                 id={ entry.id }
                                 category={ entry.category }
                                 onChangeHandler={ changeValue } 
-                                disabled={ inputDisabled } />
+                                disabled={ inputDisabled }
+                                length={ categories.length }/>
                         ))
                     }
                 </div>
