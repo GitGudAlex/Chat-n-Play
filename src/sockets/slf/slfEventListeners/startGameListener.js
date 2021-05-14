@@ -1,5 +1,5 @@
-const { isHost, getRoom } = require('../../../models/rooms');
-const { getPlayersInRoom, getPlayer } = require('../../../models/players');
+const { isHost } = require('../../../models/rooms');
+const { getPlayer } = require('../../../models/players');
 const { initilazeGame, chooseLetter } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket, data, callback) => {
@@ -9,6 +9,15 @@ module.exports = (io, socket, data, callback) => {
 
     // 3-5 Kategorien müssen ausgewählt sein
     if((data.categories).length < 3 || (data.categories).length > 6) return callback('Es dürfen nur 3-6 Kategorien ausgewählt werden!');
+
+    // Keine Kategories doppelt verwenden
+    const unique = new Set();
+    
+    for(cat of data.categories) {
+        unique.add(cat.category);
+    }
+
+    if(unique.size != data.categories.length) return callback('Du darfst keine Kategorien mehrfach auswählen!');
 
     // Host bekommen
     const player = getPlayer(socket.id);
@@ -23,14 +32,10 @@ module.exports = (io, socket, data, callback) => {
     io.in(player.roomId).emit('slf:submit-categories', { categories: data.categories, rounds: 10 });
 
     // Buchstabe aussuchen nach einer kurzen Pause, damit sich alle die Kategorien anschauen können
-
     setTimeout(() => {
         let letter = chooseLetter(player.roomId);
 
         io.in(player.roomId).emit('slf:start-round', { letter });
 
-    }, 5000);
-
-    // nach 60 Sekunden...
-
+    }, 4000);
 }

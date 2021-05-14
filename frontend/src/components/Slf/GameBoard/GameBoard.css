@@ -9,7 +9,6 @@
 }
 
 #slf-letter-roulette-wrapper {
-    flex: 0 0 auto;
     margin: 20px;
 }
 
@@ -18,14 +17,16 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    
-    flex: 1 1 70%;
 
     margin-top: 14px;
     margin-bottom: 14px;
 }
 
 #slf-submit-btn-wrapper {
-    flex: 0 0 auto;
     margin: 28px;
+}
+
+#slf-submit-words-btn:disabled {
+    background-color: gray;
+    border-color: gray;
 }

@@ -54,7 +54,7 @@ function CategorySelection(props) {
     let emptyCategories = newCategoroies.filter((entry) => entry.category === '');
     let notEmptyCategories = newCategoroies.filter((entry) => entry.category !== '');
 
-    if(emptyCategories.length > 0 || notEmptyCategories < 3 || notEmptyCategories > 6) {
+    if(emptyCategories.length > 0 || notEmptyCategories.length < 3 || notEmptyCategories.length > 6) {
         $('#slf-submit-categories-btn').prop('disabled', true);
 
     } else {

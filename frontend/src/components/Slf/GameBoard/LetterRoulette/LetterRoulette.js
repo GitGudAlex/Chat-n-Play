@@ -7,24 +7,22 @@ function LetterRoulette(props) {
 
     const [alphabet, setAlphabet] = useState([]);
     const position = useRef(0);
+    const animationIsPlaying = useRef(false);
 
     useEffect(() => {
         setAlphabet([...'abcdefghijklmnopqrstuvwxyza']);
+
     }, []);
 
     useEffect(() => {
-        if(props.letter !== undefined) {
+        let tabInactiveHanlder = function(){};
 
-            // Laufzeit der Hauptanimation in Sekunden
-            let duration = 2;
+        if(props.letter !== undefined && !animationIsPlaying.current) {
 
-            // Speed von der SlowDown Animation
-            let slowDownSpeed = 5000;
+            // Laufzeit der Animation
+            let duration = 6000;
 
-            // Ob die Animation gerade langsamer wird
-            let isSlowdown = false;
-
-            // Berechnung der untersten Position des Buchstaben Arrays, die man anzeigen lassen kann
+            // Berechnung der untersten Position des Buchstaben Arrays, die angezeigt werden kann
             let allItemsHeight = $('#slf-roulette-inner').height();
             let itemHeight = $('#slf-roulette').height();
             let maxPosition = allItemsHeight - itemHeight;
@@ -32,49 +30,47 @@ function LetterRoulette(props) {
             // Position, bei dem das Rad stehen bleiben muss
             let destIndex = alphabet.findIndex((l) => l === props.letter);
             let destPos = destIndex * itemHeight;
-            let slowDownStartPos = null;
 
-            // Geschwindikeit der Hauptanimation
-            let stepsize = 20;
+            // start Position der Animation
+            let startPos = position.current;
 
-            // Startpunkt der SlowDown Animation
-            let slowdownStart = null;
+            // Gibt die Distanz vom Startpunkt bis zum Endpunkt
+            let animationDistance = maxPosition * 4 - ((position.current % maxPosition) - destPos);
 
-            // Gibt die Distanz an vomn StartPunkt der Slowdown Animation bis zu dem ausgewählten Buchstaben
-            let slowdownDistance = null;
+            // Position wo die Animation stoppen soll. Jedoch ohne (%)
+            let destination = position.current + animationDistance;
 
-            // Variable damit nur einemal die Slowdown init Methode durchlaufen wird
-            let initSlowdown = true;
+            // Startpunkt der Animation
+            let startTime = 0;
 
-            const easeOutSine = (x) => {
-                return Math.sin((x * Math.PI) / 2);
+            // Time the Tab is inactive
+            let inactiveStartTime = null;
+
+            // wenn true -> Animation stoppen
+            let stoppingAnimation = false;
+
+            // Man muss nur einmal die Zeit messen
+            let inactiveBlocker = false;
+
+            // Methode zur Berechnung der zu 'laufenden' Distanz
+            const easeOutCirc = (x) => {
+                return Math.sqrt(1 - Math.pow(x - 1, 2));
+            }
+
+            const initRoll = (timestamp) => {
+                startTime += timestamp;
+
+                requestAnimationFrame(roll);
             }
 
             const roll = (timestamp) => {
-                    // Animation ist noch am Abspielensss
-                if(timestamp - slowdownStart < slowDownSpeed || slowdownStart === null) {
 
-                    // Bewegt sich normal
-                    if(!isSlowdown) {
-                        position.current = (position.current + stepsize);
-                        $('#slf-roulette-inner').css({ top: - (position.current % maxPosition) + 'px' });
-
-                        // Bewegt sich langsamer
-                    } else {
-                        if(initSlowdown) {
-                            slowdownDistance =  maxPosition - ((position.current % maxPosition) - destPos);
-                            destPos = position.current + slowdownDistance;
-                            slowdownStart = timestamp;
-                            slowDownStartPos = position.current;
-                            initSlowdown = false;
-
-                        } else {
-                            let p = (timestamp - slowdownStart) / slowDownSpeed;
-                            let val = easeOutSine(p);
-                            let x = slowDownStartPos + (destPos - slowDownStartPos) * val;
-                            $('#slf-roulette-inner').css({ top: - (x % maxPosition) + 'px' });
-                        }
-                    }
+                // Animation ist noch am Abspielen
+                if(timestamp - startTime < duration && !stoppingAnimation) {
+                    let p = (timestamp - startTime) / duration;
+                    let val = easeOutCirc(p);
+                    let x = startPos + (destination - startPos) * val;
+                    $('#slf-roulette-inner').css({ top: - (x % maxPosition) + 'px' });
 
                     requestAnimationFrame(roll);
 
@@ -87,19 +83,66 @@ function LetterRoulette(props) {
                     // Placeholder anzeigen lassen bei den Kategorie Inputs
                     $('.slf-category-input-guess').attr('placeholder', props.letter.toUpperCase() + '...');
 
+                    animationIsPlaying.current = false;
+
+                    // zur Sicherheit zum Schluss auf die richtige Position setzen
+                    $('#slf-roulette-inner').css({ top: - (destIndex * itemHeight) + 'px' });
+
+                    // Event Hanlder löschen
+                    document.removeEventListener('visibilitychange', tabInactiveHanlder);
+
+                    // Submit Button aktiviren
+                    $('#slf-submit-words-btn').prop('disabled', false);
+
                     return;
 
                 }
             }
 
-            requestAnimationFrame(roll);
-            setTimeout(() => {
-                isSlowdown = true;
+            // Wenn die Animation anfangen soll, aber Tab inactive ist
+            if(document.hidden) {
+                inactiveStartTime = window.performance.now();
+            }
 
-            }, duration * 1000);
+            // stratet die Animation
+            animationIsPlaying.current = true;
+            requestAnimationFrame(initRoll);
+
+
+            tabInactiveHanlder = () => {
+
+                // Nur einmal ausführen, wenn das erste mal auf den Tab während die Animation schon aktiv ist
+                if(inactiveBlocker) {
+                    return;
+                }
+
+                // Wenn man den Tab verlässt während die Animation läuft
+                if(!document.hidden) {
+                    if(animationIsPlaying.current) {
+                        if(inactiveStartTime !== null) {
+                            let inactiveTime = window.performance.now() - inactiveStartTime;
+
+                            // Animation noch nicht vorbei 
+                            if(inactiveTime < duration) {
+                                startTime -= inactiveTime;
+
+                            // Animation schon vorbei
+                            } else {
+                                stoppingAnimation = true;
+
+                            }
+
+                            inactiveBlocker = true;
+                        }
+                    }
+                }
+            }
+
+            // Event handler initialisieren, falls man den Tab wechelt
+            document.addEventListener('visibilitychange', tabInactiveHanlder);
         }
 
-    }, [props, alphabet] );
+    }, [props, alphabet]);
 
     const itemStyle = {
         color: props.letter === undefined ? 'rgb(139, 139, 139)' : '#444'
