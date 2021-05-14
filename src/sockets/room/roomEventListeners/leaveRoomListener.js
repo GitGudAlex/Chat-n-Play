@@ -1,5 +1,6 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
+const { removePlayerWordsFromCurrentRound } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
 
@@ -46,6 +47,19 @@ module.exports = (io, socket) => {
             
             return playerObj;
         });
+
+        // Aktuelles Spiel ist Stadt Land Fluss
+        if(room.gameTypeId === 2) {
+
+            // Stadt Land Fluss befindet sich gerade in der Bewertungs Phase der Wörter
+            // -> Wörter nochmal neu schicken ohne die vom Spieler, der dass Spiel verlassen hat
+            if(room.evaluatingRound !== undefined && room.evaluatingRound === true) {
+                const newWords = removePlayerWordsFromCurrentRound(player);
+
+                // neue Wörter schicken
+                io.in(player.roomId).emit('slf:update-words', { words: newWords });
+            }
+        }
 
         io.in(player.roomId).emit('room:update', { players: mappedPlayers });
         io.in(player.roomId).emit('room:update-color-selector', { colors: getColors(player.roomId) });

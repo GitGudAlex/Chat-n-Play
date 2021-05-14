@@ -10,7 +10,8 @@ function CategoryInput(props) {
                 id={ 'category-input-' + props.category }
                 className='slf-category-input-guess'
                 maxLength={ 128 } 
-                onChange={ (event) => props.onChangeHandler(event, props.id) }/>
+                onChange={ (event) => props.onChangeHandler(event, props.id) }
+                disabled={ props.disabled }/>
         </div>
     );
 }

@@ -8,6 +8,7 @@ import SideBar from '../SideBar/SideBar';
 
 import CategorySelection from './CategorySelection/CategorySelection';
 import GameBoard from './GameBoard/GameBoard';
+import WordsEvaluation from './WordsEvaluation/WordsEvaluation';
 
 import SocketContext from '../../services/socket';
 
@@ -22,6 +23,7 @@ function Slf(props) {
     const [scores, setScores] = useState([]);
     const [categories, setCategories] = useState([]);
     const [rounds, setRounds] = useState();
+    const [words, setWords] = useState([]);
 
     // 0: Kategorien auswählen | 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     const [gameStatus, setGameStatus] = useState();
@@ -103,13 +105,26 @@ function Slf(props) {
         setGameStatus(1);
     }, []);
 
+    // Wenn die Wörter abgegeben wurden und nun bewertet werden müssen
+    const handleEvaluatingResultsEvent = useCallback((data)=> {
+        setWords(data.words);
+        setGameStatus(2);
+    }, []);
+
+    // Wenn ein Spieler das Spiel verlässt, während die Wörter evaluiert werden
+    const handleUpdateWordsEvent = useCallback((data) => {
+        setWords(data.words);
+    }, []);
+
     // Socket Events
     useEffect(() => { 
         socket.on('room:update', handleRoomUpdateEvent);
         socket.on('slf:score-update', handleScoreUpdateEvent);
         socket.on('slf:submit-categories', handleCategoriesSubmitEvent);
+        socket.on('slf:evaluating-results', handleEvaluatingResultsEvent);
+        socket.on('slf:update-words', handleUpdateWordsEvent);
         
-    }, [socket, handleRoomUpdateEvent, handleScoreUpdateEvent, handleCategoriesSubmitEvent]);
+    }, [socket, handleRoomUpdateEvent, handleScoreUpdateEvent, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent]);
 
 
     // API Call: Den Namen vom Spiel bekommen
@@ -135,6 +150,8 @@ function Slf(props) {
             socket.off('room:update');
             socket.off('slf:score-update');
             socket.off('slf:submit-categories');
+            socket.off('slf:evaluating-results');
+            socket.off('slf:update-words');
 
             // den socket.io raum verlassen
             socket.emit('room:leave-room');
@@ -183,6 +200,9 @@ function Slf(props) {
         // Spielfeld
         } else if(gameStatus === 1) {
             gameContent = <GameBoard categories={ categories } rounds={ rounds }/>
+
+        } else if(gameStatus === 2) {
+            gameContent = <WordsEvaluation categories={ categories } words={ words }/>
         }
 
 

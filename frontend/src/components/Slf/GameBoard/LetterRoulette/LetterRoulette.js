@@ -7,6 +7,7 @@ function LetterRoulette(props) {
 
     const [alphabet, setAlphabet] = useState([]);
     const position = useRef(0);
+    const letter = useRef(undefined);
     const animationIsPlaying = useRef(false);
 
     useEffect(() => {
@@ -17,7 +18,8 @@ function LetterRoulette(props) {
     useEffect(() => {
         let tabInactiveHanlder = function(){};
 
-        if(props.letter !== undefined && !animationIsPlaying.current) {
+        if(props.letter !== letter.current && !animationIsPlaying.current) {
+            letter.current = props.letter;
 
             // Laufzeit der Animation
             let duration = 6000;
@@ -92,7 +94,10 @@ function LetterRoulette(props) {
                     document.removeEventListener('visibilitychange', tabInactiveHanlder);
 
                     // Submit Button aktiviren
-                    $('#slf-submit-words-btn').prop('disabled', false);
+                    props.submitBtnDisbaledChangeHandler(false);
+
+                    // Style vom Roulette setzten
+                    $('#slf-roulette-container').css({ border: '2px solid rgb(71, 71, 71)' });
 
                     return;
 

@@ -16,7 +16,8 @@ const initilazeGame = (roomId, categories, rounds) => {
 
     room['categories'] = categories;
     room['rounds'] = rounds;
-    room['currentRound'] = 0;
+    room['currentRound'] = -1;
+    room['evaluatingRound'] = false;
 
     // Alle Spieler aus dem Raum des 
     const allPlayers = getPlayersInRoom(roomId);
@@ -50,6 +51,11 @@ const chooseLetter = (roomId) => {
         // Runde +1
         room['currentRound'] += 1;
 
+        // Die Wörter aus der letzten Runde löschen
+        room['currentWords'] = [];
+
+        room['evaluatingRound'] = false;
+
         return choosenLetter;
     }
 
@@ -57,18 +63,37 @@ const chooseLetter = (roomId) => {
 }
 
 
-const submitWords = (socketId, words) => {
+const submitWords = (socketId, words, allSubmittedCallback) => {
     const player = getPlayer(socketId);
+    const room = getRoom(player.roomId);
 
-    player['words'].append(words);
+    let result = { socketId, words: [] };
+
+    words.forEach((word) => {
+        result.words.push({ word: word, votes: 0 });
+    });
+
+    player['words'][room.currentRound] = words;
+    room['currentWords'].push(result);
+
+    const playerNum = getPlayersInRoom(room.roomId).length;
+
+    if(playerNum == room['currentWords'].length) {
+        room['evaluatingRound'] = true;
+        allSubmittedCallback(room['currentWords']);
+    }
 }
 
 
-const getWordsFromAllPlayers = () => {
+const removePlayerWordsFromCurrentRound = (player) => {
+    const room = getRoom(player.roomId);
 
+    let currentWords = room['currentWords'];
+    let playerWordsIndex = currentWords.findIndex(entry => entry.socketId === player.socketId);
+
+    currentWords.splice(playerWordsIndex, 1)
+
+    return currentWords;
 }
 
-
-
-
-module.exports = { initilazeGame, chooseLetter };
+module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound };

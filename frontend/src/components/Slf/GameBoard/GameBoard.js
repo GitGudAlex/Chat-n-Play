@@ -12,6 +12,7 @@ function GameBoard(props) {
     const [categories, setCategories] = useState([]);
     const [rounds, setRounds] = useState();
     const [letter, setLetter] = useState();
+    const [inputDisabled, setInputDisabled] = useState(true);
 
     const words = useRef([]);
 
@@ -32,12 +33,17 @@ function GameBoard(props) {
 
     // Runde Stoppen
     const stopRound = () => {
+        console.log("stop round");
         socket.emit('slf:stop-round');
     }
 
     const changeValue = (event, id) => {
         let index = words.current.findIndex(word => word.id === id);
         words.current[index].word = event.target.value;
+    }
+
+    const changeSubmitBtnDisabledState = (state) => {
+        setInputDisabled(state);
     }
 
     const handleStartRoundEvent = useCallback((data) => {
@@ -88,17 +94,21 @@ function GameBoard(props) {
         return (
             <div id='slf-game-board'>
                 <div id='slf-letter-roulette-wrapper'>
-                    <LetterRoulette letter={ letter }/>
+                    <LetterRoulette letter={ letter } submitBtnDisbaledChangeHandler={ changeSubmitBtnDisabledState } />
                 </div>
                 <div id='slf-categories-input-wrapper'>
                     {
                         categories.map((entry) => (
-                            <CategoryInput key={ entry.id } id={ entry.id } category={ entry.category } onChangeHandler={ changeValue }/>
+                            <CategoryInput key={ entry.id }
+                                id={ entry.id }
+                                category={ entry.category }
+                                onChangeHandler={ changeValue } 
+                                disabled={ inputDisabled } />
                         ))
                     }
                 </div>
                 <div id='slf-submit-btn-wrapper'>
-                    <input id='slf-submit-words-btn' className='btn-lg btn-primary' type='button' value='Stop!' disabled={ true } onClick={ stopRound }/>
+                    <input id='slf-submit-words-btn' className='btn-lg btn-primary' type='button' value='Stop!' onClick={ stopRound } disabled={ inputDisabled } />
                 </div>
             </div>
         );
