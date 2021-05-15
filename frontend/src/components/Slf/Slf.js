@@ -23,6 +23,7 @@ function Slf(props) {
     const [categories, setCategories] = useState([]);
     const [rounds, setRounds] = useState();
     const [words, setWords] = useState([]);
+    const [letter, setLetter] = useState('');
 
     // 0: Kategorien auswählen | 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     const [gameStatus, setGameStatus] = useState();
@@ -106,6 +107,7 @@ function Slf(props) {
     // Wenn die Wörter abgegeben wurden und nun bewertet werden müssen
     const handleEvaluatingResultsEvent = useCallback((data)=> {
         setWords(data.words);
+        setLetter(data.letter);
         setGameStatus(2);
     }, []);
 
@@ -199,7 +201,7 @@ function Slf(props) {
             gameContent = <GameBoard categories={ categories } rounds={ rounds }/>
 
         } else if(gameStatus === 2) {
-            gameContent = <WordsEvaluation categories={ categories } words={ words }/>
+            gameContent = <WordsEvaluation categories={ categories } words={ words } letter={ letter } players={ players }/>
         }
         
         return (
@@ -224,7 +226,8 @@ function Slf(props) {
                                                 username = { player.username }
                                                 color = { player.color }
                                                 position = { positions[player.position] }
-                                                score = { scores.length === 0 ? undefined : scores.find(score => score.username === player.username).score } />
+                                                score = { scores.length === 0 ? undefined : scores.find(score => score.username === player.username).score } 
+                                                width = { gameStatus === 2 ? 18 : undefined }/>
                                         ))
                                     }
                                 </div>

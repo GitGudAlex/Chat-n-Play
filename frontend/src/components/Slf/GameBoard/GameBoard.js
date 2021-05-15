@@ -82,37 +82,25 @@ function GameBoard(props) {
 
     }, [socket, handleStartRoundEvent, handleRoundEndedEvent]);
 
-
-    // Richtige Aufteilung der Input zellen
+    // Richtige Aufteilung der Input Zellen
     useEffect(() => {
-        let inputWrapperHeight = $('#slf-categories-input-wrapper').height();
+        
+        let inputHeight = 67;
+        let padding = 50;
 
-        // Zu klein um alle darzustellen
-        if(inputWrapperHeight < 500) {
+        // Mehr oder gleich 6 Kategorien => 2 Spalten
+        if(categories.length >= 6) {
             setInputFlexBasis(50);
             $('#slf-categories-input-wrapper').css({ flexDirection: 'row', flexWrap: 'wrap' });
+            $('#slf-categories-input-wrapper').css({ maxHeight: (categories.length / 2) * (inputHeight + padding + 18) });
+
+        // Weniger wie 6 Kategorien
+        } else {
+            setInputFlexBasis((1 / categories.length) * 100);
+            $('#slf-categories-input-wrapper').css({ flexDirection: 'column', flexWrap: 'nowrap' });
+            $('#slf-categories-input-wrapper').css({ maxHeight: categories.length * (inputHeight + padding) });
         }
 
-        const handleResizeEvent = () => {
-            let inputWrapperHeight = $('#slf-categories-input-wrapper').height();
-
-            if(inputWrapperHeight < 500) {
-                setInputFlexBasis(50);
-                $('#slf-categories-input-wrapper').css({ flexDirection: 'row', flexWrap: 'wrap' });
-
-            } else {
-                setInputFlexBasis((1 / categories.length) * 100);
-                $('#slf-categories-input-wrapper').css({ flexDirection: 'column', flexWrap: 'nowrap' });
-
-            }
-        }
-
-        // Wenn die Fenstergröße geändert wird
-        window.addEventListener('resize', handleResizeEvent);
-
-        return() => {
-            window.removeEventListener('resize', handleResizeEvent);
-        }
     }, [categories]);
 
 
@@ -134,13 +122,14 @@ function GameBoard(props) {
                 </div>
                 <div id='slf-categories-input-wrapper'>
                     {
-                        categories.map((entry) => (
+                        categories.map((entry, index) => (
                             <CategoryInput key={ entry.id }
                                 id={ entry.id }
                                 category={ entry.category }
                                 onChangeHandler={ changeValue } 
                                 disabled={ inputDisabled }
-                                flexBasis={ inputFlexBasis }/>
+                                flexBasis={ inputFlexBasis }
+                                alignSelf={ categories.length >= 6 ? index % 2 : undefined }/>
                         ))
                     }
                 </div>

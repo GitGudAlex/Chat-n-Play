@@ -54,7 +54,11 @@ const chooseLetter = (roomId) => {
         // Die Wörter aus der letzten Runde löschen
         room['currentWords'] = [];
 
+        // Wird auf true gesetzt, wenn die Wörter bewertet werden
         room['evaluatingRound'] = false;
+
+        // Der in der aktuellen Runde benutzter Buchstabe
+        room['currentLetter'] = choosenLetter;
 
         return choosenLetter;
     }
@@ -80,7 +84,7 @@ const submitWords = (socketId, words, allSubmittedCallback) => {
 
     if(playerNum == room['currentWords'].length) {
         room['evaluatingRound'] = true;
-        allSubmittedCallback(room['currentWords']);
+        allSubmittedCallback(room['currentWords'], room['currentLetter']);
     }
 }
 

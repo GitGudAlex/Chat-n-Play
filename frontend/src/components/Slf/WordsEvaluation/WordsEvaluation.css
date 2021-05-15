@@ -1,0 +1,50 @@
+#slf-words-evaluation-wrapper {
+    height: 100%;
+}
+
+#slf-words-evaluation-additional-informations-wrapper {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+
+    text-align: center;
+}
+
+.slf-evaluate-letter {
+    font-weight: bold;
+    font-size: x-large;
+
+    margin: 0;
+}
+
+
+.slf-state-describtion-wrapper {
+    margin: 8px;
+}
+
+
+.slf-state-describtion {
+    font-size: larger;
+
+    margin: 0;
+}
+
+
+#slf-submit-evaluated-words-btn-wrapper {
+    position: absolute;
+    bottom: 24px;
+    right: 0;
+    left: 0;
+
+    text-align: center;
+}
+
+#slf-evaluation-wrapper {
+    position: absolute;
+    top: 130px; left: 0; bottom: 130px; right: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

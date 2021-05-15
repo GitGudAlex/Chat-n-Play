@@ -14,7 +14,7 @@ module.exports = (io, socket, data, callback) => {
     const unique = new Set();
     
     for(cat of data.categories) {
-        unique.add(cat.category);
+        unique.add(cat.toLocaleLowerCase());
     }
 
     if(unique.size != data.categories.length) return callback('Du darfst keine Kategorien mehrfach auswählen!');
