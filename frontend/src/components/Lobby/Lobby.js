@@ -96,7 +96,7 @@ function Lobby() {
 
         const lobbyDivWrapper = document.querySelector('#lobby-content');
 
-        if (!(lobbyDivWrapper instanceof Element)) {
+        if (lobbyDivWrapper instanceof Element) {
             heightObserver.observe(lobbyDivWrapper);
         }
 
@@ -119,7 +119,7 @@ function Lobby() {
     }, []);
 
 
-    // Schauen, ob man sich überhaupt in einem Raum befindet
+    // Wenn das Spiel gestarted wurde
     const handleGameStartedEvent = useCallback((data) => {
         started.current = true;
 
@@ -195,7 +195,6 @@ function Lobby() {
         );
 
     } else {
-
         return (
             <div className='lobby-wrapper p-0'>
                 <header className="lobby-header">

@@ -15,7 +15,6 @@ import SocketContext from '../../services/socket';
 function Ludo() {
 
     // Game Data
-    const [gameId, setGameId] = useState();
     const [players, setPlayers] = useState();
 
     // vom api call
@@ -40,9 +39,6 @@ function Ludo() {
         // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht)
         } else {
 
-            // Spiel ID bekommen
-            setGameId(location.state.gameId);
-
             // Spieler bekommen am Anfang
             socket.emit('room:get-players', (data) => {
                 setPlayers(data.players);
@@ -52,6 +48,14 @@ function Ludo() {
             window.addEventListener('resize', () => {
                 $('.player').height($('.player').width()/16 * 9);
             });
+
+
+            // API Calls
+            if(location.state.gameId !== undefined) {
+                fetchGameData(location.state.gameId);
+                fetchRulesData(location.state.gameId)
+    
+            }
         }
 
     }, [socket, history, location.state]);
@@ -79,16 +83,6 @@ function Ludo() {
         $('.player').height($('.player').width()/16 * 9);
 
     }, [players, rules]);
-
-    // API Calls
-    useEffect(() => {   
-        if(gameId !== undefined) {
-            fetchGameData(gameId);
-            fetchRulesData(gameId);
-
-        }
-    }, [gameId]);
-
 
     // API Call: Den Namen vom Spiel bekommen
     const fetchGameData = async(gameId) => {
@@ -255,7 +249,7 @@ function Ludo() {
     }
 
     
-    if(rules === undefined) {
+    if(rules === undefined || players === undefined) {
         return (
             <div style={{ height: '100%' }}>
                 <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>

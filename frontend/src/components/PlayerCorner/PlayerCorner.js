@@ -1,13 +1,18 @@
 import $ from 'jquery';
+import { useLayoutEffect, useState } from 'react';
 
 import './PlayerCorner.css';
 
 function PlayerCorner(props) {
 
+    const [parentElementWidth, setParentElementWidth] = useState();
+
     const x_res = 16;
     const y_res = 9;
 
-    const parentElementWidth = $(".players").width();
+    useLayoutEffect(() => {
+        setParentElementWidth($(".players").width());
+    }, []);
 
     // Falls div Struktur falsch aufgebaut ist
     if(parentElementWidth === undefined) {
@@ -15,6 +20,7 @@ function PlayerCorner(props) {
             <div></div>
         );
     }
+
     const width = props.width === undefined ? 24 : props.width;
     const playerStyle = {
         width: width + '%',

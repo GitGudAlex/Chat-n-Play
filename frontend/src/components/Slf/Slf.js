@@ -17,7 +17,6 @@ import './Slf.css';
 function Slf(props) {
 
     // Game Data
-    const [gameId, setGameId] = useState();
     const [isHost, setIsHost] = useState();
     const [players, setPlayers] = useState([]);
     const [scores, setScores] = useState([]);
@@ -52,7 +51,6 @@ function Slf(props) {
         } else {
 
             // Spiel ID bekommen
-            setGameId(location.state.gameId);
             setGameStatus(0);
 
             // Spieler bekommen am Anfang
@@ -73,14 +71,14 @@ function Slf(props) {
             });
 
             // API Calls
-            if(gameId !== undefined) {
-                fetchGameData(gameId);
-                fetchRulesData(gameId);
+            if(location.state.gameId !== undefined) {
+                fetchGameData(location.state.gameId);
+                fetchRulesData(location.state.gameId);
     
             }
         }
 
-    }, [socket, history, location.state, gameId]);
+    }, [socket, history, location.state]);
     
     useEffect(() => {
         socket.emit('room:is-in-room', handleInRoomCallback);
@@ -178,7 +176,6 @@ function Slf(props) {
 
     }, [socket, handleHostChanged]);
 
-
     if(rules === undefined || players === undefined || isHost === undefined) {
         return (
             <div style={{ height: '100%' }}>
@@ -204,27 +201,6 @@ function Slf(props) {
         } else if(gameStatus === 2) {
             gameContent = <WordsEvaluation categories={ categories } words={ words }/>
         }
-
-
-        // Richtigen Player Corner anzeigen (Score oder kein Score)
-        let playerCorners;
-
-        if(scores.length === 0) {
-            playerCorners = players.map(player => (
-                <PlayerCorner key = { player.username  } 
-                    username = { player.username }
-                    color = { player.color }
-                    position = { positions[player.position] }  />
-            ));
-        } else {
-            playerCorners = players.map(player => (
-                <PlayerCorner key = { player.username  } 
-                    username = { player.username }
-                    color = { player.color }
-                    position = { positions[player.position] }
-                    score = { scores.find(score => score.username === player.username).score } />
-            ))
-        }
         
         return (
             <div className='game-wrapper p-0'>
@@ -242,7 +218,15 @@ function Slf(props) {
                                     { gameContent }
                                 </div>
                                 <div className='players'>
-                                    { playerCorners }
+                                    {
+                                        players.map(player => (
+                                            <PlayerCorner key = { player.username  } 
+                                                username = { player.username }
+                                                color = { player.color }
+                                                position = { positions[player.position] }
+                                                score = { scores.length === 0 ? undefined : scores.find(score => score.username === player.username).score } />
+                                        ))
+                                    }
                                 </div>
                             </div>
                         </div>
