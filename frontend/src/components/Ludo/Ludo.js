@@ -133,11 +133,11 @@ function Ludo() {
     useEffect(()=>{
         $(".matchfield").find(":button").prop("disabled", true);
         $("#dice").prop("disabled", true);
-        $("House").prop("disabled", true);
-   });
+    });
 
     const roll = () => {
-        socket.emit("ludo:rollDice");   
+        socket.emit("ludo:rollDice");
+        $("#dice").prop("disabled", true);   
     }
 
     useEffect(() => {
@@ -163,7 +163,6 @@ function Ludo() {
     useEffect(()=>{
         socket.on("ludo:unlockMoveFields", figures=>{
             figures.forEach(element =>{
-                $("#dice").prop("disabled", true);
                 $("#"+element).prop("disabled", false);
             });
         });
@@ -199,6 +198,7 @@ function Ludo() {
     
     const moveFigure = (id) => {
         socket.emit("ludo:clickFigure", id);
+        $(".matchfield").find(":button").prop("disabled", true);
     }
 
     useEffect(() => {
@@ -224,8 +224,6 @@ function Ludo() {
 
     useEffect(() => {
         socket.on('ludo:nextPlayer', player => {
-            $("#dice").prop("disabled",true);
-            $(".matchfield").find(":button").prop("disabled", true);
             setTimeout(function(){
                 $('#dice').css({'border-color':player.color});
                 $('.dice').html('Würfeln');
@@ -285,7 +283,7 @@ function Ludo() {
                                         <br></br>
                                         <button id='firstPlayer' onClick={ setFirstPlayer }>Ersten Spieler festlegen</button>
                                         <br></br>
-                                        <button id = "dice" className = 'dice' onClick={ roll }>Würfeln</button>
+                                        <button id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
                                         <Matchfield/>
                                         <div id = "blue">
                                             <House first = '101' second = '102' third = '103' fourth = '104' color = 'blue'/>

@@ -1,4 +1,4 @@
-const { getPlayer, nextPlayerInRoom} = require('../../../models/players');
+const { getPlayer, nextPlayerInRoom, getCurrentPlayerInRoom} = require('../../../models/players');
 const {moveFigure, throwFigure} = require ('../../../ludo/gamelogic.js');
 
 module.exports = (io, socket, id) => {
@@ -18,12 +18,14 @@ module.exports = (io, socket, id) => {
 
     if(getDiceValue(player.roomId) !== 6){
         io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
+        io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
+    }else{
+        io.to(player.socketId).emit("ludo:unlockDice", player);
     }
 
     const res = [newPosition, player.color, id];
 
     io.in(player.roomId).emit('ludo:moveFigure', res);
-    io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
 
     if(throwFig.length > 0){
         io.in(player.roomId).emit('ludo:throwFigure', throwFig);
