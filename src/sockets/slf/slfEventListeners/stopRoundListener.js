@@ -3,5 +3,7 @@ const { getPlayer } = require('../../../models/players');
 module.exports = (io, socket, callback) => {
     const player = getPlayer(socket.id);
 
-    io.in(player.roomId).emit('slf:round-stopped');
+    if(player !== undefined) {
+        io.in(player.roomId).emit('slf:round-stopped');
+    }
 }

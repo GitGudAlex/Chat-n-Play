@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect, useCallback, useRef } from 'react';
+import $ from 'jquery';
 
 import './GameBoard.css';
 
@@ -13,6 +14,7 @@ function GameBoard(props) {
     const [rounds, setRounds] = useState();
     const [letter, setLetter] = useState();
     const [inputDisabled, setInputDisabled] = useState(true);
+    const [inputFlexBasis, setInputFlexBasis] = useState(10);
 
     const words = useRef([]);
 
@@ -28,6 +30,7 @@ function GameBoard(props) {
 
         setCategories(props.categories);
         setRounds(props.rounds);
+        setInputFlexBasis((1/props.categories.length) * 100);
 
     }, [props]);
 
@@ -79,6 +82,40 @@ function GameBoard(props) {
 
     }, [socket, handleStartRoundEvent, handleRoundEndedEvent]);
 
+
+    // Richtige Aufteilung der Input zellen
+    useEffect(() => {
+        let inputWrapperHeight = $('#slf-categories-input-wrapper').height();
+
+        // Zu klein um alle darzustellen
+        if(inputWrapperHeight < 500) {
+            setInputFlexBasis(50);
+            $('#slf-categories-input-wrapper').css({ flexDirection: 'row', flexWrap: 'wrap' });
+        }
+
+        const handleResizeEvent = () => {
+            let inputWrapperHeight = $('#slf-categories-input-wrapper').height();
+
+            if(inputWrapperHeight < 500) {
+                setInputFlexBasis(50);
+                $('#slf-categories-input-wrapper').css({ flexDirection: 'row', flexWrap: 'wrap' });
+
+            } else {
+                setInputFlexBasis((1 / categories.length) * 100);
+                $('#slf-categories-input-wrapper').css({ flexDirection: 'column', flexWrap: 'nowrap' });
+
+            }
+        }
+
+        // Wenn die Fenstergröße geändert wird
+        window.addEventListener('resize', handleResizeEvent);
+
+        return() => {
+            window.removeEventListener('resize', handleResizeEvent);
+        }
+    }, [categories]);
+
+
     if(categories === undefined || rounds === undefined) {
         return (
             <div style={{ height: '100%' }}>
@@ -103,7 +140,7 @@ function GameBoard(props) {
                                 category={ entry.category }
                                 onChangeHandler={ changeValue } 
                                 disabled={ inputDisabled }
-                                length={ categories.length }/>
+                                flexBasis={ inputFlexBasis }/>
                         ))
                     }
                 </div>

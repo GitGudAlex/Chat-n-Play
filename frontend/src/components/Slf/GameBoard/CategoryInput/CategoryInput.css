@@ -3,15 +3,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    width: 60%;
 }
 
 .slf-category-input {
-    width: 35%;
+    width: 60%;
     min-width: 200px;
 }
 
 .slf-category-lable {
     margin: 0;
+    width: 100%;
 
     font-size: large;
     color: rgb(75, 75, 75);

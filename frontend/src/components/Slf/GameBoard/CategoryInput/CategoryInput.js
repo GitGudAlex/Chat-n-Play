@@ -1,18 +1,8 @@
 import './CategoryInput.css';
 
 function CategoryInput(props) {
-
-    let flexStyleValue;
-
-    if(props.length >= 6) {
-        flexStyleValue = { flex: '0 0 50%' };
-
-    } else {
-        flexStyleValue = { flex: '0 0 100%' };
-    }
-
     return (
-        <div className='slf-category-input-wrapper' style={ flexStyleValue }>
+        <div className='slf-category-input-wrapper' style={{ flex: '0 0 ' + props.flexBasis + '%' }}>
             <div className='slf-category-input'>
                 <label className='slf-category-lable' htmlFor={ 'category-input-' + props.category } >{ props.category }</label>
                 <input type='text'
