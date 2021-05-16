@@ -4,7 +4,7 @@
 const players = [];
 
 // Farben der Spieler
-const colors = ['#2699FB', '#F8D931', '#1ECB40', '#D84545'];
+const colors = ['#0B97F0', '#FCA701', '#00BF02', '#FF3030'];
 
 // add a player
 const addPlayer = ( socketId, username, roomId ) => {

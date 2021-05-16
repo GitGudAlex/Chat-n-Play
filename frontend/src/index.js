@@ -4,6 +4,7 @@ import App from './components/App/App';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min'
+import { fdatasyncSync } from 'fs';
 
 ReactDOM.render(
   <React.StrictMode>

@@ -36,7 +36,7 @@ function Description() {
         <div id="home-description">
             <div id='home-description-wrapper'>
                 <h2 className='text-center'>Willkommen zu Chat&nbsp;N'&nbsp;Play</h2>
-                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden auch über Distanz das Spielfeld-Feeling erleben.<br />
+                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden auch über Distanz das Spieleabend-Feeling erleben.<br />
                 Erstellt einfach einen Raum und ladet Freunde über einen Link ein<br />
                 oder lasst Ihnen den Zugangscode zukommen</p>
             </div>
