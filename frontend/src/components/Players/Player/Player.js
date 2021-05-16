@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { useLayoutEffect, useState } from 'react';
+import House from '../../Ludo/house/house';
 
 import './Player.css';
 
@@ -37,6 +38,18 @@ function Player(props) {
                 </div>
                 <div className='player-name'>
                     <p>{ props.username }</p>
+                </div>
+            </div>
+        );
+    } else if(props.ludo === "Ludo") {
+        return (
+            <div className={ props.position + ' player'} style={ playerStyle }>
+                <div style={{ border: '3px solid ' + props.color }} className='camera'>
+    
+                </div>
+                <div className='player-name'>
+                    <p>{ props.username }</p>
+                    <House color = {props.color} position = {props.position}/>
                 </div>
             </div>
         );

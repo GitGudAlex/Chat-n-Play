@@ -7,10 +7,10 @@ import './Ludo.css'
 import House from './house/house';
 import Matchfield from './matchfield/matchfield';
 import Title from '../Home/Title/Title';
-import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import SideBar from '../SideBar/SideBar';
 
 import SocketContext from '../../services/socket';
+import Players from '../Players/Players';
 
 function Ludo() {
 
@@ -220,7 +220,6 @@ function Ludo() {
         socket.on('ludo:nextPlayer', player => {
             setTimeout(function(){
                 $('#dice').css({'border-color':player.color});
-                $('.dice').html('Würfeln');
             }, 2000);
         });
 
@@ -234,6 +233,7 @@ function Ludo() {
     useEffect(()=>{
         socket.on('ludo:unlockDice', (player)=>{
             setTimeout(function(){
+                $('.dice').html('Würfeln');
                 $("#dice").prop("disabled",false);
             }, 2000);
         });
@@ -244,10 +244,22 @@ function Ludo() {
         }
     });
 
+    useEffect(() => {
+        socket.on('ludo:winner', (player) => {
+            $("#dice").prop("disabled", true); 
+            $(".matchfield").find(":button").prop("disabled", true);
+            console.log("Winner: "+ player.username);
+        });
+
+        return () => {
+            socket.off('ludo:winner');
+        }
+    });
+
+
     const setFirstPlayer = () => {
         socket.emit('ludo:firstPlayer');
     }
-
     
     if(rules === undefined || players === undefined) {
         return (
@@ -279,29 +291,10 @@ function Ludo() {
                                         <br></br>
                                         <button id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
                                         <Matchfield/>
-                                        <div id = "blue">
-                                            <House first = '101' second = '102' third = '103' fourth = '104' color = 'blue'/>
-                                        </div>
-                                        <div id="green">
-                                            <House first = '105' second = '106' third = '107' fourth = '108' color = 'green'/>
-                                        </div>
-                                        <div id="red">
-                                            <House first = '109' second = '110' third = '111' fourth = '112' color = 'red'/>
-                                        </div>
-                                        <div id="yellow">
-                                            <House first = '113' second = '114' third = '115' fourth = '116' color = 'yellow'/>
-                                        </div>
                                     </div>
                                 </div>
                                 <div className='players'>
-                                    {
-                                        players.map(player => (
-                                            <PlayerCorner key = { player.username  } 
-                                                username = { player.username }
-                                                color = { player.color }
-                                                position = { positions[player.position] } />
-                                        ))
-                                    }
+                                    <Players players={ players } ludo = "Ludo"/>
                                 </div>
                             </div>
                         </div>

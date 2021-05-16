@@ -134,7 +134,25 @@ getFirstPosHole = (house) => {
         });
     return housePos;
 }
-    
+
+checkWinner = (player) => {
+    for (let i = 0; i < 4; i ++){
+        if(player.playerPosition[i][0] <= 200){
+            return false;
+        }
+    }
+    return true;
+}
+
+onField = (positions) => {
+    for( let i = 0; i < 4; i ++){
+        if(positions[i][0] <= 40){
+            return false;
+        }
+    }
+
+    return true;
+}
 
 
-module.exports = {checkField, checkHouse, showMove, showFigureFromHouse, moveFigure, getFirstPosHole, throwFigure};
+module.exports = {checkField, checkHouse, showMove, showFigureFromHouse, moveFigure, getFirstPosHole, throwFigure, checkWinner, onField};
