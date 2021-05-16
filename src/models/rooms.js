@@ -15,15 +15,9 @@ const addRoom = ( gameTypeId, hostId ) => {
     while (rooms.find((room) => room.roomId === roomId)) {
         roomId = uuid.v4();
     }
- 
-    // get max players
-    const json = fs.readFileSync(path.join(__dirname + '/../data/games.json'));
-    const obj = JSON.parse(json);
-
-    const game = obj.find(game => game.id == gameTypeId);
 
     // adding room
-    const room = { roomId, gameTypeId, hostId, maxPlayers: game.maxPlayers, hasStarted: false };
+    const room = { roomId, gameTypeId, hostId, maxPlayers: 4, hasStarted: false };
     rooms.push(room);
  
     // returning room object

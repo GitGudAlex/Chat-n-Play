@@ -61,4 +61,9 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 
 .white{
   background-color: white;
+  padding: 10px 10px;
+}
+
+.house{
+  padding: 10px 10px;
 }

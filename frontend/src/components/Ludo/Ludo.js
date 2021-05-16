@@ -7,15 +7,14 @@ import './Ludo.css'
 import House from './house/house';
 import Matchfield from './matchfield/matchfield';
 import Title from '../Home/Title/Title';
-import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import SideBar from '../SideBar/SideBar';
 
 import SocketContext from '../../services/socket';
+import Players from '../Players/Players';
 
 function Ludo() {
 
     // Game Data
-    const [gameId, setGameId] = useState();
     const [players, setPlayers] = useState();
 
     // vom api call
@@ -40,9 +39,6 @@ function Ludo() {
         // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht)
         } else {
 
-            // Spiel ID bekommen
-            setGameId(location.state.gameId);
-
             // Spieler bekommen am Anfang
             socket.emit('room:get-players', (data) => {
                 setPlayers(data.players);
@@ -52,6 +48,14 @@ function Ludo() {
             window.addEventListener('resize', () => {
                 $('.player').height($('.player').width()/16 * 9);
             });
+
+
+            // API Calls
+            if(location.state.gameId !== undefined) {
+                fetchGameData(location.state.gameId);
+                fetchRulesData(location.state.gameId)
+    
+            }
         }
 
     }, [socket, history, location.state]);
@@ -79,16 +83,6 @@ function Ludo() {
         $('.player').height($('.player').width()/16 * 9);
 
     }, [players, rules]);
-
-    // API Calls
-    useEffect(() => {   
-        if(gameId !== undefined) {
-            fetchGameData(gameId);
-            fetchRulesData(gameId);
-
-        }
-    }, [gameId]);
-
 
     // API Call: Den Namen vom Spiel bekommen
     const fetchGameData = async(gameId) => {
@@ -133,11 +127,11 @@ function Ludo() {
     useEffect(()=>{
         $(".matchfield").find(":button").prop("disabled", true);
         $("#dice").prop("disabled", true);
-        $("House").prop("disabled", true);
-   });
+    });
 
     const roll = () => {
-        socket.emit("ludo:rollDice");   
+        socket.emit("ludo:rollDice");
+        $("#dice").prop("disabled", true);   
     }
 
     useEffect(() => {
@@ -163,7 +157,6 @@ function Ludo() {
     useEffect(()=>{
         socket.on("ludo:unlockMoveFields", figures=>{
             figures.forEach(element =>{
-                $("#dice").prop("disabled", true);
                 $("#"+element).prop("disabled", false);
             });
         });
@@ -199,6 +192,7 @@ function Ludo() {
     
     const moveFigure = (id) => {
         socket.emit("ludo:clickFigure", id);
+        $(".matchfield").find(":button").prop("disabled", true);
     }
 
     useEffect(() => {
@@ -224,11 +218,8 @@ function Ludo() {
 
     useEffect(() => {
         socket.on('ludo:nextPlayer', player => {
-            $("#dice").prop("disabled",true);
-            $(".matchfield").find(":button").prop("disabled", true);
             setTimeout(function(){
                 $('#dice').css({'border-color':player.color});
-                $('.dice').html('Würfeln');
             }, 2000);
         });
 
@@ -242,6 +233,7 @@ function Ludo() {
     useEffect(()=>{
         socket.on('ludo:unlockDice', (player)=>{
             setTimeout(function(){
+                $('.dice').html('Würfeln');
                 $("#dice").prop("disabled",false);
             }, 2000);
         });
@@ -252,12 +244,24 @@ function Ludo() {
         }
     });
 
+    useEffect(() => {
+        socket.on('ludo:winner', (player) => {
+            $("#dice").prop("disabled", true); 
+            $(".matchfield").find(":button").prop("disabled", true);
+            console.log("Winner: "+ player.username);
+        });
+
+        return () => {
+            socket.off('ludo:winner');
+        }
+    });
+
+
     const setFirstPlayer = () => {
         socket.emit('ludo:firstPlayer');
     }
-
     
-    if(rules === undefined) {
+    if(rules === undefined || players === undefined) {
         return (
             <div style={{ height: '100%' }}>
                 <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
@@ -285,31 +289,12 @@ function Ludo() {
                                         <br></br>
                                         <button id='firstPlayer' onClick={ setFirstPlayer }>Ersten Spieler festlegen</button>
                                         <br></br>
-                                        <button id = "dice" className = 'dice' onClick={ roll }>Würfeln</button>
+                                        <button id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
                                         <Matchfield/>
-                                        <div id = "blue">
-                                            <House first = '101' second = '102' third = '103' fourth = '104' color = 'blue'/>
-                                        </div>
-                                        <div id="green">
-                                            <House first = '105' second = '106' third = '107' fourth = '108' color = 'green'/>
-                                        </div>
-                                        <div id="red">
-                                            <House first = '109' second = '110' third = '111' fourth = '112' color = 'red'/>
-                                        </div>
-                                        <div id="yellow">
-                                            <House first = '113' second = '114' third = '115' fourth = '116' color = 'yellow'/>
-                                        </div>
                                     </div>
                                 </div>
                                 <div className='players'>
-                                    {
-                                        players.map(player => (
-                                            <PlayerCorner key = { player.username  } 
-                                                username = { player.username }
-                                                color = { player.color }
-                                                position = { positions[player.position] } />
-                                        ))
-                                    }
+                                    <Players players={ players } ludo = "Ludo"/>
                                 </div>
                             </div>
                         </div>

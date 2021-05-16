@@ -7,9 +7,10 @@ import './Lobby.css'
 import SideBar from '../SideBar/SideBar';
 import Title from '../Home/Title/Title';
 import StartGame from './StartGame/StartGame';
-import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import ColorSelector from './ColorSelector/ColorSelector';
+import Players from '../Players/Players';
+
 import SocketContext from '../../services/socket';
 
 function Lobby() {
@@ -19,6 +20,9 @@ function Lobby() {
     const [roomId, setRoomId] = useState();
     const [hostId, setHostId] = useState();
     const [players, setPlayers] = useState();
+
+    // Design Stuff
+    const isResponsive = useRef();
 
     // vom api call
     const [gameName, setGameName] = useState();
@@ -30,9 +34,6 @@ function Lobby() {
 
     // Socket.io
     const socket = useContext(SocketContext);
-
-    // Positionen der Spieler
-    const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
 
     // Variable um zu speichern ob das Spiel gerade angefangen wurde. Wird benötige,
     // damit man nicht aus dem Spiel fliegt wenn der Component unmountet
@@ -52,16 +53,48 @@ function Lobby() {
             setPlayers(gameData.players);
             setGameId(gameData.gameTypeId);
 
-            // Wenn die Fenstergröße geändert wird
-            // Am Anfang richtige breite setzten
-            $('.player').height($('.player').width()/16 * 9);
+            // Am Anfang richtige Höhe setzten
             $('.invitation-button').height($('.invitation-button').width());
-            
-            window.addEventListener('resize', () => {
-                $('.player').height($('.player').width()/16 * 9);
-                $('.invitation-button').height($('.invitation-button').width());
-            });
         }
+
+        // Wenn die Sidebar aufgeklappt wird und die Anordnung geändert werden muss, wegen zu wenig Platz
+        // Am Afang richtige werte setzetn für bessere performance
+        if($('#lobby-content').width() < 800) {
+            isResponsive.current = false;
+
+        } else {
+            isResponsive.current = true;
+
+        }
+
+        const heightObserver = new ResizeObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.contentRect.width < 800 && isResponsive.current === false) {
+                    $('.start-game-wrapper').css({ justifyContent: 'center' });
+                    $('.start-game').css({ width: '80% !important;' });
+
+                    isResponsive.current = true;
+
+                } else {
+                    if(entry.contentRect.width >= 800 && isResponsive.current === true) {
+                        $('.start-game-wrapper').css({ justifyContent: 'space-around' });
+                        $('.start-game').css({ width: '55% !important;' });
+
+                        isResponsive.current = false;
+                    }
+                }
+                });
+        });
+
+        const lobbyDivWrapper = document.querySelector('#lobby-content');
+
+        if (lobbyDivWrapper instanceof Element) {
+            heightObserver.observe(lobbyDivWrapper);
+        }
+
+        return () => {
+            heightObserver.disconnect();
+        };
 
     }, [history, location.state]);
 
@@ -74,12 +107,11 @@ function Lobby() {
     const handleRoomUpdateEvent = useCallback((data) => {
         setPlayers(data.players);
         
-        $('.player').height($('.player').width()/16 * 9);
         $('.invitation-button').height($('.invitation-button').width());
     }, []);
 
 
-    // Schauen, ob man sich überhaupt in einem Raum befindet
+    // Wenn das Spiel gestarted wurde
     const handleGameStartedEvent = useCallback((data) => {
         started.current = true;
 
@@ -155,7 +187,6 @@ function Lobby() {
         );
 
     } else {
-
         return (
             <div className='lobby-wrapper p-0'>
                 <header className="lobby-header">
@@ -173,16 +204,7 @@ function Lobby() {
                                     <StartGame hostId={ hostId } />
                                     <InvitationCopyBoards roomId={ roomId } />
                                 </div>
-                                <div className='players'>
-                                    {
-                                        players.map(player => (
-                                            <PlayerCorner key = { player.username  } 
-                                                username = { player.username }
-                                                color = { player.color }
-                                                position = { positions[player.position] } />
-                                        ))
-                                    }
-                                </div>
+                                <Players players={ players } />
                             </div>
                         </div>
                     </div>

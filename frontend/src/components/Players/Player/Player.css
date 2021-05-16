@@ -1,8 +1,5 @@
 .player {
     position: absolute;
-    width: 24%;
-
-    min-width: 200px;
 }
 
 .camera {
@@ -28,4 +25,10 @@
 .bottom-right {
     bottom: 40px;
     right: 40px;
+}
+
+.player-name-score {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

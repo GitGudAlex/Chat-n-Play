@@ -6,7 +6,7 @@ function ColorDot(props) {
     if(props.owner === props.socketId) {
         return (
             <div className='color-dot-wrapper'>
-                <button style={{ border: '2px solid black', backgroundColor: props.color }} type="button" className="color-dot rounded-circle" onClick={ () => props.setColorMethod(props.color) }></button>
+                <button style={{ border: '2px solid black', backgroundColor: props.color }} type="button" className="color-dot rounded-circle color-dot-hoverble" onClick={ () => props.setColorMethod(props.color) }></button>
             </div>
         );
     }
@@ -15,7 +15,7 @@ function ColorDot(props) {
     if(props.owner === undefined) {
         return (
             <div className='color-dot-wrapper'>
-                <button style={{ backgroundColor: props.color }} type="button" className="color-dot rounded-circle" onClick={ () => props.setColorMethod(props.color) }></button>
+                <button style={{ backgroundColor: props.color }} type="button" className="color-dot rounded-circle color-dot-hoverble" onClick={ () => props.setColorMethod(props.color) }></button>
             </div>
         );
 
@@ -23,7 +23,7 @@ function ColorDot(props) {
     } else {
         return (
             <div className='color-dot-wrapper'>
-                <button style={{ backgroundColor: 'gray' }} type="button" className="color-dot rounded-circle"></button>
+                <button style={{ backgroundColor: 'gray', cursor: 'default' }} type="button" className="color-dot rounded-circle"></button>
             </div>
         );
     }

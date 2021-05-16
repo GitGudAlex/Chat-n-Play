@@ -1,3 +1,4 @@
+const { getHost } = require('../../../models/rooms');
 const { getPlayer, getPlayersInRoom } = require('../../../models/players');
 
 module.exports = (socket, callback) => {
@@ -10,5 +11,7 @@ module.exports = (socket, callback) => {
         return playerObj;
     });
 
-    callback({ players: mappedPlayers });
+    const hostId = getHost(player.roomId);
+
+    callback({ players: mappedPlayers, hostId });
 }

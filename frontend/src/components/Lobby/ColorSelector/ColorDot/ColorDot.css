@@ -9,6 +9,6 @@
     border: none;
 }
 
-.color-dot:hover {
+.color-dot-hoverble:hover {
     border: 2px solid black;
 }

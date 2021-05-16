@@ -19,6 +19,31 @@ function Chat(props) {
   //Events:
   // Wenn man eine Nachricht empfangen will
   const handleMessageEvent = useCallback((data) => {
+    let scroll = false;
+
+    // Wenn Chat nicht offen, Roten Punk anzeigen, dass eine ungelesene Nachricht da ist
+    if($('#sidebar-chat').css('margin-left') !== props.sideBarWidth + 'px') {
+      
+      // Schauen, ob der Punkt schon da ist. Dann nicht setzten
+      if($('#chat-unread-btn-icon').css('visibility') === 'hidden') {
+
+        // Roten Punkt setzten
+        $('#chat-unread-btn-icon').css({ 'visibility': 'visible' });
+
+      }
+    
+    // Wenn Sidebar offen, schauen ob man nach unten scrollen muss wenn eine Nachricht kommt. Nur scrollen, wenn schon gabz unten
+    } else {
+      let divHeight = document.getElementById('chat-text').scrollHeight;
+      let visableDivHeight = document.getElementById('chat-text').offsetHeight;
+      let currentHeight = $('#chat-text').scrollTop();
+
+      // Man befinded sich ganz unten wenn eine Nachricht kommt -> nach unten scrollen
+      if(divHeight === (visableDivHeight + currentHeight)) {
+        scroll = true;
+      }
+
+    }
 
     // Eigene Nachricht
     if(data.socketId === socket.id) {
@@ -32,16 +57,12 @@ function Chat(props) {
 
     }
 
-    // Wenn Chat nicht offen, Roten Punk anzeigen, dass eine ungelesene Nachricht da ist
-    if($('#sidebar-chat').css('margin-left') !== props.sideBarWidth + 'px') {
+    // Zur Nachricht scrollen
+    if(scroll) {
+      let divHeight = document.getElementById('chat-text').scrollHeight;
+      let visableDivHeight = document.getElementById('chat-text').offsetHeight;
       
-      // Schauen, ob der Punkt schon da ist. Dann nicht setzten
-      if($('#chat-unread-btn-icon').css('visibility') === 'hidden') {
-
-        // Roten Punkt setzten
-        $('#chat-unread-btn-icon').css({ 'visibility': 'visible' });
-
-      }
+      $('#chat-text').scrollTop(divHeight - visableDivHeight);
     }
 
   }, [socket, messages, props.sideBarWidth]);

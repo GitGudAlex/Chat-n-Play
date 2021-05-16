@@ -1,10 +1,9 @@
 const { roll, getDiceValue } = require('../../../ludo/Dice');
 const { getPlayer,  nextPlayerInRoom, getCurrentPlayerInRoom} = require('../../../models/players');
-const {checkField, checkHouse, showMove, showFigureFromHouse} = require ('../../../ludo/gamelogic.js');
+const {checkField, checkHouse, showMove, showFigureFromHouse, throwFigure, onField} = require ('../../../ludo/gamelogic.js');
 
 module.exports = (io, socket) => {
     const player = getPlayer(socket.id);
-    const currentPlayer = getCurrentPlayerInRoom(player.roomId);
 
     roll(player.roomId);
 
@@ -15,24 +14,25 @@ module.exports = (io, socket) => {
     if(checkHouse(player)){
         if(checkField(player.start, player)){
             showMove(getDiceValue(player.roomId), player.start, player);
-        }else if(getDiceValue(player.roomId) === 6){
-            const pos = showFigureFromHouse(player);
-            io.in(player.roomId).emit('ludo:leaveHouse', pos);
-            io.to(currentPlayer.socketId).emit("ludo:unlockDice");
-            return;
-        }else{
-            for(let i = 0; i < 4; i++){
-                if(player.playerPosition[i][0]<= 40 ||player.playerPosition[i][0]>= 200){
-                    showMove(getDiceValue(player.roomId), player.playerPosition[i][0], player);
+            for (let i = 0; i < 4; i ++){
+                if(player.playerPosition[i][0] == player.start && player.playerPosition[i][1] == null){
+                    callShowMoves(player);
                 }
             }
+        }else if(getDiceValue(player.roomId) === 6){
+            const pos = showFigureFromHouse(player);
+            const throwFig = throwFigure(player.start, player);
+            io.in(player.roomId).emit('ludo:leaveHouse', pos);
+            io.to(player.socketId).emit("ludo:unlockDice");
+            if(throwFig.length > 0){
+                io.in(player.roomId).emit('ludo:throwFigure', throwFig);
+            }
+            return;
+        }else{
+            callShowMoves(player)
         }
     }else{
-        for(let i = 0; i < 4; i++){
-            if(player.playerPosition[i][0]<= 40 ||player.playerPosition[i][0]>= 200){
-                showMove(getDiceValue(player.roomId), player.playerPosition[i][0], player);
-            }
-        }
+        callShowMoves(player)
     }
 
     // berechnet die Züge für alle übrigen Spielfiguren
@@ -48,18 +48,33 @@ module.exports = (io, socket) => {
             let figure = player.playerPosition[i][0];
             res.push(id);
             figures.push(figure);
+            console.log("Figurenposition: " + figures);
             count ++;
         }
     }
     console.log("Anzeigen der möglichen Spielzüge: " + res);
 
     io.in(player.roomId).emit('ludo:showMoves', res);
-    io.to(currentPlayer.socketId).emit("ludo:unlockMoveFields", figures);
+    io.to(player.socketId).emit("ludo:unlockMoveFields", figures);
 
     if(res.length === 0){
-        const nextPlayer = nextPlayerInRoom(player.roomId);
-        io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
-        io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
+        if(player.dicecount < 2 && onField(player.playerPosition)){
+            io.to(player.socketId).emit("ludo:unlockDice", player);
+            player.dicecount += 1;
+        }else{
+            player.dicecount = 0;
+            const nextPlayer = nextPlayerInRoom(player.roomId);
+            io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
+            io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
+        }
+    }
+}
+
+callShowMoves = (player) =>{ 
+    for(let i = 0; i < 4; i++){
+        if(player.playerPosition[i][0]<= 40 ||player.playerPosition[i][0]>= 200){
+            showMove(getDiceValue(player.roomId), player.playerPosition[i][0], player);
+        }
     }
 }
 
