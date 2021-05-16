@@ -1,14 +1,13 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
-import $ from 'jquery';
 
 import Title from '../Home/Title/Title';
-import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import SideBar from '../SideBar/SideBar';
 
 import CategorySelection from './CategorySelection/CategorySelection';
 import GameBoard from './GameBoard/GameBoard';
 import WordsEvaluation from './WordsEvaluation/WordsEvaluation';
+import Players from '../Players/Players';
 
 import SocketContext from '../../services/socket';
 
@@ -39,10 +38,6 @@ function Slf(props) {
     // Socket.io
     const socket = useContext(SocketContext);
 
-    // Positionen der Spieler
-    const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
-
-
     // Schauen, ob man sich überhaupt in einem Raum befindet
     const handleInRoomCallback = useCallback((isInRoom) => {
         if(!isInRoom) {
@@ -64,11 +59,6 @@ function Slf(props) {
                 } else {
                     setIsHost(false);
                 }
-            });
-
-            // Wenn die Fenstergröße geändert wird -> Größe anpassen
-            window.addEventListener('resize', () => {
-                $('.player').height($('.player').width()/16 * 9);
             });
 
             // API Calls
@@ -219,18 +209,7 @@ function Slf(props) {
                                 <div className='game-content'>
                                     { gameContent }
                                 </div>
-                                <div className='players'>
-                                    {
-                                        players.map(player => (
-                                            <PlayerCorner key = { player.username  } 
-                                                username = { player.username }
-                                                color = { player.color }
-                                                position = { positions[player.position] }
-                                                score = { scores.length === 0 ? undefined : scores.find(score => score.username === player.username).score } 
-                                                width = { gameStatus === 2 ? 18 : undefined }/>
-                                        ))
-                                    }
-                                </div>
+                                <Players players={ players } scores={ scores.length === 0 ? undefined : scores } width={ gameStatus === 2 ? 18 : undefined }/>
                             </div>
                         </div>
                     </div>

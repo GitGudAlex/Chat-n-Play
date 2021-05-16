@@ -16,12 +16,6 @@ html, body, #root, .lobby-wrapper, .container-fluid, .lobby-body-wrapper {
     position: relative;
 }
 
-.players {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-}
-
 .start-game-wrapper {
     position: absolute;
     z-index: 1;

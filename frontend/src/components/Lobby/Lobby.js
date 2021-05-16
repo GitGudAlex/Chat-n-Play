@@ -7,9 +7,10 @@ import './Lobby.css'
 import SideBar from '../SideBar/SideBar';
 import Title from '../Home/Title/Title';
 import StartGame from './StartGame/StartGame';
-import PlayerCorner from '../PlayerCorner/PlayerCorner';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import ColorSelector from './ColorSelector/ColorSelector';
+import Players from '../Players/Players';
+
 import SocketContext from '../../services/socket';
 
 function Lobby() {
@@ -34,9 +35,6 @@ function Lobby() {
     // Socket.io
     const socket = useContext(SocketContext);
 
-    // Positionen der Spieler
-    const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
-
     // Variable um zu speichern ob das Spiel gerade angefangen wurde. Wird benötige,
     // damit man nicht aus dem Spiel fliegt wenn der Component unmountet
     const started = useRef(false);
@@ -57,12 +55,6 @@ function Lobby() {
 
             // Am Anfang richtige Höhe setzten
             $('.invitation-button').height($('.invitation-button').width());
-            
-            // Wenn die Fenstergröße geändert wird
-            window.addEventListener('resize', () => {
-                $('.player').height($('.player').width()/16 * 9);
-                $('.invitation-button').height($('.invitation-button').width());
-            });
         }
 
         // Wenn die Sidebar aufgeklappt wird und die Anordnung geändert werden muss, wegen zu wenig Platz
@@ -212,16 +204,7 @@ function Lobby() {
                                     <StartGame hostId={ hostId } />
                                     <InvitationCopyBoards roomId={ roomId } />
                                 </div>
-                                <div className='players'>
-                                    {
-                                        players.map(player => (
-                                            <PlayerCorner key = { player.username  } 
-                                                username = { player.username }
-                                                color = { player.color }
-                                                position = { positions[player.position] } />
-                                        ))
-                                    }
-                                </div>
+                                <Players players={ players } />
                             </div>
                         </div>
                     </div>

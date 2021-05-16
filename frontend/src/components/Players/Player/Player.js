@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import { useLayoutEffect, useState } from 'react';
 
-import './PlayerCorner.css';
+import './Player.css';
 
-function PlayerCorner(props) {
+function Player(props) {
 
     const [parentElementWidth, setParentElementWidth] = useState();
 
@@ -66,4 +66,4 @@ function PlayerCorner(props) {
     }
 }
 
-export default PlayerCorner;
+export default Player;
