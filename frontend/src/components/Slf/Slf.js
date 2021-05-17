@@ -1,24 +1,14 @@
 import { useContext, useState, useEffect, useCallback } from 'react';
-import { useHistory, useLocation } from "react-router-dom";
-
-import Title from '../Home/Title/Title';
-import SideBar from '../SideBar/SideBar';
 
 import CategorySelection from './CategorySelection/CategorySelection';
 import GameBoard from './GameBoard/GameBoard';
 import WordsEvaluation from './WordsEvaluation/WordsEvaluation';
-import Players from '../Players/Players';
 
 import SocketContext from '../../services/socket';
-
-import './Slf.css';
 
 function Slf(props) {
 
     // Game Data
-    const [isHost, setIsHost] = useState();
-    const [players, setPlayers] = useState([]);
-    const [scores, setScores] = useState([]);
     const [categories, setCategories] = useState([]);
     const [rounds, setRounds] = useState();
     const [words, setWords] = useState([]);
@@ -27,65 +17,14 @@ function Slf(props) {
     // 0: Kategorien auswählen | 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     const [gameStatus, setGameStatus] = useState();
 
-    // vom api call
-    const [gameName, setGameName] = useState();
-    const [rules, setRules] = useState();
-
-    // Router Stuff
-    const history = useHistory();
-    const location = useLocation();
-
     // Socket.io
     const socket = useContext(SocketContext);
-
-    // Schauen, ob man sich überhaupt in einem Raum befindet
-    const handleInRoomCallback = useCallback((isInRoom) => {
-        if(!isInRoom) {
-            history.push('/');
-
-        // Wenn sich der Socket in einem Raum befindet (wurde durch das joinen eines Raums auf die Seite gebracht)
-        } else {
-
-            // Spiel ID bekommen
-            setGameStatus(0);
-
-            // Spieler bekommen am Anfang
-            socket.emit('room:get-players', (data) => {
-                setPlayers(data.players);
-
-                // Schauen ob man der Host ist
-                if(data.hostId === socket.id) {
-                    setIsHost(true);
-                } else {
-                    setIsHost(false);
-                }
-            });
-
-            // API Calls
-            if(location.state.gameId !== undefined) {
-                fetchGameData(location.state.gameId);
-                fetchRulesData(location.state.gameId);
-    
-            }
-        }
-
-    }, [socket, history, location.state]);
     
     useEffect(() => {
-        socket.emit('room:is-in-room', handleInRoomCallback);
+        // Spiel ID bekommen
+        setGameStatus(0);
 
-    }, [socket, handleInRoomCallback]);
-
-
-    // Event wenn ein Spieler joint oder jemand das Spiel verlässt
-    const handleRoomUpdateEvent = useCallback((data) => {
-        setPlayers(data.players);
-    }, []);
-
-    // Event wenn sich die Scores Updaten
-    const handleScoreUpdateEvent = useCallback((data) => {
-        setScores(data.scores);
-    }, []);
+    }, [socket]);
 
     // Wenn der Servert die ausgewählten kategorien übermittelt
     const handleCategoriesSubmitEvent = useCallback((data) => {
@@ -108,115 +47,47 @@ function Slf(props) {
 
     // Socket Events
     useEffect(() => { 
-        socket.on('room:update', handleRoomUpdateEvent);
-        socket.on('slf:score-update', handleScoreUpdateEvent);
         socket.on('slf:submit-categories', handleCategoriesSubmitEvent);
         socket.on('slf:evaluating-results', handleEvaluatingResultsEvent);
         socket.on('slf:update-words', handleUpdateWordsEvent);
-        
-    }, [socket, handleRoomUpdateEvent, handleScoreUpdateEvent, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent]);
 
-
-    // API Call: Den Namen vom Spiel bekommen
-    const fetchGameData = async(gameId) => {
-        const data = await fetch("/games/name?id=" + gameId);
-        const nameData = await data.json();
-
-        setGameName(nameData.name);
-    };
-
-    // API Call: Die Regeln von dem Spiel bekommen
-    const fetchRulesData = async(gameId) => {
-        const data = await fetch("/games/rules?id=" + gameId);
-        const rulesData = await data.json();
-
-        setRules(rulesData.rules);
-    };
-
-
-    useEffect(() => { 
-        return () => {
+        return() => {
             // Events unmounten
-            socket.off('room:update');
-            socket.off('slf:score-update');
             socket.off('slf:submit-categories');
             socket.off('slf:evaluating-results');
             socket.off('slf:update-words');
-
-            // den socket.io raum verlassen
-            socket.emit('room:leave-room');
-        }
-    }, [socket, history])
-
-
-    // Schauen ob man selbst der neue Host ist
-    const handleHostChanged = useCallback((data) => {
-        if(data.hostId === socket.id) {
-            setIsHost(true); 
-
-        }
-
-    }, [socket]);
-
-    useEffect(() => {
-        // Wenn der Host sich ändert
-        socket.on('room:hostChanged', handleHostChanged);
-
-        return() => {
-            socket.off('room:hostChanged');
-        }
-
-    }, [socket, handleHostChanged]);
-
-    if(rules === undefined || players === undefined || isHost === undefined) {
-        return (
-            <div style={{ height: '100%' }}>
-                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-                    <div className="spinner-border" style={{ width: '4rem', height: '4rem' }} role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
-                </div>
-            </div>
-        );
-    } else {
-        // Richtigen Content je nach Spielsatus anzeigen
-        let gameContent;
-
-        // Kategorien auswahl
-        if(gameStatus === 0) {
-            gameContent = <CategorySelection isHost={ isHost } />
-
-        // Spielfeld
-        } else if(gameStatus === 1) {
-            gameContent = <GameBoard categories={ categories } rounds={ rounds }/>
-
-        } else if(gameStatus === 2) {
-            gameContent = <WordsEvaluation categories={ categories } words={ words } letter={ letter } players={ players }/>
         }
         
-        return (
-            <div className='game-wrapper p-0'>
-                <header className='game-header'>
-                    <Title text={ gameName } height="10vh" fontSize="4vw"/>
-                </header>
-                <main className='game-body-wrapper'>
-                    <div className='container-fluid p-0'>
-                        <div className='row game-body m-0'>
-                            <div className='sidebar-wrapper p-0'>
-                                <SideBar position='left' contentId='#game-content-wrapper' sideBarWidth={ 40 } sideBarWindowWidth={ 350 } rules={ rules }/>
-                            </div>
-                            <div id='game-content-wrapper' className='col p-0'>
-                                <div className='game-content'>
-                                    { gameContent }
-                                </div>
-                                <Players players={ players } scores={ scores.length === 0 ? undefined : scores } width={ gameStatus === 2 ? 18 : undefined }/>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        )
+    }, [socket, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent]);
+
+    useEffect(() => { 
+        return () => {
+            // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
+            socket.emit('room:leave-room');
+        }
+    }, [socket])
+    
+
+    // Richtigen Content je nach Spielsatus anzeigen
+    let gameContent;
+
+    // Kategorien auswahl
+    if(gameStatus === 0) {
+        gameContent = <CategorySelection isHost={ props.isHost } />
+
+    // Spielfeld
+    } else if(gameStatus === 1) {
+        gameContent = <GameBoard categories={ categories } rounds={ rounds }/>
+        
+    } else if(gameStatus === 2) {
+        gameContent = <WordsEvaluation categories={ categories } words={ words } letter={ letter } players={ props.players }/>
     }
+    
+    return (
+        <div id='game-content'>
+            { gameContent }
+        </div>
+    )
 }
 
 export default Slf;

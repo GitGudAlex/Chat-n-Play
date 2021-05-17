@@ -6,6 +6,12 @@ module.exports = (io, socket, callback) => {
     
     // Farben setzten, bei denen, die noch keine Farbe ausgesucht haben
     const player = getPlayer(socket.id);
+
+    // Spiler darf kein Spiel starten
+    if(player === undefined) {
+        return callback("Du darfst kein Spiel starten!");
+    }
+
     const allPlayers = getPlayersInRoom(player.roomId);
 
     if(allPlayers.length < 2) return callback('Es müssen mindestens 2 Spieler anwesend sein!');

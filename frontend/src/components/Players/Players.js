@@ -24,7 +24,7 @@ function Players(props) {
                         username = { player.username }
                         color = { player.color }
                         position = { positions[player.position] }
-                        score = { props.scores === undefined ? undefined : props.scores.find(score => score.username === player.username).score } 
+                        score = { props.scores.length === 0 ? undefined : props.scores.find(score => score.username === player.username).score } 
                         ludo = {props.ludo === undefined ? undefined : props.ludo}
                         width = { props.width }/>
                 ))

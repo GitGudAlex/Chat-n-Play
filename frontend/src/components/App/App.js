@@ -5,21 +5,17 @@ import './App.css';
 
 import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';
-import Lobby from '../Lobby/Lobby';
+import GameBase from '../GameBase/GameBase';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import Ludo from '../Ludo/Ludo';
-import Slf from '../Slf/Slf';
 
 function App() {
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContext.Provider value={ socket }>
       <Router>
         <Switch>
           <Route path='/' exact component={ Home } />
           <Route path='/invitation/:roomid' exact component={ Invitation } />
-          <Route path='/lobby/:roomid' component={ Lobby } />
-          <Route path='/ludo/:roomid' component={ Ludo }/>
-          <Route path='/slf/:roomid' component={ Slf }/>
+          <Route path='/game' component={ GameBase } />
           <Route component={ PageNotFound } />
         </Switch>
       </Router>

@@ -60,7 +60,7 @@ function InvitationCopyBoards(props) {
         <div className='invitation-copy-clipboards'>
             <div className='invitation-wrapper'>
                 <p className='invitation-text'>Link</p>
-                <input id='invitation-input-link' type='text' className='invitation-input' value={ (window.location.href).replace('lobby', 'invitation') || '' } readOnly />
+                <input id='invitation-input-link' type='text' className='invitation-input' value={ (window.location.href).replace('lobby', 'invitation').replace('/game', '') || '' } readOnly />
                 <button id='copy-link-tooltip' title='Kopiert' className='invitation-button btn-primary' data-toggle="tooltip" data-placement="right" onClick={ () => copyToClipboard('invitation-input-link', 'copy-link-tooltip') }>
                     <IconContext.Provider value={{ size: '24px', color: 'white' }}>
                         <MdContentCopy />

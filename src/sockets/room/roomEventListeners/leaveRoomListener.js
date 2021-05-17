@@ -6,6 +6,12 @@ module.exports = (io, socket) => {
 
     // Spieler löschen
     const player = removePlayer(socket.id);
+
+    // Spieler exestiert nicht
+    if(player === undefined) {
+        return;
+    }
+
     const players = getPlayersInRoom(player.roomId);
 
     // Socket ist letzter Spieler im Raum -> Raum löschen

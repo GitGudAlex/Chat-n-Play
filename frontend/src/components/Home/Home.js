@@ -26,7 +26,7 @@ function Home() {
         $('#join-game-modal').modal('hide');
 
         history.push({
-            pathname: '/lobby/' + data.roomId,
+            pathname: '/game/lobby/' + data.roomId,
             state: { data: data }
         });
 

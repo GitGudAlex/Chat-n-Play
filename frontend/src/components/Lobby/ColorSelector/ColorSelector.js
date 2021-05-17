@@ -12,7 +12,6 @@ function ColorSelector() {
 
     // Socket.io
     const socket = useContext(SocketContext);
-
     // Socket Events
     useEffect(() => { 
         socket.emit('room:get-color-selector');

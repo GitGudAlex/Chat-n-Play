@@ -21,7 +21,7 @@ module.exports = (io, socket, data, callback) => {
 
     // Host bekommen
     const player = getPlayer(socket.id);
-
+    
     // Spiel initialisieren
     let initialPlayerScores = initilazeGame(player.roomId, data.categories, 10);
 

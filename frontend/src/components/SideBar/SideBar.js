@@ -87,7 +87,7 @@ function SideBar(props) {
     }
 
     // Höhe der SideBars auf richtige Höhe setzten
-    $('.sidebar-window').height($('.sidebar-wrapper').height());
+    $('.sidebar-window').height($('#sidebar-wrapper').height());
 
     // Sidebar width setzten
     $('.sidebar-window').css('width', props.sideBarWindowWidth + 'px');
@@ -113,7 +113,7 @@ function SideBar(props) {
   // Wenn die Fenster größe verändert wird, muss auch die Sidebar größe angepasst werden, da position: fixed
   useEffect(() => {
     function handleResize() {
-      $('.sidebar-window').height($('.sidebar-wrapper').height());
+      $('.sidebar-window').height($('#sidebar-wrapper').height());
     }
     
     window.addEventListener('resize', handleResize);
