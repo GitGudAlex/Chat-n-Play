@@ -1,21 +1,15 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect } from 'react';
 import $ from 'jquery';
 
 import './EvaluationItem.css'; 
 
 function EvaluationItem(props) {
 
-    const answersLength = useRef(1);
-     
-    useEffect(() => {
-        answersLength.current = props.content.answers.length;
-
-    }, [props]);
-
     // Höhe der Item setzten
     useLayoutEffect(() => {
-        $('.slf-evaluation-item').height(answersLength.current * 27 + 86 + 'px');
-    }, []);
+        $('.slf-evaluation-item').height(props.content.answers.length * 27 + 86 + 'px');
+
+    }, [props]);
 
     return (
         <div className='slf-evaluation-item'>
@@ -33,7 +27,7 @@ function EvaluationItem(props) {
                         entry.word === '' ? (
                             <p key={ entry.socketId } className='slf-evaluation-words noAnswer'>-</p>
                         ) : (
-                            <p key={ entry.socketId } className='slf-evaluation-words'>{ entry.word} </p>
+                            <p key={ entry.socketId } className='slf-evaluation-words'>{ entry.word } </p>
                         )
                     ))
                 }
@@ -42,9 +36,11 @@ function EvaluationItem(props) {
                 {
                     props.content.answers.map((entry) => (
                             entry.word.length > 0 ? (
-                                <input key={ entry.socketId } type='checkbox'  className='slf-evaluation-input' defaultChecked />
+                                <input key={ entry.socketId } id={ 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index } type='checkbox'  className='slf-evaluation-input' defaultChecked
+                                    onClick={ () => props.setRatingHandler(props.index, entry.socketId, 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index) } />
                             ):(
-                                <input key={ entry.socketId } type='checkbox'  className='slf-evaluation-input' disabled />
+                                <input key={ entry.socketId } id={ 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index } type='checkbox'  className='slf-evaluation-input' disabled 
+                                    onClick={ () => props.setRatingHandler(props.index, entry.socketId, 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index) }/>
                             )
                     ))
                 }

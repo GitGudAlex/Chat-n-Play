@@ -24,7 +24,10 @@ const initilazeGame = (roomId, categories, rounds) => {
 
     // Spielern weitere Attribute hinzufügen
     allPlayers.forEach(player => {
+        // Zusammengerechnete Punktzahl von allen Runden
         player['score'] = 0;
+        player['lastScore'] = 0;
+
         player['words'] = []; 
     });
 
@@ -59,6 +62,9 @@ const chooseLetter = (roomId) => {
 
         // Der in der aktuellen Runde benutzter Buchstabe
         room['currentLetter'] = choosenLetter;
+
+        // Welche  Spieler die Bewertungen zu den Wörtern abgegeben haben
+        room['readyPlayers'] = [];
 
         return choosenLetter;
     }
@@ -100,4 +106,169 @@ const removePlayerWordsFromCurrentRound = (player) => {
     return currentWords;
 }
 
-module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound };
+
+const submitVotes = (player, results, callback) => {
+    const room = getRoom(player.roomId);
+    
+    // Bewertung noch nicht abgegeben
+    if(room.readyPlayers.find(socketId => socketId === player.socketId) === undefined) {
+        room.readyPlayers.push(player.socketId);
+
+        callback({ readyPlayers: room.readyPlayers.length });
+
+        // Wörter Bewertung speichern
+        let currentWords = room.currentWords;
+        
+        // Ob das Ergebniss im richtigen Format kommt
+        if(results.length === room.categories.length) {
+            for(let categoryIndex in results) {
+
+                // Ob das Ergebniss im richtigen Format kommt
+                if(results[categoryIndex].answers.length === currentWords.length - 1) {
+
+                    // SocketId (Für wen die Bewertung ist), Bewertung
+                    let votes = results[categoryIndex].answers.map((player) => {
+                        if(player.votes > 0) {
+                            return { socketId: player.socketId, votes: 1 }
+
+                        } else {
+                            return { socketId: player.socketId, votes: 0 }
+
+                        }
+                    }); 
+
+                    // Alle Bewertungen für eine Kategorie
+                    for(let vote of votes) {
+                        let p = currentWords.find(entry => entry.socketId === vote.socketId);
+
+                        if(p !== undefined) {
+                            p.words[categoryIndex].votes += vote.votes;
+                        }
+                    }
+
+                    // Sich selber +1 geben
+                    let p = currentWords.find(entry => entry.socketId === player.socketId);
+
+                    if(p !== undefined) {
+                        for(let entry in p.words) {
+                            entry.votes += 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Wenn letzter Spieler der das Ergebnis abgegeben hat
+        if(room.readyPlayers.length === 2) {
+
+            addVotes(room);
+            return true;
+        }
+
+    } else {
+        // Bewertung schon abgegeben
+        callback({ readyPlayers: room.readyPlayers.length });
+    }
+
+    return false;
+}
+
+
+const addVotes = (room) => {
+
+    let numPlayers = room.currentWords.length;
+    let result = [];
+
+    for(let i=0; i < room.categories.length; i++) {
+        result.push([]);
+    }
+
+    // Alle Wörter gleich machen (toLowerCase, Punkte etc rausfiltern)  
+    for(let playerAnswers of room.currentWords) {
+        for(let wordIndex in playerAnswers.words) {
+
+            // Word nur nehmen, wenn genug votes
+            if(playerAnswers.words[wordIndex].votes / numPlayers >= 0.5) {
+                playerAnswers.words[wordIndex] = playerAnswers.words[wordIndex].word.toLowerCase();
+
+                // Umlaute
+                playerAnswers.words[wordIndex] = playerAnswers.words[wordIndex].replace('ü', 'ue').replace('ä', 'ae').replace('ö', 'oe');
+
+                // Special Characters rausfiltern
+                playerAnswers.words[wordIndex] = playerAnswers.words[wordIndex].replace(/[^a-zA-Z0-9]+/g, '')
+
+                result[wordIndex].push([playerAnswers.socketId, playerAnswers.words[wordIndex]]);
+
+            } else {
+                result[wordIndex].push([playerAnswers.socketId, null]);
+
+            }
+        }
+    }
+
+    room.currentWords = result;
+}
+
+const calculateScore = (room) => {
+    for(let categoryAnswers of room.currentWords) {
+        for(let answer of categoryAnswers) {
+            let player = getPlayer(answer[0]);
+            let nullCounter = 0;
+            let scored = false;
+
+            // Eigenes Wort ist null -> keine Punkte
+            if(answer[1] === null) {
+                continue;
+            }
+
+            for(let otherAnswer of categoryAnswers) {
+
+                // Eigene Antwort nicht bachten
+                if(answer[0] !== otherAnswer[0]) {
+
+                    // gleiche Antwort
+                    if(answer[1] === otherAnswer[1]) {
+                        player.lastScore += 5;
+
+                        scored = true;
+                        break;
+
+                    // Counter hochzählen wenn vergleichswort null ist. später prüfen ob alle anderen auchnull waren
+                    } else {
+                        if(otherAnswer[1] === null) {
+                            nullCounter++;
+                        }
+                    }
+                
+                // Vergleichswort ist eigenes Wort
+                } else {
+                    continue;
+
+                }
+            }
+
+            // Wenn man bisher keinen Punkt bekommen hat
+            if(!scored) {
+
+                // Einziger in einer Kategorie
+                if(nullCounter === (categoryAnswers.length - 1)) {
+                    player.lastScore += 20;
+
+                // Alleine ein Wort
+                } else {
+                    player.lastScore += 10;
+
+                }
+            }
+        }
+    }
+
+    let allPlayers = getPlayersInRoom(room.roomId);
+
+    for(let p of allPlayers) {
+        console.log(p.username);
+        console.log(p.lastScore);
+    }
+}
+
+module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, calculateScore };

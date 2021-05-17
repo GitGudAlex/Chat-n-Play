@@ -1,49 +1,10 @@
-import { useEffect, useState } from 'react';
 import './EvaluationList.css'; 
 
 import EvaluationItem from './EvaluationItem/EvaluationItem.js';
 
 function EvaluationList(props) {
 
-    /**
-     * id, category, 
-     */
-    const [answers, setAnswers] = useState([]);
-    
-    useEffect(() => {
-        let result = [];
-
-        for(let catIndex in props.categories) {
-            let resultJson = { category: props.categories[catIndex].category, answers: [] }
-
-            for(let p of props.players) {
-                let playerAnswerJson = { socketId: p.socketId, username: p.username }
-
-                let playerAnswer = props.words.find(entry => entry.socketId === p.socketId);
-                playerAnswerJson['word'] = playerAnswer.words[catIndex].word;
-                playerAnswerJson['votes'] = playerAnswer.words[catIndex].votes;
-
-                resultJson.answers.push(playerAnswerJson);
-            }
-
-            result.push(resultJson);
-        }
-
-
-        console.log(result);
-        setAnswers(result);
-
-    }, [props]);
-
-
-    const setRating = (categoryIndex, socketId, rating) => {
-        let socketIndex = answers[categoryIndex].answers.find(entry => entry.socketId === socketId);
-
-        answers[categoryIndex].answers[socketIndex].votes = rating;
-    }
-
-
-    if(answers.length === 0) {
+    if(props.answers.length === 0) {
         return (
             <div className='slf-evaluation'>
                 <div style={{ height: '100%' }}>
@@ -62,8 +23,8 @@ function EvaluationList(props) {
                 <div>
                     <div className='slf-evaluation-list'>
                         {
-                            answers.map((entry, index) => (
-                                <EvaluationItem key={ index } content={ entry } index={ index } setRatingHandler={ setRating }/>
+                            props.answers.map((entry, index) => (
+                                <EvaluationItem key={ index } content={ entry } index={ index } setRatingHandler={ props.setRatingHandler }/>
                             ))
                         }
                     </div>
