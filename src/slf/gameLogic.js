@@ -17,7 +17,9 @@ const initilazeGame = (roomId, categories, rounds) => {
     room['categories'] = categories;
     room['rounds'] = rounds;
     room['currentRound'] = -1;
-    room['evaluatingRound'] = false;
+
+    // 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
+    room['gameStatus'] = 1;
 
     // Alle Spieler aus dem Raum des 
     const allPlayers = getPlayersInRoom(roomId);
@@ -58,7 +60,7 @@ const chooseLetter = (roomId) => {
         room['currentWords'] = [];
 
         // Wird auf true gesetzt, wenn die Wörter bewertet werden
-        room['evaluatingRound'] = false;
+        room.gameStatus = 1;
 
         // Der in der aktuellen Runde benutzter Buchstabe
         room['currentLetter'] = choosenLetter;
@@ -89,7 +91,7 @@ const submitWords = (socketId, words, allSubmittedCallback) => {
     const playerNum = getPlayersInRoom(room.roomId).length;
 
     if(playerNum == room['currentWords'].length) {
-        room['evaluatingRound'] = true;
+        room.gameStatus = 2;
         allSubmittedCallback(room['currentWords'], room['currentLetter']);
     }
 }
@@ -145,25 +147,21 @@ const submitVotes = (player, results, callback) => {
                             p.words[categoryIndex].votes += vote.votes;
                         }
                     }
+                }
+            }
 
-                    // Sich selber +1 geben
-                    let p = currentWords.find(entry => entry.socketId === player.socketId);
+            // Sich selber +1 geben
+            let p = currentWords.find(entry => entry.socketId === player.socketId);
 
-                    if(p !== undefined) {
-                        for(let entry in p.words) {
-                            entry.votes += 1;
-                        }
-                    }
+            if(p !== undefined) {
+                for(let entry of p.words) {
+                    entry.votes += 1;
+
                 }
             }
         }
 
-        // Wenn letzter Spieler der das Ergebnis abgegeben hat
-        if(room.readyPlayers.length === 2) {
-
-            addVotes(room);
-            return true;
-        }
+        return checkAllSubmitted(room);
 
     } else {
         // Bewertung schon abgegeben
@@ -174,21 +172,39 @@ const submitVotes = (player, results, callback) => {
 }
 
 
+const checkAllSubmitted = (room) => {
+    // Wie viele Spieler im Spiel
+    let allPlayers = getPlayersInRoom(room.roomId);
+
+    // Wenn letzter Spieler der das Ergebnis abgegeben hat
+    if(room.readyPlayers.length === allPlayers.length) {
+
+        // Wörter werden nun ausgewertet
+        room.gameStatus = 2;
+
+        addVotes(room);
+        return true;
+    }
+
+    return false;
+}
+
+
 const addVotes = (room) => {
 
-    let numPlayers = room.currentWords.length;
+    let numPlayers = getPlayersInRoom(room.roomId).length;
     let result = [];
 
     for(let i=0; i < room.categories.length; i++) {
         result.push([]);
     }
-
+    console.log(room.currentWords);
     // Alle Wörter gleich machen (toLowerCase, Punkte etc rausfiltern)  
     for(let playerAnswers of room.currentWords) {
         for(let wordIndex in playerAnswers.words) {
-
+            console.log(playerAnswers.words[wordIndex]);
             // Word nur nehmen, wenn genug votes
-            if(playerAnswers.words[wordIndex].votes / numPlayers >= 0.5) {
+            if(playerAnswers.words[wordIndex].votes / numPlayers > 0.5) {
                 playerAnswers.words[wordIndex] = playerAnswers.words[wordIndex].word.toLowerCase();
 
                 // Umlaute
@@ -207,6 +223,7 @@ const addVotes = (room) => {
     }
 
     room.currentWords = result;
+    console.log(result);
 }
 
 const calculateScore = (room) => {
@@ -271,4 +288,4 @@ const calculateScore = (room) => {
     }
 }
 
-module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, calculateScore };
+module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, checkAllSubmitted, calculateScore };

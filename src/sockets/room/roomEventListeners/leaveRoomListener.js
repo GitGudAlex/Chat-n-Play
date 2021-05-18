@@ -1,6 +1,6 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
-const { removePlayerWordsFromCurrentRound } = require('../../../slf/gameLogic');
+const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
 
@@ -59,11 +59,20 @@ module.exports = (io, socket) => {
 
             // Stadt Land Fluss befindet sich gerade in der Bewertungs Phase der Wörter
             // -> Wörter nochmal neu schicken ohne die vom Spieler, der dass Spiel verlassen hat
-            if(room.evaluatingRound !== undefined && room.evaluatingRound === true) {
+            if(room.gameStatus === 2) {
                 const newWords = removePlayerWordsFromCurrentRound(player);
 
                 // neue Wörter schicken
                 io.in(player.roomId).emit('slf:update-words', { words: newWords });
+
+                // schauen ob alle die Wörter abgebgenen haben und nur auf den Spieler gewartet haben, der disconnected ist
+                let lastSubmit = checkAllSubmitted(room);
+
+                // Letzter hat die Bewertung abgegeben => Punkte berechnen
+                if(lastSubmit) {
+                    calculateScore(room);
+
+                }
             }
         }
 
