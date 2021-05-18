@@ -13,7 +13,7 @@ module.exports = (io, socket, data, callback) => {
             room.readyPlayers.push(player.socketId);;
 
             // Spieler zeigen, dass ein Spiler fertig ist
-            io.in(player.roomId).emit('slf:new-round-ready-count', { playersReady: room.readyPlayers });
+            io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
 
             if(room.readyPlayers.length === getPlayersInRoom(room.roomId).length) {
                 console.log("Alle abgegeben");

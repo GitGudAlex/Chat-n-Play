@@ -71,7 +71,7 @@ function Player(props) {
     
                 </div>
                 <div className='player-name-score'>
-                    <p>{ props.username }</p>
+                    <p>{ props.username + (props.ready === true ? ` \u2713`: '') }</p>
                     <p>{ 'Score: ' + props.score }</p>
                 </div>
             </div>

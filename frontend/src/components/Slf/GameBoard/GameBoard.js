@@ -36,7 +36,6 @@ function GameBoard(props) {
 
     // Runde Stoppen
     const stopRound = () => {
-        console.log("stop round");
         socket.emit('slf:stop-round');
     }
 
@@ -84,7 +83,6 @@ function GameBoard(props) {
 
     // Richtige Aufteilung der Input Zellen
     useEffect(() => {
-        
         let inputHeight = 67;
         let padding = 50;
 

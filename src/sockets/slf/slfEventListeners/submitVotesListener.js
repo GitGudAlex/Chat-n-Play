@@ -8,7 +8,7 @@ module.exports = (io, socket, data, callback) => {
 
     if(player !== undefined) {
         let lastSubmit = submitVotes(player, data.results, (data) => {
-            io.in(player.roomId).emit('slf:player-submitted', { playersReady:  data.readyPlayers });
+            io.in(player.roomId).emit('slf:players-ready-count', { playersReady:  data.readyPlayers });
             
         });
 

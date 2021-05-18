@@ -19,15 +19,15 @@ function WordsEvaluation(props) {
      const [answers, setAnswers] = useState([]);
 
      const handlePlayerSubmittedEvent = useCallback((data) => {
-        setReadyUsers(data.playersReady);
+        setReadyUsers(data.playersReady.length);
 
      }, []);
 
-     useState(() => {
-        socket.on('slf:player-submitted', handlePlayerSubmittedEvent);
+     useEffect(() => {
+        socket.on('slf:players-ready-count', handlePlayerSubmittedEvent);
 
         return() => {
-            socket.off('slf:player-submitted');
+            socket.off('slf:players-ready-count', handlePlayerSubmittedEvent);
         }
 
      }, [socket, handlePlayerSubmittedEvent]);

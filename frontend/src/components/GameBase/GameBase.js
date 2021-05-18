@@ -31,6 +31,9 @@ function GameBase(props) {
     const [hostId, setHostId] = useState();
     const [players, setPlayers] = useState();
 
+    // Bei SLF die Spieler die 'weiter' geklickt haben
+    const [playersReady, setPlayersReady] = useState([]);
+
     // Um bei Ludo die Häuser anzuzeigen
     const [ludo, setLudo] = useState();
 
@@ -111,6 +114,23 @@ function GameBase(props) {
 
     }, [socket, handleRoomUpdateEvent, handleHostChanged, handleScoreUpdateEvent]);
 
+
+    // Um die Häckchen bei den Kameras anzuzeigen
+    useEffect(() => {
+        socket.on('slf:players-ready-count', (data) => {
+            if(data.playersReady.length === players.length) {
+                setPlayersReady([]);
+
+            } else {
+                setPlayersReady(data.playersReady);
+
+            }
+        });
+
+        return() => {
+            socket.off('slf:players-ready-count');
+        }
+    }, [socket, players]);
 
     // API Calls
     useEffect(() => {   
@@ -227,7 +247,7 @@ function GameBase(props) {
                                     <Route component={ PageNotFound } />
                                 </Switch>
                             </Router>
-                            <Players players={ players } scores={ scores } ludo={ ludo } />
+                            <Players players={ players } scores={ scores } ludo={ ludo } readyPlayers={ playersReady }/>
                         </div>
                     </div>
                 </div>

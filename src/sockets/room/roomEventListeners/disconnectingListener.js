@@ -70,6 +70,9 @@ module.exports = (io, socket) => {
                         
                         let scores = calculateScore(room);
 
+                        // resetten
+                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: [] });
+
                         // Scores an Spieler senden
                         io.in(player.roomId).emit('slf:round-scores', { scores });
 
@@ -78,8 +81,12 @@ module.exports = (io, socket) => {
                 // Score Übersicht
                 } else if(room.gameStatus === 3) {
                     
-                    // Alle Spiele rschon bereit bis der Spieler, der das Spiel verlässt.
+                    // Alle Spiele schon bereit bis der Spieler, der das Spiel verlässt.
                     if(room.readyPlayers.length === players.length) {
+
+                        // resetten
+                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: [] });
+                        
                         console.log("alle agbeben 2");
                     }
 

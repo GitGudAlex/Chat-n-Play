@@ -15,7 +15,7 @@ function Players(props) {
             $('.player').height($('.player').width()/16 * 9);
         });
     }, []);
-
+    
     return (
         <div className='players'>
             {
@@ -25,8 +25,9 @@ function Players(props) {
                         color = { player.color }
                         position = { positions[player.position] }
                         score = { props.scores.length === 0 ? undefined : props.scores.find(score => score.username === player.username).score } 
-                        ludo = {props.ludo === undefined ? undefined : props.ludo}
-                        width = { props.width }/>
+                        ludo = { props.ludo === undefined ? undefined : props.ludo }
+                        width = { props.width }
+                        ready = { props.readyPlayers.find(entry => entry === player.socketId) === undefined ? false : true } />
                 ))
             }
         </div>

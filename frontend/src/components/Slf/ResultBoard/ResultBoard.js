@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 
 import './ResultBoard.css';
 
@@ -14,14 +14,16 @@ function ResultBoard(props) {
     // Wie viele User auf weiter geklickt haben
     const [readyUsers, setReadyUsers] = useState(0);
 
-    useState(() => {
-        socket.on('slf:new-round-ready-count', (data) => {
-            setReadyUsers(data.playersReady.length);
+    const handleStartNewRoundVoteEvent = useCallback((data) => {
+        setReadyUsers(data.playersReady.length);
 
-        });
+    }, []);
+
+    useState(() => {
+        socket.on('slf:players-ready-count', handleStartNewRoundVoteEvent);
 
         return() => {
-                socket.off('slf:new-round-ready-count');
+            socket.off('slf:players-ready-count', handleStartNewRoundVoteEvent);
         }
 
     }, [socket]);
@@ -32,18 +34,22 @@ function ResultBoard(props) {
         if(props.scores !== 0) {
             let result = [];
 
-            let sortedScores = props.scores.sort((a, b) => {
+            for(let score of props.scores) {
+                for(let player of props.players) {
+                    if(player !== undefined) {
+                        if(score.socketId === player.socketId) {
+                            result.push({ username: player.username, score: score.score });
+                        }
+                    }
+                }
+            }
+
+            let sortedScores = result.sort((a, b) => {
                 return b.score - a.score
 
             })
 
-            for(let player of props.players) {
-                let score = props.scores.find(s => s.socketId === player.socketId).score;
-
-                result.push({ username: player.username, score });
-            }
-
-            setSortedPlayerScores(result);
+            setSortedPlayerScores(sortedScores);
         }
 
     }, [props]);
@@ -77,7 +83,7 @@ function ResultBoard(props) {
                     {
                         sortedPlayerScores.map((entry, index) => (
                             <div key={ index } className='slf-player-score-wrapper'> 
-                                <p key={ index + '-1' } className='slf-player-score-item'>{  entry.username + ':' }</p>
+                                <p key={ index + '-1' } style={{ textAlign: 'right' }} className='slf-player-score-item'>{  entry.username + ':' }</p>
                                 <p key={ index + '-2' } className='slf-player-score-item'>{ entry.score + ' Punkte' }</p>
                             </div>
                             

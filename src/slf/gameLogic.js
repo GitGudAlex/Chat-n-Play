@@ -116,7 +116,7 @@ const submitVotes = (player, results, callback) => {
     if(room.readyPlayers.find(socketId => socketId === player.socketId) === undefined) {
         room.readyPlayers.push(player.socketId);
 
-        callback({ readyPlayers: room.readyPlayers.length });
+        callback({ readyPlayers: room.readyPlayers });
 
         // Wörter Bewertung speichern
         let currentWords = room.currentWords;
