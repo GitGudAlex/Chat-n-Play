@@ -65,10 +65,24 @@ module.exports = (io, socket) => {
 
                     // Letzter hat die Bewertung abgegeben => Punkte berechnen
                     if(lastSubmit) {
-                        calculateScore(room);
-                        console.log("calc score");
+                        // Runde vorbei -> umleiten
+                        io.in(player.roomId).emit('slf:round-over');
+                        
+                        let scores = calculateScore(room);
 
-                    } else {console.log("noooope");}
+                        // Scores an Spieler senden
+                        io.in(player.roomId).emit('slf:round-scores', { scores });
+
+                    }
+
+                // Score Übersicht
+                } else if(room.gameStatus === 3) {
+                    
+                    // Alle Spiele rschon bereit bis der Spieler, der das Spiel verlässt.
+                    if(room.readyPlayers.length === players.length) {
+                        console.log("alle agbeben 2");
+                    }
+
                 }
             }
 

@@ -40,6 +40,11 @@
     text-align: center;
 }
 
+#slf-submit-evaluated-words-btn:disabled {
+    background-color: gray;
+    border-color: gray;
+}
+
 #slf-evaluation-wrapper {
     position: absolute;
     top: 130px; left: 0; bottom: 130px; right: 0;

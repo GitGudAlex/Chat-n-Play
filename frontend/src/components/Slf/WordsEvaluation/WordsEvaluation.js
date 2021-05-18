@@ -87,6 +87,8 @@ function WordsEvaluation(props) {
     const submitVotes = (results) => {
         socket.emit('slf:submit-votes', { results: results });
 
+        document.getElementById('slf-submit-evaluated-words-btn').disabled = true;
+
     }
  
 

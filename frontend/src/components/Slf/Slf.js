@@ -3,6 +3,7 @@ import { useContext, useState, useEffect, useCallback } from 'react';
 import CategorySelection from './CategorySelection/CategorySelection';
 import GameBoard from './GameBoard/GameBoard';
 import WordsEvaluation from './WordsEvaluation/WordsEvaluation';
+import ResultBoard from './ResultBoard/ResultBoard';
 
 import SocketContext from '../../services/socket';
 
@@ -13,6 +14,7 @@ function Slf(props) {
     const [rounds, setRounds] = useState();
     const [words, setWords] = useState([]);
     const [letter, setLetter] = useState('');
+    const [scores, setScores] = useState(0);
 
     // 0: Kategorien auswählen | 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     const [gameStatus, setGameStatus] = useState();
@@ -45,20 +47,34 @@ function Slf(props) {
         setWords(data.words);
     }, []);
 
+    // Wenn die Bewertung vorbei ist und nur noch die Ergebnisse angezeigt werden sollen
+    const handleRoundOverEvent = useCallback(() => {
+        setGameStatus(3);
+    }, []);
+
+    // Wenn die Bewertung vorbei ist und nur noch die Ergebnisse angezeigt werden sollen
+    const handleRoundScoresEvent = useCallback((data) => {
+        setScores(data.scores);
+    }, []);
+
     // Socket Events
     useEffect(() => { 
         socket.on('slf:submit-categories', handleCategoriesSubmitEvent);
         socket.on('slf:evaluating-results', handleEvaluatingResultsEvent);
         socket.on('slf:update-words', handleUpdateWordsEvent);
+        socket.on('slf:round-over', handleRoundOverEvent);
+        socket.on('slf:round-scores', handleRoundScoresEvent);
 
         return() => {
             // Events unmounten
             socket.off('slf:submit-categories');
             socket.off('slf:evaluating-results');
             socket.off('slf:update-words');
+            socket.off('slf:round-over');
+            socket.off('slf:round-scores');
         }
         
-    }, [socket, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent]);
+    }, [socket, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent, handleRoundOverEvent, handleRoundScoresEvent]);
 
     useEffect(() => { 
         return () => {
@@ -81,6 +97,9 @@ function Slf(props) {
         
     } else if(gameStatus === 2) {
         gameContent = <WordsEvaluation categories={ categories } words={ words } letter={ letter } players={ props.players }/>
+
+    } else if(gameStatus === 3) {
+        gameContent = <ResultBoard scores={ scores } players={ props.players } letter={ letter }/>
     }
     
     return (

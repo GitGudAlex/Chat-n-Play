@@ -3,6 +3,7 @@ const startGameHandler = require('./slfEventListeners/startGameListener');
 const stopRoundHandler = require('./slfEventListeners/stopRoundListener');
 const submitWordsHandler = require('./slfEventListeners/submitWordsListener');
 const submitVotesHandler  = require('./slfEventListeners/submitVotesListener');
+const newRoundHandler  = require('./slfEventListeners/newRoundListener');
 
 module.exports = (io, socket) => {
 
@@ -14,4 +15,6 @@ module.exports = (io, socket) => {
   socket.on('slf:submit-words', (data, callback) => submitWordsHandler(io, socket, data, callback));
 
   socket.on('slf:submit-votes', (data, callback) => submitVotesHandler(io, socket, data, callback));
+
+  socket.on('slf:vote-new-round', (data, callback) => newRoundHandler(io, socket, data, callback));
 }

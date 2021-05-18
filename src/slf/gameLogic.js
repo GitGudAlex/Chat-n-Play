@@ -198,11 +198,11 @@ const addVotes = (room) => {
     for(let i=0; i < room.categories.length; i++) {
         result.push([]);
     }
-    console.log(room.currentWords);
+
     // Alle Wörter gleich machen (toLowerCase, Punkte etc rausfiltern)  
     for(let playerAnswers of room.currentWords) {
         for(let wordIndex in playerAnswers.words) {
-            console.log(playerAnswers.words[wordIndex]);
+
             // Word nur nehmen, wenn genug votes
             if(playerAnswers.words[wordIndex].votes / numPlayers > 0.5) {
                 playerAnswers.words[wordIndex] = playerAnswers.words[wordIndex].word.toLowerCase();
@@ -223,10 +223,13 @@ const addVotes = (room) => {
     }
 
     room.currentWords = result;
-    console.log(result);
 }
 
 const calculateScore = (room) => {
+
+    // Spiel Status updaten
+    room.gameStatus = 3;
+
     for(let categoryAnswers of room.currentWords) {
         for(let answer of categoryAnswers) {
             let player = getPlayer(answer[0]);
@@ -282,10 +285,17 @@ const calculateScore = (room) => {
 
     let allPlayers = getPlayersInRoom(room.roomId);
 
+    //  { socketId, score }
+    let scoreResults = [];
+
     for(let p of allPlayers) {
-        console.log(p.username);
-        console.log(p.lastScore);
+        scoreResults.push({ socketId: p.socketId, score: p.lastScore });
     }
+
+    // resetten
+    room.readyPlayers = [];
+
+    return scoreResults;
 }
 
 module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, checkAllSubmitted, calculateScore };

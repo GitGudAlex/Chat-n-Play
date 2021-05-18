@@ -15,8 +15,14 @@ module.exports = (io, socket, data, callback) => {
         // Letzter hat die Bewertung abgegeben => Punkte berechnen
         if(lastSubmit) {
 
+            // Runde vorbei -> umleiten
+            io.in(player.roomId).emit('slf:round-over');
+
             const room = getRoom(player.roomId);
-            calculateScore(room);
+            const scores = calculateScore(room);
+
+            // Scores an Spieler senden
+            io.in(player.roomId).emit('slf:round-scores', { scores });
         }
     }
 }

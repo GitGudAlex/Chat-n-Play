@@ -66,13 +66,28 @@ module.exports = (io, socket) => {
                 io.in(player.roomId).emit('slf:update-words', { words: newWords });
 
                 // schauen ob alle die Wörter abgebgenen haben und nur auf den Spieler gewartet haben, der disconnected ist
-                let lastSubmit = checkAllSubmitted(room);
+                const lastSubmit = checkAllSubmitted(room);
 
                 // Letzter hat die Bewertung abgegeben => Punkte berechnen
                 if(lastSubmit) {
-                    calculateScore(room);
+                    // Runde vorbei -> umleiten
+                    io.in(player.roomId).emit('slf:round-over');
+
+                    const scores = calculateScore(room);
+
+                    // Scores an Spieler senden
+                    io.in(player.roomId).emit('slf:round-scores', { scores });
 
                 }
+            
+            // Score Übersicht
+            } else if(room.gameStatus === 3) {
+
+                // Alle Spiele rschon bereit bis der Spieler, der das Spiel verlässt.
+                if(room.readyPlayers.length === players.length) {
+                    console.log("alle agbeben 2");
+                }
+
             }
         }
 
