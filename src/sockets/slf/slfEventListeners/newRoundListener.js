@@ -21,7 +21,8 @@ module.exports = (io, socket, data, callback) => {
             if(room.readyPlayers.length === players.length) {
 
                 // Spielern sagen, dass eine neue Runde beginnt
-                io.in(player.roomId).emit('slf:new-round');
+                room.currentRound += 1;
+                io.in(player.roomId).emit('slf:new-round', { currentRound: room.currentRound });
 
                 // Punkte zum gesamtscore hinzufügen
                 for(let p of players) {

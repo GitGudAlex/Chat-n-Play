@@ -1,4 +1,4 @@
-const { isHost } = require('../../../models/rooms');
+const { isHost, getRoom } = require('../../../models/rooms');
 const { getPlayer } = require('../../../models/players');
 const { initilazeGame, chooseLetter } = require('../../../slf/gameLogic');
 
@@ -29,11 +29,14 @@ module.exports = (io, socket, data, callback) => {
     io.in(player.roomId).emit('slf:score-update', { scores: initialPlayerScores });
 
     // Allen Spielern die Kategorien + Runden übergeben
-    io.in(player.roomId).emit('slf:submit-categories', { categories: data.categories, rounds: 10 });
+    io.in(player.roomId).emit('slf:submit-game-infos', { categories: data.categories, rounds: 10 });
 
     // Buchstabe aussuchen nach einer kurzen Pause, damit sich alle die Kategorien anschauen können
     setTimeout(() => {
         chooseLetter(player.roomId, (letter) => {
+            const room = getRoom(player.roomId);
+            room.currentRound += 1;
+            
             io.in(player.roomId).emit('slf:start-round', { letter });
         });
     }, 2000);

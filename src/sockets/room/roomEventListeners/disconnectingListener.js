@@ -1,6 +1,6 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
-const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore } = require('../../../slf/gameLogic');
+const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
     // Spieler löschen
@@ -87,7 +87,24 @@ module.exports = (io, socket) => {
                         // resetten
                         io.in(player.roomId).emit('slf:players-ready-count', { playersReady: [] });
                         
-                        console.log("alle agbeben 2");
+                        // Spielern sagen, dass eine neue Runde beginnt
+                        room.currentRound += 1;
+                        io.in(player.roomId).emit('slf:new-round', { currentRound: room.currentRound });
+
+                        // Punkte zum gesamtscore hinzufügen
+                        for(let p of players) {
+                            p.score += p.lastScore;
+                            p.lastScore = 0;
+                        }
+
+                        // Scores emitten
+                        console.log(getPlayersScores(players));
+                        io.in(player.roomId).emit('slf:score-update', { scores: getPlayersScores(players) });
+
+                        // Buchstabe schicken
+                        chooseLetter(room.roomId, (letter) => {
+                            io.in(player.roomId).emit('slf:start-round', { letter });
+                        });
                     }
 
                 }

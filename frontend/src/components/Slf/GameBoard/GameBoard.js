@@ -11,7 +11,6 @@ import SocketContext from '../../../services/socket';
 function GameBoard(props) {
 
     const [categories, setCategories] = useState([]);
-    const [rounds, setRounds] = useState();
     const [letter, setLetter] = useState();
     const [inputDisabled, setInputDisabled] = useState(true);
     const [inputFlexBasis, setInputFlexBasis] = useState(10);
@@ -29,7 +28,6 @@ function GameBoard(props) {
         }
 
         setCategories(props.categories);
-        setRounds(props.rounds);
         setInputFlexBasis((1/props.categories.length) * 100);
 
     }, [props]);
@@ -54,7 +52,6 @@ function GameBoard(props) {
 
         } else {
             setLetter(data.letter);
-
         }
     }, []);
 
@@ -102,7 +99,7 @@ function GameBoard(props) {
     }, [categories]);
 
 
-    if(categories === undefined || rounds === undefined) {
+    if(categories === undefined) {
         return (
             <div style={{ height: '100%' }}>
                 <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
@@ -117,6 +114,7 @@ function GameBoard(props) {
             <div id='slf-game-board'>
                 <div id='slf-letter-roulette-wrapper'>
                     <LetterRoulette letter={ letter } submitBtnDisbaledChangeHandler={ changeSubmitBtnDisabledState } />
+                    <p style={{ textAlign: 'center' }}>{ 'Runde ' + props.currentRound + '/' + props.totalRounds }</p>
                 </div>
                 <div id='slf-categories-input-wrapper'>
                     {

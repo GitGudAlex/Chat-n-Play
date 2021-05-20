@@ -15,20 +15,24 @@ function Players(props) {
             $('.player').height($('.player').width()/16 * 9);
         });
     }, []);
-    
+
     return (
         <div className='players'>
             {
-                props.players.map(player => (
-                    <Player key = { player.username  } 
-                        username = { player.username }
-                        color = { player.color }
-                        position = { positions[player.position] }
-                        score = { props.scores.length === 0 ? undefined : props.scores.find(score => score.username === player.username).score } 
-                        ludo = { props.ludo === undefined ? undefined : props.ludo }
-                        width = { props.width }
-                        ready = { props.readyPlayers.find(entry => entry === player.socketId) === undefined ? false : true } />
-                ))
+                props.players.map(player => {
+                    let score = props.scores.find(score => score.username === player.username)
+
+                    return (
+                        <Player key = { player.username  } 
+                            username = { player.username }
+                            color = { player.color }
+                            position = { positions[player.position] }
+                            score = { score === undefined ? undefined : score.score } 
+                            ludo = { props.ludo === undefined ? undefined : props.ludo }
+                            width = { props.width }
+                            ready = { props.readyPlayers.find(entry => entry === player.socketId) === undefined ? false : true } />
+                    )
+                })
             }
         </div>
     );

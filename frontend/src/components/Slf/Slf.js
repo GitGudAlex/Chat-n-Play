@@ -11,7 +11,8 @@ function Slf(props) {
 
     // Game Data
     const [categories, setCategories] = useState([]);
-    const [rounds, setRounds] = useState();
+    const [totalRounds, setTotalTounds] = useState();
+    const [currentRound, setCurrentRound] = useState(1);
     const [words, setWords] = useState([]);
     const [letter, setLetter] = useState('');
     const [scores, setScores] = useState(0);
@@ -31,7 +32,7 @@ function Slf(props) {
     // Wenn der Servert die ausgewählten kategorien übermittelt
     const handleCategoriesSubmitEvent = useCallback((data) => {
         setCategories(data.categories);
-        setRounds(data.rounds);
+        setTotalTounds(data.rounds);
         setGameStatus(1);
     }, []);
 
@@ -59,12 +60,13 @@ function Slf(props) {
 
     // Wenn eine neue Runde gestartet werden soll
     const handleNewRoundEvent = useCallback((data) => {
+        setCurrentRound(data.currentRound);
         setGameStatus(1);
     }, []);
 
     // Socket Events
     useEffect(() => { 
-        socket.on('slf:submit-categories', handleCategoriesSubmitEvent);
+        socket.on('slf:submit-game-infos', handleCategoriesSubmitEvent);
         socket.on('slf:evaluating-results', handleEvaluatingResultsEvent);
         socket.on('slf:update-words', handleUpdateWordsEvent);
         socket.on('slf:round-over', handleRoundOverEvent);
@@ -73,7 +75,7 @@ function Slf(props) {
 
         return() => {
             // Events unmounten
-            socket.off('slf:submit-categories');
+            socket.off('slf:submit-game-infos');
             socket.off('slf:evaluating-results');
             socket.off('slf:update-words');
             socket.off('slf:round-over');
@@ -100,13 +102,13 @@ function Slf(props) {
 
     // Spielfeld
     } else if(gameStatus === 1) {
-        gameContent = <GameBoard categories={ categories } rounds={ rounds }/>
+        gameContent = <GameBoard categories={ categories } totalRounds={ totalRounds } currentRound={ currentRound } />
         
     } else if(gameStatus === 2) {
-        gameContent = <WordsEvaluation categories={ categories } words={ words } letter={ letter } players={ props.players }/>
+        gameContent = <WordsEvaluation categories={ categories } words={ words } letter={ letter } players={ props.players } />
 
     } else if(gameStatus === 3) {
-        gameContent = <ResultBoard scores={ scores } players={ props.players } letter={ letter }/>
+        gameContent = <ResultBoard scores={ scores } players={ props.players } letter={ letter } />
     }
     
     return (

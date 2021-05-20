@@ -16,7 +16,7 @@ const initilazeGame = (roomId, categories, rounds) => {
 
     room['categories'] = categories;
     room['rounds'] = rounds;
-    room['currentRound'] = -1;
+    room['currentRound'] = 0;
 
     // 1: Wörter überlegen zum Buchstaben | 2: Wörter bewerten | 3: Spiel vorbei
     room['gameStatus'] = 1;
@@ -39,15 +39,12 @@ const initilazeGame = (roomId, categories, rounds) => {
 const chooseLetter = (roomId, callback) => {
     const room = getRoom(roomId);
 
-    if(room['currentRound'] < room['rounds']) {
+    if(room['currentRound'] <= room['rounds']) {
         let letters = roomLetters.filter((item) => item.roomId === roomId)[0].alphabet;
         let index = Math.floor(Math.random() * letters.length);
         
         let choosenLetter = letters[index];
         letters.splice(index, 1);
-
-        // Runde +1
-        room['currentRound'] += 1;
 
         // Die Wörter aus der letzten Runde löschen
         room['currentWords'] = [];
