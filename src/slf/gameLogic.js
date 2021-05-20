@@ -32,18 +32,11 @@ const initilazeGame = (roomId, categories, rounds) => {
 
         player['words'] = []; 
     });
-
-    let playerScores = allPlayers.map((player) => {
-        let playerObj = { username: player.username, score: player.score };
-        
-        return playerObj;
-    });
     
-    return playerScores;
+    return getPlayersScores(allPlayers);
 }
 
-
-const chooseLetter = (roomId) => {
+const chooseLetter = (roomId, callback) => {
     const room = getRoom(roomId);
 
     if(room['currentRound'] < room['rounds']) {
@@ -68,10 +61,13 @@ const chooseLetter = (roomId) => {
         // Welche  Spieler die Bewertungen zu den Wörtern abgegeben haben
         room['readyPlayers'] = [];
 
-        return choosenLetter;
+        setTimeout(() => {
+            callback(choosenLetter);
+    
+        }, 1000);
     }
 
-    return undefined;
+    return;
 }
 
 
@@ -298,4 +294,12 @@ const calculateScore = (room) => {
     return scoreResults;
 }
 
-module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, checkAllSubmitted, calculateScore };
+const getPlayersScores = (allPlayers) => {
+    return allPlayers.map((player) => {
+        let playerObj = { username: player.username, score: player.score };
+        
+        return playerObj;
+    });
+}
+
+module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, checkAllSubmitted, calculateScore, getPlayersScores };

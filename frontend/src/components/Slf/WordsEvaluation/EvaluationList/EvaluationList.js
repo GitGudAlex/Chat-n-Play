@@ -1,8 +1,21 @@
+import $ from 'jquery';
+
 import './EvaluationList.css'; 
 
 import EvaluationItem from './EvaluationItem/EvaluationItem.js';
+import { useLayoutEffect } from 'react';
 
 function EvaluationList(props) {
+
+    useLayoutEffect(() => {
+        if(props.isReady === true) {
+            $('.slf-evaluation-input').attr("disabled", true);
+
+        } else {
+            $('.slf-evaluation-input').attr("disabled", false);
+
+        }
+    });
 
     if(props.answers.length === 0) {
         return (
@@ -24,7 +37,7 @@ function EvaluationList(props) {
                     <div className='slf-evaluation-list'>
                         {
                             props.answers.map((entry, index) => (
-                                <EvaluationItem key={ index } content={ entry } index={ index } setRatingHandler={ props.setRatingHandler }/>
+                                <EvaluationItem key={ index } content={ entry } index={ index } setRatingHandler={ props.setRatingHandler } disable={ props.isReady }/>
                             ))
                         }
                     </div>

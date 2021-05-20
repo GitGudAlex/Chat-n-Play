@@ -97,6 +97,7 @@ function GameBase(props) {
     // Event wenn sich die Scores Updaten
     const handleScoreUpdateEvent = useCallback((data) => {
         setScores(data.scores);
+        console.log("lllllll: ", data);
     }, []);
 
     // Wenn neue Spieler in den Raum kommen oder aus dem Raum austreten

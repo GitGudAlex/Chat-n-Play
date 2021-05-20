@@ -19,14 +19,14 @@ function ResultBoard(props) {
 
     }, []);
 
-    useState(() => {
+    useEffect(() => {
         socket.on('slf:players-ready-count', handleStartNewRoundVoteEvent);
 
         return() => {
             socket.off('slf:players-ready-count', handleStartNewRoundVoteEvent);
         }
 
-    }, [socket]);
+    }, [socket, handleStartNewRoundVoteEvent]);
 
 
     // Spilernamen und scores zusammenfügen und sortieren

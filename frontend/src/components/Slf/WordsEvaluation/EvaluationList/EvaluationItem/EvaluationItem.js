@@ -39,7 +39,7 @@ function EvaluationItem(props) {
                                 <input key={ entry.socketId } id={ 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index } type='checkbox'  className='slf-evaluation-input' defaultChecked
                                     onClick={ () => props.setRatingHandler(props.index, entry.socketId, 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index) } />
                             ):(
-                                <input key={ entry.socketId } id={ 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index } type='checkbox'  className='slf-evaluation-input' disabled 
+                                <input key={ entry.socketId } id={ 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index } type='checkbox'  className='slf-evaluation-input-disabled' disabled 
                                     onClick={ () => props.setRatingHandler(props.index, entry.socketId, 'slf-evaulation-input-' +  entry.socketId + '-' +  props.index) }/>
                             )
                     ))

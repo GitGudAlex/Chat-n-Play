@@ -57,6 +57,11 @@ function Slf(props) {
         setScores(data.scores);
     }, []);
 
+    // Wenn eine neue Runde gestartet werden soll
+    const handleNewRoundEvent = useCallback((data) => {
+        setGameStatus(1);
+    }, []);
+
     // Socket Events
     useEffect(() => { 
         socket.on('slf:submit-categories', handleCategoriesSubmitEvent);
@@ -64,6 +69,7 @@ function Slf(props) {
         socket.on('slf:update-words', handleUpdateWordsEvent);
         socket.on('slf:round-over', handleRoundOverEvent);
         socket.on('slf:round-scores', handleRoundScoresEvent);
+        socket.on('slf:new-round', handleNewRoundEvent);
 
         return() => {
             // Events unmounten
@@ -72,9 +78,10 @@ function Slf(props) {
             socket.off('slf:update-words');
             socket.off('slf:round-over');
             socket.off('slf:round-scores');
+            socket.off('slf:new-round');
         }
         
-    }, [socket, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent, handleRoundOverEvent, handleRoundScoresEvent]);
+    }, [socket, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent, handleRoundOverEvent, handleRoundScoresEvent, handleNewRoundEvent]);
 
     useEffect(() => { 
         return () => {

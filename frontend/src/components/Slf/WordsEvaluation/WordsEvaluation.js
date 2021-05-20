@@ -11,6 +11,7 @@ function WordsEvaluation(props) {
     // Socket.io
     const socket = useContext(SocketContext);
 
+    const [isReady, setIsReady] = useState(false);
     const [readyUsers, setReadyUsers] = useState(0);
 
     /**
@@ -86,6 +87,7 @@ function WordsEvaluation(props) {
 
     const submitVotes = (results) => {
         socket.emit('slf:submit-votes', { results: results });
+        setIsReady(true);
 
         document.getElementById('slf-submit-evaluated-words-btn').disabled = true;
 
@@ -114,7 +116,7 @@ function WordsEvaluation(props) {
                     </div>
                 </div>
                 <div id='slf-evaluation-wrapper'>
-                    <EvaluationList answers={ answers } setRatingHandler={ setRating }/>
+                    <EvaluationList answers={ answers } setRatingHandler={ setRating } isReady={ isReady } />
                 </div>
                 <div id='slf-submit-evaluated-words-btn-wrapper'>
                     <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>

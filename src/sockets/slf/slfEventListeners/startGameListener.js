@@ -33,9 +33,8 @@ module.exports = (io, socket, data, callback) => {
 
     // Buchstabe aussuchen nach einer kurzen Pause, damit sich alle die Kategorien anschauen können
     setTimeout(() => {
-        let letter = chooseLetter(player.roomId);
-
-        io.in(player.roomId).emit('slf:start-round', { letter });
-
-    }, 4000);
+        chooseLetter(player.roomId, (letter) => {
+            io.in(player.roomId).emit('slf:start-round', { letter });
+        });
+    }, 2000);
 }
