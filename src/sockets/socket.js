@@ -1,4 +1,5 @@
 const roomEvents = require("./room/roomIndex");
+const webcamEvents = require("./webcam/webcamIndex")
 const chatEvents = require("./chat/chatIndex");
 const ludoEvents = require("./ludo/ludoIndex")
 const slfEvents = require("./slf/slfIndex")
@@ -8,6 +9,9 @@ module.exports = function(io) {
         
         // all room events
         roomEvents(io, socket);
+
+        // all webcam events
+        webcamEvents(io, socket);
 
         // all chat events
         chatEvents(io, socket);

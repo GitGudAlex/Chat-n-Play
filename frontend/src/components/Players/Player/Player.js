@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import { useLayoutEffect, useState } from 'react';
 import House from '../../Ludo/house/house';
-import Camera from '../Camera/Camera';
 
 import './Player.css';
 
@@ -14,6 +13,7 @@ function Player(props) {
 
     useLayoutEffect(() => {
         setParentElementWidth($(".players").width());
+
     }, []);
 
     // Falls div Struktur falsch aufgebaut ist
@@ -35,7 +35,7 @@ function Player(props) {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid #474747' }} className='camera'>
-                    {/*<video width={props.width} height={props.height} ref={props.video} autoPlay playsInline></video>*/}
+                    <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
                     <p>{ props.username }</p>
@@ -46,7 +46,7 @@ function Player(props) {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
-                {/*<video width={props.width} height={props.height} ref={props.video} autoPlay playsInline></video>*/}
+                    <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
                     <p>{ props.username }</p>
@@ -58,7 +58,7 @@ function Player(props) {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
-                {/*<video width={props.width} height={props.height} ref={props.video} autoPlay playsInline></video>*/}
+                    <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
                     <p>{ props.username }</p>
@@ -69,7 +69,7 @@ function Player(props) {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
-                {/*<video width={props.width} height={props.height} ref={props.video} autoPlay playsInline></video>*/}
+                    <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name-score'>
                     <p>{ props.username + (props.ready === true ? ` \u2713`: '') }</p>
