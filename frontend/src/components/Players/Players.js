@@ -62,7 +62,7 @@ function Players(props) {
                 // Kamera wird erlaubt
                 let video = document.getElementById('player-video-' + socket.id);
                 video.muted = true;
-                video.srcObject = stream;
+                video.srcObject = stream.clone();
     
                 // Eigene Kamera abspielen
                 video.onloadedmetadata = function(e) {
@@ -113,7 +113,7 @@ function Players(props) {
             {
                 props.players.map(player => {
                     let score = props.scores.find(score => score.username === player.username)
-                    console.log(props.scores);
+                    
                     return (
                         <Player key = { player.username  } 
                             username = { player.username }
