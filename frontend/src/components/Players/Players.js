@@ -1,5 +1,6 @@
-import $ from 'jquery';
 import { useContext, useLayoutEffect } from 'react';
+import { useHistory } from 'react-router';
+import $ from 'jquery';
 import Peer from 'peerjs';
 
 import './Players.css'; 
@@ -11,6 +12,9 @@ function Players(props) {
 
     const socket = useContext(SocketContext);
     const useVideos = false;
+
+    // Router Stuff
+    const history = useHistory();
 
     // Positionen der Spieler
     const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
@@ -97,18 +101,19 @@ function Players(props) {
             }).catch(function(err) {
     
                 // Aus dem Spiel schmeißen
-                console.log("TODO: Aus dem Spiel werfen");
+                socket.emit('room:leave-room');
+                history.push('/');
             });
         }
 
-    }, [socket, useVideos]);
+    }, [socket, useVideos, history]);
 
     return (
         <div className='players'>
             {
                 props.players.map(player => {
                     let score = props.scores.find(score => score.username === player.username)
-
+                    console.log(props.scores);
                     return (
                         <Player key = { player.username  } 
                             username = { player.username }
@@ -116,6 +121,7 @@ function Players(props) {
                             color = { player.color }
                             position = { positions[player.position] }
                             score = { score === undefined ? undefined : score.score } 
+                            rank = { score === undefined ? undefined : score.rank }
                             ludo = { props.ludo === undefined ? undefined : props.ludo }
                             width = { props.width }
                             ready = { props.readyPlayers.find(entry => entry === player.socketId) === undefined ? false : true }
