@@ -51,7 +51,7 @@ function GameBase(props) {
 
     // Schauen, ob man sich überhaupt in einem Raum befindet
     const handleInRoomCallback = useCallback((isInRoom) => {
-
+        
         // Spieler befindet sich nicht im Raum
         if(!isInRoom) {
             history.push('/');
@@ -63,6 +63,7 @@ function GameBase(props) {
             setRoomId(gameData.roomId);
             setHostId(gameData.hostId);
             setPlayers(gameData.players);
+            setGameId(undefined);
             setGameId(gameData.gameTypeId);
 
         }
@@ -182,10 +183,22 @@ function GameBase(props) {
 
     useEffect(() => { 
         return () => {
-            // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
-            socket.emit('room:leave-room');
+
+            if(history.action !== 'PUSH') {
+                socket.emit('room:leave-room');
+
+            } else {
+                socket.emit('room:is-in-room', (isInRoom) => {
+
+                    // Wenn man sich in keinem Raum befindet
+                    if(!isInRoom) {
+                        socket.emit('room:leave-room');
+    
+                    }
+                });
+            }
         }
-    }, [socket])
+    }, [socket, location, history])
 
 
     // Wenn die Sidebar aufgeklappt wird und die Anordnung geändert werden muss, wegen zu wenig Platz

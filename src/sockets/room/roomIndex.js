@@ -14,7 +14,7 @@ const disconnectingHandler = require('./roomEventListeners/disconnectingListener
 module.exports = (io, socket) => {
 
   // Socket.io Events
-  socket.on("room:create", (data, callback) => createRoomHandler(socket, data, callback));
+  socket.on("room:create", (data, callback) => createRoomHandler(io, socket, data, callback));
   socket.on("room:join", (data, callback) => joinRoomHandler(io, socket, data, callback));
 
   socket.on("room:set-color", (data, callback) => setColorHandler(io, socket, data, callback));

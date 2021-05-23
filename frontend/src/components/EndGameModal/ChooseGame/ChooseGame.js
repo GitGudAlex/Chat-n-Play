@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import $ from 'jquery';
 
 import './ChooseGame.css';
@@ -24,8 +24,46 @@ function ChooseGame(props) {
     }
 
     const createGame = (gameId) => {
+        socket.emit('room:create', { gameTypeId: gameId }, (error) => {
+            if(error) {
+                $('#endgame-modal-error-output').text(error);
 
+            }
+        });
     }
+
+    // Wenn ein Spiel neu erstellt wurde -> Dem Spiel beitreten und den anderen mitspielern die neue RoomId mitteilen
+    const handleRoomCreatedEvent = useCallback((data) => {
+        socket.emit('room:join', { roomId: data.roomId, username: '' }, (error) => {
+            if(error) {
+                $('#endgame-modal-error-output').text(error);
+
+            }
+        });
+
+    }, [socket]);
+
+    // Wenn man einem Spiel gejoint ist -> Lobby laden
+    const handleRoomJoinedEvent = useCallback((data) => {
+        $('#endgame-modal').modal('hide');
+
+        history.push({
+            pathname: '/game/lobby/' + data.roomId,
+            state: { data: data }
+        });
+
+    }, [history]);
+
+    useEffect(() => {
+        socket.on('room:created-new', handleRoomCreatedEvent);
+        socket.on('room:joined', handleRoomJoinedEvent);
+
+        return () => {
+            socket.off('room:created-new');
+            socket.off('room:joined', handleRoomJoinedEvent);
+        }
+
+    }, [socket, handleRoomCreatedEvent, handleRoomJoinedEvent]);
 
     // Spieler ist host
     if(props.isHost) {
@@ -47,6 +85,7 @@ function ChooseGame(props) {
                             <p>Stadt, Land, Fluss</p>
                         </div>
                     </div>
+                    <small id='endgame-modal-error-output' className="text-danger" />
                 </div>
             </div>
         );
@@ -62,8 +101,10 @@ function ChooseGame(props) {
                 <p className='endgame-modal-body-text'>Der Host wählt ein Spiel aus</p>
             </div>
             <div id='endgame-modal-footer' className="modal-footer">
+                <small id='endgame-modal-error-output' className="text-danger" />
                 <button type="button" className="btn btn-primary" onClick={ leaveRoom }>Raum verlassen</button>
             </div>
+            <small id='endgame-modal-error-output' className="text-danger" />
         </div>
     );
 }

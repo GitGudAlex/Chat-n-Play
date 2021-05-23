@@ -62,7 +62,11 @@ module.exports = (io, socket) => {
 
                     // schauen ob alle die Wörter abgebgenen haben und nur auf den Spieler gewartet haben, der disconnected ist
                     let readyPlayersIndex = room.readyPlayers.findIndex(p => p.socketId === player.socketId);
-                    room.readyPlayers.splice(readyPlayersIndex, 1);
+
+                    if(readyPlayersIndex !== -1) {
+                        room.readyPlayers.splice(readyPlayersIndex, 1);
+                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
+                    }
 
                     // Letzter hat die Bewertung abgegeben => Punkte berechnen
                     if(room.readyPlayers.length === players.length) {
@@ -77,9 +81,6 @@ module.exports = (io, socket) => {
                         // Scores an Spieler senden
                         io.in(player.roomId).emit('slf:round-scores', { scores });
 
-                    } else {
-                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
-
                     }
 
                 // Score Übersicht
@@ -87,37 +88,53 @@ module.exports = (io, socket) => {
                     
                     // aus Liste löschen
                     let readyPlayersIndex = room.readyPlayers.findIndex(p => p.socketId === player.socketId);
-                    room.readyPlayers.splice(readyPlayersIndex, 1);
+                    
+                    if(readyPlayersIndex !== -1) {
+                        room.readyPlayers.splice(readyPlayersIndex, 1);
+                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
+                    }
 
                     // Alle Spiele schon bereit bis auf der Spieler, der das Spiel verlässt.
                     if(room.readyPlayers.length === players.length) {
 
                         // resetten
-                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: [] });
-                        
-                        // Spielern sagen, dass eine neue Runde beginnt
-                        room.currentRound += 1;
-                        io.in(player.roomId).emit('slf:new-round', { currentRound: room.currentRound });
+                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: [] })
 
-                        // Punkte zum gesamtscore hinzufügen
-                        for(let p of players) {
-                            p.score += p.lastScore;
-                            p.lastScore = 0;
+                         // Noch einer Runde
+                        if(room.currentRound < room.rounds) {
+
+                            // Spielern sagen, dass eine neue Runde beginnt
+                            room.currentRound += 1;
+                            io.in(player.roomId).emit('slf:new-round', { currentRound: room.currentRound });
+
+                            // Punkte zum gesamtscore hinzufügen
+                            for(let p of players) {
+                                p.score += p.lastScore;
+                                p.lastScore = 0;
+                            }
+
+                            // Scores emitten
+                            io.in(player.roomId).emit('room:score-update', { scores: getPlayersScores(players) });
+
+                            // Buchstabe schicken
+                            chooseLetter(room.roomId, (letter) => {
+                                io.in(player.roomId).emit('slf:start-round', { letter });
+                            });
+
+                        // Alle Runden vorbei
+                        } else {
+
+                            // Punkte zum gesamtscore hinzufügen
+                            for(let p of players) {
+                                p.score += p.lastScore;
+                                p.lastScore = 0;
+                            }
+
+                            // Scores emitten
+                            io.in(player.roomId).emit('room:end-game', { winners: getPlayersScores(players).filter(p => p.rank === 1) });
+
                         }
-
-                        // Scores emitten
-                        io.in(player.roomId).emit('slf:score-update', { scores: getPlayersScores(players) });
-
-                        // Buchstabe schicken
-                        chooseLetter(room.roomId, (letter) => {
-                            io.in(player.roomId).emit('slf:start-round', { letter });
-                        });
-
-                    } else {
-                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
-
                     }
-
                 }
             }
 

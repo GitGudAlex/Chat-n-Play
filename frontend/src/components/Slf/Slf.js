@@ -84,14 +84,7 @@ function Slf(props) {
         }
         
     }, [socket, handleCategoriesSubmitEvent, handleEvaluatingResultsEvent, handleUpdateWordsEvent, handleRoundOverEvent, handleRoundScoresEvent, handleNewRoundEvent]);
-
-    useEffect(() => { 
-        return () => {
-            // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
-            socket.emit('room:leave-room');
-        }
-    }, [socket])
-    
+        
 
     // Richtigen Content je nach Spielsatus anzeigen
     let gameContent;

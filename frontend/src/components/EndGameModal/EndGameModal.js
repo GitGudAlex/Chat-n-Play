@@ -36,11 +36,11 @@ function EndGameModal(props) {
 
     useEffect(() => {
         socket.on('room:room-closed', handleCloseRoomEvent);
-        socket.on('room:new-room-created', handleNewRoomEvent);
+        socket.on('room:creating-new-room', handleNewRoomEvent);
 
         return() => {
             socket.off('room:room-closed');
-            socket.off('room:new-room-created');
+            socket.off('room:creating-new-room');
 
             $('#endgame-modal').modal('hide');
         }

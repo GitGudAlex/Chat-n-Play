@@ -20,7 +20,6 @@ function WordsEvaluation(props) {
      const [answers, setAnswers] = useState([]);
 
      const handlePlayerSubmittedEvent = useCallback((data) => {
-        console.log("Setting Players");
         setReadyUsers(data.playersReady.length);
 
      }, []);

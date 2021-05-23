@@ -1,10 +1,26 @@
-const { addPlayer, getPlayersInRoom, getPlayer, getColors } = require('../../../models/players');
+const { addPlayer, getPlayersInRoom, getPlayer, getColors, removePlayer } = require('../../../models/players');
 const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket, data, callback) => {
 
     // Man kann keinen Raum joinen, wenn man noch in einem Raum drin ist
-    if(getPlayer(socket.id) !== undefined) return callback("Du kannst keinen Raum joinen, während du noch in einem bist.");
+    const oldPlayer = getPlayer(socket.id);
+
+    // Spieler befindet sich schon im Speicher
+    if(oldPlayer !== undefined) {
+
+        // Spielernamen vom aktuellen Spieler holen
+        data.username = oldPlayer.username;
+
+        // Aktuellen Raum bekommen
+        const oldRoomId = oldPlayer.roomId;
+
+        // alten Raum verlassen
+        socket.leave(oldRoomId);
+
+        // Spieler löschen
+        removePlayer(oldPlayer.socketId);
+    }
     
     // Wenn Spielername oder Raum Code nicht angegeben
     if (data.username == '' || data.roomId == '') {
