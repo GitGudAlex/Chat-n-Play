@@ -2,8 +2,16 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-
 const PORT = 8080;
+
+// Peer Server
+const { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server, {
+    debug: true
+});
+
+app.use('/peerjs', peerServer);
+
 
 // Routes
 app.use('/', require('./routes/routesIndex'))

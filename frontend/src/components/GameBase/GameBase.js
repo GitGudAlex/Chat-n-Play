@@ -15,6 +15,7 @@ import Ludo from '../Ludo/Ludo';
 import Slf from '../Slf/Slf';
 import Players from '../Players/Players';
 import Home from '../Home/Home';
+import EndGameModal from '../EndGameModal/EndGameModal';
 
 function GameBase(props) {
 
@@ -30,6 +31,8 @@ function GameBase(props) {
     const [roomId, setRoomId] = useState();
     const [hostId, setHostId] = useState();
     const [players, setPlayers] = useState();
+
+    const [winners, setWinners] = useState();
 
     // Bei SLF die Spieler die 'weiter' geklickt haben
     const [playersReady, setPlayersReady] = useState([]);
@@ -97,41 +100,51 @@ function GameBase(props) {
     // Event wenn sich die Scores Updaten
     const handleScoreUpdateEvent = useCallback((data) => {
         setScores(data.scores);
-        console.log("lllllll: ", data);
+    }, []);
+
+    const handleGameEndEvent = useCallback((data) => {
+        setWinners(data.winners.map(p => p.username));
+
+        $('#endgame-modal').modal({ backdrop: 'static', keyboard: false })  
+        $('#endgame-modal').modal('show');
     }, []);
 
     // Wenn neue Spieler in den Raum kommen oder aus dem Raum austreten
     useEffect(() => { 
         socket.on('room:update', handleRoomUpdateEvent);
         socket.on('room:hostChanged', handleHostChanged);
-        socket.on('slf:score-update', handleScoreUpdateEvent);
+        socket.on('room:score-update', handleScoreUpdateEvent);
+        socket.on('room:end-game', handleGameEndEvent);
 
         return () => {
             // Events unmounten
             socket.off('room:update');
             socket.off('room:hostChanged');
-            socket.off('slf:score-update');
+            socket.off('room:score-update');
+            socket.off('room:end-game');
         };
 
-    }, [socket, handleRoomUpdateEvent, handleHostChanged, handleScoreUpdateEvent]);
+    }, [socket, handleRoomUpdateEvent, handleHostChanged, handleScoreUpdateEvent, handleGameEndEvent]);
 
+
+    const handlePlayersReadyEvent = useCallback((data) => {
+        if(data.playersReady.length === players.length) {
+            setPlayersReady([]);
+
+        } else {
+            setPlayersReady(data.playersReady);
+
+        }
+    }, [players]);
 
     // Um die Häckchen bei den Kameras anzuzeigen
     useEffect(() => {
-        socket.on('slf:players-ready-count', (data) => {
-            if(data.playersReady.length === players.length) {
-                setPlayersReady([]);
-
-            } else {
-                setPlayersReady(data.playersReady);
-
-            }
-        });
+        socket.on('slf:players-ready-count', handlePlayersReadyEvent);
 
         return() => {
-            socket.off('slf:players-ready-count');
+            socket.off('slf:players-ready-count', handlePlayersReadyEvent);
         }
-    }, [socket, players]);
+    }, [socket, handlePlayersReadyEvent]);
 
     // API Calls
     useEffect(() => {   
@@ -249,6 +262,7 @@ function GameBase(props) {
                                 </Switch>
                             </Router>
                             <Players players={ players } scores={ scores } ludo={ ludo } readyPlayers={ playersReady }/>
+                            <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
                         </div>
                     </div>
                 </div>

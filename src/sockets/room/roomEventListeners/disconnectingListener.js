@@ -81,7 +81,11 @@ module.exports = (io, socket) => {
                 // Score Übersicht
                 } else if(room.gameStatus === 3) {
                     
-                    // Alle Spiele schon bereit bis der Spieler, der das Spiel verlässt.
+                    // aus Liste löschen
+                    let readyPlayersIndex = room.readyPlayers.findIndex(p => p.socketId === player.socketId);
+                    room.readyPlayers.splice(readyPlayersIndex, 1);
+
+                    // Alle Spiele schon bereit bis auf der Spieler, der das Spiel verlässt.
                     if(room.readyPlayers.length === players.length) {
 
                         // resetten
@@ -98,13 +102,16 @@ module.exports = (io, socket) => {
                         }
 
                         // Scores emitten
-                        console.log(getPlayersScores(players));
                         io.in(player.roomId).emit('slf:score-update', { scores: getPlayersScores(players) });
 
                         // Buchstabe schicken
                         chooseLetter(room.roomId, (letter) => {
                             io.in(player.roomId).emit('slf:start-round', { letter });
                         });
+
+                    } else {
+                        io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
+
                     }
 
                 }

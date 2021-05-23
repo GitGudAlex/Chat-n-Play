@@ -29,7 +29,7 @@ const initilazeGame = (roomId, categories, rounds) => {
         // Zusammengerechnete Punktzahl von allen Runden
         player['score'] = 0;
         player['lastScore'] = 0;
-
+        player['rank'] = 0;
         player['words'] = []; 
     });
     
@@ -292,8 +292,37 @@ const calculateScore = (room) => {
 }
 
 const getPlayersScores = (allPlayers) => {
+
+    // Sotieren nach scores
+    allPlayers.sort(function (a, b) {
+        return b.score - a.score;
+    });
+
+    let playerTmp;
+    let rankCounter = 1
+
+    for(let p of allPlayers) {
+
+        if(playerTmp === undefined) {
+            p.rank = rankCounter;
+
+        } else {
+            // Wenn gleicher score wie vorheriger Spieler => gleicher Rank
+            if(playerTmp.score === p.score) {
+                p.rank = playerTmp.rank;
+
+            } else {
+                p.rank = rankCounter;
+
+            }
+        }
+
+        playerTmp = p;
+        rankCounter++;
+    }
+
     return allPlayers.map((player) => {
-        let playerObj = { username: player.username, score: player.score };
+        let playerObj = { username: player.username, score: player.score, rank: player.rank };
         
         return playerObj;
     });
