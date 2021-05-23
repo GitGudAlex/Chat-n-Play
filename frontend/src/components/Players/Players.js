@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from 'react';
+import { useCallback, useContext, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router';
 import $ from 'jquery';
 import Peer from 'peerjs';
@@ -11,7 +11,7 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = false;
+    const useVideos = true;
 
     // Router Stuff
     const history = useHistory();
@@ -19,12 +19,20 @@ function Players(props) {
     // Positionen der Spieler
     const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
 
-    useLayoutEffect(() => {
-         // Wenn die Fenstergröße geändert wird -> Größe anpassen
-         window.addEventListener('resize', () => {
-            $('.player').height($('.player').width()/16 * 9);
-        });
+    const resizePlayerHandler = useCallback(() => {
+        $('.player').height($('.player').width()/16 * 9);
+
     }, []);
+
+    useLayoutEffect(() => {
+        // Wenn die Fenstergröße geändert wird -> Größe anpassen
+        window.addEventListener('resize', resizePlayerHandler);
+
+        return () => {
+            window.removeEventListener('resize', resizePlayerHandler);
+        }
+
+    }, [resizePlayerHandler]);
 
     /**
      * 1. Spieler joint einem Raum

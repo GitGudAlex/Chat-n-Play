@@ -55,6 +55,7 @@ function GameBase(props) {
         // Spieler befindet sich nicht im Raum
         if(!isInRoom) {
             history.push('/');
+            console.log('home 1');
 
         // Spieler befindet sich im Raum
         } else {
@@ -74,19 +75,6 @@ function GameBase(props) {
     useEffect(() => {
         socket.emit('room:is-in-room', handleInRoomCallback);
     }, [socket, handleInRoomCallback]);
-
-    // Wenn man eine andere Seite besucht, ob man noch in einem Raum ist
-    useEffect(() => {
-        setRules();
-
-        setTimeout(() => {
-            socket.emit('room:is-in-room', (isInRoom) => {
-                if(!isInRoom) {
-                    history.push('/');
-                }
-            });
-        }, 200);
-    }, [socket, location, history]);
 
     // Event wenn ein Spieler joint oder jemand das Spiel verlässt
     const handleRoomUpdateEvent = useCallback((data) => {
@@ -119,10 +107,10 @@ function GameBase(props) {
 
         return () => {
             // Events unmounten
-            socket.off('room:update');
-            socket.off('room:hostChanged');
-            socket.off('room:score-update');
-            socket.off('room:end-game');
+            socket.off('room:update', handleRoomUpdateEvent);
+            socket.off('room:hostChanged', handleHostChanged);
+            socket.off('room:score-update', handleScoreUpdateEvent);
+            socket.off('room:end-game', handleGameEndEvent);
         };
 
     }, [socket, handleRoomUpdateEvent, handleHostChanged, handleScoreUpdateEvent, handleGameEndEvent]);
@@ -178,6 +166,10 @@ function GameBase(props) {
                 setLudo('Ludo');
             }
         });
+
+        return () => {
+            socket.off('room:game-started');
+        }
     }, [socket]);
 
 
@@ -186,13 +178,15 @@ function GameBase(props) {
 
             if(history.action !== 'PUSH') {
                 socket.emit('room:leave-room');
+                console.log('home 2');
 
             } else {
                 socket.emit('room:is-in-room', (isInRoom) => {
 
                     // Wenn man sich in keinem Raum befindet
                     if(!isInRoom) {
-                        socket.emit('room:leave-room');
+                        console.log('home 3');
+                        history.push('/');
     
                     }
                 });
@@ -216,6 +210,7 @@ function GameBase(props) {
                 if(entry.contentRect.width < 800 && isResponsive.current === false) {
                     $('#game-content').css({ justifyContent: 'center' });
                     $('.start-game').css({ width: '80% !important;' });
+                    $('start-game-text').css({ fontSize: '2vw' });
 
                     isResponsive.current = true;
 
@@ -223,6 +218,7 @@ function GameBase(props) {
                     if(entry.contentRect.width >= 800 && isResponsive.current === true) {
                         $('#game-content').css({ justifyContent: 'space-around' });
                         $('.start-game').css({ width: '55% !important;' });
+                        $('start-game-text').css({ fontSize: '3vw' });
 
                         isResponsive.current = false;
                     }

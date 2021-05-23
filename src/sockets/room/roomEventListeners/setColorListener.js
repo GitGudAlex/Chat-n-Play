@@ -6,7 +6,7 @@ module.exports = (io, socket, data, callback) => {
 
     // Spieler exestiert nicht
     if(player === undefined) {
-        return allback("Du darfst keine Farbe setzten.");
+        return callback("Du darfst keine Farbe setzten.");
     }
 
     // schauen ob man die Farbe wählen darf
