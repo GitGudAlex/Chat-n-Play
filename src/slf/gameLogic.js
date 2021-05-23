@@ -328,4 +328,4 @@ const getPlayersScores = (allPlayers) => {
     });
 }
 
-module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, checkAllSubmitted, calculateScore, getPlayersScores };
+module.exports = { initilazeGame, chooseLetter, submitWords, removePlayerWordsFromCurrentRound, submitVotes, calculateScore, getPlayersScores };

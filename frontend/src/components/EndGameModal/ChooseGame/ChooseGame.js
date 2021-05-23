@@ -23,6 +23,10 @@ function ChooseGame(props) {
 
     }
 
+    const createGame = (gameId) => {
+
+    }
+
     // Spieler ist host
     if(props.isHost) {
         return (
@@ -32,6 +36,17 @@ function ChooseGame(props) {
                 </div>
                 <div id='endgame-modal-body' className="modal-body text-center">
                     <p className='endgame-modal-body-text w-100'>Wähle ein Spiel aus:</p>
+                    <div className='endgame-modal-games-list'>
+                        <div className='endgame-modal-game' onClick={ () => createGame(0) } >
+                            <p>Ludo</p>
+                        </div>
+                        <div className='endgame-modal-game' onClick={ () => createGame(1) }>
+                            <p>Uno</p>
+                        </div>
+                        <div className='endgame-modal-game' onClick={ () => createGame(2) }>
+                            <p>Stadt, Land, Fluss</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

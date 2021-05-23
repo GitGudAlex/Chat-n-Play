@@ -1,0 +1,27 @@
+.endgame-modal-games-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    margin-bottom: 44px;
+}
+
+.endgame-modal-game {
+    width: 100px;
+    height: 100px;
+
+    padding: 4px;
+    border-radius: 4px;
+    
+    background-clip: content-box;
+    background-color: rgb(78, 80, 189);
+
+    color: white;
+}
+
+.endgame-modal-game:hover {
+    padding: 0px;
+    background-color: rgb(55, 57, 185);
+
+    cursor: pointer;
+}

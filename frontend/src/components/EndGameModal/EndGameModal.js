@@ -41,6 +41,8 @@ function EndGameModal(props) {
         return() => {
             socket.off('room:room-closed');
             socket.off('room:new-room-created');
+
+            $('#endgame-modal').modal('hide');
         }
     }, [socket, handleCloseRoomEvent, handleNewRoomEvent]);
 

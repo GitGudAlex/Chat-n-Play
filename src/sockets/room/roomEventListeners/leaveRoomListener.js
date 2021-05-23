@@ -1,6 +1,6 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
-const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
+const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
 
@@ -68,10 +68,11 @@ module.exports = (io, socket) => {
                 io.in(player.roomId).emit('slf:update-words', { words: newWords });
 
                 // schauen ob alle die Wörter abgebgenen haben und nur auf den Spieler gewartet haben, der disconnected ist
-                const lastSubmit = checkAllSubmitted(room);
+                let readyPlayersIndex = room.readyPlayers.findIndex(p => p.socketId === player.socketId);
+                room.readyPlayers.splice(readyPlayersIndex, 1);
 
                 // Letzter hat die Bewertung abgegeben => Punkte berechnen
-                if(lastSubmit) {
+                if(room.readyPlayers.length === players.length) {
                     // Runde vorbei -> umleiten
                     io.in(player.roomId).emit('slf:round-over');
 
@@ -82,6 +83,9 @@ module.exports = (io, socket) => {
 
                     // Scores an Spieler senden
                     io.in(player.roomId).emit('slf:round-scores', { scores });
+
+                } else {
+                    io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
 
                 }
             
