@@ -67,14 +67,40 @@ const getCurrentPlayerInRoom = (roomId) => {
 }
 
 //setzt den nächsten Spieler auf active=true
-const nextPlayerInRoom = (roomId) => {
+const nextPlayerInRoom = (roomId, currentPlayer) => {
     const allPlayers = getPlayersInRoom(roomId);
-    const currentPlayer = getCurrentPlayerInRoom(roomId);
-    const indexCurrentPlayer = allPlayers.indexOf(currentPlayer);
-    const indexNextPlayer = (indexCurrentPlayer + 1) % allPlayers.length;
-    allPlayers[indexCurrentPlayer].active = false;
-    allPlayers[indexNextPlayer].active = true;
-    return allPlayers[indexNextPlayer];
+    currentPlayer.active = false;
+
+    let position = currentPlayer.position;
+    let next = false;
+    let nextPlayer = null;
+
+    while(next === false){
+        switch(position){
+            case 0:
+                position = 2;
+                break;
+            case 1: 
+                position = 3;
+                break;
+            case 2:
+                position = 1;
+                break;
+            case 3: 
+                position = 0;
+                break;
+        }
+
+        allPlayers.forEach(p => {
+            if(p.position == position){
+                next = true; 
+                p.active = true;
+                nextPlayer = p;
+            }
+        })
+    }
+
+    return nextPlayer;
 }
 
 // Schaut ob die ausgesucht farbe genommen werden darf 

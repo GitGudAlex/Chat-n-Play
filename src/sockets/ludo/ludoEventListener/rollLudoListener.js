@@ -52,7 +52,6 @@ module.exports = (io, socket) => {
             count ++;
         }
     }
-    console.log("Anzeigen der möglichen Spielzüge: " + res);
 
     io.in(player.roomId).emit('ludo:showMoves', res);
     io.to(player.socketId).emit("ludo:unlockMoveFields", figures);
@@ -63,7 +62,7 @@ module.exports = (io, socket) => {
             player.dicecount += 1;
         }else{
             player.dicecount = 0;
-            const nextPlayer = nextPlayerInRoom(player.roomId);
+            const nextPlayer = nextPlayerInRoom(player.roomId, player);
             io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
             io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
         }

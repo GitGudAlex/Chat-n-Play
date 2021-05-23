@@ -3,7 +3,6 @@ import $ from "jquery";
 
 import './Ludo.css'
 
-import House from './house/house';
 import Matchfield from './matchfield/matchfield';
 
 import SocketContext from '../../services/socket';
@@ -20,6 +19,7 @@ function Ludo() {
         }
     }, [socket])
     
+    // ersten Spieler anzeigen
     socket.once('ludo:first-player', player => {
         console.log('color' + player.color);
         $('.dice').css({'border-color':player.color});
@@ -37,11 +37,13 @@ function Ludo() {
         $("#dice").prop("disabled", true);
     });
 
+    // emit -> Würfel geklickt
     const roll = () => {
         socket.emit("ludo:rollDice");
         $("#dice").prop("disabled", true);   
     }
 
+    // Augenanzahl des Würfels und mögliche Züge anzeigen
     useEffect(() => {
         socket.on("ludo:dicedValue", dice => {
             console.log("Würfel: " + dice)
@@ -62,6 +64,7 @@ function Ludo() {
         }
     });
 
+    //Figuren zum Laufen freischalten
     useEffect(()=>{
         socket.on("ludo:unlockMoveFields", figures=>{
             figures.forEach(element =>{
@@ -74,6 +77,7 @@ function Ludo() {
         }
     });
 
+    // Figur aus dem Haus holen
     useEffect(() => {
         socket.on('ludo:leaveHouse', move => {
             console.log("Positionen aus dem Loch: " + move);
@@ -87,6 +91,7 @@ function Ludo() {
         }
     });
 
+    // Figur schmeißen
     useEffect(() => {
         socket.on('ludo:throwFigure', move => {
             $("#"+move[0]).css({'background-color':move[1]});
@@ -97,12 +102,13 @@ function Ludo() {
         }
     });
     
-    
+    //emit -> Figur die laufen soll
     const moveFigure = (id) => {
         socket.emit("ludo:clickFigure", id);
         $(".matchfield").find(":button").prop("disabled", true);
     }
 
+    // Figur laufen
     useEffect(() => {
         socket.on("ludo:moveFigure", move => {
             console.log("Figur laufen" + move);
@@ -117,6 +123,7 @@ function Ludo() {
         }
     });
 
+    // sobald ein Button im Spielfeld geklickt wird, wird die Funktion moveFigur() aufgerufen
     useEffect(() => {
         $(".matchfield").find(":button").click((event)=> {
             const id = $(event.currentTarget).attr('id');
@@ -124,6 +131,7 @@ function Ludo() {
         });
     });
 
+    // nächsten Spieler anzeigen
     useEffect(() => {
         socket.on('ludo:nextPlayer', player => {
             setTimeout(function(){
@@ -137,9 +145,10 @@ function Ludo() {
         }
     });
 
-    //Unlock Dice for current Player
+    //Nach dem Würfeln, Würfel sperren
     useEffect(()=>{
         socket.on('ludo:unlockDice', (player)=>{
+            console.log("socket on unlockDIce");
             setTimeout(function(){
                 $('.dice').html('Würfeln');
                 $("#dice").prop("disabled",false);
@@ -152,19 +161,34 @@ function Ludo() {
         }
     });
 
+    // Gewinner anzeigen
     useEffect(() => {
         socket.on('ludo:winner', (player) => {
             $("#dice").prop("disabled", true); 
             $(".matchfield").find(":button").prop("disabled", true);
             console.log("Winner: "+ player.username);
         });
-
+        
+        // Event unsubscriben
         return () => {
             socket.off('ludo:winner');
         }
     });
 
+    useEffect(() => {
+        socket.on('ludo:playerLeave', (positionen => {
+            positionen.forEach(p => {
+                $('#'+p[0]).css({'background-color':'white'});
+            });
+            $(".matchfield").find(":button").html('');
+        }));
 
+        return () => {
+            socket.off('ludo:playerLeave');
+        }
+    });
+
+    //Emit -> erster Spieler soll zufällig festgelegt werden
     const setFirstPlayer = () => {
         socket.emit('ludo:firstPlayer');
     }

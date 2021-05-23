@@ -4,10 +4,8 @@ const {getPlayersInRoom} = require('../models/players.js');
 checkHouse = (currentPlayer) => {
     for(let i = 0; i < 4; i ++){
         if(currentPlayer.house[i][1] === true){
-            console.log('checkHouse true'); 
             return true;
         }
-    console.log('checkHouse false');
     return false;
     }
 }
@@ -16,19 +14,14 @@ checkHouse = (currentPlayer) => {
 checkField = (position, currentPlayer) => {
     for (let i = 0; i < 4; i ++){
         if(currentPlayer.playerPosition[i][0] === position){
-            console.log("Checkfield() true " + currentPlayer.playerPosition[i][0]);
             return true;
         }else{
-            console.log("Checkfield() false " + currentPlayer.playerPosition[i][0]);
         }
     }
     return false;
 }
 
 showMove = (dice, position, currentPlayer) => {
-    console.log('Dice:' + dice);
-    console.log('position' + position);
-    console.log('currentPlayer' + currentPlayer);
     let newPosition = position;
 
     for(let i = 0; i < dice; i ++){
@@ -61,7 +54,6 @@ showMove = (dice, position, currentPlayer) => {
             break;
         }
     }
-    console.log("CurrentPlayer - neue berechnete Spielerpositionen " + currentPlayer.playerPosition);
     //möglichen Spielzug für die Spielfigur berechnen und potentielles Zielfeld anzeigen
 }
 
@@ -74,7 +66,6 @@ showFigureFromHouse = (currentPlayer) => {
             pos[1] = currentPlayer.start;
             currentPlayer.house[i][1] = "false";
             pos[2] = currentPlayer.color;
-            console.log("Array-pos: " + pos);
             return pos;
         }
     }
@@ -91,18 +82,12 @@ moveFigure = (id, currentPlayer) => {
         }
         currentPlayer.playerPosition[i][1] = null;
     }
-    
-    console.log("Position nach dem Zug: " + currentPlayer.playerPosition);
-
-
     return buttonid;
 }
 
 throwFigure = (position, currentPlayer) => {
 
     const allPlayers = getPlayersInRoom(currentPlayer.roomId);
-
-    console.log("throw Figure wird aufgerufen");
 
     let pos = []
 

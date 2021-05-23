@@ -1,8 +1,10 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
-const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
+const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
 const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
+
+    console.log("room-event-listener");
 
     // Spieler löschen
     const player = removePlayer(socket.id);
@@ -112,6 +114,15 @@ module.exports = (io, socket) => {
                 }
 
             }
+        }else if(room.gameTypeId === 0){
+            if(player.active === true){
+                const nextPlayer = nextPlayerInRoom(player.roomId, player);
+                io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
+            }
+            const currentPlayer = getCurrentPlayerInRoom(player.roomId);
+            io.to(currentPlayer.socketId).emit("ludo:unlockDice", currentPlayer);
+
+            io.in(player.roomId).emit('ludo:playerLeave', player.playerPosition);
         }
 
         io.in(player.roomId).emit('room:update', { players: mappedPlayers });
