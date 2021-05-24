@@ -55,7 +55,6 @@ function GameBase(props) {
         // Spieler befindet sich nicht im Raum
         if(!isInRoom) {
             history.push('/');
-            console.log('home 1');
 
         // Spieler befindet sich im Raum
         } else {
@@ -64,9 +63,12 @@ function GameBase(props) {
             setRoomId(gameData.roomId);
             setHostId(gameData.hostId);
             setPlayers(gameData.players);
-            setGameId(undefined);
             setGameId(gameData.gameTypeId);
 
+            // restlichen Werte resetten
+            setWinners(undefined);
+            setScores([]);
+            setPlayersReady([]);
         }
 
     }, [history, location.state]);
@@ -160,17 +162,19 @@ function GameBase(props) {
         setRules(rulesData.rules);
     };
 
+    const isGame = useCallback((data) => {
+        if(data.route.split('/')[1] === 'ludo') {
+            setLudo('Ludo');
+        }
+    }, []);
+
     useEffect(() => {
-        socket.on('room:game-started', (data) => {
-            if(data.route.split('/')[1] === 'ludo') {
-                setLudo('Ludo');
-            }
-        });
+        socket.on('room:game-started', isGame);
 
         return () => {
-            socket.off('room:game-started');
+            socket.off('room:game-started', isGame);
         }
-    }, [socket]);
+    }, [socket, isGame]);
 
 
     useEffect(() => { 
@@ -178,14 +182,12 @@ function GameBase(props) {
 
             if(history.action !== 'PUSH') {
                 socket.emit('room:leave-room');
-                console.log('home 2');
 
             } else {
                 socket.emit('room:is-in-room', (isInRoom) => {
 
                     // Wenn man sich in keinem Raum befindet
                     if(!isInRoom) {
-                        console.log('home 3');
                         history.push('/');
     
                     }
@@ -210,7 +212,7 @@ function GameBase(props) {
                 if(entry.contentRect.width < 800 && isResponsive.current === false) {
                     $('#game-content').css({ justifyContent: 'center' });
                     $('.start-game').css({ width: '80% !important;' });
-                    $('start-game-text').css({ fontSize: '2vw' });
+                    $('.start-game-text').css({ fontSize: '2vw' });
 
                     isResponsive.current = true;
 
@@ -218,7 +220,7 @@ function GameBase(props) {
                     if(entry.contentRect.width >= 800 && isResponsive.current === true) {
                         $('#game-content').css({ justifyContent: 'space-around' });
                         $('.start-game').css({ width: '55% !important;' });
-                        $('start-game-text').css({ fontSize: '3vw' });
+                        $('.start-game-text').css({ fontSize: '3vw' });
 
                         isResponsive.current = false;
                     }
@@ -263,15 +265,15 @@ function GameBase(props) {
                         <div id='game-content-wrapper' className='col p-0'>
                             <Router>
                                 <Switch>
-                                    <Route path='/' exact component={ Home } />
+                                    <Route path={`${ props.match.path }/`} exact render={ () => <Home /> } />
                                     <Route path={`${ props.match.path }/lobby/:roomid`} render={ () => <Lobby hostId={ hostId } roomId={ roomId } gameId={ gameId }/> } />
                                     <Route path={`${props.match.path }/ludo/:roomid`} render={ () => <Ludo /> }/>
                                     <Route path={`${ props.match.path }/slf/:roomid`} render={ () => <Slf isHost={ hostId === socket.id ? true : false } players={ players }/> } />
                                     <Route component={ PageNotFound } />
                                 </Switch>
+                                <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
                             </Router>
                             <Players players={ players } scores={ scores } ludo={ ludo } readyPlayers={ playersReady }/>
-                            <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
                         </div>
                     </div>
                 </div>

@@ -46,7 +46,7 @@ function ChooseGame(props) {
     // Wenn man einem Spiel gejoint ist -> Lobby laden
     const handleRoomJoinedEvent = useCallback((data) => {
         $('#endgame-modal').modal('hide');
-
+        
         history.push({
             pathname: '/game/lobby/' + data.roomId,
             state: { data: data }

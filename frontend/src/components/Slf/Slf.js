@@ -103,7 +103,7 @@ function Slf(props) {
     } else if(gameStatus === 3) {
         gameContent = <ResultBoard scores={ scores } players={ props.players } letter={ letter } />
     }
-    
+
     return (
         <div id='game-content'>
             { gameContent }

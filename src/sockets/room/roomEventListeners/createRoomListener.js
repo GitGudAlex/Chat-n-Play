@@ -17,7 +17,7 @@ module.exports = (io, socket, data, callback) => {
 
         // Ob Spieler Host ist
         if(isHost(oldPlayer.socketId)) {
-
+            
             // alten Raum löschen
             removeRoom(oldPlayer.roomId);
 

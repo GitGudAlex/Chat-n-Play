@@ -11,7 +11,7 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = true;
+    const useVideos = false;
 
     // Router Stuff
     const history = useHistory();
@@ -107,7 +107,7 @@ function Players(props) {
     
             // Kamera wird nicht erlaubt
             }).catch(function(err) {
-    
+
                 // Aus dem Spiel schmeißen
                 socket.emit('room:leave-room');
                 history.push('/');
@@ -121,7 +121,7 @@ function Players(props) {
             {
                 props.players.map(player => {
                     let score = props.scores.find(score => score.username === player.username)
-                    
+                    console.log(props.ludo);
                     return (
                         <Player key = { player.username  } 
                             username = { player.username }

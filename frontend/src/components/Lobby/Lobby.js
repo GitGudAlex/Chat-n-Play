@@ -37,11 +37,10 @@ function Lobby(props) {
 
         return () => {
             // Events unmounten
-            socket.off('room:game-started');
+            socket.off('room:game-started', handleGameStartedEvent);
         };
 
     }, [socket, handleGameStartedEvent]);
-
 
     return (
         <div id='game-content'>
