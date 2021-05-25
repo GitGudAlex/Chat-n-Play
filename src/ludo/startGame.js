@@ -45,7 +45,7 @@ const startGameLudo = (roomId) => {
 
     addDice(roomId);
 
-    room = getRoom(player.roomId);
+    room = getRoom(roomId);
     // 0 : Spiel hat noch nicht begonnen, 1: Spiel hat begonnen, 2: Spiel ist vorbei
     room['gameStatus'] = 0
 
