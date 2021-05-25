@@ -1,6 +1,6 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
-const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
+const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
 
@@ -68,15 +68,10 @@ module.exports = (io, socket) => {
                 io.in(player.roomId).emit('slf:update-words', { words: newWords });
 
                 // schauen ob alle die Wörter abgebgenen haben und nur auf den Spieler gewartet haben, der disconnected ist
-                let readyPlayersIndex = room.readyPlayers.findIndex(p => p.socketId === player.socketId);
-
-                if(readyPlayersIndex !== -1) {
-                    room.readyPlayers.splice(readyPlayersIndex, 1);
-                    io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
-                }
+                const lastSubmit = checkAllSubmitted(room);
 
                 // Letzter hat die Bewertung abgegeben => Punkte berechnen
-                if(room.readyPlayers.length === players.length) {
+                if(lastSubmit) {
                     // Runde vorbei -> umleiten
                     io.in(player.roomId).emit('slf:round-over');
 
@@ -96,11 +91,7 @@ module.exports = (io, socket) => {
 
                 // aus Liste löschen
                 let readyPlayersIndex = room.readyPlayers.findIndex(p => p.socketId === player.socketId);
-
-                if(readyPlayersIndex !== -1) {
-                    room.readyPlayers.splice(readyPlayersIndex, 1);
-                    io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
-                }
+                room.readyPlayers.splice(readyPlayersIndex, 1);
 
                 // Alle Spiele rschon bereit bis auf der Spieler, der das Spiel verlässt.
                 if(room.readyPlayers.length === players.length) {
@@ -108,50 +99,44 @@ module.exports = (io, socket) => {
                     // resetten
                     io.in(player.roomId).emit('slf:players-ready-count', { playersReady: [] })
                     
-                    // Noch einer Runde
-                    if(room.currentRound < room.rounds) {
+                    // Spielern sagen, dass eine neue Runde beginnt
+                    room.currentRound += 1;
+                    io.in(player.roomId).emit('slf:new-round', { currentRound: room.currentRound });
 
-                        // Spielern sagen, dass eine neue Runde beginnt
-                        room.currentRound += 1;
-                        io.in(player.roomId).emit('slf:new-round', { currentRound: room.currentRound });
-
-                        // Punkte zum gesamtscore hinzufügen
-                        for(let p of players) {
-                            p.score += p.lastScore;
-                            p.lastScore = 0;
-                        }
-
-                        // Scores emitten
-                        io.in(player.roomId).emit('room:score-update', { scores: getPlayersScores(players) });
-
-                        // Buchstabe schicken
-                        chooseLetter(room.roomId, (letter) => {
-                            io.in(player.roomId).emit('slf:start-round', { letter });
-                        });
-
-                    // Alle Runden vorbei
-                    } else {
-
-                        // Punkte zum gesamtscore hinzufügen
-                        for(let p of players) {
-                            p.score += p.lastScore;
-                            p.lastScore = 0;
-                        }
-
-                        // Scores emitten
-                        io.in(player.roomId).emit('room:end-game', { winners: getPlayersScores(players).filter(p => p.rank === 1) });
-
+                    // Punkte zum gesamtscore hinzufügen
+                    for(let p of players) {
+                        p.score += p.lastScore;
+                        p.lastScore = 0;
                     }
+
+                    // Scores emitten
+                    io.in(player.roomId).emit('slf:score-update', { scores: getPlayersScores(players) });
+
+                    // Buchstabe schicken
+                    chooseLetter(room.roomId, (letter) => {
+                        io.in(player.roomId).emit('slf:start-round', { letter });
+                    });
+
+                } else {
+                    io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
+
                 }
+
             }
-        }else if(room.gameTypeId === 0){
+        // AKtuelles Spiel ist Mensch-Ärgere-Dich-Nicht
+        }else if(room.gameTypeId === 0 && room.gameStatus === 1){
+
+            // wenn der Spieler aktuell am Zug war, wird der nächste Spieler festgelegt
             if(player.active === true){
                 const nextPlayer = nextPlayerInRoom(player.roomId, player);
                 io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
             }
+
+            // nur den aktuellen Spieler wird der Würfel freigeschaltet
             const currentPlayer = getCurrentPlayerInRoom(player.roomId);
             io.to(currentPlayer.socketId).emit("ludo:unlockDice", currentPlayer);
-
+            
+            // Spielfiguren des verlassenden Spielers löschen
             io.in(player.roomId).emit('ludo:playerLeave', player.playerPosition);
         }
 

@@ -51,7 +51,7 @@ function GameBase({ match }) {
 
     // Schauen, ob man sich überhaupt in einem Raum befindet
     const handleInRoomCallback = useCallback((isInRoom) => {
-        console.log(location.state);
+        
         // Spieler befindet sich nicht im Raum
         if(!isInRoom) {
             history.push('/');

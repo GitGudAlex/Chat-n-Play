@@ -11,7 +11,7 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = true;
+    const useVideos = false;
 
     // Router Stuff
     const history = useHistory();
