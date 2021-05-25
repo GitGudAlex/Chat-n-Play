@@ -80,6 +80,7 @@ module.exports = (io, socket) => {
                     // Runde vorbei -> umleiten
                     io.in(player.roomId).emit('slf:round-over');
 
+                    addVotes(room);
                     const scores = calculateScore(room);
 
                     // resetten

@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect, useCallback, useRef, useLayoutEffect  } from 'react';
 import { useHistory, useLocation } from "react-router-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from 'react-router';
 import $ from 'jquery';
 
 import SocketContext from "../../services/socket";
@@ -17,7 +17,7 @@ import Players from '../Players/Players';
 import Home from '../Home/Home';
 import EndGameModal from '../EndGameModal/EndGameModal';
 
-function GameBase(props) {
+function GameBase({ match }) {
 
     // Design Stuff
     const isResponsive = useRef();
@@ -51,7 +51,7 @@ function GameBase(props) {
 
     // Schauen, ob man sich überhaupt in einem Raum befindet
     const handleInRoomCallback = useCallback((isInRoom) => {
-        
+        console.log(location.state);
         // Spieler befindet sich nicht im Raum
         if(!isInRoom) {
             history.push('/');
@@ -60,18 +60,22 @@ function GameBase(props) {
         } else {
             let gameData = location.state.data;
 
-            setRoomId(gameData.roomId);
-            setHostId(gameData.hostId);
-            setPlayers(gameData.players);
-            setGameId(gameData.gameTypeId);
+            // Wenn sich 'location.state' ändert (wenn das Spiel geladen ist)
+            try {
+                setRoomId(gameData.roomId);
+                setHostId(gameData.hostId);
+                setPlayers(gameData.players);
+                setGameId(gameData.gameTypeId);
 
-            // restlichen Werte resetten
-            setWinners(undefined);
-            setScores([]);
-            setPlayersReady([]);
+                // restlichen Werte resetten
+                setWinners(undefined);
+                setScores([]);
+                setPlayersReady([]);
+
+            } catch {}
         }
 
-    }, [history, location.state]);
+    }, [history, location]);
 
     // Ob man sich überhaupt in einem Raum befindet, wenn man einem Spiel joint
     useEffect(() => {
@@ -250,7 +254,7 @@ function GameBase(props) {
             </div>
         );
     }
-
+    
     return (
         <div id='game-wrapper p-0'>
             <header id='game-header'>
@@ -263,16 +267,14 @@ function GameBase(props) {
                             <SideBar position='left' contentId='#game-content-wrapper' sideBarWidth={ 40 } sideBarWindowWidth={ 350 } rules={ rules }/>
                         </div>
                         <div id='game-content-wrapper' className='col p-0'>
-                            <Router>
-                                <Switch>
-                                    <Route path={`${ props.match.path }/`} exact render={ () => <Home /> } />
-                                    <Route path={`${ props.match.path }/lobby/:roomid`} render={ () => <Lobby hostId={ hostId } roomId={ roomId } gameId={ gameId }/> } />
-                                    <Route path={`${props.match.path }/ludo/:roomid`} render={ () => <Ludo /> }/>
-                                    <Route path={`${ props.match.path }/slf/:roomid`} render={ () => <Slf isHost={ hostId === socket.id ? true : false } players={ players }/> } />
-                                    <Route component={ PageNotFound } />
-                                </Switch>
-                                <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
-                            </Router>
+                            <Switch>
+                                <Route path={`${ match.path }/`} exact render={ () => <Home /> } />
+                                <Route path={`${ match.path }/lobby/:roomid`} render={ () => <Lobby hostId={ hostId } roomId={ roomId } gameId={ gameId }/> } />
+                                <Route path={`${ match.path }/ludo/:roomid`} render={ () => <Ludo /> }/>
+                                <Route path={`${ match.path }/slf/:roomid`} render={ () => <Slf isHost={ hostId === socket.id ? true : false } players={ players }/> } />
+                                <Route component={ PageNotFound } />
+                            </Switch>
+                            <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
                             <Players players={ players } scores={ scores } ludo={ ludo } readyPlayers={ playersReady }/>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route } from 'react-router';
 import SocketContext, { socket } from "../../services/socket";
 
 import './App.css';
@@ -13,10 +14,10 @@ function App() {
     <SocketContext.Provider value={ socket }>
       <Router>
         <Switch>
-          <Route path='/' exact component={ Home } />
-          <Route path='/invitation/:roomid' exact component={ Invitation } />
-          <Route path='/game' component={ GameBase } />
-          <Route component={ PageNotFound } />
+          <Route path='/' exact render={ () => <Home /> } />
+          <Route path='/invitation/:roomid' exact render={ ({match}) => <Invitation match={ match } /> } />
+          <Route path='/game' render={ ({match}) => <GameBase match={ match } /> } />
+          <Route render={ () => <PageNotFound /> } />
         </Switch>
       </Router>
     </SocketContext.Provider>

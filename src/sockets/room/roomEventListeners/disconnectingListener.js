@@ -1,6 +1,6 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
-const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
+const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores, addVotes } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
     // Spieler löschen
@@ -73,6 +73,7 @@ module.exports = (io, socket) => {
                         // Runde vorbei -> umleiten
                         io.in(player.roomId).emit('slf:round-over');
                         
+                        addVotes(room);
                         let scores = calculateScore(room);
 
                         // resetten
