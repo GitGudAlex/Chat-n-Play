@@ -1,5 +1,5 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
-const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions } = require('../../../models/players');
+const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
 const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
 
 module.exports = (io, socket) => {
@@ -136,7 +136,22 @@ module.exports = (io, socket) => {
                         }
                     }
                 }
-            }
+            // AKtuelles Spiel ist Mensch-Ärgere-Dich-Nicht
+            }else if(room.gameTypeId === 0){
+
+            // wenn der Spieler aktuell am Zug war, wird der nächste Spieler festgelegt
+                if(player.active === true){
+                    const nextPlayer = nextPlayerInRoom(player.roomId, player);
+                    io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
+                }
+
+                // nur den aktuellen Spieler wird der Würfel freigeschaltet
+                const currentPlayer = getCurrentPlayerInRoom(player.roomId);
+                io.to(currentPlayer.socketId).emit("ludo:unlockDice", currentPlayer);
+                
+                // Spielfiguren des verlassenden Spielers löschen
+                io.in(player.roomId).emit('ludo:playerLeave', player.playerPosition);
+        }
 
             io.in(player.roomId).emit('room:update', { players: mappedPlayers });
             io.in(player.roomId).emit('room:update-color-selector', { colors: getColors(player.roomId) });
