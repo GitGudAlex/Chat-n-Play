@@ -104,7 +104,7 @@ const removePlayerWordsFromCurrentRound = (player) => {
 
 const submitVotes = (player, results, callback) => {
     const room = getRoom(player.roomId);
-    
+
     // Bewertung noch nicht abgegeben
     if(room.readyPlayers.find(socketId => socketId === player.socketId) === undefined) {
         room.readyPlayers.push(player.socketId);
@@ -214,7 +214,7 @@ const addVotes = (room) => {
             }
         }
     }
-
+    
     room.currentWords = result;
 }
 

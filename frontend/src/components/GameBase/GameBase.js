@@ -123,6 +123,7 @@ function GameBase({ match }) {
 
 
     const handlePlayersReadyEvent = useCallback((data) => {
+
         if(data.playersReady.length === players.length) {
             setPlayersReady([]);
 
@@ -138,6 +139,7 @@ function GameBase({ match }) {
 
         return() => {
             socket.off('slf:players-ready-count', handlePlayersReadyEvent);
+
         }
     }, [socket, handlePlayersReadyEvent]);
 

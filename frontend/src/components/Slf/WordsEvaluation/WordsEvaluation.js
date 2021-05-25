@@ -24,18 +24,18 @@ function WordsEvaluation(props) {
 
      }, []);
 
-     useEffect(() => {
+    useEffect(() => {
         socket.on('slf:players-ready-count', handlePlayerSubmittedEvent);
 
         return() => {
             socket.off('slf:players-ready-count', handlePlayerSubmittedEvent);
         }
 
-     }, [socket, handlePlayerSubmittedEvent]);
-     
+    }, [socket, handlePlayerSubmittedEvent]);
+
     useEffect(() => {
         let result = [];
-
+        
         if(props.players.length === props.words.length) {
             for(let catIndex in props.categories) {
                 let resultJson = { category: props.categories[catIndex].category, answers: [] }
@@ -67,7 +67,7 @@ function WordsEvaluation(props) {
 
         setAnswers(result);
  
-     }, [socket, props]);
+     }, [socket.id, props.players, props.words, props.categories]);
 
     const setRating = (categoryIndex, socketId, inputId) => {
         let rating = 0
@@ -84,11 +84,10 @@ function WordsEvaluation(props) {
         setAnswers(answersTemp);
     }
 
-
     const submitVotes = (results) => {
         socket.emit('slf:submit-votes', { results: results });
         setIsReady(true);
-
+        
         document.getElementById('slf-submit-evaluated-words-btn').disabled = true;
 
     }
