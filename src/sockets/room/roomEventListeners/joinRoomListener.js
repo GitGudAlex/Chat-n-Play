@@ -49,7 +49,6 @@ module.exports = (io, socket, data, callback) => {
 
     // Spieler in DB speichern
     const { error, player } = addPlayer(socket.id, data.username, data.roomId );
-
     // Raum exestiert nicht oder Spiername schon vergeben
     if(error) return callback(error);
     
@@ -62,7 +61,7 @@ module.exports = (io, socket, data, callback) => {
         
         return playerObj;
     });
-    
+
     // bei allen anderen Spielern die Spieler updaten
     socket.to(player.roomId).emit('room:update', { players });
 

@@ -32,6 +32,9 @@ function GameBase({ match }) {
     const [hostId, setHostId] = useState();
     const [players, setPlayers] = useState();
 
+    // Wenn man ein Spiel neustarten will
+    const playersCount = useRef(0);
+
     const [winners, setWinners] = useState();
 
     // Bei SLF die Spieler die 'weiter' geklickt haben
@@ -64,8 +67,11 @@ function GameBase({ match }) {
             try {
                 setRoomId(gameData.roomId);
                 setHostId(gameData.hostId);
-                setPlayers(gameData.players);
                 setGameId(gameData.gameTypeId);
+
+                if(playersCount.current === 0) {
+                    setPlayers(gameData.players);
+                }
 
                 // restlichen Werte resetten
                 setWinners(undefined);
@@ -84,6 +90,7 @@ function GameBase({ match }) {
 
     // Event wenn ein Spieler joint oder jemand das Spiel verlässt
     const handleRoomUpdateEvent = useCallback((data) => {
+        playersCount.current = data.players.length;
         setPlayers(data.players);
     }, []);
 
@@ -104,12 +111,19 @@ function GameBase({ match }) {
         $('#endgame-modal').modal('show');
     }, []);
 
+    // Wenn ein neues Spiel erstellt wird die aktuellen Spieler löschen
+    const handleRoomCreatedEvent = useCallback(() => {
+        setPlayers([]);
+        playersCount.current = 0;
+    }, []);
+
     // Wenn neue Spieler in den Raum kommen oder aus dem Raum austreten
     useEffect(() => { 
         socket.on('room:update', handleRoomUpdateEvent);
         socket.on('room:hostChanged', handleHostChanged);
         socket.on('room:score-update', handleScoreUpdateEvent);
         socket.on('room:end-game', handleGameEndEvent);
+        socket.on('room:created-new', handleRoomCreatedEvent);
 
         return () => {
             // Events unmounten
@@ -117,9 +131,10 @@ function GameBase({ match }) {
             socket.off('room:hostChanged', handleHostChanged);
             socket.off('room:score-update', handleScoreUpdateEvent);
             socket.off('room:end-game', handleGameEndEvent);
+            socket.off('room:created-new', handleRoomCreatedEvent);
         };
 
-    }, [socket, handleRoomUpdateEvent, handleHostChanged, handleScoreUpdateEvent, handleGameEndEvent]);
+    }, [socket, handleRoomUpdateEvent, handleHostChanged, handleScoreUpdateEvent, handleGameEndEvent, handleRoomCreatedEvent]);
 
 
     const handlePlayersReadyEvent = useCallback((data) => {

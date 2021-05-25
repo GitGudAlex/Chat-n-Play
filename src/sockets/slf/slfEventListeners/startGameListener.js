@@ -23,13 +23,13 @@ module.exports = (io, socket, data, callback) => {
     const player = getPlayer(socket.id);
     
     // Spiel initialisieren
-    let initialPlayerScores = initilazeGame(player.roomId, data.categories, 10);
+    let initialPlayerScores = initilazeGame(player.roomId, data.categories, 1);
 
     // Den neuen Score returnen
     io.in(player.roomId).emit('room:score-update', { scores: initialPlayerScores });
 
     // Allen Spielern die Kategorien + Runden übergeben
-    io.in(player.roomId).emit('slf:submit-game-infos', { categories: data.categories, rounds: 10 });
+    io.in(player.roomId).emit('slf:submit-game-infos', { categories: data.categories, rounds: 1 });
 
     // Buchstabe aussuchen nach einer kurzen Pause, damit sich alle die Kategorien anschauen können
     setTimeout(() => {
