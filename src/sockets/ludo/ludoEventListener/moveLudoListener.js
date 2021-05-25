@@ -1,5 +1,6 @@
 const { getPlayer, nextPlayerInRoom, getCurrentPlayerInRoom} = require('../../../models/players');
 const {moveFigure, throwFigure, checkWinner} = require ('../../../ludo/gamelogic.js');
+const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket, id) => {
 
@@ -8,8 +9,10 @@ module.exports = (io, socket, id) => {
     const newPosition = moveFigure(id, player);
     const throwFig = throwFigure(newPosition, player);
     const winner = checkWinner(player);
+    const room = getRoom(player.roomId);
 
     if(winner){
+        room.gameStatus = 2;
         io.in(player.roomId).emit("ludo:winner", player);
     }
 

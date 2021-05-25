@@ -1,8 +1,10 @@
 const { roll, getDiceValue } = require('../../../ludo/Dice');
 const { getPlayer,  nextPlayerInRoom, getCurrentPlayerInRoom} = require('../../../models/players');
 const {checkField, checkHouse, showMove, showFigureFromHouse, throwFigure, onField} = require ('../../../ludo/gamelogic.js');
+const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket) => {
+
     const player = getPlayer(socket.id);
 
     roll(player.roomId);

@@ -1,4 +1,5 @@
 const {getPlayersInRoom, setFirstPlayer} = require('../models/players.js');
+const { getRoom } = require('../models/rooms.js');
 const { addDice } = require('./Dice.js');
 
 const dices = [];
@@ -43,6 +44,10 @@ const startGameLudo = (roomId) => {
     allPlayers[index].active = true;
 
     addDice(roomId);
+
+    room = getRoom(player.roomId);
+    // 0 : Spiel hat noch nicht begonnen, 1: Spiel hat begonnen, 2: Spiel ist vorbei
+    room['gameStatus'] = 0
 
 }
 

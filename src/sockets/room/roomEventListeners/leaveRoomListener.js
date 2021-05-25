@@ -123,7 +123,7 @@ module.exports = (io, socket) => {
 
             }
         // AKtuelles Spiel ist Mensch-Ärgere-Dich-Nicht
-        }else if(room.gameTypeId === 0){
+        }else if(room.gameTypeId === 0 && room.gameStatus === 1){
 
             // wenn der Spieler aktuell am Zug war, wird der nächste Spieler festgelegt
             if(player.active === true){
