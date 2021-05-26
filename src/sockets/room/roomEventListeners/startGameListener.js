@@ -1,6 +1,7 @@
 const { getRoom, isHost, setGameStarted } = require('../../../models/rooms');
-const { getPlayersInRoom, getPlayer, setColor, getColors, getCurrentPlayerInRoom } = require('../../../models/players');
+const { getPlayersInRoom, getPlayer, setColor, getColors } = require('../../../models/players');
 const { startGameLudo } = require('../../../ludo/startGame');
+const { initUno } = require('../../../uno/gameLogic');
 
 module.exports = (io, socket, callback) => {
     
@@ -65,6 +66,17 @@ module.exports = (io, socket, callback) => {
 
         // Spielstatus setzten
         setGameStarted(room.roomId, true);
+
+        // Start Mehode vom Spiel aufrufen
+        initUno(player.socketId, () => {
+
+            // Allen Spielern nur seine Karten schicken nach einer 2 Sekunden Pause
+            setTimeout(() => {
+                for(let p of players) {
+                    io.to(p.socketId).emit('uno:deal-start-hand', { hand: p.hand });
+                }
+            }, 2000);
+        });
 
     } else if(gameTypeId == 2) {
         // Spieler nach Stadt, Land, Fluss umleiten (Route angeben)

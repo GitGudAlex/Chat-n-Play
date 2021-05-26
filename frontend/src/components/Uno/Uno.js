@@ -1,8 +1,10 @@
+import UnoGameBoard from './UnoGameBoard/UnoGameBoard';
+
 function Uno(props) {
     return (
         <div>
             <div id='game-content'>
-                <h1>Uno Test</h1>
+                <UnoGameBoard isHost={ props.isHost } />
             </div>
         </div>
     );

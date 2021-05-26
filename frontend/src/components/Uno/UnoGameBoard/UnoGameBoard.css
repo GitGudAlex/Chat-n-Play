@@ -1,0 +1,25 @@
+#uno-decks-wrapper {
+    width: 50%;
+    height: 50%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.uno-deck-wrapper {
+    text-align: center;
+    flex: 1 0 50%;
+}
+
+.uno-deck {
+    width: 30%;
+    height: auto;
+
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}

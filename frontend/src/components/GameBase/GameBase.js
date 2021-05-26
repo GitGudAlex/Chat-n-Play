@@ -289,7 +289,7 @@ function GameBase({ match }) {
                                 <Route path={`${ match.path }/`} exact render={ () => <Home /> } />
                                 <Route path={`${ match.path }/lobby/:roomid`} render={ () => <Lobby hostId={ hostId } roomId={ roomId } gameId={ gameId }/> } />
                                 <Route path={`${ match.path }/ludo/:roomid`} render={ () => <Ludo /> }/>
-                                <Route path={`${ match.path }/uno/:roomid`} render={ () => <Uno /> }/>
+                                <Route path={`${ match.path }/uno/:roomid`} render={ () => <Uno isHost={ hostId === socket.id ? true : false } players={ players } /> }/>
                                 <Route path={`${ match.path }/slf/:roomid`} render={ () => <Slf isHost={ hostId === socket.id ? true : false } players={ players }/> } />
                                 <Route component={ PageNotFound } />
                             </Switch>

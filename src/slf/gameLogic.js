@@ -1,5 +1,5 @@
-const { removeRoom, isHost, setHost, getRoom } = require('../models/rooms');
-const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getPlayer } = require('../models/players');
+const { getRoom } = require('../models/rooms');
+const { getPlayersInRoom, getPlayer } = require('../models/players');
 
 /**
  * {roomId, [alphabet]}

@@ -1,8 +1,8 @@
 // Event Handling
-const startGameHandler = require('./unoEventListeners/startGameListener');
+const submitCardHandler = require('./unoEventListeners/submitCardListener');
 
 module.exports = (io, socket) => {
 
   // Socket.io Events
-  socket.on('uno:start-game', () => startGameHandler(io, socket));
+  socket.on('uno:submit-card', (data) => submitCardHandler(io, socket, data));
 }
