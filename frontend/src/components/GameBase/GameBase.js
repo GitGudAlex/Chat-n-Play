@@ -16,6 +16,7 @@ import Slf from '../Slf/Slf';
 import Players from '../Players/Players';
 import Home from '../Home/Home';
 import EndGameModal from '../EndGameModal/EndGameModal';
+import Uno from '../Uno/Uno';
 
 function GameBase({ match }) {
 
@@ -288,6 +289,7 @@ function GameBase({ match }) {
                                 <Route path={`${ match.path }/`} exact render={ () => <Home /> } />
                                 <Route path={`${ match.path }/lobby/:roomid`} render={ () => <Lobby hostId={ hostId } roomId={ roomId } gameId={ gameId }/> } />
                                 <Route path={`${ match.path }/ludo/:roomid`} render={ () => <Ludo /> }/>
+                                <Route path={`${ match.path }/uno/:roomid`} render={ () => <Uno /> }/>
                                 <Route path={`${ match.path }/slf/:roomid`} render={ () => <Slf isHost={ hostId === socket.id ? true : false } players={ players }/> } />
                                 <Route component={ PageNotFound } />
                             </Switch>

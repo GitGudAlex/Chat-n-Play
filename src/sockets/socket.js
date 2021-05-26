@@ -2,6 +2,7 @@ const roomEvents = require("./room/roomIndex");
 const webcamEvents = require("./webcam/webcamIndex")
 const chatEvents = require("./chat/chatIndex");
 const ludoEvents = require("./ludo/ludoIndex")
+const unoEvents = require("./uno/unoIndex")
 const slfEvents = require("./slf/slfIndex")
 
 module.exports = function(io) {
@@ -18,6 +19,9 @@ module.exports = function(io) {
 
         // all ludo events
         ludoEvents(io, socket);
+
+        // all slf events
+        unoEvents(io, socket);
 
         // all slf events
         slfEvents(io, socket);
