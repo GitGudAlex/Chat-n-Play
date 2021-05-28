@@ -11,13 +11,6 @@ function Ludo() {
 
     // Socket.io
     const socket = useContext(SocketContext);
-
-    useEffect(() => { 
-        return () => {
-            // Wenn man in der Browser historie zurück geht, soll man aus dem Spiel fliegen
-            socket.emit('room:leave-room');
-        }
-    }, [socket])
     
     // ersten Spieler anzeigen
     socket.once('ludo:first-player', player => {

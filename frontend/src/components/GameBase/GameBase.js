@@ -201,7 +201,6 @@ function GameBase({ match }) {
 
     useEffect(() => { 
         return () => {
-
             if(history.action !== 'PUSH') {
                 socket.emit('room:leave-room');
 

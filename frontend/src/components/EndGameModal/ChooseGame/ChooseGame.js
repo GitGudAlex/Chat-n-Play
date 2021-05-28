@@ -81,7 +81,7 @@ function ChooseGame(props) {
                         <div className='endgame-modal-game' onClick={ () => createGame(1) }>
                             <p>Uno</p>
                         </div>
-                        <div className='endgame-modal-game' onClick={ () => createGame(2) }>
+                        <div className='endgame-modal-game' onClick={ () => createGame(0) }>
                             <p>Stadt, Land, Fluss</p>
                         </div>
                     </div>
