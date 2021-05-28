@@ -161,20 +161,6 @@ function Ludo() {
         }
     });
 
-    // Gewinner anzeigen
-    useEffect(() => {
-        socket.on('ludo:winner', (player) => {
-            $("#dice").prop("disabled", true); 
-            $(".matchfield").find(":button").prop("disabled", true);
-            console.log("Winner: "+ player.username);
-        });
-        
-        // Event unsubscriben
-        return () => {
-            socket.off('ludo:winner');
-        }
-    });
-
     useEffect(() => {
         socket.on('ludo:playerLeave', (positionen => {
             positionen.forEach(p => {

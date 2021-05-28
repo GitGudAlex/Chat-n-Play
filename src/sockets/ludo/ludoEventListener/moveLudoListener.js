@@ -13,10 +13,12 @@ module.exports = (io, socket, id) => {
 
     if(winner){
         room.gameStatus = 2;
-        io.in(player.roomId).emit("ludo:winner", player);
+        const winners = [player];
+        io.in(player.roomId).emit('room:end-game', { winners: winners });
     }
 
     if(getDiceValue(player.roomId) !== 6){
+        player.dicecount = 0;
         const nextPlayer = nextPlayerInRoom(player.roomId, player);
         io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
         io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
