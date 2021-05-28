@@ -9,7 +9,7 @@ class Deck {
     
                 // Spezial Karte
                 if(color === 4) {
-                    for(let value = 20; value < 23; value++ ) {
+                    for(let value = 0; value < 3; value++ ) {
                         this.deck.push( new Card(value, color) );
                     }
                 
