@@ -40,6 +40,7 @@ function Ludo() {
     useEffect(() => {
         socket.on("ludo:dicedValue", dice => {
             console.log("Würfel: " + dice)
+            $('#dice').css({'display':'inline'});
             $("#dice").html(dice);
         });
     
@@ -129,6 +130,7 @@ function Ludo() {
         socket.on('ludo:nextPlayer', player => {
             setTimeout(function(){
                 $('#dice').css({'border-color':player.color});
+                $('#dice').css({'display':'none'});
             }, 2000);
         });
 
@@ -143,6 +145,7 @@ function Ludo() {
         socket.on('ludo:unlockDice', (player)=>{
             console.log("socket on unlockDIce");
             setTimeout(function(){
+                $('#dice').css({'display':'inline'});
                 $('.dice').html('Würfeln');
                 $("#dice").prop("disabled",false);
             }, 2000);
