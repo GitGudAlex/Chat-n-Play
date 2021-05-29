@@ -4,7 +4,7 @@ const { getRoom } = require('../models/rooms');
 const { Deck } = require('./Cards/Deck');
 const { Hand } = require('./Cards/Hand'); 
 
-const initUno = (hostId, callback) => {
+const initUno = (hostId, socket, io) => {
     const player = getPlayer(hostId);
 
     // Falls der Spieler in keinem Raum ist
@@ -36,19 +36,62 @@ const initUno = (hostId, callback) => {
     // Jedem Spieler 7 Karten geben
     const players = getPlayersInRoom(player.roomId);
 
+    // Die Hand erstellen
     for(let player of players) {
-        let hand = new Hand();
+        player['hand'] = new Hand();
 
-        for(let i = 0; i < 7; i++) {
-
-            // Karte vom Deck der Hand hinzufügen
-            hand.addCard(room.deck.takeCard());
-        }
-
-        player['hand'] = hand;
     }
 
-    callback();
+    let cardCounter = 0;
+    let playerCounter = 0;
+
+    const dealHandCards = () => {
+        setTimeout(() => {
+            // Hand Karten verteilen
+            let card = room.deck.takeCard();
+            players[playerCounter].hand.addCard(card);
+
+            // Sich selber die Karte schicken
+            io.to(players[playerCounter].socketId).emit('uno:deal-card', { card: card });
+
+            // Den anderen die Karte schicken (Nur ohne Wert)
+            socket.to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' } });
+
+            // Wenn 7 Karten verteilt wurden
+            if(cardCounter < 7) {
+
+                // Wenn jeder Spieler einmal durchgegangen ist -> von vorne anfangen
+                if(++playerCounter >= players.length) {
+                    playerCounter = 0;
+                    cardCounter++;
+
+                }
+
+                dealHandCards();
+            } else {
+                setFirstPlayer(room, players, io);
+
+            }
+        }, 500);
+    }
+
+    dealHandCards();
+
+}
+
+const setFirstPlayer = (room, players, io) => {
+
+    setTimeout(() => {
+        // Zufällig den ersten Spieler auswählen
+        let firstPlayer = players[Math.floor(Math.random() * players.length)];
+        firstPlayer.active = true;
+
+        // Aktiven Spieler speichern
+        room.activePlayerId = firstPlayer.socketId;
+
+        // Allen Spielern die SocketId des nächsten Spielers schicken
+        io.in(firstPlayer.roomId).emit('uno:set-first-player', { socketId: firstPlayer.socketId });
+    }, 1000);
 }
 
 

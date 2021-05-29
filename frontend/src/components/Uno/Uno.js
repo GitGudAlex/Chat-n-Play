@@ -4,7 +4,7 @@ function Uno(props) {
     return (
         <div>
             <div id='game-content'>
-                <UnoGameBoard isHost={ props.isHost } />
+                <UnoGameBoard isHost={ props.isHost } players={ props.players } />
             </div>
         </div>
     );

@@ -68,15 +68,7 @@ module.exports = (io, socket, callback) => {
         setGameStarted(room.roomId, true);
 
         // Start Mehode vom Spiel aufrufen
-        initUno(player.socketId, () => {
-
-            // Allen Spielern nur seine Karten schicken nach einer 2 Sekunden Pause
-            setTimeout(() => {
-                for(let p of players) {
-                    io.to(p.socketId).emit('uno:deal-start-hand', { hand: p.hand });
-                }
-            }, 2000);
-        });
+        initUno(player.socketId, socket, io);
 
     } else if(gameTypeId == 2) {
         // Spieler nach Stadt, Land, Fluss umleiten (Route angeben)

@@ -4,6 +4,7 @@ import './UnoGameBoard.css';
 
 import SocketContext from "../../../services/socket";
 import UnoCard from '../UnoCard/UnoCard';
+import UnoHand from '../UnoHand/UnoHand';
 
 function UnoGameBoard(props) {
 
@@ -12,30 +13,6 @@ function UnoGameBoard(props) {
 
     // Socket.io
     const socket = useContext(SocketContext);
-
-    // Karten mischen
-    const handlingDealStartHand = useCallback((data) => {
-
-        // Wenn die Animation zuende ist
-        if(props.isHost) {
-            socket.emit('uno:deal-start-cards-animation-ready');
-        }
-
-    }, [socket, props]);
-
-    // Der Server liefert einen zufälligen Start Spieler -> Animation abspielen
-    const handlingSetStartPlayer = useCallback((data) => {
-
-    }, []);
-
-    // Setzt am Anfang den Spieler
-    const handleSetForstPlayerEvent = useCallback(() => {
-
-        // Wenn die Animation zuende ist
-        if(props.isHost) {
-            socket.emit('uno:select-random-player-animation-ready');
-        }
-    }, [socket, props]);
 
     const handleDealCardEvent = useCallback((data) => {
 
@@ -60,19 +37,24 @@ function UnoGameBoard(props) {
         }
     }, []);
 
+    // Setzt am Anfang den Spieler
+    const handleSetFirstPlayerEvent = useCallback(() => {
+
+        // Wenn die Animation zuende ist
+        if(props.isHost) {
+            socket.emit('uno:select-random-player-animation-ready');
+        }
+    }, [socket, props]);
+
     useEffect(() => {
-        socket.on('uno:deal-start-hand', handlingDealStartHand);
-        socket.on('uno:set-start-player', handlingSetStartPlayer);
-        socket.on('uno:set-first-player', handleSetForstPlayerEvent);
         socket.on('uno:deal-card', handleDealCardEvent);
+        socket.on('uno:set-first-player', handleSetFirstPlayerEvent);
 
         return () => {
-            socket.off('uno:deal-start-hand', handlingDealStartHand);
-            socket.off('uno:set-start-player', handlingSetStartPlayer);
-            socket.off('uno:set-first-player', handleSetForstPlayerEvent);
             socket.off('uno:deal-card', handleDealCardEvent);
+            socket.off('uno:set-first-player', handleSetFirstPlayerEvent);
         }
-    }, [socket, handlingDealStartHand, handlingSetStartPlayer, handleSetForstPlayerEvent, handleDealCardEvent]);
+    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleDealCardEvent]);
 
     return (
         <div id='uno-gameboard'>
@@ -90,6 +72,20 @@ function UnoGameBoard(props) {
                     })
                 }
             </div>
+            
+            {
+                props.players.map((player) => {
+
+                    // Der eigene Spieler -> Große Hand
+                    if(player.socketId === socket.id) {
+                        return <UnoHand self={ true } />
+                    }
+
+                    // Anderer Spieler -> Kleine Hand
+                    return <UnoHand self={ false } />
+                })
+            }
+
         </div>
     );
 }
