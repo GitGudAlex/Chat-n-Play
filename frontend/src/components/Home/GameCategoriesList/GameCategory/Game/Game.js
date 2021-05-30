@@ -38,10 +38,10 @@ function Game(props) {
                 <h4>{ props.name }</h4>
             </div>
             <div>
-                <p>{ props.description }</p>
+                <p>{ props.description }</p>              
             </div>
             <div>
-                <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={ "#create-game-modal-" + gameId }>Raum erstellen</button>
+                <button type="button" className="btn btn-dark btn-lg" data-toggle="modal" data-target={ "#create-game-modal-" + gameId }>Raum erstellen</button>
             </div>
 
 
@@ -70,7 +70,7 @@ function Game(props) {
                                     <small id={ 'create-game-error-output-' + gameId } className="text-danger"></small>
                                 </div>
                                 <div className='text-center'>
-                                    <button type="submit" className="btn btn-primary" onClick={ createRoom }>Raum erstellen</button>
+                                    <button type="submit" className="btn btn-dark" onClick={ createRoom }>Raum erstellen</button>
                                 </div>
                             </div>
                         </div>

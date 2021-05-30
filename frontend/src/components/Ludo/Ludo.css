@@ -1,3 +1,40 @@
+html, body, #root, .game-wrapper, .container-fluid, .game-body {
+  height: 100%;
+  margin: 0;
+}
+
+.sidebar-wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.game-body-wrapper {
+  height: 90vh;
+}
+
+#game-content-wrapper {
+  position: relative;
+}
+
+.players {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.game-content {
+  position: absolute;
+  z-index: 1;
+  
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .game-board {
   text-align: center;
 }
@@ -7,26 +44,24 @@
 }
 
 .blue{
-  background-color: #00008B;
+  background-color: #0B97F0;
 }
 
 .red{
-  background-color: red;
+  background-color: #FF3030;
 }
 
 .green{
-  background-color: green;
+  background-color: #00BF02;
 }
 
 .yellow{
-  background-color: yellow;
+  background-color: #FCA701;
 }
 
 .white{
-  background-color: white;
-  padding: 10px 10px;
-}
-
-.house{
-  padding: 10px 10px;
+  background-color: white; 
+  border-radius: 50%;
+  padding: 15px 15px;
+  margin: 8px;
 }

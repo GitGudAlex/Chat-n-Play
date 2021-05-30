@@ -2,6 +2,8 @@ import { useCallback, useContext, useEffect } from 'react';
 import $ from 'jquery';
 
 import './Description.css'
+import '../../../fonts/coffee+teademo-Regular.ttf'
+import Grafik from '../../../img/GrafikStartseite.png'
 
 import SocketContext from '../../../services/socket';
 
@@ -36,12 +38,15 @@ function Description() {
         <div id="home-description">
             <div id='home-description-wrapper'>
                 <h2 className='text-center'>Willkommen zu Chat&nbsp;N'&nbsp;Play</h2>
+                    <div>
+                        <img src={Grafik} id="img-Startseite" alt='Zwei Menschen nutzen mobile Geräte um miteinader zu kommunizieren'></img>
+                    </div>
                 <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden auch über Distanz das Spieleabend-Feeling erleben.<br />
                 Erstellt einfach einen Raum und ladet Freunde über einen Link ein<br />
                 oder lasst Ihnen den Zugangscode zukommen</p>
             </div>
             <div id='home-description-join-game-btn' className='d-flex justify-content-center'>
-                <button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#join-game-modal">Spiel beitreten</button>
+                <button type="button" className="btn btn-dark btn-lg" data-toggle="modal" data-target="#join-game-modal">Spiel beitreten</button>
             </div>
 
             {/* Modal */}

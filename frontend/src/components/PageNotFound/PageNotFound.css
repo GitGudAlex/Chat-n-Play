@@ -1,0 +1,21 @@
+body {
+   background: url(../../img/background_2.png), url(../../img/Background_3.png) top right;
+   background-repeat: no-repeat;
+}
+h2 {
+   margin-top: 40px;
+   font-family: Calibri;
+   text-align: center;
+}
+
+#error-message {
+   font-size: 4rem;
+   color: #474747;
+   margin-top: 230px;
+}
+
+.btn {
+   color: #fff;
+   background-color: #474747;
+   border-color: #474747;
+}

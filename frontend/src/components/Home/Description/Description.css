@@ -1,5 +1,5 @@
 #home-description {
-    padding: 5%;
+    padding: 2%;
 }
 
 #home-description-wrapper {
@@ -26,6 +26,29 @@
     margin-bottom: 20px;
 }
 
-.h2 {
-    font-family: 'Orange Juice';
+.btn {
+    color: #fff;
+    background-color: #474747;
+    border-color: #474747;
+}
+
+#img-Startseite {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+}
+
+@font-face {
+    font-family: 'coffee+teademo-Regular';
+    src: local ('coffee+tea-Regular'), url(../../../fonts/coffee+teademo-Regular.ttf) format(ttf);
+}
+
+h2 {
+    font-family: 'coffee+teademo-Regular';
+    margin: 0px;
+}
+
+body {
+    font-family: 'Calibri';
 }

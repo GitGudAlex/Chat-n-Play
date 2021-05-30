@@ -6,3 +6,8 @@
     color: white;
     font-weight: 300;
 }
+
+#logo {
+    width: 70px;
+    height: 70px;  
+}

@@ -4,6 +4,8 @@ import $ from "jquery";
 
 import './Home.css'
 
+import '../../img/Titel_Weiß.png'
+
 import SocketContext from '../../services/socket';
 import Title from './Title/Title';
 import Description from './Description/Description';
@@ -57,7 +59,7 @@ function Home() {
     return (
         <div className='p-0'>
             <header className="sticky-top">
-                <Title text="Chat N' Play" height="150px" fontSize="5em"/>
+                <Title text="Chat N' Play" height="100px" fontSize="5em"/>
             </header>
             <main>
                 <div className='container-fluid'>
