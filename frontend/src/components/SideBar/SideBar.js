@@ -105,7 +105,8 @@ function SideBar(props) {
     socket.emit('room:leave-room');
 
     // Zur Startseite weiterleiten
-    history.push('/');
+    //history.push('/');
+    history.go();
 
   }
 
