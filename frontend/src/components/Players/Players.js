@@ -103,14 +103,24 @@ function Players(props) {
                         addVideoStream(otherSocketId, userVideoStream);
                     });
                 });
+                
+                socket.on("webcam:disconnected", () =>{
+                    peer.disconnect();
+                });
+                
+
+                peer.on("disconnected", ()=>{
+                    console.log("disc");
+                    stream.getTracks()[0].stop();
+                });
     
     
             // Kamera wird nicht erlaubt
             }).catch(function(err) {
-
+                alert("Bitte aktiviere deine Webcam um zu spielen");
                 // Aus dem Spiel schmeißen
                 socket.emit('room:leave-room');
-                history.push('/');
+                history.push("/");
             });
         }
 
