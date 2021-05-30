@@ -6,12 +6,17 @@ const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlay
 module.exports = (io, socket) => {
     // Spieler löschen
     const player = removePlayer(socket.id);
-
+    
     // Wenn der Spieler in einem Raum ist
     if(player) {
 
         // Die Positionen nur dann neu ordnen, wenn das Spiel noch nicht angfangen hat
         let room = getRoom(player.roomId);
+
+        // Wenn man sich in keinem Raum befindet
+        if(room === undefined) {
+            return;
+        }
 
         if(!room.hasStarted) {
             reorderPlayerPositions(room.roomId);

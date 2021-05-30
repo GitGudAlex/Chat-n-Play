@@ -61,12 +61,17 @@ showFigureFromHouse = (currentPlayer) => {
     let pos = [];
     for(let i = 3; i >= 0; i --){
         if (currentPlayer.house[i][1] === true){
-            pos[0] = currentPlayer.playerPosition[i][0];
-            currentPlayer.playerPosition[i][0] = currentPlayer.start;
-            pos[1] = currentPlayer.start;
-            currentPlayer.house[i][1] = "false";
-            pos[2] = currentPlayer.color;
-            return pos;
+            const position = currentPlayer.house[i][0];
+            for (let j = 0; j < 4; j ++){
+                if (currentPlayer.playerPosition[j][0] === position){
+                    pos[0] = currentPlayer.playerPosition[j][0];
+                    currentPlayer.playerPosition[j][0] = currentPlayer.start;
+                    pos[1] = currentPlayer.start;
+                    currentPlayer.house[i][1] = false;
+                    pos[2] = currentPlayer.color;
+                    return pos;
+                }
+            }  
         }
     }
     // eine Figur aus dem Haus auf das Startfeld
@@ -139,5 +144,33 @@ onField = (positions) => {
     return true;
 }
 
+walkInHouse = (player) => {
+    for( let i = 0; i < 4; i ++){
+        console.log("Position ", player.playerPosition[i][0])
+        
+        if(player.playerPosition[i][0] > 200){
+            let newPosition = player.playerPosition[i][0];
 
-module.exports = {checkField, checkHouse, showMove, showFigureFromHouse, moveFigure, getFirstPosHole, throwFigure, checkWinner, onField};
+            if(newPosition === 204 || newPosition === 208 || newPosition === 212 || newPosition === 216){
+                newPosition = null; 
+                break;
+            }else{
+                newPosition = newPosition +1;
+            }
+        
+            //überprüfen, ob eigene Figur auf dem Zielfeld steht
+            if(checkField(newPosition, player)){
+                newPosition = null;
+            }
+
+            console.log("newPosition ", newPosition);
+            if(newPosition !== null){
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+module.exports = {checkField, checkHouse, showMove, showFigureFromHouse, moveFigure, getFirstPosHole, throwFigure, checkWinner, onField, walkInHouse};

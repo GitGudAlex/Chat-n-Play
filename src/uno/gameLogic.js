@@ -4,7 +4,7 @@ const { getRoom } = require('../models/rooms');
 const { Deck } = require('./Cards/Deck');
 const { Hand } = require('./Cards/Hand'); 
 
-const initUno = (hostId, callback) => {
+const initUno = (hostId, socket, io) => {
     const player = getPlayer(hostId);
 
     // Falls der Spieler in keinem Raum ist
@@ -25,27 +25,139 @@ const initUno = (hostId, callback) => {
     room['cardOnBoard'] = 0;
 
     // Wenn die Richtung umgedreht wird
-    room['reverse'] = false;
+    room['isReverse'] = false;
 
     // Wenn +2 oder +4 Karten gelegt werden -> aufaddieren
     room['cardsCount'] = 0;
 
+    // Der aktuelle Spieler
+    room['activePlayer'] = 0;
+
     // Jedem Spieler 7 Karten geben
     const players = getPlayersInRoom(player.roomId);
 
+    // Die Hand erstellen
     for(let player of players) {
-        let hand = new Hand();
+        player['hand'] = new Hand();
 
-        for(let i = 0; i < 7; i++) {
-
-            // Karte vom Deck der Hand hinzufügen
-            hand.addCard(room.deck.takeCard());
-        }
-
-        player['hand'] = hand;
     }
 
-    callback();
+    let cardCounter = 0;
+    let playerCounter = 0;
+
+    const dealHandCards = () => {
+        setTimeout(() => {
+            // Hand Karten verteilen
+            let card = room.deck.takeCard();
+            players[playerCounter].hand.addCard(card);
+
+            // Sich selber die Karte schicken
+            io.to(players[playerCounter].socketId).emit('uno:deal-card', { card: card });
+
+            // Den anderen die Karte schicken (Nur ohne Wert)
+            socket.to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' } });
+
+            // Wenn 7 Karten verteilt wurden
+            if(cardCounter < 7) {
+
+                // Wenn jeder Spieler einmal durchgegangen ist -> von vorne anfangen
+                if(++playerCounter >= players.length) {
+                    playerCounter = 0;
+                    cardCounter++;
+
+                }
+
+                dealHandCards();
+            } else {
+                setFirstPlayer(room, players, io);
+
+            }
+        }, 500);
+    }
+
+    dealHandCards();
+
 }
 
-module.exports = { initUno }
+const setFirstPlayer = (room, players, io) => {
+
+    setTimeout(() => {
+        // Zufällig den ersten Spieler auswählen
+        let firstPlayer = players[Math.floor(Math.random() * players.length)];
+        firstPlayer.active = true;
+
+        // Aktiven Spieler speichern
+        room.activePlayerId = firstPlayer.socketId;
+
+        // Allen Spielern die SocketId des nächsten Spielers schicken
+        io.in(firstPlayer.roomId).emit('uno:set-first-player', { socketId: firstPlayer.socketId });
+    }, 1000);
+}
+
+
+const getNextPlayer = (roomId) => {
+    
+    const room = getRoom(roomId);
+
+    // Den Aktuell aktiven Spieler hohlen
+    let activePlayer = room.activePlayer;
+    let currentPlayerPosition = activePlayer.position;
+
+    // Ob die Reihnfolge zurzeit umgekehrt ist
+    let isReverse = room.isReverse;
+
+    // Alle Spieler
+    const players = getPlayersInRoom(roomId);
+
+    // Normale Reihnfolge
+    if(!isReverse) {
+
+        // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
+        // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
+        for(let i = currentPlayerPosition + 1; i < currentPlayerPosition + players.length; i++) {
+            let newPosition = i % players.length;
+
+            // z.B. 4 % 4 sollte 4 sein und nicht 0
+            if(newPosition === 0) {
+                newPosition = players.length;
+            }
+
+            let newPlayerIndex = players.findIndex(p => p.position === newPosition);
+
+            // Nächster Spieler wurde gefunden
+            if(newPlayerIndex !== undefined) {
+                let newPlayer = players[newPlayerIndex];
+
+                room.activePlayer = { socketId: newPlayer.socketId, position: newPlayer.position };
+                return newPlayer;
+            }
+        }
+
+    // umgekehrt Reihnfolge
+    } else {
+
+        // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
+        // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
+        for(let i = currentPlayerPosition - 1; i > currentPlayerPosition - players.length; i--) {
+            let newPosition = i % players.length;
+
+            // z.B. 4 % 4 sollte 4 sein und nicht 0
+            if(newPosition === 0) {
+                newPosition = players.length;
+            }
+
+            let newPlayerIndex = players.findIndex(p => p.position === newPosition);
+
+            // Nächster Spieler wurde gefunden
+            if(newPlayerIndex !== undefined) {
+                let newPlayer = players[newPlayerIndex];
+                
+                room.activePlayer = { socketId: newPlayer.socketId, position: newPlayer.position };
+                return newPlayer;
+            }
+        }
+
+    }
+}
+
+module.exports = { initUno, getNextPlayer }
