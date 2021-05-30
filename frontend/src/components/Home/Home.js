@@ -11,7 +11,7 @@ import Title from './Title/Title';
 import Description from './Description/Description';
 import GameCategoriesList from './GameCategoriesList/GameCategoriesList';
 
-function Home() {
+function Home({ match }) {
 
     // Router Stuff
     const history = useHistory();
@@ -70,7 +70,7 @@ function Home() {
                     </div>
                     <div className='row justify-content-center'>
                         <div className="col p-0">
-                            <GameCategoriesList />
+                            <GameCategoriesList match={ match } />
                         </div>
                     </div>
                 </div>

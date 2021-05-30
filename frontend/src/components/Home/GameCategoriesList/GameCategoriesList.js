@@ -11,6 +11,8 @@ function GameCategoriesList() {
     // Socket.io
     const socket = useContext(SocketContext);
 
+    const [activeCategory, setActiveCategory] = useState(0);
+
     //Events:
     // Wenn ein Raum erstellt wurde -> erstelltem Raum joinen
     const handleRoomCreated = useCallback((data) => {
@@ -53,17 +55,33 @@ function GameCategoriesList() {
         }
     }, [socket, handleRoomCreated])
     
+    const setGameCategory = (gameCategory) => {
+        setActiveCategory(gameCategory);
+    }
+
 
     return (
-        <div id='accordion' className='game-category-list'>
-            { 
-                gameCategories.map(gameCategory => (
-                    <GameCategory key = { gameCategory.gameCategoryId }
-                        gameCategoryId = { gameCategory.gameCategoryId }
-                        categoryName = { gameCategory.gameCategoryName }
-                        color = { gameCategory.color } />
-                ))
-            }
+        <div>
+            <nav className="nav nav-pills flex-column flex-sm-row">
+                { 
+                    gameCategories.map(gameCategory => {
+                        if(activeCategory === 0) {
+                            setActiveCategory(gameCategory);
+                        }
+
+                        return <button key = { gameCategory.gameCategoryId }
+                                    className="flex-sm-fill text-sm-center nav-link"
+                                    onClick={ () => setGameCategory(gameCategory ) } >
+                                        { gameCategory.gameCategoryName }
+                                </button>
+                    })
+                }
+            </nav>
+            <div>
+                <GameCategory gameCategoryId = { activeCategory.gameCategoryId } 
+                    color = { activeCategory.color } 
+                    categoryName = { activeCategory.gameCategoryName }/>
+            </div>
         </div>
     );
 }

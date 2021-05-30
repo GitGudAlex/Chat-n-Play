@@ -8,6 +8,9 @@ import Game from './Game/Game';
 function GameCategory(props) {
     const [games, setGames] = useState([]);
 
+    const [gameCategoryId, setGameCategoryId] = useState();
+    const [categoryName, setCategoryName] = useState();
+    const [color, setColor] = useState();
     
     useEffect(() => {
         const fetchGamesByCategory = async() => {
@@ -21,45 +24,32 @@ function GameCategory(props) {
 
     }, [props.gameCategoryId]);
 
+    useEffect(() => {
+        setGameCategoryId(props.gameCategoryId);
+        setColor(props.color);
+        setCategoryName(props.categoryName);
+        console.log(props);
+    }, [props]);
 
-    const style = {
-        backgroundColor: props.color
-    }
-
-     // Zur Auswahl scrollen wenn nicht im Bild
-     $('#' + props.categoryName + '-collapse').on('shown.bs.collapse', () => {
-        let elementTop = $('#' + props.categoryName + '-collapse').offset().top;
-        let elementBottom = $('#' + props.categoryName + '-collapse').height() + elementTop;
-
-        let viewportTop = $(window).scrollTop();
-        let viewportBottom = viewportTop + $(window).height();
-
-        if(elementBottom > viewportBottom) {
-            let element = document.getElementById('game-category-header-' + props.categoryName);
-            let headerOffset = 150;
-            let bodyRect = document.body.getBoundingClientRect().top;
-            let elementRect = element.getBoundingClientRect().top;
-            let elementPosition = elementRect - bodyRect;
-            let offsetPosition = elementPosition - headerOffset;
-
-            $('html, body').animate({scrollTop : offsetPosition}, 100);
-        }
-    })
-
-    return (
-        <div style={ style }>
-            <div id={ 'game-category-header-' + props.categoryName } className='game-category-card d-flex align-items-center justify-content-center' data-toggle='collapse' href={ '#' + props.categoryName + '-collapse' } aria-expanded='false'>
-                <h3 className='game-category-card-heading'>{ props.categoryName }</h3>
-            </div>
-            <div id={ props.categoryName + '-collapse' } className='collapse' data-parent='#accordion'>
-                <div className='card-body'>
-                    { 
-                        games.map(game => (
-                            <Game key={ game.id } gameId={ game.id } name={ game.name } description={ game.description} />
-                        ))
-                    }
+    if(color === undefined || categoryName === undefined || gameCategoryId === undefined) {
+        return (
+            <div style={{ height: '100%' }}>
+                <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                    <div className="spinner-border" style={{ width: '4rem', height: '4rem' }} role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
+        );
+    }
+
+    return (
+        <div>
+            { 
+                games.map(game => (
+                    <Game key={ game.id } gameId={ game.id } name={ game.name } description={ game.description} />
+                ))
+            }
         </div>
     );
 }

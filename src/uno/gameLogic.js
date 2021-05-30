@@ -27,6 +27,12 @@ const initUno = (hostId, socket, io) => {
     // Wenn die Richtung umgedreht wird
     room['isReverse'] = false;
 
+    // Wenn sich eine Farbe gewünscht wird
+    room['nextColor'] = -1;
+
+    // Ob der Spieler aussetzen muss
+    room['isSkip'] = false;
+
     // Wenn +2 oder +4 Karten gelegt werden -> aufaddieren
     room['cardsCount'] = 0;
 
@@ -84,10 +90,9 @@ const setFirstPlayer = (room, players, io) => {
     setTimeout(() => {
         // Zufällig den ersten Spieler auswählen
         let firstPlayer = players[Math.floor(Math.random() * players.length)];
-        firstPlayer.active = true;
 
         // Aktiven Spieler speichern
-        room.activePlayerId = firstPlayer.socketId;
+        room.activePlayer = firstPlayer;
 
         // Allen Spielern die SocketId des nächsten Spielers schicken
         io.in(firstPlayer.roomId).emit('uno:set-first-player', { socketId: firstPlayer.socketId });
