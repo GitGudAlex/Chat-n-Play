@@ -10,7 +10,8 @@ module.exports = (io, socket) => {
 
     const room = getRoom(player.roomId);
 
-    let counter = 0;
+    // Raum exestiert nicht
+    if(room === undefined) return; 
 
     const setFirstCard = (room) => {
 
@@ -22,20 +23,24 @@ module.exports = (io, socket) => {
         // Sonst handelt es sich hierbei um eine SocketId um die Animation richtig abzuspielen
         io.in(player.roomId).emit('uno:deal-card', { card: card, socketId: 0 });
     
-        setTimeout(function () {
+        setTimeout(() => {
             // Wenn es sich um eine Spezial Karte handelt -> neue Karte legen
             if(card.isSpecial()) {
                 setFirstCard(room);
     
             // Sonst kann der erste Spieler anfangen zu Spielen
             } else {
-                return card;
+                 // Wer dran ist
+                io.in(player.roomId).emit('uno:set-next-player', { socketId: room.activePlayer.socketId });
+
+                // Was ein Zug erwartet wird
+                io.to(player.socketId).emit('uno:set-move-type', { moveType: room.moveType });
     
             }
 
         }, 3000);
     }
 
-    let card = setFirstCard(room);
+    setFirstCard(room);
 
 }

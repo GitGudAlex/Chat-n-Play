@@ -4,6 +4,11 @@ class Deck {
     constructor() {
         this.deck = [];
 
+        this.create();
+    }
+
+    // Erstellt das Deck
+    create() {
         for(let deckCounter = 0; deckCounter < 2; deckCounter++) {
             for(let color = 0; color < 5; color++ ) {
     
@@ -46,6 +51,12 @@ class Deck {
 
     // Wenn ein Spieler eine Karte zieht
     takeCard() {
+
+        // Wenn das Deck leer ist => neu mischen
+        if(this.deck.length === 0) {
+            this.create();
+            this.shuffle();
+        }
 
         // Letzte Karte nehmen
         const card = this.deck[this.deck.length -1]

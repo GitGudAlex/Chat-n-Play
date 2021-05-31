@@ -27,7 +27,14 @@ const initUno = (hostId, socket, io) => {
     // Wenn die Richtung umgedreht wird
     room['isReverse'] = false;
 
-    // Wenn sich eine Farbe gewünscht wird
+    /**
+     * Wenn sich eine Farbe gewünscht wird
+     * 
+     * 0 = blau
+     * 1 = rot
+     * 2 = orange
+     * 3 = grün
+     */
     room['nextColor'] = -1;
 
     // Ob der Spieler aussetzen muss
@@ -38,6 +45,16 @@ const initUno = (hostId, socket, io) => {
 
     // Der aktuelle Spieler
     room['activePlayer'] = 0;
+
+    /**
+     * Der Nächste Input der erwartet wird
+     * 
+     * 1 = Karte ablegen
+     * 2 = Farbauswahl
+     * 3 = +2 / +4 => Ob man eine weitere +2 / +4 Karte drauflegen kann oder ob man ziehen muss
+     * 4 = Klopf Klopf
+     */
+    room['moveType'] = 1;
 
     // Jedem Spieler 7 Karten geben
     const players = getPlayersInRoom(player.roomId);
@@ -165,4 +182,17 @@ const getNextPlayer = (roomId) => {
     }
 }
 
-module.exports = { initUno, getNextPlayer }
+const setNextPlayer = (io, roomId) => {
+    let nextPlayer = getNextPlayer(roomId);
+
+    let room = getRoom(roomId);
+
+    // Spieler muss aussetzten
+    if(room.isSkip === true) {
+        nextPlayer = getNextPlayer(roomId);
+    }
+
+    io.in(roomId).emit('uno:set-next-player', { socketId: socketId });
+}
+
+module.exports = { initUno, getNextPlayer, setNextPlayer }
