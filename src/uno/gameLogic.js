@@ -190,6 +190,9 @@ const setNextPlayer = (io, roomId) => {
     // Spieler muss aussetzten
     if(room.isSkip === true) {
         nextPlayer = getNextPlayer(roomId);
+        room.isSkip = false;
+
+        room.moveType = 1;
     }
 
     io.in(roomId).emit('uno:set-next-player', { socketId: socketId });
