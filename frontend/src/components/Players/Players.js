@@ -62,13 +62,13 @@ function Players(props) {
                 let peerOptions;
 
                 // Production
-                if(process.env.PRODUCTION || false) {
+                if(process.env.NODE_ENV === 'production') {
                     peerOptions = {
                         undefined,
                         path: '/',
                         secure: true
                     }
-
+                    
                 // Development
                 } else {
                     peerOptions = {
