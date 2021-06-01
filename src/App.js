@@ -1,3 +1,8 @@
+// Env Variables
+require('dotenv').config();
+
+const fs = require('fs');
+
 // Server
 const express = require('express');
 const app = express();
@@ -6,19 +11,25 @@ const PORT = 8080;
 
 // Peer Server
 const { ExpressPeerServer } = require('peer');
-const peerServer = ExpressPeerServer(server, {
-    debug: true
-});
 
+let peerOptions = {}
+
+if(process.env.NODE_ENV === 'production') {
+    peerOptions = {
+        proxied: true,
+        ssl: {
+            key: fs.readFileSync('/etc/ssl/MI/privkey.pem'),
+            certificate: fs.readFileSync('/etc/ssl/MI/fullchain.pem')
+        }
+    };
+}
+
+const peerServer = ExpressPeerServer(server, peerOptions);
 app.use('/peerjs', peerServer);
 
 
 // Routes
-app.use('/', require('./routes/routesIndex'))
-
-// static files
-const path = require('path');
-app.use(express.static(path.join(__dirname, '../public')));
+app.use('/', require('./routes/routesIndex'));
 
 // Socket.io
 const io = require("socket.io")(server);

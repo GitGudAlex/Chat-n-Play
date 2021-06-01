@@ -170,7 +170,7 @@ function GameBase({ match }) {
 
     // API Call: Den Namen vom Spiel bekommen
     const fetchGameData = async(gameId) => {
-        const data = await fetch("/games/name?id=" + gameId);
+        const data = await fetch("/api/name?id=" + gameId);
         const nameData = await data.json();
 
         setGameName(nameData.name);
@@ -178,7 +178,7 @@ function GameBase({ match }) {
 
     // API Call: Die Regeln von dem Spiel bekommen
     const fetchRulesData = async(gameId) => {
-        const data = await fetch("/games/rules?id=" + gameId);
+        const data = await fetch("/api/rules?id=" + gameId);
         const rulesData = await data.json();
 
         setRules(rulesData.rules);
