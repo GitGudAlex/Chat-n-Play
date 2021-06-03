@@ -14,7 +14,7 @@ function GameCategory(props) {
     
     useEffect(() => {
         const fetchGamesByCategory = async() => {
-            const data = await fetch("/games/category?gameCategoryId=" + props.gameCategoryId);
+            const data = await fetch("/api/category?gameCategoryId=" + props.gameCategoryId);
             const games = await data.json();
     
             setGames(games);
@@ -28,7 +28,6 @@ function GameCategory(props) {
         setGameCategoryId(props.gameCategoryId);
         setColor(props.color);
         setCategoryName(props.categoryName);
-        console.log(props);
     }, [props]);
 
     if(color === undefined || categoryName === undefined || gameCategoryId === undefined) {

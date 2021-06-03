@@ -41,7 +41,7 @@ function GameCategoriesList() {
     const [gameCategories, setGameCategories] = useState([]);
 
     const fetchGameCategories = async() => {
-        const data = await fetch("/games/gamecategories");
+        const data = await fetch("/api/gamecategories");
         const gameCategories = await data.json();
 
         setGameCategories(gameCategories);

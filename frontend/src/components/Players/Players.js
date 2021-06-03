@@ -11,7 +11,7 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = false;
+    const useVideos = process.env.NODE_ENV === 'production';
 
     // Router Stuff
     const history = useHistory();
@@ -59,13 +59,28 @@ function Players(props) {
             }
     
             navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                let peerOptions;
+
+                // Production
+                if(process.env.NODE_ENV === 'production') {
+                    peerOptions = {
+                        undefined,
+                        path: '/',
+                        secure: true
+                    }
+                    
+                // Development
+                } else {
+                    peerOptions = {
+                        undefined,
+                        path: '/peerjs',
+                        host: '/',
+                        port: '8080'
+                    }
+                }
+
                 // Eigener Peer
-                const peer = new Peer({
-                    undefined,
-                    path: '/peerjs',
-                    host: '/',
-                    port: '8080'
-                });
+                const peer = new Peer(peerOptions);
     
                 // Kamera wird erlaubt
                 let video = document.getElementById('player-video-' + socket.id);
