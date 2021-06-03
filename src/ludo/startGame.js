@@ -36,12 +36,7 @@ const startGameLudo = (roomId) => {
                 player['dicecount'] = 0;
                 break;
           }
-          console.log("Player"+JSON.stringify(player));
     });
-
-    //ersten Spieler festlegen
-    const index = Math.floor(Math.random()*allPlayers.length);
-    allPlayers[index].active = true;
 
     addDice(roomId);
 

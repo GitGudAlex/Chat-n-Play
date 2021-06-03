@@ -1,4 +1,4 @@
-const { getPlayer, getCurrentPlayerInRoom } = require('../../../models/players');
+const { getPlayer, getCurrentPlayerInRoom, getPlayersInRoom } = require('../../../models/players');
 const { getRoom } = require('../../../models/rooms');
 
 
@@ -11,8 +11,14 @@ module.exports = (io, socket, mode) => {
     }
 
     const player = getPlayer(socket.id);
-    const firstPlayer = getCurrentPlayerInRoom(player.roomId);
+    const allPlayers = getPlayersInRoom(player.roomId);
 
+    //ersten Spieler festlegen
+    const index = Math.floor(Math.random()*allPlayers.length);
+    allPlayers[index].active = true;
+
+    const firstPlayer = getCurrentPlayerInRoom(player.roomId);
+    
     const room = getRoom(player.roomId);
     room.gameStatus = 1;
     room["mode"] = game_mode;

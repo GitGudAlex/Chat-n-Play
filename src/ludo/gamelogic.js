@@ -104,7 +104,6 @@ throwFigure = (position, currentPlayer) => {
                     if(housePos > -1){
                         player.playerPosition[i][0] = housePos;
                         pos.push(housePos, player.color);
-                        console.log("Die Figur: " + housePos + " wird geschmissen: " + player.color);
                     }
                 }
             }
@@ -146,7 +145,6 @@ onField = (positions) => {
 
 walkInHouse = (player) => {
     for( let i = 0; i < 4; i ++){
-        console.log("Position ", player.playerPosition[i][0])
         
         if(player.playerPosition[i][0] > 200){
             let newPosition = player.playerPosition[i][0];
@@ -163,7 +161,6 @@ walkInHouse = (player) => {
                 newPosition = null;
             }
 
-            console.log("newPosition ", newPosition);
             if(newPosition !== null){
                 return false;
             }

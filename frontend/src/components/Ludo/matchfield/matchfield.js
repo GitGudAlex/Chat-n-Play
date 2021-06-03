@@ -43,6 +43,7 @@ function Matchfield(){
                     <button id = "214" className = "white" ></button>
                     <button id = "215" className = "white" ></button>
                     <button id = "216" className = "white" ></button>
+                    <label>--------</label> {/* @ Kira: kannst du gerne entfernen wenn du das Design macht - so lässt es sich aber besser testen*/}
                     {/* Würfel */}
                     <button id="buffer"></button>
                     <button id = "208" className = "white" ></button>
