@@ -5,7 +5,6 @@ roll = (roomId) => {
     if(diceIndex != -1) {
         const dice = dices[diceIndex];
         dice.value = Math.floor(Math.random() * 6) + 1;
-        console.log('Gewürfelt: ' + dice.value);
     }
 }
 

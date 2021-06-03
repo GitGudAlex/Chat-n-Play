@@ -14,7 +14,6 @@ function Ludo() {
     
     // ersten Spieler anzeigen
     socket.once('ludo:first-player', player => {
-        console.log('color' + player.color);
         $('.dice').css({'border-color':player.color});
         $('#firstPlayer').css({'display':'none'});
         $('#choose_game_mode').css({'display':'none'});
@@ -40,13 +39,11 @@ function Ludo() {
     // Augenanzahl des Würfels und mögliche Züge anzeigen
     useEffect(() => {
         socket.on("ludo:dicedValue", dice => {
-            console.log("Würfel: " + dice)
             $('#dice').css({'display':'inline'});
             $("#dice").html(dice);
         });
     
         socket.on("ludo:showMoves", show => {
-            console.log("socket on ShowMoves: " + show);
             show.forEach(element => {
                 $('#'+element).html('X');
             })
@@ -75,7 +72,6 @@ function Ludo() {
     // Figur aus dem Haus holen
     useEffect(() => {
         socket.on('ludo:leaveHouse', move => {
-            console.log("Positionen aus dem Loch: " + move);
             $("#"+move[1]).css({'background-color':move[2]});
             $("#"+move[0]).css({'background-color':'white'});
         });
@@ -106,7 +102,6 @@ function Ludo() {
     // Figur laufen
     useEffect(() => {
         socket.on("ludo:moveFigure", move => {
-            console.log("Figur laufen" + move);
             $(".matchfield").find(":button").html('');
             $("#"+move[2]).css({'background-color':'white'});
             $("#"+move[0]).css({'background-color':move[1]});     
@@ -144,7 +139,6 @@ function Ludo() {
     //Nach dem Würfeln, Würfel sperren
     useEffect(()=>{
         socket.on('ludo:unlockDice', (player)=>{
-            console.log("socket on unlockDIce");
             setTimeout(function(){
                 $('#dice').css({'display':'inline'});
                 $('.dice').html('Würfeln');
@@ -175,7 +169,6 @@ function Ludo() {
     //Spielmodus ändern, bei allen Spielern anzeigen
     useEffect(() => {
         socket.on('ludo:mode', (mode => {
-            console.log("mode: ", mode);
             if(mode === "Ja"){
                 $("#mode_easy").prop('checked', true);
             }else{
@@ -192,7 +185,6 @@ function Ludo() {
     useEffect(() => {
         $(".form-check-input").change(function(){
             const mode = $("input:checked").val();
-            console.log("Change", mode);
             socket.emit('ludo:changeMode', {mode:mode});
         })
     });
