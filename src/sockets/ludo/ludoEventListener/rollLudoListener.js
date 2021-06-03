@@ -6,6 +6,7 @@ const { getRoom } = require('../../../models/rooms');
 module.exports = (io, socket) => {
 
     const player = getPlayer(socket.id);
+    const room = getRoom(player.roomId);
 
     roll(player.roomId);
 
@@ -51,8 +52,11 @@ module.exports = (io, socket) => {
             count ++;
         }
     }
-
-    io.in(player.roomId).emit('ludo:showMoves', res);
+    
+    if(room.mode){
+        io.in(player.roomId).emit('ludo:showMoves', res);
+    }
+    
     io.to(player.socketId).emit("ludo:unlockMoveFields", figures);
 
     if(res.length === 0){

@@ -17,6 +17,7 @@ function Ludo() {
         console.log('color' + player.color);
         $('.dice').css({'border-color':player.color});
         $('#firstPlayer').css({'display':'none'});
+        $('#choose_game_mode').css({'display':'none'});
     });
 
     //Würfel für ersten Spieler entsperren
@@ -157,6 +158,7 @@ function Ludo() {
         }
     });
 
+    //Spieler verlässt Spiel, Spielfiguren werden entfernt
     useEffect(() => {
         socket.on('ludo:playerLeave', (positionen => {
             positionen.forEach(p => {
@@ -170,16 +172,63 @@ function Ludo() {
         }
     });
 
+    //Spielmodus ändern, bei allen Spielern anzeigen
+    useEffect(() => {
+        socket.on('ludo:mode', (mode => {
+            console.log("mode: ", mode);
+            if(mode === "Ja"){
+                $("#mode_easy").prop('checked', true);
+            }else{
+                $('#mode_hard').prop('checked', true);
+            }
+        }));
+
+        return () => {
+            socket.off('ludo:mode');
+        }
+    });
+
+    //Wenn Spielmodus geändert wird, emit
+    useEffect(() => {
+        $(".form-check-input").change(function(){
+            const mode = $("input:checked").val();
+            console.log("Change", mode);
+            socket.emit('ludo:changeMode', {mode:mode});
+        })
+    });
+
     //Emit -> erster Spieler soll zufällig festgelegt werden
     const setFirstPlayer = () => {
-        socket.emit('ludo:firstPlayer');
+        const mode = $("input:checked").val();
+        socket.emit('ludo:firstPlayer', {mode:mode});
     }
+
     
     return (
         <div id='game-content'>
             <div className='game-board'>
                 <br></br>
-                <button id='firstPlayer' onClick={ setFirstPlayer }>Ersten Spieler festlegen</button>
+                <div id = "choose_game_mode">
+                    <label>Mögliche Spielzüge sollen vorgeschlagen und angezeigt werden:</label>
+                    <br></br>
+                    <label>(kann nur vor Spielbeginn geändert werden)</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="game_mode" id="mode_easy" value = "Ja"  checked></input>
+                        <label class="form-check-label" for="fmode_easy" id ="mode_easy_label">
+                            Ja
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="game_mode" id="mode_hard" value = "Nein"  ></input>
+                        <label class="form-check-label" for="mode_hard" id ="mode_hard_label">
+                            Nein
+                        </label>
+                    </div>
+                </div>
+                <br></br>
+                <br></br>
+                <button id='firstPlayer' onClick={ setFirstPlayer }>Spiel starten <br></br> (Ersten Spieler festlegen)</button>
+                <br></br>
                 <br></br>
                 <button id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
                 <Matchfield/>
