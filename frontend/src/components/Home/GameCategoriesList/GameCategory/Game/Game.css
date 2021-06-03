@@ -1,0 +1,17 @@
+#buttonCollapse{
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+#nameGame{
+    font-size: xx-large;
+    margin-right: 30px;
+    padding-top: 20px;
+}
+
+.collapse{
+    margin-left: 80px;
+    margin-right: 80px;
+    margin-top: 30px;
+}

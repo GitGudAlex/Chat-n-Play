@@ -46,7 +46,7 @@ function GameCategory(props) {
         <div>
             { 
                 games.map(game => (
-                    <Game key={ game.id } gameId={ game.id } name={ game.name } description={ game.description} />
+                    <Game key={ game.id } gameId={ game.id } img={game.img} name={ game.name } description={ game.description} />
                 ))
             }
         </div>

@@ -45,7 +45,7 @@ function Ludo() {
     
         socket.on("ludo:showMoves", show => {
             show.forEach(element => {
-                $('#'+element).html('X');
+                $('#'+element).html('x');
             })
         });
 

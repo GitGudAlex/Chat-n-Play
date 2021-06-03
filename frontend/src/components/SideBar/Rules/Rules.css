@@ -2,6 +2,11 @@
     height: 100%;
 }
 
+h4 {
+    font-family: 'coffee+tea demo';
+    font-size: 1.5rem;
+}
+
 #sidebar-rules-heading-wrapper {
     height: 6%;
 
