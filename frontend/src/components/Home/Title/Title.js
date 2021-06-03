@@ -1,6 +1,5 @@
 import './Title.css';
 import logo from '../../../img/Logo.png'
-import '../../../fonts/coffee+teademo-Regular.ttf'
 
 function Title(props) {
     return (

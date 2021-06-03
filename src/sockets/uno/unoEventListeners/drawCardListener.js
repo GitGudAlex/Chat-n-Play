@@ -4,15 +4,23 @@ const { setNextPlayer } = require("../../../uno/gameLogic");
 
 module.exports = (io, socket) => {
 
+    // aktuellen Spieler bekommen
     const player = getPlayer(socket.id);
 
-    // Spieler exestiert nicht
+    // Spieler exestiert noch nicht
     if(player === undefined) return;
 
+    // aktuellen Raum bekommen
     const room = getRoom(player.roomId);
 
     // Raum exestiert nicht
     if(room === undefined) return;
+
+    // Falsches Spiel
+    if(room.gameTypeId !== 1) return;
+
+    // Noch nicht gestartet
+    if(room.hasStarted === false) return;
 
     // Spieler nicht an der Reihe
     if(room.activePlayer.roomId !== socket.id) return;
@@ -20,6 +28,8 @@ module.exports = (io, socket) => {
     const drawCard = (numCards) => {
         setTimeout(() => {
             let card = room.deck.takeCard();
+            player.hand.addCard(card);
+            
             io.in(room.roomId).emit('uno:give-draw-card', { card: card });
 
             // noch eine Karte ziehen

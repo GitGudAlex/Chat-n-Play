@@ -28,20 +28,10 @@
     visibility: hidden;
 }
 
-.uno-card-animate-wrapper {
+.uno-card-animate {
     position: absolute;
 
     transform-style: preserve-3d;
-
-    width: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.uno-card-noflip-wrapper {
-    position: absolute;
 
     width: 100%;
 

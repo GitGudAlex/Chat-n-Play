@@ -63,6 +63,9 @@ const initUno = (hostId, socket, io) => {
     for(let player of players) {
         player['hand'] = new Hand();
 
+        // Ob man klopfklopf gesagt / gedrückt hat wenn man nur noch eine Karte oder 2 hat.
+        player['klopfKlopf'] = false;
+
     }
 
     let cardCounter = 0;

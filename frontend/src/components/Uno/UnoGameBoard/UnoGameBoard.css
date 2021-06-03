@@ -30,3 +30,15 @@
 
     margin-left: 32px;
 }
+
+.uno-hand-wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 80%;
+    height: 200px;
+    background-color: chocolate;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}

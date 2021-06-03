@@ -10,9 +10,17 @@ module.exports = (io, socket, data) => {
     // Spieler exestiert noch nicht
     if(player === undefined) return;
 
+    // aktuellen Raum bekommen
     const room = getRoom(player.roomId);
 
+    // Raum exestiert nicht
     if(room === undefined) return;
+
+    // Falsches Spiel
+    if(room.gameTypeId !== 1) return;
+
+    // Noch nicht gestartet
+    if(room.hasStarted === false) return;
 
     // Spieler ist gerade dran
     if(room.acticePlayer.socketId === player.socketID) {
@@ -108,8 +116,34 @@ module.exports = (io, socket, data) => {
 
         }
 
+        // Spielzug ist ok
+        io.in(player.roomId).emit('uno:valid-submit');
+        player.hand.discard(card);
+
         room.cardOnBoard = card;
-        setNextPlayer(io, room.roomId);
+
+        // Ob man vergessen hat 'KlopfKlopf' zu sagen / zu drücken
+        if(player.hand.getHandSize() === 1) {
+
+            // Wurde vergessen => +1 Karte ziehen
+            if(!player.klopfKlopf) {
+                let card = room.deck.takeCard();
+                player.hand.addCard(card);
+
+                io.in(room.roomId).emit('uno:give-draw-card', { card: card });
+
+                // Nächste Runde
+                setNextPlayer(io, room.roomId);
+            }
+
+        // Wenn ein Spieler keine Karten mehr hat => gewonnen
+        } else if (player.hand.getHandSize() === 0) {
+            io.in(player.roomId).emit('room:end-game', { winners: [player] });
+
+        // Nächster Spieler ist dran
+        } else {
+            setNextPlayer(io, room.roomId);
+        }
     }
 
 }

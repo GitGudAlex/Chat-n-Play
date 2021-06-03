@@ -2,6 +2,7 @@
 const submitCardHandler = require('./unoEventListeners/submitCardListener');
 const drawCardHandler = require('./unoEventListeners/drawCardListener');
 const selectRandomPlayerAnimationReady = require('./unoEventListeners/selectRandomPlayerAnimationReadyListener');
+const klopfKlopfHandler = require('./unoEventListeners/klopfKlopfListener');
 
 module.exports = (io, socket) => {
 
@@ -11,4 +12,6 @@ module.exports = (io, socket) => {
   socket.on('uno:draw-card', () => drawCardHandler(io, socket));
 
   socket.on('uno:select-random-player-animation-ready', () => selectRandomPlayerAnimationReady(io, socket));
+
+  socket.on('uno:klopf-klopf', () => klopfKlopfHandler(io, socket));
 }

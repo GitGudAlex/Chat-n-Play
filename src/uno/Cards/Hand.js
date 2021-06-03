@@ -10,7 +10,8 @@ class Hand {
     }
 
     // Wenn der Spieler einer Karte abgibt
-    discard(index) {
+    discard(card) {
+        let index = this.hand.findIndex(c => c.id === card.id);
         this.hand.splice(index, 1);
     }
 

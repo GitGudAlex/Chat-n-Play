@@ -1,5 +1,4 @@
-
 @font-face {
-    font-family: 'coffee+tea demo';
-    src: local ('coffee+tea demo'), url('../src/fonts/coffee+teademo-Regular.ttf') format('truetype');
+    font-family: 'coffee+tea';
+    src: local ('coffee+tea'), url('../src/fonts/coffee+teademo-Regular.ttf') format('truetype');
 }
