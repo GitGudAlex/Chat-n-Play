@@ -9,3 +9,7 @@
     margin-bottom: .0rem;
 }
 
+#logo {
+    position:absolute;
+    left: 14px;
+}
