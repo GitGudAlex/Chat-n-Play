@@ -10,10 +10,14 @@ import { IconContext } from "react-icons";
 import Category from './Category/Category';
 import SocketContext from '../../../services/socket';
 
+import NumericInput from 'react-numeric-input';
+
 function CategorySelection(props) {
 
     // Socket.io
     const socket = useContext(SocketContext);
+
+    const [num, setNum] = useState(10);
 
     const [categories, setCategories] = useState(
         [
@@ -44,8 +48,9 @@ function CategorySelection(props) {
     // ausgesuchte Wörter übergeben
     const submitCategories = () => {
         let newCategoroies = [...categories];
+        const rounds = $('#round-selector-input').val();
         
-        socket.emit('slf:start-game', { categories: newCategoroies }, (error) => {
+        socket.emit('slf:start-game', { categories: newCategoroies, rounds: rounds }, (error) => {
             $('#slf-start-game-error').text(error);
 
             setTimeout(() => {
@@ -70,6 +75,10 @@ function CategorySelection(props) {
     if(props.isHost) {
         return (
             <div className='category-selector-wrapper'>
+                <div className='round-selector'>
+                    <p className='round-selector-header'>Bitte gib die Anzahl der Runden ein</p>
+                    <NumericInput id="round-selector-input" type="number" min="0" max="20" step="1" value={num} onChange={setNum}></NumericInput>
+                </div>
                 <div className='category-selector'>
                     <p className='category-selector-header'>Bitte wähle 3-6 Kategorien aus</p>
                     <div className='categories-wrapper'>
