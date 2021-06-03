@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './PageNotFound.css'
 
 const NotFound = () => (
-  <div>
+  <div className="background">
     <header className="sticky-top">
       <Title text="Chat N' Play" height="100px" fontSize="5em"/>
     </header>

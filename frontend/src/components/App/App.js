@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router';
 import SocketContext, { socket } from "../../services/socket";
 
 import './App.css';
+import '../../fonts/coffee+teademo-Regular.ttf';
 
 import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';

@@ -1,0 +1,12 @@
+.nav-pills .nav-link {
+    border-radius: .25rem;
+    height: 70px;
+    font-size: 70px;
+    background-color: white;
+    border: none;
+    font-family: 'coffee+tea demo';
+}
+
+.flex-sm-row {
+    padding-top: 50px;
+}

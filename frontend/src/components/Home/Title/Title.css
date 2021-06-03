@@ -4,10 +4,8 @@
 
 #title {
     color: white;
-    font-weight: 300;
+    font-family: 'coffee+tea demo';
+    text-align: center;
+    margin-bottom: .0rem;
 }
 
-#logo {
-    width: 70px;
-    height: 70px;  
-}

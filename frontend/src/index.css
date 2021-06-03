@@ -1,4 +1,5 @@
+
 @font-face {
-    font-family: 'Orange Juice';
-    src: local ('Orange Juice'), url(./fonts/Orange\ Juice.otf);
+    font-family: 'coffee+tea demo';
+    src: local ('coffee+tea demo'), url('../src/fonts/coffee+teademo-Regular.ttf') format('truetype');
 }

@@ -44,6 +44,7 @@ function Matchfield(){
                     <button id = "215" className = "white" ></button>
                     <button id = "216" className = "white" ></button>
                     {/* Würfel */}
+                    <button id="buffer"></button>
                     <button id = "208" className = "white" ></button>
                     <button id = "207" className = "white" ></button>
                     <button id = "206" className = "white" ></button>
