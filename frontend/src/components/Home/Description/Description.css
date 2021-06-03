@@ -39,11 +39,6 @@
     height: 500px;
 }
 
-@font-face {
-    font-family: 'coffee+teademo-Regular';
-    src: local ('coffee+tea-Regular'), url(../../../fonts/coffee+teademo-Regular.ttf) format(ttf);
-}
-
 h2 {
     font-family: 'coffee+teademo-Regular';
     margin: 0px;

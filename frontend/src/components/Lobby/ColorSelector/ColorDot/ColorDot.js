@@ -6,7 +6,7 @@ function ColorDot(props) {
     if(props.owner === props.socketId) {
         return (
             <div className='color-dot-wrapper'>
-                <button style={{ border: '2px solid black', backgroundColor: props.color }} type="button" className="color-dot rounded-circle color-dot-hoverble" onClick={ () => props.setColorMethod(props.color) }></button>
+                <button style={{ border: '2px solid #474747', backgroundColor: props.color }} type="button" className="color-dot rounded-circle color-dot-hoverble" onClick={ () => props.setColorMethod(props.color) }></button>
             </div>
         );
     }
