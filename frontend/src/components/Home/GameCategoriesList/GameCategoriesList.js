@@ -80,7 +80,8 @@ function GameCategoriesList() {
             <div>
                 <GameCategory gameCategoryId = { activeCategory.gameCategoryId } 
                     color = { activeCategory.color } 
-                    categoryName = { activeCategory.gameCategoryName }/>
+                    categoryName = { activeCategory.gameCategoryName }
+                    img={ activeCategory.img }/>
             </div>
         </div>
     );

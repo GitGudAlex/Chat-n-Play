@@ -2,16 +2,19 @@
     {
       "gameCategoryId": 0,
       "gameCategoryName": "Brettspiele",
-      "color": "#FF3030"
+      "color": "#FF3030",
+      "img": "/BannerImages/BannerBrettspiele.png"
     },
     {
       "gameCategoryId": 1,
       "gameCategoryName": "Kartenspiele",
-      "color": "#00BF02"
+      "color": "#00BF02",
+      "img": "/BannerImages/BannerKartenspiele.png"
     },
     {
       "gameCategoryId": 2,
       "gameCategoryName": "Pausenspiele",
-      "color": "#0B97F0"
+      "color": "#0B97F0",
+      "img": "/BannerImages/BannerPausenspiele.png"
     }
   ]
