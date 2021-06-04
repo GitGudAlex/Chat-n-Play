@@ -22,6 +22,11 @@ function Game(props) {
 
     }, [props.gameId]);
 
+    // Icon change
+    $('#buttonCollapse').click(function(){
+        $(this).find('svg').toggleClass('bi bi-caret-right-fill').toggleClass('bi bi-caret-down-fill');
+        });
+
     // Einen Raum erstellen
     const createRoom = useCallback(() => {
         socket.emit('room:create', { gameTypeId: gameId }, (error) => {
@@ -38,9 +43,9 @@ function Game(props) {
                 <img src={props.img} />
             </div>
             <div className="d-flex align-items-center justify-content-center">
-                <button id="buttonCollapse" class="btn btn-dark" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" background-color="#474747" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
-                        <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                <button id="buttonCollapse" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                     </svg>
                 </button>
                 <h4 id="nameGame">{ props.name }</h4>
