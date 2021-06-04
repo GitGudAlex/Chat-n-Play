@@ -23,8 +23,7 @@ function UnoGameBoard(props) {
         let startTime;
 
         // Breite der Karte hohlen
-        let width = 100;
-        let height = 152;
+        let sidebarWidth = $('#sidebar-wrapper').width();
 
         var fromElement = document.getElementById(fromId).getBoundingClientRect();
         var toElement = document.getElementById(toId).getBoundingClientRect();
@@ -32,16 +31,16 @@ function UnoGameBoard(props) {
         // X Werte -> Verschiebung
         let startPositionX = 0;
 
-        let startPosAbsX = fromElement.left;
-        let endPosAbsX = toElement.left;
-        let endPositionX = endPosAbsX - startPosAbsX - width / 2;
+        let startPosAbsX = fromElement.left - sidebarWidth;
+        let endPosAbsX = toElement.left - sidebarWidth;
+        let endPositionX = endPosAbsX - startPosAbsX;
 
         // Y Werte -> Verschiebung
         let startPositionY = 0;
         
         let startPosAbsY = fromElement.top;
         let endPosAbsY = toElement.top;
-        let endPositionY = endPosAbsY - startPosAbsY - height / 2;
+        let endPositionY = endPosAbsY - startPosAbsY;
 
         // Z Rotation
         let startRotationZ = 0;
@@ -116,10 +115,7 @@ function UnoGameBoard(props) {
                 <UnoCard card={ data.card } hidden={ true } flip={ true }/>
             );
 
-            animateCard('uno-deal-deck-img', 'uno-discard-deck', data.card, true, () => {
-
-                setActiveCard();
-                
+            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, true, () => {
                 setLastCards(cards => {
                     if(cards.length === 6) {
                         return [...cards.slice(1, cards.length), data.card]
@@ -128,7 +124,10 @@ function UnoGameBoard(props) {
                         return [...cards, data.card]
     
                     }
+                    
                 });
+
+                setActiveCard();
             });
         }
     }, [animateCard]);
@@ -154,6 +153,17 @@ function UnoGameBoard(props) {
 
     return (
         <div id='uno-gameboard' >
+            <div id='uno-deal-deck'>
+                <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' }/>
+            </div>
+            <div id='uno-discard-deck'>
+                <img id='uno-discard-deck-ref' className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
+                {
+                    lastCards.map(card => {
+                        return <UnoCard key={ card.id } card={ card } />
+                    })
+                }
+            </div>
             {
                 activeCard !== undefined ? (
                     activeCard
@@ -161,16 +171,6 @@ function UnoGameBoard(props) {
                     <div />
                 )
             }
-            <div id='uno-deal-deck'>
-                <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' }/>
-            </div>
-            <div id='uno-discard-deck'>
-                {
-                    lastCards.map(card => {
-                        return <UnoCard key={ card.id } card={ card } />
-                    })
-                }
-            </div>
         </div>
     );
 }

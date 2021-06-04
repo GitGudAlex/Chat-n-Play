@@ -44,7 +44,6 @@ function UnoCard(props) {
 
             // Karte wird auf den Kartenstapel gelegt
             } else {
-                console.log("animate");
                 return (
                     <div id={ props.card.id + '-animate-wrapper' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') } style={ rotationStyle }>
                         <div id={ props.card.id + '-animate' } className='uno-card-animate' >

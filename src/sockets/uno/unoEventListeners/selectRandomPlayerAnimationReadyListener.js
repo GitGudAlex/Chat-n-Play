@@ -46,7 +46,7 @@ module.exports = (io, socket) => {
     
             }
 
-        }, 3000);
+        }, 2000);
     }
 
     setFirstCard(room);

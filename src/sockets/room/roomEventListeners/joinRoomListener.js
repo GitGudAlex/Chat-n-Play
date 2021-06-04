@@ -36,6 +36,8 @@ module.exports = (io, socket, data, callback) => {
         }
     }
 
+    if(data.username.length > 20) return callback("Der Benutzername darf höchstens aus 20 Zeichen bestehen.");
+
     let room = getRoom(data.roomId)
 
     // Schauen ob der angegebene Raum exestiert
