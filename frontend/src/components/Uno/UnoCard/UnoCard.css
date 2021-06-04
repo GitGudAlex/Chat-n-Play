@@ -7,6 +7,14 @@
     align-items: center;
 
     width: 100px;
+
+    transition: transform .25s;
+}
+
+.uno-card-small {
+    position: absolute;
+
+    width: 60px;
 }
 
 .uno-card-back, .uno-card-front {

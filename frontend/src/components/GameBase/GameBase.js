@@ -41,8 +41,8 @@ function GameBase({ match }) {
     // Bei SLF die Spieler die 'weiter' geklickt haben
     const [playersReady, setPlayersReady] = useState([]);
 
-    // Um bei Ludo die Häuser anzuzeigen
-    const [ludo, setLudo] = useState();
+    // Um bei Ludo die Häuser anzuzeigen / um bei uno die Handkarten anzuzeigen
+    const [gameNameStarted, setGameNameStarted] = useState();
 
     const [scores, setScores] = useState([]);
 
@@ -185,8 +185,17 @@ function GameBase({ match }) {
     };
 
     const isGame = useCallback((data) => {
-        if(data.route.split('/')[1] === 'ludo') {
-            setLudo('Ludo');
+        let game = data.route.split('/')[1];
+
+        if(game === 'ludo') {
+            setGameNameStarted('ludo');
+
+        } else if(game === 'uno') {
+            setGameNameStarted('uno');
+
+        } else {
+            setGameNameStarted('');
+
         }
     }, []);
 
@@ -293,7 +302,7 @@ function GameBase({ match }) {
                                 <Route component={ PageNotFound } />
                             </Switch>
                             <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
-                            <Players players={ players } scores={ scores } ludo={ ludo } readyPlayers={ playersReady }/>
+                            <Players players={ players } scores={ scores } game={ gameNameStarted } readyPlayers={ playersReady }/>
                         </div>
                     </div>
                 </div>

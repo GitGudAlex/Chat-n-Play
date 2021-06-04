@@ -37,3 +37,7 @@ video {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.uno-hand-wrapper-bottom {
+    margin-bottom: 32px;
+}

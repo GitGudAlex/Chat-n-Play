@@ -1,0 +1,40 @@
+.uno-other-hand {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    width: 150px;
+    height: 100px;
+    background-color: cornflowerblue;
+}
+
+.uno-other-card-wrapper {
+    position: relative;
+}
+
+.uno-my-hand-wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.uno-my-hand {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    height: 100px;
+    background-color:crimson;
+}
+
+.uno-my-card-wrapper {
+    position: relative;
+}

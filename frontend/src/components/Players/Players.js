@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useContext, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router';
 import $ from 'jquery';
 import Peer from 'peerjs';
@@ -149,15 +149,36 @@ function Players(props) {
                     
                     return (
                         <Player key = { player.username  } 
+
+                            // Username des Spielers
                             username = { player.username }
+
+                            // Socket Id des Spielers
                             socketId = { player.socketId }
+
+                            // Farbe des Spielers
                             color = { player.color }
+
+                            // Position des Spielers (oben links: 0, unten rechts: 1, oben rechts: 2, unten links: 3)
                             position = { positions[player.position] }
+
+                            // die Punktzahl des Spielers
                             score = { score === undefined ? undefined : score.score } 
+
+                            // Wenn es in dem Spiel eine Punktzahl gibt, zeigt der Rank die aktuelle Plazierung
                             rank = { score === undefined ? undefined : score.rank }
-                            ludo = { props.ludo === undefined ? undefined : props.ludo }
+
+                            // Welches Spiel zurzeit gespielt wird
+                            game = { props.game === undefined ? undefined : props.game }
+
+                            // Breite der Kameras, kann optional gesetzt werden, wenn mehr platz für ein Spiel gebraucht wird
                             width = { props.width }
+
+                            // Zeigt an ob ein Spieler 'bereit' ist. Zum Beispiel einen Button gedrückt hat 
                             ready = { props.readyPlayers.find(entry => entry === player.socketId) === undefined ? false : true }
+                            
+                            // Ob die Kamera / der Spieler man selbst ist
+                            self = { player.socketId === socket.id }
                         />
                     )
                 })

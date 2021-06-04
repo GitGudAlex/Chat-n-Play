@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { useLayoutEffect, useState } from 'react';
 import House from '../../Ludo/house/house';
+import UnoHand from '../../Uno/UnoHand/UnoHand';
 
 import './Player.css';
 
@@ -31,6 +32,24 @@ function Player(props) {
         minHeight: (200 / x_res * y_res) + 'px'
     };
 
+    // true => auf der linken Seite | false => auf der rechten Seite
+    let leftSide = false;
+
+    if(props.position === 'top-left' || props.position === 'bottom-left') {
+        leftSide = true;
+    }
+
+    // true => oben | false => unten
+    let onTop = false;
+
+    if(props.position === 'top-left' || props.position === 'top-right') {
+        onTop = true;
+    }
+
+    let textAlignStyle = {
+        textAlign: leftSide === true ? 'left' : 'right'
+    }
+
     if(props.color === undefined) {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
@@ -38,22 +57,70 @@ function Player(props) {
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
-                    <p>{ props.username }</p>
+                    <p style={ textAlignStyle }>{ props.username }</p>
                 </div>
             </div>
         );
-    } else if(props.ludo === "Ludo") {
+
+    } else if(props.game === "ludo") {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
-                    <p>{ props.username }</p>
-                    <House color = {props.color} position = {props.position}/>
+                    <p style={ textAlignStyle }>{ props.username }</p>
+                    <House color = {props.color} position = { props.position }/>
                 </div>
             </div>
         );
+
+    } else if(props.game === "uno") {
+
+        // Eigener Spieler
+        if(props.self) {
+            return(
+                <div id={ props.socketId + '-uno-player' } className={ props.position + ' player'} style={ playerStyle }>
+                    <div style={{ border: '3px solid ' + props.color }} className='camera'>
+                        <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                    </div>
+                    <div style={ textAlignStyle } className='player-name'>
+                        <p>{ props.username }</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // Anderer Spieler
+
+        // Spieler oben
+        if(onTop) {
+            return(
+                <div className={ props.position + ' player'} style={ playerStyle }>
+                    <UnoHand self={ false } left={ leftSide } socketId={ props.socketId } top={ onTop } />
+                    <div style={{ border: '3px solid ' + props.color }} className='camera'>
+                        <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                    </div>
+                    <div className='player-name'>
+                        <p style={ textAlignStyle }>{ props.username }</p>
+                    </div>
+                </div>
+            );
+        }
+
+        // Spieler unten
+        return(
+            <div className={ props.position + ' player'} style={ playerStyle }>
+                <UnoHand self={ false } left={ leftSide } socketId={ props.socketId } top={ onTop } />
+                <div style={{ border: '3px solid ' + props.color }} className='camera'>
+                    <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                </div>
+                <div className='player-name'>
+                    <p style={ textAlignStyle }>{ props.username }</p>
+                </div>
+            </div>
+        );
+
     } else if(props.score === undefined) {
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
@@ -61,10 +128,11 @@ function Player(props) {
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
-                    <p>{ props.username }</p>
+                    <p style={ textAlignStyle }>{ props.username }</p>
                 </div>
             </div>
         );
+
     } else {
         let rank;
 
@@ -90,7 +158,7 @@ function Player(props) {
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
-                <div className='player-name-score'>
+                <div className='player-name-score' style={{ flexDirection: leftSide === true ? 'row' : 'row-reverse' }}>
                     <p>{ rank + props.username + (props.ready === true ? ` \u2713`: '') }</p>
                     <p>{ 'Score: ' + props.score }</p>
                 </div>

@@ -69,36 +69,32 @@ const initUno = (hostId, socket, io) => {
     }
 
     let cardCounter = 0;
-    let playerCounter = 0;
 
     const dealHandCards = () => {
         setTimeout(() => {
+            // Nächster Spieler
+            let nextPlayer = getNextPlayer(room.roomId);
+
             // Hand Karten verteilen
             let card = room.deck.takeCard();
-            players[playerCounter].hand.addCard(card);
+            nextPlayer.hand.addCard(card);
 
             // Sich selber die Karte schicken
-            io.to(players[playerCounter].socketId).emit('uno:deal-card', { card: card });
+            io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: nextPlayer.socketId });
 
             // Den anderen die Karte schicken (Nur ohne Wert)
-            socket.to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' } });
+            (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: nextPlayer.socketId });
 
             // Wenn 7 Karten verteilt wurden
-            if(cardCounter < 7) {
-
-                // Wenn jeder Spieler einmal durchgegangen ist -> von vorne anfangen
-                if(++playerCounter >= players.length) {
-                    playerCounter = 0;
-                    cardCounter++;
-
-                }
+            if(++cardCounter < 7 * players.length) {
 
                 dealHandCards();
+
             } else {
                 setFirstPlayer(room, players, io);
 
             }
-        }, 500);
+        }, 800);
     }
 
     dealHandCards();
@@ -119,6 +115,8 @@ const setFirstPlayer = (room, players, io) => {
     }, 1000);
 }
 
+// Reihnfolge der Positionen
+const order = [0, 2, 1, 3]
 
 const getNextPlayer = (roomId) => {
     
@@ -126,7 +124,6 @@ const getNextPlayer = (roomId) => {
 
     // Den Aktuell aktiven Spieler hohlen
     let activePlayer = room.activePlayer;
-    let currentPlayerPosition = activePlayer.position;
 
     // Ob die Reihnfolge zurzeit umgekehrt ist
     let isReverse = room.isReverse;
@@ -134,23 +131,26 @@ const getNextPlayer = (roomId) => {
     // Alle Spieler
     const players = getPlayersInRoom(roomId);
 
+    // Position des Spielers
+    let currentPosition = activePlayer.position;
+
+    // Position des Spielers im Array
+    let orderIndex = order.findIndex(p => p === currentPosition);
+
     // Normale Reihnfolge
     if(!isReverse) {
 
         // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
         // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
-        for(let i = currentPlayerPosition + 1; i < currentPlayerPosition + players.length; i++) {
-            let newPosition = i % players.length;
+        for(let i = orderIndex + 1; i < orderIndex + players.length; i++) {
+            let newOrderIndex = i % 4;
 
-            // z.B. 4 % 4 sollte 4 sein und nicht 0
-            if(newPosition === 0) {
-                newPosition = players.length;
-            }
+            let newPosition = order[newOrderIndex];
 
             let newPlayerIndex = players.findIndex(p => p.position === newPosition);
 
             // Nächster Spieler wurde gefunden
-            if(newPlayerIndex !== undefined) {
+            if(newPlayerIndex !== -1) {
                 let newPlayer = players[newPlayerIndex];
 
                 room.activePlayer = { socketId: newPlayer.socketId, position: newPlayer.position };
@@ -163,25 +163,26 @@ const getNextPlayer = (roomId) => {
 
         // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
         // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
-        for(let i = currentPlayerPosition - 1; i > currentPlayerPosition - players.length; i--) {
-            let newPosition = i % players.length;
+        for(let i = positionIndex - 1; i > positionIndex - players.length; i--) {
+            let newPositionIndex = i % players.length;
 
             // z.B. 4 % 4 sollte 4 sein und nicht 0
-            if(newPosition === 0) {
-                newPosition = players.length;
+            if(newPositionIndex === 0) {
+                newPositionIndex = players.length;
             }
+
+            let newPosition = order[newPositionIndex];
 
             let newPlayerIndex = players.findIndex(p => p.position === newPosition);
 
             // Nächster Spieler wurde gefunden
-            if(newPlayerIndex !== undefined) {
+            if(newPlayerIndex !== -1) {
                 let newPlayer = players[newPlayerIndex];
-                
+
                 room.activePlayer = { socketId: newPlayer.socketId, position: newPlayer.position };
                 return newPlayer;
             }
         }
-
     }
 }
 

@@ -1,10 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import $ from 'jquery';
 
 import './UnoGameBoard.css';
 
 import SocketContext from "../../../services/socket";
 import UnoCard from '../UnoCard/UnoCard';
+
+import { animateCard } from '../Animations/CardAnimation';
+import UnoHand from '../UnoHand/UnoHand';
 
 function UnoGameBoard(props) {
 
@@ -13,94 +15,6 @@ function UnoGameBoard(props) {
 
     // Socket.io
     const socket = useContext(SocketContext);
-
-    const animateCard = useCallback((fromId, toId, card, flip, callback) => {
-
-        // Laufzeit
-        let duration = 500;
-
-        // Startzeitpunkt der Animation
-        let startTime;
-
-        // Breite der Karte hohlen
-        let sidebarWidth = $('#sidebar-wrapper').width();
-
-        var fromElement = document.getElementById(fromId).getBoundingClientRect();
-        var toElement = document.getElementById(toId).getBoundingClientRect();
-
-        // X Werte -> Verschiebung
-        let startPositionX = 0;
-
-        let startPosAbsX = fromElement.left - sidebarWidth;
-        let endPosAbsX = toElement.left - sidebarWidth;
-        let endPositionX = endPosAbsX - startPosAbsX;
-
-        // Y Werte -> Verschiebung
-        let startPositionY = 0;
-        
-        let startPosAbsY = fromElement.top;
-        let endPosAbsY = toElement.top;
-        let endPositionY = endPosAbsY - startPosAbsY;
-
-        // Z Rotation
-        let startRotationZ = 0;
-        let endRotationZ = card.rotation;
-
-        // Y Rotation
-        let startRotationY = 0;
-        let endRotationY = -180;
-
-        // Animationsfunktion
-        const easeOutCirc = (x) => {
-            return 1 - (1 - x) * (1 - x);
-        }
-
-        const initAnimation = (timestamp) => {
-            startTime = timestamp;
-
-            $('#' + card.id + '-animate-wrapper').css({ transform: 'rotateZ(' + startPositionY + 'deg)' });
-            $('#' + card.id + '-animate-wrapper').css({ left: startPosAbsX + 'px' });
-            $('#' + card.id + '-animate-wrapper').css({ top: startPosAbsY + 'px' });
-            $('#' + card.id + '-animate').css({ transform: 'rotateY(' + startRotationY + 'deg)' });
-
-            $('#' + card.id + '-animate-wrapper').removeClass('invisible');
-
-            requestAnimationFrame(animate);
-        }
-
-        const animate = (timestamp) => {
-            if(timestamp - startTime < duration) {
-                let p = (timestamp - startTime) / duration;
-                let val = easeOutCirc(p);
-
-                // Für das verschieben in X Richtung
-                let posX = startPositionX + (endPositionX - startPositionX) * val;
-
-                // Für das verschieben in Y Richtung
-                let posY = startPositionY + (endPositionY - startPositionY) * val;
-
-                // Für die Z Rotation
-                let rotZ = startRotationZ + (endRotationZ - startRotationZ) * val;
-
-                // Für die Y Rotation
-                let rotY = startRotationY + (endRotationY - startRotationY) * val;
-                
-                $('#' + card.id + '-animate-wrapper').css({ transform: 'rotateZ(' + rotZ + 'deg)' });
-                $('#' + card.id + '-animate-wrapper').css({ left: startPosAbsX + posX + 'px' });
-                $('#' + card.id + '-animate-wrapper').css({ top: startPosAbsY + posY + 'px' });
-
-                $('#' + card.id + '-animate').css({ transform: 'rotateY(' + rotY + 'deg)' });
-
-                requestAnimationFrame(animate);
-
-            } else {
-                $('#' + card.id + '-animate-wrapper').addClass('invisible');
-                callback();
-            }
-        }
-
-        requestAnimationFrame(initAnimation);
-    }, []);
 
     const handleDealCardEvent = useCallback((data) => {
 
@@ -112,10 +26,10 @@ function UnoGameBoard(props) {
             data.card.rotation = rotation;
 
             setActiveCard(
-                <UnoCard card={ data.card } hidden={ true } flip={ true }/>
+                <UnoCard card={ data.card } hidden={ true } animate={ true } />
             );
 
-            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, true, () => {
+            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, 500, true, false, () => {
                 setLastCards(cards => {
                     if(cards.length === 6) {
                         return [...cards.slice(1, cards.length), data.card]
@@ -129,8 +43,27 @@ function UnoGameBoard(props) {
 
                 setActiveCard();
             });
+
+        // Karte wird an einen Spieler verteilt
+        } else {
+            setActiveCard(
+                <UnoCard card={ data.card } hidden={ true } animate={ true } />
+            );
+
+            // Eigene Karte
+            if(data.socketId === socket.id) {
+                animateCard('uno-deal-deck-img', data.socketId + '-uno-player', data.card, 600, true, false, () => {
+                    setActiveCard();
+                });
+
+            // Karte eines Gegenspielers
+            } else {
+                animateCard('uno-deal-deck-img', data.socketId + '-uno-player', data.card, 600, false, true, () => {
+                    setActiveCard();
+                });
+            }
         }
-    }, [animateCard]);
+    }, [socket]);
 
     // Setzt am Anfang den Spieler
     const handleSetFirstPlayerEvent = useCallback(() => {
