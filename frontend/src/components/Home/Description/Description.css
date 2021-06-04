@@ -8,12 +8,12 @@
 }
 
 #home-description-wrapper h2 {
-    font-size: 5em;
+    font-size: 4em;
     margin-bottom: 30px;
 }
 
 #home-description-wrapper p {
-    font-size: 2.2em;
+    font-size: 1.8em;
 }
 
 #home-description-join-game-btn {
@@ -36,7 +36,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 500px;
+    height: 400px;
 }
 
 h2 {

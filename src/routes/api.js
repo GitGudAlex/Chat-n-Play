@@ -45,7 +45,7 @@ router.get('/category', (req, res) => {
 
         try {
             const obj = JSON.parse(json);
-            const games = obj.filter(game => game.gameCategoryId == req.query.gameCategoryId).map(game => ({ id: game.id, name: game.name, description: game.description }));
+            const games = obj.filter(game => game.gameCategoryId == req.query.gameCategoryId).map(game => ({ id: game.id, name: game.name, description: game.description, img: game.img }));
 
             res.json(games);
 
