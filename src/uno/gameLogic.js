@@ -122,14 +122,14 @@ const getNextPlayer = (roomId) => {
     
     const room = getRoom(roomId);
 
-    // Den Aktuell aktiven Spieler hohlen
-    let activePlayer = room.activePlayer;
-
     // Ob die Reihnfolge zurzeit umgekehrt ist
     let isReverse = room.isReverse;
 
     // Alle Spieler
     const players = getPlayersInRoom(roomId);
+
+    // Den Aktuell aktiven Spieler hohlen
+    let activePlayer = room.activePlayer;
 
     // Position des Spielers
     let currentPosition = activePlayer.position;
@@ -142,17 +142,17 @@ const getNextPlayer = (roomId) => {
 
         // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
         // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
-        for(let i = orderIndex + 1; i < orderIndex + players.length; i++) {
+        for(let i = orderIndex + 1; i < orderIndex + 4; i++) {
             let newOrderIndex = i % 4;
-
             let newPosition = order[newOrderIndex];
 
             let newPlayerIndex = players.findIndex(p => p.position === newPosition);
-
+            
             // Nächster Spieler wurde gefunden
             if(newPlayerIndex !== -1) {
                 let newPlayer = players[newPlayerIndex];
 
+                // TODO: Vlt ganzen Spieler abspeichern
                 room.activePlayer = { socketId: newPlayer.socketId, position: newPlayer.position };
                 return newPlayer;
             }

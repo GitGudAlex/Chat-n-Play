@@ -6,7 +6,7 @@ function Header(props) {
     return (
         <div style={{ height: props.height }} id='titleWrapper' className='sticky-top d-flex align-items-center justify-content-center'>
             <img src={logo} alt="Logo" id="logo"></img>
-            <img src={title} id="title-grafik"></img>
+            <img src={title} id="title-grafik" alt='background'></img>
         </div>
     );
 }

@@ -44,7 +44,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 }
 
 .blue{
-  background-color: #0B97F0;
+  background-color: #4089b6;
 }
 
 .red{
@@ -57,6 +57,22 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 
 .yellow{
   background-color: #FCA701;
+}
+
+.blue-light {
+  background-color: #8ab8d4;
+}
+
+.red-light {
+  background-color: #e79494;
+}
+
+.green-light {
+  background-color: hsl(121, 54%, 68%);
+}
+
+.yellow-light {
+  background-color: #e0c081;
 }
 
 .white{
@@ -93,6 +109,10 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   padding: 10px 10px;
   margin: 8px;
   border: 2px solid #474747;
+}
+
+.house-wrapper {
+  position: absolute;
 }
 
 .house {

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import $ from 'jquery';
 
 import './GameCategory.css'
 
@@ -44,7 +43,7 @@ function GameCategory(props) {
     console.log(props.img);
     return (
         <div>
-            <img src={ props.img } id="banner"/>
+            <img src={ props.img } id="banner" alt='Banner Bild'/>
             { 
                 games.map(game => (
                     <Game key={ game.id } gameId={ game.id } img={game.img} name={ game.name } description={ game.description} />

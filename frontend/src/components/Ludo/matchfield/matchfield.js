@@ -1,10 +1,30 @@
-import { css } from 'jquery';
-import $ from "jquery";
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
+import $ from 'jquery';
+
 import '../Ludo.css';
 
+function Matchfield(props) {
 
-function Matchfield(){
+    useLayoutEffect(() => {
+
+        // Alle möglichen Positionen
+        const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
+
+        // Alle Möglichen Farben
+        const colors = [{ hex: '#FCA701', color: 'yellow' },
+            { hex: '#00BF02', color: 'green'},
+            { hex: '#FF3030', color: 'red' },
+            { hex: '#0B97F0', color: 'blue' }];
+
+        // durch Spieler iterieren und deren Positionen bekommen um die Spielfelder farbig zu machen
+        for(let player of props.players) {
+            let position = player.position;
+            let colorindex = colors.findIndex(c => c.hex === player.color);
+
+           $('.mf-' + positions[position]).addClass(colors[colorindex].color + '-light');
+        }
+
+    }, [props]);
 
     return(
         <div className = "matchfield">

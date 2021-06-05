@@ -63,14 +63,29 @@ function Player(props) {
         );
 
     } else if(props.game === "ludo") {
+
+        if(onTop) {
+            return (
+                <div className={ props.position + ' player'} style={ playerStyle }>
+                    <div style={{ border: '3px solid ' + props.color }} className='camera'>
+                        <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                    </div>
+                    <div className='player-name'>
+                        <p style={ textAlignStyle }>{ props.username }</p>
+                        <House color={ props.color } position={ props.position } top={ onTop } left={ leftSide }/>
+                    </div>
+                </div>
+            );
+        }
+    
         return (
             <div className={ props.position + ' player'} style={ playerStyle }>
+                <House color={ props.color } position={ props.position } top={ onTop } left={ leftSide } />
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>
-                    <House color = {props.color} position = { props.position }/>
                 </div>
             </div>
         );

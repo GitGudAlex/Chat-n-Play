@@ -7,7 +7,7 @@ import Matchfield from './matchfield/matchfield';
 
 import SocketContext from '../../services/socket';
 
-function Ludo() {
+function Ludo(props) {
 
     // Socket.io
     const socket = useContext(SocketContext);
@@ -223,7 +223,7 @@ function Ludo() {
                 <br></br>
                 <br></br>
                 <button id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
-                <Matchfield/>
+                <Matchfield players={ props.players }/>
             </div>
         </div>
     )

@@ -8,6 +8,40 @@ function House(props){
     let third;
     let fourth; 
 
+    let posStyle;
+
+    // Spieler unten
+    if(!props.top) {
+
+        // Spieler links
+        if(props.left) {
+            posStyle = {
+                left: '0',
+                top: '-55px'
+            }
+
+        // Spieler rechts
+        } else {
+            posStyle = {
+                right: '0',
+                top: '-55px'
+            }
+        }
+    } else {
+        // Spieler links
+        if(props.left) {
+            posStyle = {
+                left: '0'
+            }
+
+        // Spieler rechts
+        } else {
+            posStyle = {
+                right: '0'
+            }
+        }
+    }
+
     switch (props.position) {
         case "top-right": 
             first = 101;
@@ -33,10 +67,15 @@ function House(props){
             third = 111;
             fourth = 112;
             break;
+        default:
+            first = -1;
+            second = -1;
+            third = -1;
+            fourth = -1;
       }
 
     return(
-        <div> 
+        <div className='house-wrapper' style={ posStyle }> 
             <button id = {first} disabled style = {{'backgroundColor': props.color}} className= "house"></button>
             <button id = {second} disabled style = {{'backgroundColor': props.color}} className = "house"></button>
             <button id = {third} disabled style = {{'backgroundColor': props.color}} className = "house"></button>

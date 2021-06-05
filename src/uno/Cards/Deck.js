@@ -22,11 +22,11 @@ class Deck {
                 } else {
                     // Die Karte mit dem Wert 0 darf pro Farbe nur einmal vorkommen
                     if(deckCounter !== 1) {
-                        for(let value = 0; value < 14; value++ ) {
+                        for(let value = 0; value < 13; value++ ) {
                             this.deck.push( new Card(value, color) );
                         }
                     } else {
-                        for(let value = 1; value < 14; value++ ) {
+                        for(let value = 1; value < 13; value++ ) {
                             this.deck.push( new Card(value, color) );
                         }
                     }

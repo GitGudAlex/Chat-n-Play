@@ -6,7 +6,6 @@ import SocketContext from "../../../services/socket";
 import UnoCard from '../UnoCard/UnoCard';
 
 import { animateCard } from '../Animations/CardAnimation';
-import UnoHand from '../UnoHand/UnoHand';
 
 function UnoGameBoard(props) {
 

@@ -40,7 +40,7 @@ function Game(props) {
     return (
         <div className='m-5'>
             <div>
-                <img src={props.img} />
+                <img src={props.img} alt='background'/>
             </div>
             <div className="d-flex align-items-center justify-content-center">
                 <button id="buttonCollapse" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
