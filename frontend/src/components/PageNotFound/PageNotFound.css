@@ -1,7 +1,8 @@
-body{
-   background: url(../../img/background_2.png), url(../../img/Background_3.png) top right;
+.background{
+   background: url(../../img/background_2.png), url(../../img/Background_3.png) top right, url(../../img/background_4.png) bottom right;
    background-repeat: no-repeat;
-   background-size: 250px, 300px;
+   background-size: 250px, 300px, 200px;
+   height: 100%;
 }
 h2 {
    margin-top: 40px;

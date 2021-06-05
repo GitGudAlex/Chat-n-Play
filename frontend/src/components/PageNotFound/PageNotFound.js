@@ -1,5 +1,6 @@
 import React from 'react';
 import Title from '../Home/Title/Title';
+import Header from '../Home/Header/Header';
 import { Link } from 'react-router-dom';
 
 import './PageNotFound.css'
@@ -7,7 +8,7 @@ import './PageNotFound.css'
 const NotFound = () => (
   <div className="background">
     <header className="sticky-top">
-      <Title text="Chat N' Play" height="100px" fontSize="5em"/>
+      <Header/>
     </header>
     <h2 id="error-message">404 - Seite nicht gefunden!</h2>
     <Link to="/">

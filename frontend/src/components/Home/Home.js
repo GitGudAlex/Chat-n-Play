@@ -7,7 +7,7 @@ import './Home.css'
 import '../../img/Titel_Weiß.png'
 
 import SocketContext from '../../services/socket';
-import Title from './Title/Title';
+import Header from './Header/Header';
 import Description from './Description/Description';
 import GameCategoriesList from './GameCategoriesList/GameCategoriesList';
 
@@ -59,7 +59,7 @@ function Home({ match }) {
     return (
         <div className='p-0'>
             <header className="sticky-top">
-                <Title text="Chat N' Play" height="100px" fontSize="5em"/>
+                <Header/>
             </header>
             <main>
                 <div className='container-fluid'>
