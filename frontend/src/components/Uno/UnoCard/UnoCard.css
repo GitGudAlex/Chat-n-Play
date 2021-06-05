@@ -6,15 +6,19 @@
     justify-content: center;
     align-items: center;
 
-    width: 100px;
-
-    transition: transform .25s;
+    width: 90px;
+    height: 136px;
 }
 
 .uno-card-small {
     position: absolute;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 60px;
+    height: 91px;
 }
 
 .uno-card-back, .uno-card-front {

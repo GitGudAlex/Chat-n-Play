@@ -58,7 +58,7 @@ function UnoGameBoard(props) {
 
             // Karte eines Gegenspielers
             } else {
-                animateCard('uno-deal-deck-img', data.socketId + '-uno-player', data.card, 600, false, true, () => {
+                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.socketId, data.card, 600, false, true, () => {
                     setActiveCard();
                 });
             }
@@ -86,16 +86,18 @@ function UnoGameBoard(props) {
 
     return (
         <div id='uno-gameboard' >
-            <div id='uno-deal-deck'>
-                <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' }/>
-            </div>
-            <div id='uno-discard-deck'>
-                <img id='uno-discard-deck-ref' className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
-                {
-                    lastCards.map(card => {
-                        return <UnoCard key={ card.id } card={ card } />
-                    })
-                }
+            <div id='uno-deck-wrapper'>
+                <div id='uno-deal-deck'>
+                    <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' }/>
+                </div>
+                <div id='uno-discard-deck'>
+                    <img id='uno-discard-deck-ref' className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
+                    {
+                        lastCards.map(card => {
+                            return <UnoCard key={ card.id } card={ card } />
+                        })
+                    }
+                </div>
             </div>
             {
                 activeCard !== undefined ? (
@@ -104,6 +106,8 @@ function UnoGameBoard(props) {
                     <div />
                 )
             }
+            <div id='from' className='marker'></div>
+            <div id='to' className='marker'></div>
         </div>
     );
 }
