@@ -9,12 +9,19 @@
     align-items: center;
 }
 
+#uno-deck-wrapper {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* Karten Stapel, bei dem man die Karten runterholt */
 #uno-deal-deck {
     flex: 1 0 50%;
 
-    display: inline-flex;
-    justify-content: flex-end;
+    display: flex;
+    justify-content: center;
     align-items: center;
 
     margin-right: 32px;
@@ -24,9 +31,23 @@
 #uno-discard-deck {
     flex: 1 0 50%;
 
-    display: inline-flex;
-    justify-content: flex-start;
+    display: flex;
+    justify-content: center;
     align-items: center;
 
     margin-left: 32px;
+}
+
+.marker {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+}
+
+#from {
+    background-color: coral;
+}
+
+#to {
+    background-color: darkgreen;
 }

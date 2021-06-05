@@ -87,7 +87,7 @@ function UnoHand(props) {
                         )
                     })
                 }
-                <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
+                <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
             </div>
         );
     }
@@ -116,6 +116,7 @@ function UnoHand(props) {
                     )
                 })
             }
+            <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
         </div>
     );
 }
