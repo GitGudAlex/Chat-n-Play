@@ -2,9 +2,9 @@
     border-radius: .25rem;
     height: 70px;
     font-size: 70px;
-    background-color: white;
+    background-color:transparent;
     border: none;
-    font-family: 'coffee+tea demo';
+    font-family: 'coffee+tea demo','Calibri';
 }
 
 .flex-sm-row {

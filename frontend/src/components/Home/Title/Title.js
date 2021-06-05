@@ -1,6 +1,7 @@
 import './Title.css';
 import logo from '../../../img/Logo.png'
 
+
 function Title(props) {
     return (
         <div style={{ height: props.height }} id='titleWrapper' className='sticky-top d-flex align-items-center justify-content-center'>

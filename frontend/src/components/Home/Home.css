@@ -1,0 +1,5 @@
+#startseite {
+    background: url(../../img/background_6.png), url(../../img/background_7.png) top right, url(../../img/background_8.png) bottom right;
+    background-repeat: no-repeat;
+    background-size: 250px, 200px, 170px;
+}
