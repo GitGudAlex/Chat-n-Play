@@ -1,7 +1,7 @@
 const { data } = require('jquery');
 const $ = require('jquery');
 
-const animateCard = (fromId, toId, card, animationDuration, flip, scaling, callback) => {
+const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handWidthId, callback) => {
 
     // Laufzeit
     let duration = animationDuration;
@@ -15,11 +15,11 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, callb
     let fromElement = $('#' + fromId).offset();
     let toElement = $('#' + toId).offset();
 
-    // X Werte -> Verschiebung
+    // X Position
     let startPosAbsX = fromElement.left - sidebarWidth;
     let endPosAbsX = toElement.left - sidebarWidth;
 
-    // Y Werte -> Verschiebung
+    // Y Position
     let startPosAbsY = fromElement.top - titleHeight;
     let endPosAbsY = toElement.top - titleHeight;
 
@@ -96,14 +96,17 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, callb
             // Für die Y Scaling
             let scalY = startScaleY + (endScaleY - startScaleY) * val;
 
+            // Wenn die Karte rotiert werden soll
             if(card.rotation !== undefined) {
                 $('#' + card.id + '-animate-wrapper').css({ transform: 'rotateZ(' + rotZ + 'deg)' });
             }
 
+            // Wenn die Karte geflippt werden soll
             if(flip) {
                 $('#' + card.id + '-animate').css({ transform: 'rotateY(' + rotY + 'deg)' });
             }
 
+            // Wenn die Karte skaliert wird
             if(scaling) {
                 $('#' + card.id + '-animate-wrapper').css({ width: scalX + 'px' });
                 $('#' + card.id + '-animate-wrapper').css({ height: scalY + 'px' });
@@ -113,13 +116,26 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, callb
 
             }
 
+            // Wenn zur hand
+            if(handWidthId !== undefined) {
+                let handWidthX = 0 + (endScaleX - 0) * val;
+
+                $('#' + handWidthId).css({ width: handWidthX + 'px' });
+
+                let toElement = $('#' + toId).offset();
+                endPosAbsX = toElement.left - sidebarWidth;
+            }
+
             $('#' + card.id + '-animate-wrapper').css({ left: posX + 'px' });
             $('#' + card.id + '-animate-wrapper').css({ top: posY + 'px' });
 
             requestAnimationFrame(animate);
 
         } else {
-            //$('#' + card.id + '-animate-wrapper').addClass('invisible');
+            if(handWidthId !== undefined) {
+                $('#' + handWidthId).css({ width: '0px' });
+            }
+
             callback();
         }
     }

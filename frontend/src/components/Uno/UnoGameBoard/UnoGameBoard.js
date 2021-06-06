@@ -17,10 +17,18 @@ function UnoGameBoard(props) {
     const activeCardsRef = useRef([]);
     const [activeCards, setActiveCards] = useState([]);
 
+    // Die Hand Karten für jeden Spieler
+    const handCardsRef = useRef([[], [], [], []]);
+    const [handCards, setHandCards] = useState([[], [], [], []]);
+
+    const activeCardsCounterRef = useRef(0);
+
     // Socket.io
     const socket = useContext(SocketContext);
 
     const handleDealCardEvent = useCallback((data) => {
+
+        data.card.socketId = data.socketId;
 
         // Karte kommt vom Kartenstapel und wird abgelegt
         if(data.socketId === 0) {
@@ -28,15 +36,17 @@ function UnoGameBoard(props) {
             // Zufällige Rotation zwischen -15 und + 15 Grad
             let rotation = Math.floor(Math.random() * 30) - 15; 
             data.card.rotation = rotation;
-
+            
             // Animations Karte hinzufügen
             let card = <UnoCard key={ data.card.id } card={ data.card } hidden={ true } animate={ true } />
 
             activeCardsRef.current.push(card);
             setActiveCards([...activeCardsRef.current]);
 
+            activeCardsCounterRef.current += 1;
+
             // Animation abspielen
-            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, 500, true, false, () => {
+            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, 500, true, false, undefined, () => {
                 
                 // Zuletzt gespielte Karten updaten
                 setLastCards(cards => {
@@ -55,8 +65,10 @@ function UnoGameBoard(props) {
 
                 setActiveCards(activeCardsRef.current);
 
+                activeCardsCounterRef.current -= 1;
+
                 // Wenn nur noch eine Karte übrig ist
-                if(activeCardsRef.current.length === 1) {
+                if(activeCardsCounterRef === 0) {
                     activeCardsRef.current = [];
                     setActiveCards([...activeCardsRef.current]);
                 }
@@ -74,16 +86,28 @@ function UnoGameBoard(props) {
                 activeCardsRef.current.push(card);
                 setActiveCards([...activeCardsRef.current]);
 
-                // Animation abspielen
-                animateCard('uno-deal-deck-img', 'uno-own-hand', data.card, 600, true, false, () => {
+                activeCardsCounterRef.current += 1;
 
+                // Animation abspielen
+                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, 600, true, false, 'uno-deck-ref-scaling-' + data.card.id, () => {
+
+                    // Karte der Hand hinzufügen
+                    let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
+                    let playerPosition = props.players[playerIndex].position;
+
+                    handCardsRef.current[playerPosition].push(data.card);
+                    setHandCards([...handCardsRef.current]);
+
+                    // Animationskarte löschen
                     let index = activeCardsRef.current.findIndex(c => c.props.card.id === data.card.id);
                     activeCardsRef.current.splice(index, 1);
 
                     setActiveCards(activeCardsRef.current);
 
+                    activeCardsCounterRef.current -= 1;
+
                     // Wenn nur noch eine Karte übrig ist
-                    if(activeCardsRef.current.length === 1) {
+                    if(activeCardsCounterRef.current === 0) {
                         activeCardsRef.current = [];
                         setActiveCards([...activeCardsRef.current]);
                     }
@@ -98,23 +122,35 @@ function UnoGameBoard(props) {
                 activeCardsRef.current.push(card);
                 setActiveCards([...activeCardsRef.current]);
 
-                // Animation abspielen
-                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.socketId, data.card, 600, false, true, () => {
+                activeCardsCounterRef.current += 1;
 
+                // Animation abspielen
+                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, 600, false, true, 'uno-deck-ref-scaling-' + data.card.id, () => {
+
+                    // Karte der Hand hinzufügen
+                    let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
+                    let playerPosition = props.players[playerIndex].position;
+
+                    handCardsRef.current[playerPosition].push(data.card);
+                    setHandCards([...handCardsRef.current]);
+
+                    // Animationskarte löschen
                     let index = activeCardsRef.current.findIndex(c => c.props.card.id === data.card.id);
                     activeCardsRef.current.splice(index, 1);
 
                     setActiveCards(activeCardsRef.current);
 
+                    activeCardsCounterRef.current -= 1;
+
                     // Wenn nur noch eine Karte übrig ist
-                    if(activeCardsRef.current.length === 1) {
+                    if(activeCardsCounterRef.current === 0) {
                         activeCardsRef.current = [];
                         setActiveCards([...activeCardsRef.current]);
                     }
                 });
             }
         }
-    }, [socket]);
+    }, [socket, props.players]);
 
     // Setzt am Anfang den Spieler
     const handleSetFirstPlayerEvent = useCallback(() => {
@@ -151,18 +187,27 @@ function UnoGameBoard(props) {
                 </div>
             </div>
             {
-                activeCards.map(card => {
-                    return card;
-                })
-            }
-            {
                 props.players.map(p => {
+                    let activeCardsList = [];
+
+                    for(let card of activeCards) {
+                        if(card.props.card.socketId === p.socketId) {
+                            activeCardsList.push(card);
+                        }
+                    }
+
                     return <UnoHand key={ p.socketId }
                                     socketId={ p.socketId }
                                     self={ p.socketId === socket.id ? true : false }
                                     top={ p.position === 0 || p.position === 2 ? true : false } 
                                     left={ p.position === 0 || p.position === 3 ? true : false }
-                                    cards={ [] } />
+                                    cards={ handCards[p.position] }
+                                    activeCards={ activeCardsList }/>
+                })
+            }
+            {
+                activeCards.map(card => {
+                    return card;
                 })
             }
             <div id='from' className='marker'></div>

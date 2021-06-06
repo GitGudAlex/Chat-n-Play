@@ -9,7 +9,7 @@ function UnoHand(props) {
 
     // Breite und Höhe der Spieler Kamera
     const [playerWidth, setPlayerWidth] = useState();
-    const [playerHeight, setPlayerHeight] = useState();
+    const [playerHeight, setPlayerHeight] = useState()
 
     const resizeHandHandler = useCallback(() => {
         if(props.top) {
@@ -80,6 +80,15 @@ function UnoHand(props) {
                             )
                         })
                     }
+                    {
+                        props.activeCards.map((card) => {
+                            return(
+                                <div key={ card.props.card.id } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-my-card-wrapper uno-card-ref-wrapper'>
+                                    <img id={ 'uno-deck-ref-' + card.props.card.id } className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
+                                </div>
+                            )
+                        })
+                    }
                 </div>
             </div>
         )
@@ -91,14 +100,16 @@ function UnoHand(props) {
         if(props.left) {
             posStyle = {
                 top: '40px',
-                left: playerWidth + 80 + 'px'
+                left: playerWidth + 80 + 'px',
+                flexDirection: 'row'
             }
 
         // oben + rechts
         } else {
             posStyle = {
                 top: '40px',
-                right: playerWidth + 80 + 'px'
+                right: playerWidth + 80 + 'px',
+                flexDirection: 'row-reverse'
             }
 
         }
@@ -107,14 +118,16 @@ function UnoHand(props) {
         if(props.left) {
             posStyle = {
                 bottom: playerHeight + 80 + 'px',
-                left: '40px'
+                left: '40px',
+                flexDirection: 'row'
             }
 
         // unten + rechts
         } else {
             posStyle = {
                 bottom: playerHeight + 80 + 'px',
-                right: '40px'
+                right: '40px',
+                flexDirection: 'row-reverse'
             }
 
         }
@@ -132,9 +145,15 @@ function UnoHand(props) {
                     )
                 })
             }
-            <div className='uno-other-card-wrapper'>
-                <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
-            </div>
+            {
+                props.activeCards.map((card) => {
+                    return (
+                        <div key={ card.props.card.id } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-other-card-wrapper uno-card-ref-wrapper'>
+                            <img id={ 'uno-deck-ref-' + card.props.card.id } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
+                        </div>
+                    )
+                })
+            }
         </div>
     );
 }

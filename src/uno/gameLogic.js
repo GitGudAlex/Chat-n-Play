@@ -94,7 +94,7 @@ const initUno = (hostId, socket, io) => {
                 setFirstPlayer(room, players, io);
 
             }
-        }, 300);
+        }, 350);
     }
 
     dealHandCards();

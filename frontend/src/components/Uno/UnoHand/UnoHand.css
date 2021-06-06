@@ -2,14 +2,12 @@
 .uno-other-hand {
     position: absolute;
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     flex-wrap: nowrap;
 
     width: 150px;
     height: 100px;
-    background-color: cornflowerblue;
 }
 
 .uno-other-card-wrapper {
@@ -34,15 +32,20 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
     flex-wrap: nowrap;
+
+    transition: all 500ms linear;
 
     height: 100%;
     width: 100%;
-
-    background-color: coral;
 }
 
 .uno-my-card-wrapper {
     position: relative;
+    width: 90px;
+    height: 136px;
+}
+
+.uno-card-ref-wrapper {
+    width: 0px;
 }
