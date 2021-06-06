@@ -3,7 +3,11 @@ import { Switch, Route } from 'react-router';
 import SocketContext, { socket } from "../../services/socket";
 
 import './App.css';
+
 import '../../fonts/coffeeteademo.woff';
+import '../../fonts/coffee+teademo-Regular.ttf';
+import '../../fonts/Calibri-Regular.woff';
+import '../../fonts/Calibri-Regular.ttf';
 
 import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';

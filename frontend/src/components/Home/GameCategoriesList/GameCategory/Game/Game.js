@@ -39,9 +39,6 @@ function Game(props) {
 
     return (
         <div className='m-5'>
-            <div>
-                <img src={props.img} alt='background'/>
-            </div>
             <div className="d-flex align-items-center justify-content-center">
                 <button id="buttonCollapse" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
