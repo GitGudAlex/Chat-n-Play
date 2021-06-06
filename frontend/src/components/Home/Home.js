@@ -75,6 +75,11 @@ function Home({ match }) {
                     </div>
                 </div>
             </main>
+            <footer className="footer">
+                <div className="container" id="container-footer">
+                    <span className="text-muted">Impressum</span>
+                </div>
+            </footer>
         </div>
     );
 }
