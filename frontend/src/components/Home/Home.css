@@ -1,5 +1,14 @@
 #startseite {
-    background: url(../../img/background_6.png), url(../../img/background_7.png) top right, url(../../img/background_8.png) bottom right;
+    background: url(../../img/background_6.png), url(../../img/background_7.png) top right, url(../../img/background_8.png) 100% 620px, url(../../img/background_4.png) 0% 1070px;
     background-repeat: no-repeat;
     background-size: 250px, 200px, 170px;
+}
+
+.footer{
+    height: 50px;
+    background-color: #474747;
+}
+
+#container-footer{
+    padding-top: 10px;
 }

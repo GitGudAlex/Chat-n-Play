@@ -10,8 +10,7 @@
     padding-top: 20px;
 }
 
-.collapse{
-    margin-left: 80px;
-    margin-right: 80px;
-    margin-top: 30px;
+.m-5{
+    padding-right: 12rem;
+    padding-left: 12rem;
 }
