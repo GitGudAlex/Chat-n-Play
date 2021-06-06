@@ -8,7 +8,7 @@ function UnoCard(props) {
         // Unbekannte Karte auf der Hand eines anderen Spielers
         if(props.card.value === undefined) {
             return (
-                <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') }>
+                <div id={ props.card.id + '-uno-card' } className={ 'uno-card-small ' + (props.hidden === true ? 'invisible' : '') }>
                     <div className='uno-card-back'>
                         <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' }/>
                     </div>

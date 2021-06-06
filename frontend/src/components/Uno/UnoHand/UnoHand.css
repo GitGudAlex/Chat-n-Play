@@ -1,3 +1,4 @@
+/* Hand eines Gegenspielers */
 .uno-other-hand {
     position: absolute;
     display: flex;
@@ -13,13 +14,18 @@
 
 .uno-other-card-wrapper {
     position: relative;
+    width: 60px;
+    height: 91px;
 }
 
+/* Eigene Hand */
 .uno-my-hand-wrapper {
     position: absolute;
+    bottom: 40px;
+
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
     flex-wrap: nowrap;
 }
@@ -31,8 +37,10 @@
     align-items: center;
     flex-wrap: nowrap;
 
-    height: 100px;
-    background-color:crimson;
+    height: 100%;
+    width: 100%;
+
+    background-color: coral;
 }
 
 .uno-my-card-wrapper {

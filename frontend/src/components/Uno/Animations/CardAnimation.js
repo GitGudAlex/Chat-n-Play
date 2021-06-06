@@ -61,10 +61,12 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, callb
             $('#' + card.id + '-animate').css({ transform: 'rotateY(' + startRotationY + 'deg)' });
         }
 
-        if(scaling) {
-            $('#' + card.id + '-animate').css({ width: startScaleX + 'px' });
-            $('#' + card.id + '-animate').css({ height: startScaleY + 'px' });
-        }
+        // Scaling
+        $('#' + card.id + '-animate').css({ width: startScaleX + 'px' });
+        $('#' + card.id + '-animate').css({ height: startScaleY + 'px' });
+
+        $('#' + card.id + '-animate-wrapper').css({ width: startScaleX + 'px' });
+        $('#' + card.id + '-animate-wrapper').css({ height: startScaleY + 'px' });
 
         $('#' + card.id + '-animate-wrapper').removeClass('invisible');
 
@@ -103,6 +105,9 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, callb
             }
 
             if(scaling) {
+                $('#' + card.id + '-animate-wrapper').css({ width: scalX + 'px' });
+                $('#' + card.id + '-animate-wrapper').css({ height: scalY + 'px' });
+
                 $('#' + card.id + '-animate').css({ width: scalX + 'px' });
                 $('#' + card.id + '-animate').css({ height: scalY + 'px' });
 

@@ -7,12 +7,16 @@ import UnoCard from '../UnoCard/UnoCard';
 
 function UnoHand(props) {
 
-    const [cards, setCards] = useState([]);
+    // Breite und Höhe der Spieler Kamera
     const [playerWidth, setPlayerWidth] = useState();
+    const [playerHeight, setPlayerHeight] = useState();
 
     const resizeHandHandler = useCallback(() => {
         if(props.top) {
             setPlayerWidth($('.player').width());
+
+        } else {
+            setPlayerHeight($('.player').height());
 
         }
 
@@ -20,6 +24,7 @@ function UnoHand(props) {
 
     // Width setzten bei Windows resize event
     useLayoutEffect(() => {
+
         // Wenn die Fenstergröße geändert wird -> Größe anpassen
         window.addEventListener('resize', resizeHandHandler);
 
@@ -31,19 +36,43 @@ function UnoHand(props) {
 
     // Width setzten am Anfang
     useEffect(() => {
-        if(props.top) {
+
+        if(props.self) {
             setPlayerWidth($('.player').width());
+
+        } else {
+            // Spieler der sich oben befindet
+            if(props.top) {
+                setPlayerWidth($('.player').width());
+
+            // Spieler der sich unten befindet
+            } else {
+                setPlayerHeight($('.player').height());
+            }
         }
 
-    }, [props.top]);
+    }, [props.top, props.self]);
+
+    // Styling setzten
+    let posStyle;
 
     // Eigene Hand
     if(props.self) {
+
+        // Card height
+        let cardHeight = $('.uno-card').height();
+
+        posStyle = {
+            left: playerWidth + 80 + 'px',
+            right: playerWidth + 80 + 'px',
+            height: cardHeight + 'px'
+        }
+
         return(
-            <div className='uno-my-hand-wrapper'>
+            <div id='uno-own-hand' className='uno-my-hand-wrapper' style={ posStyle }>
                 <div id={ props.socketId + '-uno-player' } className='uno-my-hand'>
                     {
-                        cards.map((card) => {
+                        props.cards.map((card) => {
                             return (
                                 <div className='uno-my-card-wrapper' key={ card.id }>
                                     <UnoCard card={ card } />
@@ -56,59 +85,46 @@ function UnoHand(props) {
         )
     }
 
-    let posStyle;
+    if(props.top) {
 
-    // Spieler unten
-    if(!props.top) {
-
-        // Spieler links
-        if(props.left) {
+        // oben + links
+        if(props.left) {
             posStyle = {
-                left: '0',
-                top: '-120px'
+                top: '40px',
+                left: playerWidth + 80 + 'px'
             }
 
-        // Spieler rechts
+        // oben + rechts
         } else {
             posStyle = {
-                right: '0',
-                top: '-120px'
+                top: '40px',
+                right: playerWidth + 80 + 'px'
             }
+
         }
-
-        return (
-            <div id={ props.socketId + '-uno-player' } className='uno-other-hand' style={ posStyle }>
-                {
-                    cards.map((card) => {
-                        return (
-                            <div className='uno-other-card-wrapper' key={ card.id }>
-                                <UnoCard card={ card } />
-                            </div>
-                        )
-                    })
-                }
-                <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
-            </div>
-        );
-    }
-
-    // Spieler links
-    if(props.left) {
-        posStyle = {
-            left: playerWidth + 20 + 'px'
-        }
-
-    // Spieler rechts
     } else {
-        posStyle = {
-            right: playerWidth + 20 + 'px'
+        // unten + links
+        if(props.left) {
+            posStyle = {
+                bottom: playerHeight + 80 + 'px',
+                left: '40px'
+            }
+
+        // unten + rechts
+        } else {
+            posStyle = {
+                bottom: playerHeight + 80 + 'px',
+                right: '40px'
+            }
+
         }
     }
+
 
     return (
         <div id={ props.socketId + '-uno-player' } className='uno-other-hand' style={ posStyle }>
             {
-                cards.map((card) => {
+                props.cards.map((card) => {
                     return (
                         <div className='uno-other-card-wrapper' key={ card.id }>
                             <UnoCard card={ card } />
@@ -116,7 +132,9 @@ function UnoHand(props) {
                     )
                 })
             }
-            <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
+            <div className='uno-other-card-wrapper'>
+                <img id={ 'uno-deck-ref-' + props.socketId } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
+            </div>
         </div>
     );
 }

@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import { useLayoutEffect, useState } from 'react';
 import House from '../../Ludo/house/house';
-import UnoHand from '../../Uno/UnoHand/UnoHand';
 
 import './Player.css';
 
@@ -91,42 +90,8 @@ function Player(props) {
         );
 
     } else if(props.game === "uno") {
-
-        // Eigener Spieler
-        if(props.self) {
-            return(
-                <div id={ props.socketId + '-uno-player' } className={ props.position + ' player'} style={ playerStyle }>
-                    <div style={{ border: '3px solid ' + props.color }} className='camera'>
-                        <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                    </div>
-                    <div style={ textAlignStyle } className='player-name'>
-                        <p>{ props.username }</p>
-                    </div>
-                </div>
-            );
-        }
-
-        // Anderer Spieler
-
-        // Spieler oben
-        if(onTop) {
-            return(
-                <div className={ props.position + ' player'} style={ playerStyle }>
-                    <UnoHand self={ false } left={ leftSide } socketId={ props.socketId } top={ onTop } />
-                    <div style={{ border: '3px solid ' + props.color }} className='camera'>
-                        <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                    </div>
-                    <div className='player-name'>
-                        <p style={ textAlignStyle }>{ props.username }</p>
-                    </div>
-                </div>
-            );
-        }
-
-        // Spieler unten
         return(
             <div className={ props.position + ' player'} style={ playerStyle }>
-                <UnoHand self={ false } left={ leftSide } socketId={ props.socketId } top={ onTop } />
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
                 </div>
