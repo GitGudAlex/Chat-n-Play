@@ -12,12 +12,18 @@ function UnoHand(props) {
     const [playerHeight, setPlayerHeight] = useState()
 
     const resizeHandHandler = useCallback(() => {
-        if(props.top) {
+        if(props.self) {
             setPlayerWidth($('.player').width());
 
         } else {
-            setPlayerHeight($('.player').height());
+            // Spieler der sich oben befindet
+            if(props.top) {
+                setPlayerWidth($('.player').width());
 
+            // Spieler der sich unten befindet
+            } else {
+                setPlayerHeight($('.player').height());
+            }
         }
 
     }, [props.top]);
