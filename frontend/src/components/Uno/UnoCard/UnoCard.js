@@ -21,7 +21,7 @@ function UnoCard(props) {
             // Karte auf meiner Hand
             if(props.card.rotation === undefined) {
                 return (
-                    <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') }>
+                    <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') + ' my-uno-card' }>
                         <div className='uno-card-front'>
                             <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value }/>
                         </div>

@@ -86,7 +86,7 @@ const initUno = (hostId, socket, io) => {
             (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: nextPlayer.socketId });
 
             // Wenn 7 Karten verteilt wurden
-            if(++cardCounter < 7 * players.length) {
+            if(++cardCounter < 14 * players.length) {
 
                 dealHandCards();
 

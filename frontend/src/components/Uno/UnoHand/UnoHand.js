@@ -26,7 +26,7 @@ function UnoHand(props) {
             }
         }
 
-    }, [props.top]);
+    }, [props.top, props.self]);
 
     // Width setzten bei Windows resize event
     useLayoutEffect(() => {
@@ -65,12 +65,13 @@ function UnoHand(props) {
     // Eigene Hand
     if(props.self) {
 
-        // Card height
+        // Card height & width
         let cardHeight = $('.uno-card').height();
+        let cardWidth = $('.uno-card').width();
 
         posStyle = {
             left: playerWidth + 80 + 'px',
-            right: playerWidth + 80 + 'px',
+            right: playerWidth + 80 + cardWidth / 2 + 'px',
             height: cardHeight + 'px'
         }
 
@@ -100,6 +101,9 @@ function UnoHand(props) {
         )
     }
 
+     // Card width
+     let cardWidth = $('.uno-card').width();
+
     if(props.top) {
 
         // oben + links
@@ -114,7 +118,7 @@ function UnoHand(props) {
         } else {
             posStyle = {
                 top: '40px',
-                right: playerWidth + 80 + 'px',
+                right: playerWidth + cardWidth / 2 + 80 + 'px',
                 flexDirection: 'row-reverse'
             }
 
@@ -132,7 +136,7 @@ function UnoHand(props) {
         } else {
             posStyle = {
                 bottom: playerHeight + 80 + 'px',
-                right: '40px',
+                right: 40 + cardWidth / 2 + 'px',
                 flexDirection: 'row-reverse'
             }
 
