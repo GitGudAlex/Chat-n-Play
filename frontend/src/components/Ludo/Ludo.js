@@ -45,7 +45,7 @@ function Ludo(props) {
     
         socket.on("ludo:showMoves", show => {
             show.forEach(element => {
-                $('#'+element).html('x');
+                $('#'+element).css({'border-color': 'yellow'});
             })
         });
 
@@ -103,7 +103,8 @@ function Ludo(props) {
     useEffect(() => {
         socket.on("ludo:moveFigure", move => {
             $(".matchfield").find(":button").html('');
-            $("#"+move[2]).css({'background-color':'white'});
+            $("#"+move[2]).css({'background-color':''});
+            $("#"+move[2]).css({'border-color':''});
             $("#"+move[0]).css({'background-color':move[1]});     
         });
 
@@ -156,7 +157,7 @@ function Ludo(props) {
     useEffect(() => {
         socket.on('ludo:playerLeave', (positionen => {
             positionen.forEach(p => {
-                $('#'+p[0]).css({'background-color':'white'});
+                $('#'+p[0]).css({'background-color':''});
             });
             $(".matchfield").find(":button").html('');
         }));
@@ -198,8 +199,8 @@ function Ludo(props) {
     
     return (
         <div id='game-content'>
+            <br></br>
             <div className='game-board'>
-                <br></br>
                 <div id = "choose_game_mode">
                     <label>Mögliche Spielzüge sollen vorgeschlagen und angezeigt werden:</label>
                     <br></br>
@@ -219,10 +220,10 @@ function Ludo(props) {
                 </div>
                 <br></br>
                 <br></br>
-                <button id='firstPlayer' onClick={ setFirstPlayer }>Spiel starten <br></br> (Ersten Spieler festlegen)</button>
+                <button id='firstPlayer' className="btn btn-dark" onClick={ setFirstPlayer }>Spiel starten</button>
                 <br></br>
                 <br></br>
-                <button id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
+                <button  className="btn btn-dark" id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
                 <Matchfield players={ props.players }/>
             </div>
         </div>
