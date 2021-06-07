@@ -28,7 +28,7 @@ router.get('/gamecategories', (req, res) => {
         
         try {
             const obj = JSON.parse(json);
-            const gameGategories = obj.map(gameCategory => ({ gameCategoryId: gameCategory.gameCategoryId, gameCategoryName: gameCategory.gameCategoryName, color: gameCategory.color, img: gameCategory.img }));
+            const gameGategories = obj.map(gameCategory => ({ gameCategoryId: gameCategory.gameCategoryId, gameCategoryName: gameCategory.gameCategoryName, color: gameCategory.color, img: gameCategory.img , imgbg1: gameCategory.imgbg1, imgbg2: gameCategory.imgbg2}));
 
             res.json(gameGategories);
 

@@ -41,9 +41,13 @@ function GameCategory(props) {
         );
     }
     console.log(props.img);
+    console.log(props.imgbg1);
+
     return (
         <div>
             <img src={ props.img } id="banner" alt='Banner Bild'/>
+            <img src={ props.imgbg1 } id="backgroundimg1" alt=""/>
+            <img src={props.imgbg2} id="backgroundimg2" alt=""/>
             { 
                 games.map(game => (
                     <Game key={ game.id } gameId={ game.id } name={ game.name } description={ game.description} />
