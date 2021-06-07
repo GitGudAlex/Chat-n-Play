@@ -65,7 +65,7 @@ function GameCategoriesList() {
             <nav className="nav nav-pills flex-column flex-sm-row">
                 { 
                     gameCategories.map(gameCategory => {
-                        if(activeCategory === 0) {
+                        if(activeCategory === 0 && gameCategory.gameCategoryId === 0) {
                             setActiveCategory(gameCategory);
                         }
 

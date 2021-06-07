@@ -9,6 +9,9 @@ function Game(props) {
     // Socket holen
     const socket = useContext(SocketContext);
 
+    // Obdie beschreibung ausgefahren ist
+    const [isCollapsed, setIsCollapsed] = useState(false);
+
     // Spiel abspeichern
     const [gameId, setgameId] = useState();
 
@@ -39,21 +42,31 @@ function Game(props) {
         });
     }, [socket, gameId]);
 
+    const setCollapse = () => {
+        setIsCollapsed((state) => !state);
+    }
+
+    useEffect(() => {
+        if(isCollapsed) {
+            $('#desciption-collapse-btn-' + props.gameId).css({ transform: 'rotateZ(90deg)' });
+        } else {
+            $('#desciption-collapse-btn-' + props.gameId).css({ transform: 'rotateZ(0deg)' });
+        }
+
+    }, [isCollapsed]);
+
     return (
         <div className='m-5'>
             <div className="d-flex align-items-center justify-content-center">
-                <button id="buttonCollapse" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                <button id={ "desciption-collapse-btn-" + props.gameId } className='home-collase-button' type="button" data-toggle="collapse" data-target={ "#desciption-collapse-" + props.gameId } aria-expanded="false" aria-controls="collapseExample" onClick={ setCollapse }>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{'display': 'none'}} width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
                     </svg>
                 </button>
                 <h4 id="nameGame">{ props.name }</h4>
                 <button type="button" className="btn btn-dark btn-lg" data-toggle="modal" data-target={ "#create-game-modal-" + gameId }>Raum erstellen</button>
             </div>
-            <div class="collapse" id="collapseExample">
+            <div className="collapse" id={ "desciption-collapse-" + props.gameId }>
                     { props.description }           
             </div>
 
