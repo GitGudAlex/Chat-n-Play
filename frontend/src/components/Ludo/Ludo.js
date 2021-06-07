@@ -1,4 +1,4 @@
-import React, { useEffect,  useContext } from 'react';
+import React, { useEffect,  useContext, useState } from 'react';
 import $ from "jquery";
 
 import './Ludo.css'
@@ -9,11 +9,14 @@ import SocketContext from '../../services/socket';
 
 function Ludo(props) {
 
+    const [gamestatus, setGamestatus] = useState(0);
+
     // Socket.io
     const socket = useContext(SocketContext);
     
     // ersten Spieler anzeigen
     socket.once('ludo:first-player', player => {
+        setGamestatus(1);
         $('.dice').css({'border-color':player.color});
         $('#firstPlayer').css({'display':'none'});
         $('#choose_game_mode').css({'display':'none'});
@@ -196,11 +199,11 @@ function Ludo(props) {
         socket.emit('ludo:firstPlayer', {mode:mode});
     }
 
-    
-    return (
-        <div id='game-content'>
-            <br></br>
-            <div className='game-board'>
+
+    if(gamestatus === 0){
+        return (
+            <div id='game-content'>
+            <div id = 'ludo-selection' className='ludo-selection'>
                 <div id = "choose_game_mode">
                     <label>Mögliche Spielzüge sollen vorgeschlagen und angezeigt werden:</label>
                     <br></br>
@@ -221,13 +224,19 @@ function Ludo(props) {
                 <br></br>
                 <br></br>
                 <button id='firstPlayer' className="btn btn-dark" onClick={ setFirstPlayer }>Spiel starten</button>
-                <br></br>
-                <br></br>
-                <button  className="btn btn-dark" id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
-                <Matchfield players={ props.players }/>
             </div>
         </div>
-    )
+        )
+    } else if (gamestatus === 1){
+        return (
+            <div id='game-content'>
+                <div id = 'game-board' className = 'game-board'> 
+                    <button  className="btn btn-dark" id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
+                    <Matchfield players={ props.players }/>
+                </div>
+            </div>
+        )
+    }
 }
 
 export default Ludo;
