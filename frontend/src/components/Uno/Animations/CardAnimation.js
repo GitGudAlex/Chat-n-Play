@@ -73,8 +73,47 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
         requestAnimationFrame(animate);
     }
 
+    // Man muss nur einmal die Zeit messen
+    let inactiveBlocker = false;
+
+    // Time the Tab is inactive
+    let inactiveStartTime = null;
+
+    // wenn true -> Animation stoppen
+    let stoppingAnimation = false;
+
+     const tabInactiveCardHanlder = () => {
+
+        // Nur einmal ausführen, wenn das erste mal auf den Tab während die Animation schon aktiv ist
+        if(inactiveBlocker) {
+            return;
+        }
+
+        // Wenn man den Tab verlässt während die Animation läuft
+        if(!document.hidden) {
+            if(inactiveStartTime !== null) {
+                let inactiveTime = window.performance.now() - inactiveStartTime;
+
+                // Animation noch nicht vorbei 
+                if(inactiveTime < duration) {
+                    startTime -= inactiveTime;
+
+                // Animation schon vorbei
+                } else {
+                    stoppingAnimation = true;
+
+                }
+
+                inactiveBlocker = true;
+            }
+        }
+    }
+
+    // Event handler initialisieren, falls man den Tab wechelt
+    document.addEventListener('visibilitychange', tabInactiveCardHanlder);
+
     const animate = (timestamp) => {
-        if(timestamp - startTime < duration) {
+        if(timestamp - startTime < duration && !stoppingAnimation) {
             let p = (timestamp - startTime) / duration;
             let val = easeOutCirc(p);
 
@@ -132,12 +171,21 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
             requestAnimationFrame(animate);
 
         } else {
+
+            // Event Hanlder löschen
+            document.removeEventListener('visibilitychange', tabInactiveCardHanlder);
+
             if(handWidthId !== undefined) {
                 $('#' + handWidthId).css({ width: '0px' });
             }
 
             callback();
         }
+    }
+
+    // Wenn die Animation anfangen soll, aber Tab inactive ist
+    if(document.hidden) {
+        inactiveStartTime = window.performance.now();
     }
 
     requestAnimationFrame(initAnimation);
