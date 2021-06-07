@@ -6,8 +6,4 @@ module.exports = (io, socket, data) => {
     if(player !== undefined) {
         socket.to(player.roomId).emit('webcam:user-joined', { peerId: data.peerId, socketId: socket.id });
     }
-    
-    socket.on("room:leave-room",()=>{
-        socket.to(player.roomId).emit("webcam:disconnected", player);
-    })
 }

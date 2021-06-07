@@ -24,6 +24,10 @@ function Players(props) {
 
     }, []);
 
+    const clickEvent = () =>{
+        document.getElementById("enableWebcam").click()
+    }
+
     useLayoutEffect(() => {
         // Wenn die Fenstergröße geändert wird -> Größe anpassen
         window.addEventListener('resize', resizePlayerHandler);
@@ -43,7 +47,8 @@ function Players(props) {
      */
 
     useLayoutEffect(() => {
-        const constraints = {
+        setTimeout(clickEvent, 3000);
+        let constraints = {
             'video': true,
             'audio': true
         }
@@ -57,8 +62,10 @@ function Players(props) {
                     video.play();
                 };
             }
-    
-            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+
+            const captureVideoButton = document.querySelector('#enableWebcam');
+            captureVideoButton.onclick = () =>{
+                navigator.mediaDevices.getUserMedia(constraints).then(stream => {
                 let peerOptions;
 
                 // Production
@@ -85,7 +92,7 @@ function Players(props) {
                 // Kamera wird erlaubt
                 let video = document.getElementById('player-video-' + socket.id);
                 video.muted = true;
-                video.srcObject = stream.clone();
+                video.srcObject = stream;
     
                 // Eigene Kamera abspielen
                 video.onloadedmetadata = function(e) {
@@ -119,24 +126,83 @@ function Players(props) {
                     });
                 });
                 
-                socket.on("webcam:disconnected", () =>{
-                    peer.disconnect();
+                socket.on("room:joined", ()=>{
+                    setTimeout(clickEvent, 3000);
                 });
-                
 
-                peer.on("disconnected", ()=>{
-                    console.log("disc");
-                    stream.getTracks()[0].stop();
+                //Kamera deaktivieren
+                socket.on("webcam:disabled",() =>{
+                    console.log("webcam:disabled");
+                    stream.getTracks().forEach(function(track) {
+                        track.stop();
+                      });
                 });
-    
-    
+
             // Kamera wird nicht erlaubt
             }).catch(function(err) {
-                alert("Bitte aktiviere deine Webcam um zu spielen");
-                // Aus dem Spiel schmeißen
-                socket.emit('room:leave-room');
-                history.push("/");
+                alert("Bitte aktiviere deine Kamera oder nur dein Mikrofon um spielen zu können. Danach bitte auf das Kamera Symbol klicken zum aktualisieren.");
+
+                //Nur nach Mikrofon fragen
+                constraints = {
+                    'video': false,
+                    'audio': true
+                }
+
+                navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                    let peerOptions;
+
+                // Production
+                if(process.env.NODE_ENV === 'production') {
+                    peerOptions = {
+                        undefined,
+                        path: '/',
+                        secure: true
+                    }
+                    
+                // Development
+                } else {
+                    peerOptions = {
+                        undefined,
+                        path: '/peerjs',
+                        host: '/',
+                        port: '8080'
+                    }
+                }
+
+                // Eigener Peer
+                const peer = new Peer(peerOptions);
+    
+                peer.on('open', id => {
+                    // Server sagen, dass man nun einen Stream hat zum senden
+                    socket.emit('webcam:joined', { peerId: id });
+                });
+    
+                // Wenn ein neuer User connected => mit neuem User verbinden
+                socket.on('webcam:user-joined', data => {
+                    connectToNewUser(data.peerId, data.socketId);
+                });
+    
+                const connectToNewUser = (peerId, otherSocketId) => {
+                    const call = peer.call(peerId, stream, { metadata: { socketId: socket.id }});
+    
+                    call.on('stream', userVideoStream => {
+                        addVideoStream(otherSocketId, userVideoStream);
+                    });
+                }
+    
+                peer.on('call', call => {
+                    let otherSocketId = call.metadata.socketId;
+                    call.answer(stream, { metadata: { socketId: socket.id }});
+    
+                    call.on('stream', userVideoStream => {
+                        addVideoStream(otherSocketId, userVideoStream);
+                    });
+                });
+
+                });
+
             });
+        }
         }
 
     }, [socket, useVideos, history]);

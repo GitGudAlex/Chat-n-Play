@@ -2,11 +2,10 @@ import React, { useEffect, useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import $ from 'jquery';
 
-import { BsFillChatDotsFill } from 'react-icons/bs';
+import { BsFillChatDotsFill, BsFillMicFill, BsFillMicMuteFill, BsBoxArrowLeft, BsDot } from 'react-icons/bs';
 import { ImBook } from 'react-icons/im';
-import { BsBoxArrowLeft } from 'react-icons/bs';
-import { BsDot } from 'react-icons/bs';
 import { IconContext } from "react-icons";
+import { RiCameraFill, RiCameraOffFill} from "react-icons/ri";
 
 import './SideBar.css';
 
@@ -110,6 +109,13 @@ function SideBar(props) {
 
   }
 
+  const disableWebcam = () =>{
+    socket.emit("webcam:disable");
+  }
+
+  const enableWebcam = () =>{
+    socket.emit("webcam:enable");
+  }
 
   // Wenn die Fenster größe verändert wird, muss auch die Sidebar größe angepasst werden, da position: fixed
   useEffect(() => {
@@ -144,6 +150,18 @@ function SideBar(props) {
         </button>
         <button title='Regeln' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-rules") }>
           <ImBook size={ 28 } />
+        </button>
+        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ enableWebcam }>
+        <RiCameraFill size={28}/>
+        </button>
+        <button title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ disableWebcam }>
+        <RiCameraOffFill size={ 28 } />
+        </button>
+        <button title='Mikrofon aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip bi bi-camera-video">
+        <BsFillMicFill size={ 28 } />
+        </button>
+        <button title='Mikrofon deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip">
+        <BsFillMicMuteFill size={ 28 } />
         </button>
         <span className='sidebar-btn-tooltip' title='Verlassen' data-toggle="tooltip" data-placement="right">
           <button id='leave-room-btn' className="sidebar-btn" data-toggle="modal" data-target="#leaveModal">
