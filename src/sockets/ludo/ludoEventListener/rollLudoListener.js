@@ -54,7 +54,7 @@ module.exports = (io, socket) => {
     }
     
     if(room.mode){
-        io.in(player.roomId).emit('ludo:showMoves', res);
+        io.in(player.roomId).emit('ludo:showMoves', {res: res, color: player.color});
     }
     
     io.to(player.socketId).emit("ludo:unlockMoveFields", figures);

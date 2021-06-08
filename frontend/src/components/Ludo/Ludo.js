@@ -47,9 +47,10 @@ function Ludo(props) {
         });
     
         socket.on("ludo:showMoves", show => {
-            show.forEach(element => {
+            show.res.forEach(element => {
                 $('#'+element).css({'border-color': 'yellow'});
             })
+            //show.color
         });
 
         // Events unsubscriben
