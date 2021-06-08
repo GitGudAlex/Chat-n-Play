@@ -28,6 +28,8 @@ function ChooseGame(props) {
             if(error) {
                 $('#endgame-modal-error-output').text(error);
 
+            } else {
+                props.resetModal();
             }
         });
     }

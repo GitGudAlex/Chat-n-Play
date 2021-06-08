@@ -34,6 +34,10 @@ function EndGameModal(props) {
         setEndGameStatus(1);
     }, []);
 
+    const resetModal = () => {
+        setEndGameStatus(0);
+    }
+
     useEffect(() => {
         socket.on('room:room-closed', handleCloseRoomEvent);
         socket.on('room:creating-new-room', handleNewRoomEvent);
@@ -52,7 +56,7 @@ function EndGameModal(props) {
         modalContent = <WinnerDisplay winners={ props.winners } isHost={ props.isHost } />
 
     } else {
-        modalContent = <ChooseGame isHost={ props.isHost } />
+        modalContent = <ChooseGame isHost={ props.isHost } resetModal = { resetModal } />
     }
 
     return (

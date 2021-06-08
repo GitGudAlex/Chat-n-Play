@@ -8,6 +8,9 @@ module.exports = (io, socket) => {
     const player = getPlayer(socket.id);
     const room = getRoom(player.roomId);
 
+    io.in(player.roomId).emit('room:end-game', { winners: [player] });
+    return;
+    
     roll(player.roomId);
 
     const dicedValue = getDiceValue(player.roomId);
