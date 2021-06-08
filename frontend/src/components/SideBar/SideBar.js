@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import $ from 'jquery';
 
@@ -93,7 +93,6 @@ function SideBar(props) {
 
   }, [props.position, props.sideBarWidth, props.sideBarWindowWidth]);
 
-  
   // Raum verlassen
   const leaveRoom = () => {
 
@@ -124,7 +123,7 @@ function SideBar(props) {
     }
     
     window.addEventListener('resize', handleResize);
-  });
+  }, []);
 
   // Bootstrap Tooltips anzeigen
   $(document).ready(function() {
@@ -135,7 +134,7 @@ function SideBar(props) {
 
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
-      <div className='sidebar-bar-wrapper'>
+      <div className='sidebar-bar-wrapper' style={{ width: props.sideBarWidth + 'px'}} >
         <button title='Chat' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-chat") }>
           <span style={{ display: 'inline-block', position: 'relative' }}>
             <BsFillChatDotsFill textAnchor="middle" alignmentBaseline="middle" size={ 28 } />
