@@ -160,6 +160,14 @@ module.exports = (io, socket) => {
             
             // Spielfiguren des verlassenden Spielers löschen
             io.in(player.roomId).emit('ludo:playerLeave', player.playerPosition);
+            
+        // Aktuelles Spiel ist Uno
+        } else if(room.gameTypeId === 2) {
+
+            // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
+            if(room.activePlayer.socketId === socket.id) {
+                setNextPlayer(io, room.roomId, player.position);
+            }
         }
 
         io.in(player.roomId).emit('room:update', { players: mappedPlayers });

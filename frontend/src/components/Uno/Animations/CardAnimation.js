@@ -3,6 +3,56 @@ const $ = require('jquery');
 
 const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handWidthId, callback) => {
 
+    // Man muss nur einmal die Zeit messen
+    let inactiveBlocker = false;
+
+    // Time the Tab is inactive
+    let inactiveStartTime = null;
+
+    // wenn true -> Animation stoppen
+    let stoppingAnimation = false;
+
+    const tabInactiveCardHanlder = () => {
+
+        // Nur einmal ausführen, wenn das erste mal auf den Tab während die Animation schon aktiv ist
+        if(inactiveBlocker) {
+            return;
+        }
+
+        // Wenn man den Tab verlässt während die Animation läuft
+        if(!document.hidden) {
+            if(inactiveStartTime !== null) {
+                let inactiveTime = window.performance.now() - inactiveStartTime;
+
+                // Animation noch nicht vorbei 
+                if(inactiveTime < duration) {
+                    startTime -= inactiveTime;
+
+                // Animation schon vorbei
+                } else {
+                    stoppingAnimation = true;
+
+                }
+
+                inactiveBlocker = true;
+            }
+        }
+    }
+
+    // Event handler initialisieren, falls man den Tab wechelt
+    document.addEventListener('visibilitychange', tabInactiveCardHanlder);
+
+    const stopAnimation = () => {
+        // Event Hanlder löschen
+        document.removeEventListener('visibilitychange', tabInactiveCardHanlder);
+
+        if(handWidthId !== undefined) {
+            $('#' + handWidthId).css({ width: '0px' });
+        }
+
+        callback();
+    }
+
     // Laufzeit
     let duration = animationDuration;
 
@@ -14,6 +64,12 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
 
     let fromElement = $('#' + fromId).offset();
     let toElement = $('#' + toId).offset();
+
+    // Spieler ist disconnected
+    if(toElement === undefined) {
+        stopAnimation();
+        return;
+    }
 
     // X Position
     let startPosAbsX = fromElement.left - sidebarWidth;
@@ -41,6 +97,12 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
     // Y Scaling
     let startScaleY = $('#' + fromId).height();
     let endScaleY = $('#' + toId).height();
+
+    // Spieler ist disconnected
+    if(toElement === undefined) {
+        stopAnimation();
+        return;
+    }
 
     // Animationsfunktion
     const easeOutCirc = (x) => {
@@ -72,45 +134,6 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
 
         requestAnimationFrame(animate);
     }
-
-    // Man muss nur einmal die Zeit messen
-    let inactiveBlocker = false;
-
-    // Time the Tab is inactive
-    let inactiveStartTime = null;
-
-    // wenn true -> Animation stoppen
-    let stoppingAnimation = false;
-
-     const tabInactiveCardHanlder = () => {
-
-        // Nur einmal ausführen, wenn das erste mal auf den Tab während die Animation schon aktiv ist
-        if(inactiveBlocker) {
-            return;
-        }
-
-        // Wenn man den Tab verlässt während die Animation läuft
-        if(!document.hidden) {
-            if(inactiveStartTime !== null) {
-                let inactiveTime = window.performance.now() - inactiveStartTime;
-
-                // Animation noch nicht vorbei 
-                if(inactiveTime < duration) {
-                    startTime -= inactiveTime;
-
-                // Animation schon vorbei
-                } else {
-                    stoppingAnimation = true;
-
-                }
-
-                inactiveBlocker = true;
-            }
-        }
-    }
-
-    // Event handler initialisieren, falls man den Tab wechelt
-    document.addEventListener('visibilitychange', tabInactiveCardHanlder);
 
     const animate = (timestamp) => {
         if(timestamp - startTime < duration && !stoppingAnimation) {
@@ -162,6 +185,13 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
                 $('#' + handWidthId).css({ width: handWidthX + 'px' });
 
                 let toElement = $('#' + toId).offset();
+
+                // Spieler ist disconnected
+                if(toElement === undefined) {
+                    stopAnimation();
+                    return;
+                }
+
                 endPosAbsX = toElement.left - sidebarWidth;
             }
 
@@ -171,15 +201,8 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
             requestAnimationFrame(animate);
 
         } else {
+            stopAnimation();
 
-            // Event Hanlder löschen
-            document.removeEventListener('visibilitychange', tabInactiveCardHanlder);
-
-            if(handWidthId !== undefined) {
-                $('#' + handWidthId).css({ width: '0px' });
-            }
-
-            callback();
         }
     }
 
@@ -189,6 +212,7 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
     }
 
     requestAnimationFrame(initAnimation);
+
 }
 
 module.exports = { animateCard }

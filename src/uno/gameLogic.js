@@ -68,32 +68,31 @@ const initUno = (hostId, socket, io) => {
 
     }
 
-    let cardCounter = 0;
-
     const dealHandCards = () => {
         setTimeout(() => {
             // Nächster Spieler
             let nextPlayer = getNextPlayer(room.roomId);
 
-            // Hand Karten verteilen
-            let card = room.deck.takeCard();
-            nextPlayer.hand.addCard(card);
-
-            // Sich selber die Karte schicken
-            io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: nextPlayer.socketId });
-
-            // Den anderen die Karte schicken (Nur ohne Wert)
-            (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: nextPlayer.socketId });
-
-            // Wenn 7 Karten verteilt wurden
-            if(++cardCounter < 7 * players.length) {
-
-                dealHandCards();
-
-            } else {
+            // Alle Karten verteilt
+            if(nextPlayer.hand.getHandSize() === 7) {
                 setFirstPlayer(room, players, io);
 
+            // Weitere Karte verteilen
+            } else {
+                 // Hand Karten verteilen
+                let card = room.deck.takeCard();
+                nextPlayer.hand.addCard(card);
+
+                // Sich selber die Karte schicken
+                io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: nextPlayer.socketId });
+
+                // Den anderen die Karte schicken (Nur ohne Wert)
+                (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: nextPlayer.socketId });
+
+                // Weitere Karten verteilen
+                dealHandCards();
             }
+
         }, 350);
     }
 
@@ -118,7 +117,7 @@ const setFirstPlayer = (room, players, io) => {
 // Reihnfolge der Positionen
 const order = [0, 2, 1, 3]
 
-const getNextPlayer = (roomId) => {
+const getNextPlayer = (roomId, currPosition) => {
     
     const room = getRoom(roomId);
 
@@ -128,11 +127,20 @@ const getNextPlayer = (roomId) => {
     // Alle Spieler
     const players = getPlayersInRoom(roomId);
 
-    // Den Aktuell aktiven Spieler hohlen
-    let activePlayer = room.activePlayer;
+    let currentPosition;
 
-    // Position des Spielers
-    let currentPosition = activePlayer.position;
+    if(currPosition === undefined) {
+        // Den Aktuell aktiven Spieler hohlen
+        let activePlayer = room.activePlayer;
+
+        // Position des Spielers
+        currentPosition = activePlayer.position;
+    } else {
+
+        // Aktuelle Position bekommen von den Parametern (beim Disconnect)
+        currentPosition = currPosition;
+
+    }
 
     // Position des Spielers im Array
     let orderIndex = order.findIndex(p => p === currentPosition);
@@ -142,7 +150,7 @@ const getNextPlayer = (roomId) => {
 
         // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
         // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
-        for(let i = orderIndex + 1; i < orderIndex + 4; i++) {
+        for(let i = orderIndex + 1; i < orderIndex + 5; i++) {
             let newOrderIndex = i % 4;
             let newPosition = order[newOrderIndex];
 
@@ -186,20 +194,34 @@ const getNextPlayer = (roomId) => {
     }
 }
 
-const setNextPlayer = (io, roomId) => {
-    let nextPlayer = getNextPlayer(roomId);
+const setNextPlayer = (io, roomId, oldPosition) => {
+    let nextPlayer;
+
+    if(oldPosition === undefined) {
+        nextPlayer = getNextPlayer(roomId, oldPosition);
+
+    } else {
+        nextPlayer = getNextPlayer(roomId);
+
+    }
 
     let room = getRoom(roomId);
 
     // Spieler muss aussetzten
     if(room.isSkip === true) {
-        nextPlayer = getNextPlayer(roomId);
-        room.isSkip = false;
+        if(oldPosition === undefined) {
+            nextPlayer = getNextPlayer(roomId, oldPosition);
+    
+        } else {
+            nextPlayer = getNextPlayer(roomId);
+    
+        }
 
+        room.isSkip = false;
         room.moveType = 1;
     }
 
-    io.in(roomId).emit('uno:set-next-player', { socketId: socketId });
+    io.in(roomId).emit('uno:set-next-player', { socketId: nextPlayer.socketId });
 }
 
 module.exports = { initUno, getNextPlayer, setNextPlayer }

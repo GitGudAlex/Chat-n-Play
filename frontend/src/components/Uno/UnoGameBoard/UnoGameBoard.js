@@ -62,13 +62,12 @@ function UnoGameBoard(props) {
 
                 let index = activeCardsRef.current.findIndex(c => c.props.card.id === data.card.id);
                 activeCardsRef.current.splice(index, 1);
-
                 setActiveCards(activeCardsRef.current);
 
                 activeCardsCounterRef.current -= 1;
 
                 // Wenn nur noch eine Karte übrig ist
-                if(activeCardsCounterRef === 0) {
+                if(activeCardsCounterRef.current === 0) {
                     activeCardsRef.current = [];
                     setActiveCards([...activeCardsRef.current]);
                 }
@@ -90,7 +89,7 @@ function UnoGameBoard(props) {
 
                 // Animation abspielen
                 animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, 600, true, false, 'uno-deck-ref-scaling-' + data.card.id, () => {
-
+                    console.log("callback");
                     // Karte der Hand hinzufügen
                     let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
                     let playerPosition = props.players[playerIndex].position;
@@ -126,7 +125,7 @@ function UnoGameBoard(props) {
 
                 // Animation abspielen
                 animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, 600, false, true, 'uno-deck-ref-scaling-' + data.card.id, () => {
-
+                    
                     // Karte der Hand hinzufügen
                     let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
                     let playerPosition = props.players[playerIndex].position;

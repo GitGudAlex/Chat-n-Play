@@ -2,6 +2,7 @@ const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms'
 
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
 const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores, addVotes } = require('../../../slf/gameLogic');
+const { setNextPlayer } = require('../../../uno/gameLogic');
 
 module.exports = (io, socket) => {
     // Spieler löschen
@@ -145,9 +146,9 @@ module.exports = (io, socket) => {
                 }
 
             // Aktuelles Spiel ist Mensch-Ärgere-Dich-Nicht
-            }else if(room.gameTypeId === 0 && room.gameStatus === 1){
+            } else if(room.gameTypeId === 0 && room.gameStatus === 1){
 
-            // wenn der Spieler aktuell am Zug war, wird der nächste Spieler festgelegt
+                // wenn der Spieler aktuell am Zug war, wird der nächste Spieler festgelegt
                 if(player.active === true){
                     const nextPlayer = nextPlayerInRoom(player.roomId, player);
                     io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
@@ -159,7 +160,15 @@ module.exports = (io, socket) => {
                 
                 // Spielfiguren des verlassenden Spielers löschen
                 io.in(player.roomId).emit('ludo:playerLeave', player.playerPosition);
-        }
+
+            // Aktuelles Spiel ist Uno
+            } else if(room.gameTypeId === 2) {
+
+                // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
+                if(room.activePlayer.socketId === socket.id) {
+                    setNextPlayer(io, room.roomId, player.position);
+                }
+            }
 
             io.in(player.roomId).emit('room:update', { players: mappedPlayers });
             io.in(player.roomId).emit('room:update-color-selector', { colors: getColors(player.roomId) });
