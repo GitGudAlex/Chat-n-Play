@@ -1,6 +1,6 @@
 
 const { getPlayer, getPlayersInRoom } = require('../models/players');
-const { getRoom } = require('../models/rooms');
+const { getRoom, removeRoom } = require('../models/rooms');
 const { Deck } = require('./Cards/Deck');
 const { Hand } = require('./Cards/Hand'); 
 
@@ -93,7 +93,7 @@ const initUno = (hostId, socket, io) => {
                 dealHandCards();
             }
 
-        }, 350);
+        }, 200);
     }
 
     dealHandCards();
@@ -107,7 +107,7 @@ const setFirstPlayer = (room, players, io) => {
         let firstPlayer = players[Math.floor(Math.random() * players.length)];
 
         // Aktiven Spieler speichern
-        room.activePlayer = firstPlayer;
+        room.activePlayer = { socketId: firstPlayer.socketId, position: firstPlayer.position };
 
         // Allen Spielern die SocketId des nächsten Spielers schicken
         io.in(firstPlayer.roomId).emit('uno:set-first-player', { socketId: firstPlayer.socketId });
@@ -171,15 +171,9 @@ const getNextPlayer = (roomId, currPosition) => {
 
         // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
         // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
-        for(let i = positionIndex - 1; i > positionIndex - players.length; i--) {
-            let newPositionIndex = i % players.length;
-
-            // z.B. 4 % 4 sollte 4 sein und nicht 0
-            if(newPositionIndex === 0) {
-                newPositionIndex = players.length;
-            }
-
-            let newPosition = order[newPositionIndex];
+        for(let i = orderIndex - 1; i > orderIndex - 5; i--) {
+            let newOrderIndex = i % 4;
+            let newPosition = order[newOrderIndex];
 
             let newPlayerIndex = players.findIndex(p => p.position === newPosition);
 
@@ -187,6 +181,7 @@ const getNextPlayer = (roomId, currPosition) => {
             if(newPlayerIndex !== -1) {
                 let newPlayer = players[newPlayerIndex];
 
+                // TODO: Vlt ganzen Spieler abspeichern
                 room.activePlayer = { socketId: newPlayer.socketId, position: newPlayer.position };
                 return newPlayer;
             }
@@ -221,7 +216,7 @@ const setNextPlayer = (io, roomId, oldPosition) => {
         room.moveType = 1;
     }
 
-    io.in(roomId).emit('uno:set-next-player', { socketId: nextPlayer.socketId });
+    io.in(roomId).emit('uno:set-next-player', { socketId: nextPlayer.socketId, position: nextPlayer.position, isReverse: room.isReverse });
 }
 
 module.exports = { initUno, getNextPlayer, setNextPlayer }

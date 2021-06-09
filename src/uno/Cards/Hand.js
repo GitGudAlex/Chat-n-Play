@@ -19,6 +19,19 @@ class Hand {
     getHandSize() {
         return this.hand.length;
     }
+
+    // Ob eine bestimmte Karte auf der Hand liegt
+    hasCard(cardId) {
+        let cardIndex = this.hand.findIndex(c => c.id === cardId);
+
+        if(cardIndex === -1) {
+            return false;
+
+        } else {
+            return true;
+            
+        }
+    }
 }
 
 module.exports = { Hand }

@@ -8,7 +8,7 @@ class Card {
         this.path = (color * 13 + value) + '.png';  
     }
 
-    isSpecial() {
+    isSpecial(card) {
         if(this.color === 4) {
             return true;
         }

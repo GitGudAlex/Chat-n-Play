@@ -24,7 +24,7 @@
     justify-content: center;
     align-items: center;
 
-    margin-right: 32px;
+    margin-right: 74px;
 }
 
 /* Karten Stapel, auf den die karten abgelegt werden */
@@ -35,7 +35,7 @@
     justify-content: center;
     align-items: center;
 
-    margin-left: 32px;
+    margin-left: 74px;
 }
 
 .marker {
@@ -50,4 +50,11 @@
 
 #to {
     background-color: darkgreen;
+}
+
+#uno-player-arrow {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.6s, visibility 0.6s;
 }

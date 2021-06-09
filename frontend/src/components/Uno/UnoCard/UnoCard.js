@@ -10,7 +10,7 @@ function UnoCard(props) {
             return (
                 <div id={ props.card.id + '-uno-card' } className={ 'uno-card-small ' + (props.hidden === true ? 'invisible' : '') }>
                     <div className='uno-card-back'>
-                        <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' }/>
+                        <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' } draggable="false"/>
                     </div>
                 </div>
             );
@@ -23,7 +23,7 @@ function UnoCard(props) {
                 return (
                     <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') + ' my-uno-card' }>
                         <div className='uno-card-front'>
-                            <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value }/>
+                            <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value } draggable="false"/>
                         </div>
                     </div>
                 );
@@ -38,7 +38,7 @@ function UnoCard(props) {
                 return (
                     <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') } style={ rotationStyle }>
                         <div className='uno-card-front'>
-                            <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value }/>
+                            <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value } draggable="false"/>
                         </div>
                     </div>
                 );
@@ -60,7 +60,7 @@ function UnoCard(props) {
                 <div id={ props.card.id + '-animate-wrapper' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') } style={ rotationStyle }>
                     <div id={ props.card.id + '-animate' } className='uno-card-animate' >
                         <div className='uno-card-back'>
-                            <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' }/>
+                            <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' } draggable="false"/>
                         </div>
                     </div>
                 </div>
@@ -72,10 +72,10 @@ function UnoCard(props) {
                 <div id={ props.card.id + '-animate-wrapper' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') } style={ rotationStyle }>
                     <div id={ props.card.id + '-animate' } className='uno-card-animate' >
                         <div className='uno-card-front uno-card-hidden'>
-                            <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value } />
+                            <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value } draggable="false"/>
                         </div>
                         <div className='uno-card-back'>
-                            <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' }/>
+                            <img src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite der Karte' } draggable="false"/>
                         </div>
                     </div>
                 </div>

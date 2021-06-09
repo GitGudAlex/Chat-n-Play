@@ -25,6 +25,9 @@ module.exports = (io, socket) => {
     // Spieler nicht an der Reihe
     if(room.activePlayer.roomId !== socket.id) return;
 
+    // Spiel noch nicht angefangen
+    if(room.cardOnBoard === 0) return;
+
     const drawCard = (numCards) => {
         setTimeout(() => {
             let card = room.deck.takeCard();

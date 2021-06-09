@@ -1,7 +1,6 @@
-const { data } = require('jquery');
 const $ = require('jquery');
 
-const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handWidthId, callback) => {
+const animateCard = (fromId, toId, card, animationDuration, startRotationParam, scaling, handWidthId, callback) => {
 
     // Man muss nur einmal die Zeit messen
     let inactiveBlocker = false;
@@ -66,7 +65,7 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
     let toElement = $('#' + toId).offset();
 
     // Spieler ist disconnected
-    if(toElement === undefined) {
+    if(toElement === undefined || fromElement === undefined) {
         stopAnimation();
         return;
     }
@@ -87,7 +86,7 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
     let endRotationZ = card.rotation;
 
     // Y Rotation
-    let startRotationY = 0;
+    let startRotationY = startRotationParam;
     let endRotationY = -180;
 
     // X Scaling
@@ -115,12 +114,16 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
         $('#' + card.id + '-animate-wrapper').css({ left: startPosAbsX + 'px' });
         $('#' + card.id + '-animate-wrapper').css({ top: startPosAbsY + 'px' });
 
-        if(data.card !== undefined) {
+        if(card.rotation !== undefined) {
             $('#' + card.id + '-animate-wrapper').css({ transform: 'rotateZ(' + startRotationZ + 'deg)' });
         }
 
-        if(flip) {
+        if(startRotationParam !== undefined) {
             $('#' + card.id + '-animate').css({ transform: 'rotateY(' + startRotationY + 'deg)' });
+        }
+
+        if(handWidthId === 'uno-my-card-wrapper-' + card.id) {
+            $('#' + handWidthId ).addClass('invisible');
         }
 
         // Scaling
@@ -164,7 +167,7 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
             }
 
             // Wenn die Karte geflippt werden soll
-            if(flip) {
+            if(startRotationParam !== undefined) {
                 $('#' + card.id + '-animate').css({ transform: 'rotateY(' + rotY + 'deg)' });
             }
 
@@ -178,21 +181,30 @@ const animateCard = (fromId, toId, card, animationDuration, flip, scaling, handW
 
             }
 
-            // Wenn zur hand
+            // Wenn zur hand oder aus der Hand
             if(handWidthId !== undefined) {
-                let handWidthX = 0 + (endScaleX - 0) * val;
 
-                $('#' + handWidthId).css({ width: handWidthX + 'px' });
+                // Aus der Hand
+                if(handWidthId === 'uno-my-card-wrapper-' + card.id) {
+                    let handWidthX = startScaleX + (0 - startScaleX) * val;
+                    $('#' + handWidthId).css({ width: handWidthX + 'px' });
 
-                let toElement = $('#' + toId).offset();
+                // In die Hand
+                } else {
+                    let handWidthX = 0 + (endScaleX - 0) * val;
 
-                // Spieler ist disconnected
-                if(toElement === undefined) {
-                    stopAnimation();
-                    return;
+                    $('#' + handWidthId).css({ width: handWidthX + 'px' });
+
+                    let toElement = $('#' + toId).offset();
+
+                    // Spieler ist disconnected
+                    if(toElement === undefined) {
+                        stopAnimation();
+                        return;
+                    }
+
+                    endPosAbsX = toElement.left - sidebarWidth;
                 }
-
-                endPosAbsX = toElement.left - sidebarWidth;
             }
 
             $('#' + card.id + '-animate-wrapper').css({ left: posX + 'px' });

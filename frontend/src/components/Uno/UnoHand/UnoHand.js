@@ -42,7 +42,6 @@ function UnoHand(props) {
 
     // Width setzten am Anfang
     useEffect(() => {
-
         if(props.self) {
             setPlayerWidth($('.player').width());
 
@@ -56,7 +55,6 @@ function UnoHand(props) {
                 setPlayerHeight($('.player').height());
             }
         }
-
     }, [props.top, props.self]);
 
     // Styling setzten
@@ -75,13 +73,18 @@ function UnoHand(props) {
             height: cardHeight + 'px'
         }
 
+        // on Click Handler
+        const onClickHandler = (index) => {
+            props.submitCard(index);
+        }
+
         return(
             <div id='uno-own-hand' className='uno-my-hand-wrapper' style={ posStyle }>
                 <div id={ props.socketId + '-uno-player' } className='uno-my-hand'>
                     {
-                        props.cards.map((card) => {
+                        props.cards.map((card, index) => {
                             return (
-                                <div className='uno-my-card-wrapper' key={ card.id }>
+                                <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-my-card-wrapper' onClick={ () => onClickHandler(index) }>
                                     <UnoCard card={ card } />
                                 </div>
                             )
@@ -90,7 +93,7 @@ function UnoHand(props) {
                     {
                         props.activeCards.map((card) => {
                             return(
-                                <div key={ card.props.card.id } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-my-card-wrapper uno-card-ref-wrapper'>
+                                <div key={ card.props.card.id + '-' + card.props.card.path } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-my-card-wrapper uno-card-ref-wrapper'>
                                     <img id={ 'uno-deck-ref-' + card.props.card.id } className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
                                 </div>
                             )
@@ -110,7 +113,7 @@ function UnoHand(props) {
         if(props.left) {
             posStyle = {
                 top: '40px',
-                left: playerWidth + 80 + 'px',
+                left: playerWidth + 60 + 'px',
                 flexDirection: 'row'
             }
 
@@ -118,7 +121,7 @@ function UnoHand(props) {
         } else {
             posStyle = {
                 top: '40px',
-                right: playerWidth + cardWidth / 2 + 80 + 'px',
+                right: playerWidth + cardWidth / 2 + 60 + 'px',
                 flexDirection: 'row-reverse'
             }
 
@@ -127,7 +130,7 @@ function UnoHand(props) {
         // unten + links
         if(props.left) {
             posStyle = {
-                bottom: playerHeight + 80 + 'px',
+                bottom: playerHeight + 60 + 'px',
                 left: '40px',
                 flexDirection: 'row'
             }
@@ -135,7 +138,7 @@ function UnoHand(props) {
         // unten + rechts
         } else {
             posStyle = {
-                bottom: playerHeight + 80 + 'px',
+                bottom: playerHeight + 60 + 'px',
                 right: 40 + cardWidth / 2 + 'px',
                 flexDirection: 'row-reverse'
             }
@@ -149,7 +152,7 @@ function UnoHand(props) {
             {
                 props.cards.map((card) => {
                     return (
-                        <div className='uno-other-card-wrapper' key={ card.id }>
+                        <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-other-card-wrapper'>
                             <UnoCard card={ card } />
                         </div>
                     )
@@ -158,7 +161,7 @@ function UnoHand(props) {
             {
                 props.activeCards.map((card) => {
                     return (
-                        <div key={ card.props.card.id } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-other-card-wrapper uno-card-ref-wrapper'>
+                        <div key={ card.props.card.id + '-' + card.props.card.path } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-other-card-wrapper uno-card-ref-wrapper'>
                             <img id={ 'uno-deck-ref-' + card.props.card.id } className='uno-card-small invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
                         </div>
                     )

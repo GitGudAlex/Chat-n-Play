@@ -22,57 +22,25 @@ module.exports = (io, socket, data) => {
     // Noch nicht gestartet
     if(room.hasStarted === false) return;
 
-    // Spieler ist gerade dran
-    if(room.acticePlayer.socketId === player.socketID) {
-
-        // Normaler Zug
-        if(room.moveType === 1) {
-
-            // Karte schwarz -> Darf gelegt werden
-            if(data.card.color === 4) {
-                placeCard(data.card);
-
-            } else {
-
-                // Gleiche Farbe oder gleiche Zahl
-                if(room.cardOnBoard.value === data.card.value || room.cardOnBoard.color === data.card.color) {
-                    placeCard(data.card);
-                }
-            }
-
-        // Farbwahl
-        } else if(room.moveType === 2) {
-
-            // Gewünschte Farbe
-            if(room.nextColor === data.card.value || data.card.value === 4) {
-                placeCard(data.card);
-
-            }
-
-        // +2 oder +4 Karte liegt unten
-        } else if(room.moveType === 3) {
-
-            // Man selber muss auch eine +2 oder +4 Karte legen
-            if(data.card.value === 10 || (data.card.color === 4 && data.card.value === 0 )) {
-                placeCard(data.card);
-            }
-
-        }
-
-    // Spieler ist gerade nicht dran
-    } else {
-
-        // Exakt gleiche Karte
-        if(room.cardOnBoard.value === data.card.value && room.cardOnBoard.color === data.card.color) {
-            placeCard(data.card);
-        }
-
-    }
+    // Spiel noch nicht angefangen
+    if(room.cardOnBoard === 0) return; 
 
     const placeCard = (card) => {
+
+        const isSpecial = (card) => {
+            if(card.color === 4) {
+                return true;
+            }
+    
+            if(card.value > 9) {
+                return true;
+            }
+    
+            return false;
+        }
         
         // Besondere Karte
-        if(card.isSpecial()) {
+        if(isSpecial(card)) {
 
             // +2 Karte
             if(card.value === 10) {
@@ -116,34 +84,93 @@ module.exports = (io, socket, data) => {
 
         }
 
-        // Spielzug ist ok
-        io.in(player.roomId).emit('uno:valid-submit');
         player.hand.discard(card);
-
         room.cardOnBoard = card;
 
-        // Ob man vergessen hat 'KlopfKlopf' zu sagen / zu drücken
-        if(player.hand.getHandSize() === 1) {
+        io.to(room.roomId).emit('uno:card-played', { card: card, socketId: player.socketId });
 
-            // Wurde vergessen => +1 Karte ziehen
-            if(!player.klopfKlopf) {
-                let card = room.deck.takeCard();
-                player.hand.addCard(card);
+        setTimeout(() => {
+            // Ob man vergessen hat 'KlopfKlopf' zu sagen / zu drücken
+            if(player.hand.getHandSize() === 1) {
 
-                io.in(room.roomId).emit('uno:give-draw-card', { card: card });
+                // Wurde vergessen => +1 Karte ziehen
+                if(!player.klopfKlopf) {
+                    let card = room.deck.takeCard();
+                    player.hand.addCard(card);
 
-                // Nächste Runde
+                    // Sich selber die Karte schicken
+                    io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: player.socketId });
+
+                    // Den anderen die Karte schicken (Nur ohne Wert)
+                    (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: player.socketId });
+
+                    // Nächste Runde
+                    setNextPlayer(io, room.roomId);
+
+                } else {
+                    // resetten
+                    player.klopfKlopf = false;
+                }
+
+            // Wenn ein Spieler keine Karten mehr hat => gewonnen
+            } else if (player.hand.getHandSize() === 0) {
+                io.in(player.roomId).emit('room:end-game', { winners: [player] });
+
+            // Nächster Spieler ist dran
+            } else {
                 setNextPlayer(io, room.roomId);
             }
-
-        // Wenn ein Spieler keine Karten mehr hat => gewonnen
-        } else if (player.hand.getHandSize() === 0) {
-            io.in(player.roomId).emit('room:end-game', { winners: [player] });
-
-        // Nächster Spieler ist dran
-        } else {
-            setNextPlayer(io, room.roomId);
-        }
+        }, 1000);
     }
 
+    // Spieler ist gerade dran
+    if(room.activePlayer.socketId === player.socketId) {
+
+        // Ob man überhaupt die Karte besitzt
+        if(player.hand.hasCard(data.card.id) === false) return;
+
+        // Normaler Zug
+        if(room.moveType === 1) {
+
+            // Karte schwarz -> Darf gelegt werden
+            if(data.card.color === 4) {
+                placeCard(data.card);
+
+            } else {
+
+                // Gleiche Farbe oder gleiche Zahl
+                if(room.cardOnBoard.value === data.card.value || room.cardOnBoard.color === data.card.color) {
+                    placeCard(data.card);
+                }
+            }
+
+        // Farbwahl
+        } else if(room.moveType === 2) {
+
+            // Gewünschte Farbe
+            if(room.nextColor === data.card.value || data.card.value === 4) {
+                placeCard(data.card);
+
+            }
+
+        // +2 oder +4 Karte liegt unten
+        } else if(room.moveType === 3) {
+
+            // Man selber muss auch eine +2 oder +4 Karte legen
+            if(data.card.value === 10 || (data.card.color === 4 && data.card.value === 0 )) {
+                placeCard(data.card);
+            }
+
+        }
+
+    // Spieler ist gerade nicht dran
+    } else {
+
+        // Exakt gleiche Karte
+        if(room.cardOnBoard.value === data.card.value && room.cardOnBoard.color === data.card.color) {
+            room.acticePlayer = { socketId: player.socketId, position: player.position };
+            placeCard(data.card);
+        }
+
+    }
 }

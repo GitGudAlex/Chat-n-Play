@@ -31,7 +31,7 @@
 .uno-my-hand {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     flex-wrap: nowrap;
 
     transition: all 500ms linear;
@@ -44,6 +44,16 @@
     position: relative;
     width: 90px;
     height: 136px;
+    bottom: 0px;
+
+    transition: bottom 0.04s linear;
+}
+
+.uno-my-card-wrapper:hover {
+    height: 156px;
+    z-index: 2;
+
+    bottom: 20px;
 }
 
 .uno-card-ref-wrapper {

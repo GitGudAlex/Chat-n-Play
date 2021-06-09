@@ -38,8 +38,6 @@ module.exports = (io, socket) => {
     
             // Sonst kann der erste Spieler anfangen zu Spielen
             } else {
-                 // Wer dran ist
-                io.in(player.roomId).emit('uno:set-next-player', { socketId: room.activePlayer.socketId });
 
                 // Was ein Zug erwartet wird
                 io.to(player.socketId).emit('uno:set-move-type', { moveType: room.moveType });
