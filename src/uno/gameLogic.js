@@ -1,6 +1,6 @@
 
 const { getPlayer, getPlayersInRoom } = require('../models/players');
-const { getRoom, removeRoom } = require('../models/rooms');
+const { getRoom } = require('../models/rooms');
 const { Deck } = require('./Cards/Deck');
 const { Hand } = require('./Cards/Hand'); 
 
@@ -79,25 +79,30 @@ const initUno = (hostId, socket, io) => {
 
             // Weitere Karte verteilen
             } else {
-                 // Hand Karten verteilen
-                let card = room.deck.takeCard();
-                nextPlayer.hand.addCard(card);
-
-                // Sich selber die Karte schicken
-                io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: nextPlayer.socketId });
-
-                // Den anderen die Karte schicken (Nur ohne Wert)
-                (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: nextPlayer.socketId });
+                // Karte aussuchen & verteilen => emit
+                dealCard(io, room, nextPlayer);
 
                 // Weitere Karten verteilen
                 dealHandCards();
             }
 
-        }, 200);
+        }, 300);
     }
 
     dealHandCards();
+}
 
+const dealCard = (io, room, player) => {
+    // Hand Karten verteilen
+    let card = room.deck.takeCard();
+    player.hand.addCard(card);
+
+    // Sich selber die Karte schicken
+    io.to(player.socketId).emit('uno:deal-card', { card: card, socketId: player.socketId });
+
+    // Den anderen die Karte schicken (Nur ohne Wert)
+    (io.sockets.sockets.get(player.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: player.socketId });
+        
 }
 
 const setFirstPlayer = (room, players, io) => {
@@ -105,6 +110,8 @@ const setFirstPlayer = (room, players, io) => {
     setTimeout(() => {
         // Zufällig den ersten Spieler auswählen
         let firstPlayer = players[Math.floor(Math.random() * players.length)];
+
+        firstPlayer.active = true;
 
         // Aktiven Spieler speichern
         room.activePlayer = { socketId: firstPlayer.socketId, position: firstPlayer.position };
@@ -117,7 +124,7 @@ const setFirstPlayer = (room, players, io) => {
 // Reihnfolge der Positionen
 const order = [0, 2, 1, 3]
 
-const getNextPlayer = (roomId, currPosition) => {
+const getNextPlayer = (roomId) => {
     
     const room = getRoom(roomId);
 
@@ -129,18 +136,11 @@ const getNextPlayer = (roomId, currPosition) => {
 
     let currentPosition;
 
-    if(currPosition === undefined) {
-        // Den Aktuell aktiven Spieler hohlen
-        let activePlayer = room.activePlayer;
+    // Den Aktuell aktiven Spieler hohlen
+    let activePlayer = room.activePlayer;
 
-        // Position des Spielers
-        currentPosition = activePlayer.position;
-    } else {
-
-        // Aktuelle Position bekommen von den Parametern (beim Disconnect)
-        currentPosition = currPosition;
-
-    }
+    // Position des Spielers
+    currentPosition = activePlayer.position;
 
     // Position des Spielers im Array
     let orderIndex = order.findIndex(p => p === currentPosition);
@@ -189,34 +189,24 @@ const getNextPlayer = (roomId, currPosition) => {
     }
 }
 
-const setNextPlayer = (io, roomId, oldPosition) => {
+const setNextPlayer = (io, roomId) => {
     let nextPlayer;
 
-    if(oldPosition === undefined) {
-        nextPlayer = getNextPlayer(roomId, oldPosition);
-
-    } else {
-        nextPlayer = getNextPlayer(roomId);
-
-    }
+    nextPlayer = getNextPlayer(roomId);
 
     let room = getRoom(roomId);
 
     // Spieler muss aussetzten
     if(room.isSkip === true) {
-        if(oldPosition === undefined) {
-            nextPlayer = getNextPlayer(roomId, oldPosition);
-    
-        } else {
-            nextPlayer = getNextPlayer(roomId);
-    
-        }
+        nextPlayer = getNextPlayer(roomId);
 
         room.isSkip = false;
         room.moveType = 1;
     }
 
+    nextPlayer.active = true;
+
     io.in(roomId).emit('uno:set-next-player', { socketId: nextPlayer.socketId, position: nextPlayer.position, isReverse: room.isReverse });
 }
 
-module.exports = { initUno, getNextPlayer, setNextPlayer }
+module.exports = { initUno, getNextPlayer, setNextPlayer, dealCard }

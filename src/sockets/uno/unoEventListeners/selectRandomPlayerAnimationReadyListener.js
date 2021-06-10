@@ -27,7 +27,7 @@ module.exports = (io, socket) => {
         let card = room.deck.takeCard();
         room.cardOnBoard = card;
     
-        // socketId = 0 heißt, dass die Karte vom kartenstapel kommt (Für die nimation wichtig)
+        // socketId = 0 heißt, dass die Karte vom kartenstapel kommt (Für die Animation wichtig)
         // Sonst handelt es sich hierbei um eine SocketId um die Animation richtig abzuspielen
         io.in(player.roomId).emit('uno:deal-card', { card: card, socketId: 0 });
     

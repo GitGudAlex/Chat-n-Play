@@ -1,9 +1,8 @@
 const { getPlayer } = require("../../../models/players");
 const { getRoom } = require("../../../models/rooms");
-const { setNextPlayer } = require("../../../uno/gameLogic");
+const { setNextPlayer, dealCard } = require("../../../uno/gameLogic");
 
 module.exports = (io, socket) => {
-
     // aktuellen Spieler bekommen
     const player = getPlayer(socket.id);
 
@@ -23,28 +22,32 @@ module.exports = (io, socket) => {
     if(room.hasStarted === false) return;
 
     // Spieler nicht an der Reihe
-    if(room.activePlayer.roomId !== socket.id) return;
+    if(room.activePlayer.socketId !== socket.id) return;
 
     // Spiel noch nicht angefangen
     if(room.cardOnBoard === 0) return;
 
+    if(player.active === false) return;
+
+    // Spieler kann nicht mehr interagieren
+    player.active = false;
+
     const drawCard = (numCards) => {
-        setTimeout(() => {
-            let card = room.deck.takeCard();
-            player.hand.addCard(card);
-            
-            io.in(room.roomId).emit('uno:give-draw-card', { card: card });
 
-            // noch eine Karte ziehen
-            if(--numCards !== 0) {
+        // Karte ziehen
+        dealCard(io, room, player);
+
+        // noch eine Karte ziehen
+        if(--numCards !== 0) {
+            setTimeout(() => {
                 drawCard(numCards);
+            }, 500);
 
-            // Alle Karten gezogen
-            } else {
-                setNextPlayer(io, room.roomId);
+        // Alle Karten gezogen
+        } else {
+            setNextPlayer(io, room.roomId);
 
-            }
-        }, 500);
+        }
     }
 
     // Normaler Zug => Eine Karte nehmen

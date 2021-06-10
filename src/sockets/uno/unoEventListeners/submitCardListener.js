@@ -27,6 +27,11 @@ module.exports = (io, socket, data) => {
 
     const placeCard = (card) => {
 
+        if(player.active === false) return;
+
+        // Spieler kann nicht mehr interagieren
+        player.active = false;
+
         const isSpecial = (card) => {
             if(card.color === 4) {
                 return true;
