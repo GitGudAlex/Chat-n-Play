@@ -96,10 +96,10 @@ function CategorySelection(props) {
                         {
                             categories.length < 6 ? (
                                 <div id='add-category'>
-                                    <button id='add-category-btn' className='btn btn-primary' onClick={ addCategory }>
-                                        <IconContext.Provider value={{ size: '24px' }}>
-                                            <BiAddToQueue />
-                                        </IconContext.Provider>
+                                    <button id='add-category-btn' className='btn btn-dark' onClick={ addCategory }>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
+                                        </svg>
                                     </button>
                                 </div>
                             ):(
@@ -109,7 +109,7 @@ function CategorySelection(props) {
                     </div>
                 </div>
                 <div className='slf-start-game'>
-                    <input id='slf-submit-categories-btn' className='btn-lg btn-primary' type='button' value='Fertig' onClick={ submitCategories } />
+                    <input id='slf-submit-categories-btn' className='btn-lg btn-dark' type='button' value='Fertig' onClick={ submitCategories } />
                     <small id='slf-start-game-error' className='text-danger'></small>
                 </div>
             </div>

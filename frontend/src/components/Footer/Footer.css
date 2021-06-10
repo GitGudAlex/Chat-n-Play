@@ -3,6 +3,13 @@
     background-color: #474747;
 }
 
+.text-footer{
+    background-color: transparent;
+    border: none;
+    margin-right: 20px; 
+    color: white;
+}
+
 #container-footer{
     padding-top: 10px;
 }

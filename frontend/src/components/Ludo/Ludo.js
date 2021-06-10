@@ -5,6 +5,8 @@ import './Ludo.css'
 
 import Matchfield from './matchfield/matchfield';
 
+import WuerfelDefault from '../../img/Wuerfeln.png'
+
 import SocketContext from '../../services/socket';
 
 function Ludo(props) {
@@ -232,7 +234,7 @@ function Ludo(props) {
         return (
             <div id='game-content'>
                 <div id = 'game-board' className = 'game-board'> 
-                    <button  className="btn btn-dark" id = "dice" className = 'dice' onClick={ roll }>Würfeln </button>
+                    <button  className="btn btn-dark" id = "dice" height="30px" onClick={ roll }><img src={WuerfelDefault} alt="Würfeln"></img> </button>
                     <Matchfield players={ props.players }/>
                 </div>
             </div>

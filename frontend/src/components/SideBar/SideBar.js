@@ -181,7 +181,7 @@ function SideBar(props) {
                 <div className="modal-body"> 
                   <p id='leave-modal-text'>Willst du den Raum wirklich verlassen?</p>
                   <div id='leave-modal-btns'>
-                    <button type="button" className="leave-modal-btn btn btn-primary" data-dismiss="modal">Nein</button>
+                    <button type="button" className="leave-modal-btn btn btn-dark" data-dismiss="modal">Nein</button>
                     <button type="button" className="leave-modal-btn btn btn-secondary" onClick={ leaveRoom }>Ja</button>
                   </div>
                 </div>

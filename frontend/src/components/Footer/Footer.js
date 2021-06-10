@@ -2,6 +2,7 @@ import { socket } from "../../services/socket";
 import {  useEffect, useCallback } from 'react';
 import { useHistory } from "react-router-dom";
 
+import './Footer.css'
 
 
 function Footer(props){
@@ -52,9 +53,9 @@ function Footer(props){
         return(
             <footer className="footer">
                 <div className="container" id="container-footer">
-                    <input id = "btn-about-us" type='button' value='Über uns' className="text-muted" onClick={ openAboutus } />
-                    <input id = "btn-faq" type='button' value='FAQ' className="text-muted" onClick={ openFaq } />
-                    <input id = "btn-privacy-policy" type='button' value='Privacy Policy' className="text-muted" onClick={ openPolicy } />
+                    <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
+                    <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
+                    <input id = "btn-privacy-policy" type='button' value='Privacy Policy' className="text-footer" onClick={ openPolicy } />
                     <span className="text-muted">E-Mail: chat-n-play@gmail.com</span>
                 </div>
             </footer>
@@ -63,10 +64,10 @@ function Footer(props){
         return(
             <footer className="footer">
                 <div className="container" id="container-footer">
-                    <input id = "btn-startpage" type='button' value='Startseite' className="text-muted" onClick={ openStart } /> 
-                    <input id = "btn-about-us" type='button' value='Über uns' className="text-muted" onClick={ openAboutus } />
-                    <input id = "btn-faq" type='button' value='FAQ' className="text-muted" onClick={ openFaq } />
-                    <input id = "btn-privacy-policy" type='button' value='Privacy Policy' className="text-muted" onClick={ openPolicy } />
+                    <input id = "btn-startpage" type='button' value='Startseite' className="text-footer" onClick={ openStart } /> 
+                    <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
+                    <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
+                    <input id = "btn-privacy-policy" type='button' value='Privacy Policy' className="text-footer" onClick={ openPolicy } />
                     <span className="text-muted">E-Mail: chat-n-play@web.com</span>
                 </div>
             </footer>

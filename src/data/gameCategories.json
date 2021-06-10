@@ -4,7 +4,7 @@
       "gameCategoryName": "Brettspiele",
       "color": "#FF3030",
       "img": "/BannerImages/BannerBrettspiele.png",
-      "imgbg1": "/BackgroundImages/Würfel5.png",
+      "imgbg1": "/BackgroundImages/Wuerfel5.png",
       "imgbg2": "/BackgroundImages/Spielfigur.png"
     },
     {
@@ -21,6 +21,6 @@
       "color": "#0B97F0",
       "img": "/BannerImages/BannerPausenspiele.png",
       "imgbg1": "/BackgroundImages/ABCDE.png",
-      "imgbg2": "/BackgroundImages/Würfel5.png"
+      "imgbg2": "/BackgroundImages/Wuerfel5.png"
     }
   ]

@@ -9,6 +9,7 @@
     border-right: none;
     border-bottom: transparent;
     font-family: 'coffee+tea demo','Calibri';
+    text-decoration: underline;
 }
 
 .flex-sm-row {

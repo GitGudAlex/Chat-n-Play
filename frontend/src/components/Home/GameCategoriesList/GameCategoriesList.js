@@ -67,6 +67,7 @@ function GameCategoriesList() {
                     gameCategories.map(gameCategory => {
                         if(activeCategory === 0 && gameCategory.gameCategoryId === 0) {
                             setActiveCategory(gameCategory);
+                          //  activeCategory.gameCategoryId("").style.textDecorationColor = activeCategory.color;
                         }
 
                         return <button key = { gameCategory.gameCategoryId }

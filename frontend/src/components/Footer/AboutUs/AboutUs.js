@@ -2,6 +2,8 @@ import Title from '../../Home/Title/Title';
 import Footer from '../Footer';
 import Member from './Member/Member';
 
+import './AboutUs.css'
+
 
 function AboutUs (){
 

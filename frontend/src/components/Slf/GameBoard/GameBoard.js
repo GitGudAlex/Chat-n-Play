@@ -130,7 +130,7 @@ function GameBoard(props) {
                     }
                 </div>
                 <div id='slf-submit-btn-wrapper'>
-                    <input id='slf-submit-words-btn' className='btn-lg btn-primary' type='button' value='Stop!' onClick={ stopRound } disabled={ inputDisabled } />
+                    <input id='slf-submit-words-btn' className='btn-lg btn-dark' type='button' value='Fertig!' onClick={ stopRound } disabled={ inputDisabled } />
                 </div>
             </div>
         );

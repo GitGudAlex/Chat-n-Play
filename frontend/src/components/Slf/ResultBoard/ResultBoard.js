@@ -93,7 +93,7 @@ function ResultBoard(props) {
             </div>
             <div id='slf-scores-footer'>
                 <p id="slf-scores-show-players-ready">{ 'Bereit: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>
-                <input id='slf-scores-continue' className='btn-lg btn-primary' type='button' value='Nächste Runde' onClick={ voteNewRound } />
+                <input id='slf-scores-continue' className='btn-lg btn-dark' type='button' value='Nächste Runde' onClick={ voteNewRound } />
             </div>
         </div>
     );

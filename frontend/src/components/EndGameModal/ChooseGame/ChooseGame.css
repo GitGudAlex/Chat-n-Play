@@ -7,11 +7,14 @@
 }
 
 .endgame-modal-game {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 
     padding: 4px;
     border-radius: 4px;
+
+    font-family: 'coffee+tea demo';
+    font-size: 30px;
     
     background-clip: content-box;
     background-color: rgb(78, 80, 189);

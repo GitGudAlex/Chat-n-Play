@@ -29,84 +29,84 @@ function Matchfield(props) {
     return(
         <div className = "matchfield">
                 <div>
-                    <button id = "39"  className = "white" ></button>
-                    <button id = "40"  className = "white" ></button>
-                    <button id = "1"   className = "mf-top-right" ></button>
+                    <button id = "b39"  className = "white" ></button>
+                    <button id = "b40"  className = "white" ></button>
+                    <button id = "b1"   className = "mf-top-right" >S</button>
                 </div>
                 <div>
-                    <button id = "38"  className = "white" ></button>
-                    <button id = "201" className = "mf-top-right" ></button>
-                    <button id = "2"   className = "white" ></button>
+                    <button id = "b38"  className = "white" ></button>
+                    <button id = "b201" className = "mf-top-right" ></button>
+                    <button id = "b2"   className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "37"  className = "white" ></button>
-                    <button id = "202" className = "mf-top-right" ></button>
-                    <button id = "3"   className = "white" ></button>
+                    <button id = "b37"  className = "white" ></button>
+                    <button id = "b202" className = "mf-top-right" ></button>
+                    <button id = "b3"   className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "36"  className = "white" ></button>
-                    <button id = "203" className = "mf-top-right" ></button>
-                    <button id = "4"   className = "white" ></button>
+                    <button id = "b36"  className = "white" ></button>
+                    <button id = "b203" className = "mf-top-right" ></button>
+                    <button id = "b4"   className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "31"  className = "mf-top-left" ></button>
-                    <button id = "32"  className = "white" ></button>
-                    <button id = "33"  className = "white" ></button>
-                    <button id = "34"  className = "white" ></button>
-                    <button id = "35"  className = "white" ></button>
-                    <button id = "204" className = "mf-top-right" ></button>
-                    <button id = "5"   className = "white" ></button>
-                    <button id = "6"   className = "white" ></button>
-                    <button id = "7"   className = "white" ></button>
-                    <button id = "8"   className = "white" ></button>
-                    <button id = "9"   className = "white" ></button>
+                    <button id = "b31"  className = "mf-top-left" >S</button>
+                    <button id = "b32"  className = "white" ></button>
+                    <button id = "b33"  className = "white" ></button>
+                    <button id = "b34"  className = "white" ></button>
+                    <button id = "b35"  className = "white" ></button>
+                    <button id = "b204" className = "mf-top-right" ></button>
+                    <button id = "b5"   className = "white" ></button>
+                    <button id = "b6"   className = "white" ></button>
+                    <button id = "b7"   className = "white" ></button>
+                    <button id = "b8"   className = "white" ></button>
+                    <button id = "b9"   className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "30"  className = "white" ></button>
-                    <button id = "213" className = "mf-top-left" ></button>
-                    <button id = "214" className = "mf-top-left" ></button>
-                    <button id = "215" className = "mf-top-left" ></button>
-                    <button id = "216" className = "mf-top-left" ></button>
+                    <button id = "b30"  className = "white" ></button>
+                    <button id = "b213" className = "mf-top-left" ></button>
+                    <button id = "b214" className = "mf-top-left" ></button>
+                    <button id = "b215" className = "mf-top-left" ></button>
+                    <button id = "b216" className = "mf-top-left" ></button>
                     {/* Würfel */}
                     <button id="buffer"></button>
-                    <button id = "208" className = "mf-bottom-right" ></button>
-                    <button id = "207" className = "mf-bottom-right" ></button>
-                    <button id = "206" className = "mf-bottom-right" ></button>
-                    <button id = "205" className = "mf-bottom-right" ></button>
-                    <button id = "10"  className = "white" ></button>
+                    <button id = "b208" className = "mf-bottom-right" ></button>
+                    <button id = "b207" className = "mf-bottom-right" ></button>
+                    <button id = "b206" className = "mf-bottom-right" ></button>
+                    <button id = "b205" className = "mf-bottom-right" ></button>
+                    <button id = "b10"  className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "29"  className = "white" ></button>
-                    <button id = "28"  className = "white" ></button>
-                    <button id = "27"  className = "white" ></button>
-                    <button id = "26"  className = "white" ></button>
-                    <button id = "25"  className = "white" ></button>
-                    <button id = "212" className = "mf-bottom-left" ></button>
-                    <button id = "15"  className = "white" ></button>
-                    <button id = "14"  className = "white" ></button>
-                    <button id = "13"  className = "white" ></button>
-                    <button id = "12"  className = "white" ></button>
-                    <button id = "11"  className = "mf-bottom-right" ></button>
+                    <button id = "b29"  className = "white" ></button>
+                    <button id = "b28"  className = "white" ></button>
+                    <button id = "b27"  className = "white" ></button>
+                    <button id = "b26"  className = "white" ></button>
+                    <button id = "b25"  className = "white" ></button>
+                    <button id = "b212" className = "mf-bottom-left" ></button>
+                    <button id = "b15"  className = "white" ></button>
+                    <button id = "b14"  className = "white" ></button>
+                    <button id = "b13"  className = "white" ></button>
+                    <button id = "b12"  className = "white" ></button>
+                    <button id = "b11"  className = "mf-bottom-right" >S</button>
                 </div>
                 <div>
-                    <button id = "24"  className = "white" ></button>
-                    <button id = "211" className = "mf-bottom-left" ></button>
-                    <button id = "16"  className = "white" ></button>
+                    <button id = "b24"  className = "white" ></button>
+                    <button id = "b211" className = "mf-bottom-left" ></button>
+                    <button id = "b16"  className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "23"  className = "white" ></button>
-                    <button id = "210" className = "mf-bottom-left" ></button>
-                    <button id = "17"  className = "white" ></button>
+                    <button id = "b23"  className = "white" ></button>
+                    <button id = "b210" className = "mf-bottom-left" ></button>
+                    <button id = "b17"  className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "22"  className = "white" ></button>
-                    <button id = "209" className = "mf-bottom-left" ></button>
-                    <button id = "18"  className = "white" ></button>
+                    <button id = "b22"  className = "white" ></button>
+                    <button id = "b209" className = "mf-bottom-left" ></button>
+                    <button id = "b18"  className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "21"  className = "mf-bottom-left" ></button>
-                    <button id = "20"  className = "white" ></button>
-                    <button id = "19"  className = "white" ></button>
+                    <button id = "b21"  className = "mf-bottom-left" >S</button>
+                    <button id = "b20"  className = "white" ></button>
+                    <button id = "b19"  className = "white" ></button>
                 </div>
             </div>
     )
