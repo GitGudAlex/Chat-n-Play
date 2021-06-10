@@ -24,6 +24,7 @@
 .uno-card-back, .uno-card-front {
     position: absolute;
     width: 100%;
+    transform: rotateX(0deg);
 
     backface-visibility: hidden;
 }
