@@ -69,7 +69,7 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
 
         // Pfeil auf exakte Posiiton bringen
         $('#uno-player-arrow').css({ transform: 'rotate(' + endRotation + 'deg)' });
-
+        console.log("set: " + endRotation);
         lastDegrees = endRotation;
 
         callback();
@@ -80,16 +80,7 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
         sumRotation = 360 * 5 + endRotation;
 
     } else {
-        if(lastDegrees > endRotation) {
-            sumRotation = 360 - lastDegrees - endRotation;
-
-        } else {
-            sumRotation = endRotation - lastDegrees + lastDegrees;
-        }
-
-        if(sumRotation === 0) {
-            sumRotation = 360;
-        }
+        sumRotation = endRotation;
     }
 
     console.log(sumRotation);
@@ -117,10 +108,22 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
             let rot;
 
             if(isReverse) {
-                rot = lastDegrees - Math.abs(sumRotation - lastDegrees) * val;
+                let diff = sumRotation - lastDegrees;
+
+                if(diff >= 0) {
+                    diff -= 360;
+                }
+
+                rot = lastDegrees + diff * val;
 
             } else {
-                rot = lastDegrees + (sumRotation - lastDegrees) * val;
+                let diff = sumRotation - lastDegrees;
+
+                if(diff <= 0) {
+                    diff += 360;
+                }
+
+                rot = lastDegrees + diff * val;
 
             }
 

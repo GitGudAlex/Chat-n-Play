@@ -18,6 +18,7 @@ function UnoGameBoard(props) {
 
     // Die zuletzt gespielten karten (welche auf dem Kartenstapel liegen)
     const [lastCards, setLastCards] = useState([]);
+    const lastCard = useRef(0);
 
     // Karten für die animationen
     const activeCardsRef = useRef([]);
@@ -45,6 +46,9 @@ function UnoGameBoard(props) {
             
             // Animations Karte hinzufügen
             let card = <UnoCard key={ data.card.id + '-animation' } card={ data.card } hidden={ true } animate={ true } />
+
+            // Die zuletzt gespielete Karte extra speichern
+            lastCard.current = data.card;
 
             activeCardsRef.current.push(card);
             setActiveCards([...activeCardsRef.current]);
@@ -218,6 +222,9 @@ function UnoGameBoard(props) {
         // Animations Karte hinzufügen
         let card = <UnoCard key={ data.card.id + '-animation-discard' } card={ data.card } hidden={ true } animate={ true } />
 
+        // Die zuletzt gespielte Karte extra speichern
+        lastCard.current = data.card;
+
         activeCardsRef.current.push(card);
         setActiveCards([...activeCardsRef.current]);
 
@@ -240,13 +247,9 @@ function UnoGameBoard(props) {
 
             // Karte aus dem Deck entfernen
             let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
-            console.log("playerIndex: " + playerIndex);
             let playerPosition = props.players[playerIndex].position;
-            console.log("playerPosition: " + playerPosition);
             let cardIndex = handCardsRef.current[playerPosition].findIndex(c => c.id === data.card.id);
-            console.log(JSON.parse(JSON.stringify(handCardsRef.current)));
-            console.log("cardIndex: " + cardIndex);
-            
+
             handCardsRef.current[playerPosition].splice(cardIndex, 1);
             setHandCards(JSON.parse(JSON.stringify(handCardsRef.current)));
 
@@ -321,12 +324,18 @@ function UnoGameBoard(props) {
                     <img id='uno-discard-deck-ref' className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
                     {
                         lastCards.map(card => {
+
+                            // Oberste Karte
+                            if(card.id === lastCard.current.id) {
+                                // Sicher gehen, dass diese oben angezeigt wird
+                                return <UnoCard key={ card.id + '-discard' } card={ card } onTop={ true } />
+                            }
+
                             return <UnoCard key={ card.id + '-discard' } card={ card } />
                         })
                     }
                 </div>
             </div>
-            {console.log(handCards) }
             {
                 props.players.map(p => {
                     let activeCardsList = [];

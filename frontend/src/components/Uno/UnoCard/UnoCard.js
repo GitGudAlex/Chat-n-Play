@@ -30,13 +30,14 @@ function UnoCard(props) {
 
             // Karte nicht auf meiner Hand
             } else {
-                let rotationStyle = {
-                    transform: 'rotateZ(' + props.card.rotation + 'deg)'
+                let cardStyle = {
+                    transform: 'rotateZ(' + props.card.rotation + 'deg)',
+                    zIndex: props.onTop === true ? '2' : '0'
                 }
     
                 // Karte liegt auf dem Kartenstapel
                 return (
-                    <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') } style={ rotationStyle }>
+                    <div id={ props.card.id + '-uno-card' } className={ 'uno-card ' + (props.hidden === true ? 'invisible' : '') } style={ cardStyle }>
                         <div className='uno-card-front'>
                             <img src={ '/UnoCardsImages/' + props.card.path } alt={ 'Farbe ' + props.card.color + ' und Wert ' + props.card.value } draggable="false"/>
                         </div>
