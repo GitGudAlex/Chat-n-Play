@@ -4,6 +4,7 @@ const chatEvents = require("./chat/chatIndex");
 const ludoEvents = require("./ludo/ludoIndex")
 const unoEvents = require("./uno/unoIndex")
 const slfEvents = require("./slf/slfIndex")
+const footerEvents = require("./footer/footerIndex")
 
 module.exports = function(io) {
     const onConnection = (socket) => {
@@ -25,6 +26,8 @@ module.exports = function(io) {
 
         // all slf events
         slfEvents(io, socket);
+
+        footerEvents(io, socket);
     }
     
     io.on("connection", onConnection);
