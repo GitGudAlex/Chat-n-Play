@@ -5,6 +5,7 @@ import './GameCategoriesList.css'
 
 import SocketContext from '../../../services/socket';
 import GameCategory from './GameCategory/GameCategory';
+import GameCategoryButton from './GameCategoryButton/GameCategoryButton';
 
 function GameCategoriesList() {
 
@@ -55,8 +56,9 @@ function GameCategoriesList() {
         }
     }, [socket, handleRoomCreated])
     
-    const setGameCategory = (gameCategory) => {
+    const setActiveGameCategory = (gameCategory) => {
         setActiveCategory(gameCategory);
+
     }
 
 
@@ -69,12 +71,10 @@ function GameCategoriesList() {
                             setActiveCategory(gameCategory);
                         }
 
-                        return <input key = { gameCategory.gameCategoryId }
-                                    className='game-category-nav-item'
-                                    type='button'
-                                    style={{ textDecorationColor: (gameCategory.gameCategoryId === activeCategory.gameCategoryId ? gameCategory.color : 'black') }}
-                                    value={ gameCategory.gameCategoryName }
-                                    onClick={ () => setGameCategory(gameCategory ) }/>
+                        return <GameCategoryButton key={ gameCategory.gameCategoryId }
+                                    category={ gameCategory }
+                                    onClickHandler={ setActiveGameCategory } 
+                                    activeCategory={ activeCategory }/>
                     })
                 }
             </div>
