@@ -39,7 +39,7 @@ function GameCategoryButton(props) {
     useEffect(() => {
         if(showUnderline) {
             setTextDecorationStyle({
-                color: props.category.color
+                textDecorationColor: props.category.color
             });
 
         } else {
