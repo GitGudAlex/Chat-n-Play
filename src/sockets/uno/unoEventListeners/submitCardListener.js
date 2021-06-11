@@ -1,6 +1,6 @@
 const { getPlayer } = require("../../../models/players");
 const { getRoom } = require("../../../models/rooms");
-const { setNextPlayer } = require("../../../uno/gameLogic");
+const { setNextPlayer, dealCard } = require("../../../uno/gameLogic");
 
 module.exports = (io, socket, data) => {
     
@@ -100,14 +100,7 @@ module.exports = (io, socket, data) => {
 
                 // Wurde vergessen => +1 Karte ziehen
                 if(!player.klopfKlopf) {
-                    let card = room.deck.takeCard();
-                    player.hand.addCard(card);
-
-                    // Sich selber die Karte schicken
-                    io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: player.socketId });
-
-                    // Den anderen die Karte schicken (Nur ohne Wert)
-                    (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: player.socketId });
+                    dealCard(io, room, player, false);
 
                     // Nächste Runde
                     setNextPlayer(io, room.roomId);
@@ -173,7 +166,15 @@ module.exports = (io, socket, data) => {
 
         // Exakt gleiche Karte
         if(room.cardOnBoard.value === data.card.value && room.cardOnBoard.color === data.card.color) {
-            room.acticePlayer = { socketId: player.socketId, position: player.position };
+
+            // Alten Spieler inaktiv setzten
+            let oldPlayer = getPlayer(room.activePlayer.socketId);
+            oldPlayer.active = false;
+
+            // Neuen aktiven Spieler setzten
+            room.activePlayer = { socketId: player.socketId, position: player.position };
+            player.active = true;
+            
             placeCard(data.card);
         }
 
