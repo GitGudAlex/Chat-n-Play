@@ -50,7 +50,7 @@ function Ludo(props) {
     
         socket.on("ludo:showMoves", show => {
             show.res.forEach(element => {
-                $('#'+element).css({'border-color': 'yellow'});
+                $('#'+element).css({'border-color': show[1]});
             })
             //show.color
         });
