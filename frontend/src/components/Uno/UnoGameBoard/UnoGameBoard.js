@@ -92,6 +92,12 @@ function UnoGameBoard(props) {
             // Der eigene Spieler bekommt eine Karte
             if(data.socketId === socket.id) {
 
+                // Damit man den Zug beenden kann (nicht anzigen bei +2 / +4 zieh Karten)
+                if(data.normalTurn === true) {
+                    $('#unoEndTurnBtn').css({ visibility: 'visible' });
+                    $('#unoEndTurnBtn').css({ opacity: '1' });
+                }
+
                 // Animations Karte hinzufügen
                 let card = <UnoCard key={ data.card.id + '-animation' } card={ data.card } hidden={ true } animate={ true } />
 
@@ -213,6 +219,11 @@ function UnoGameBoard(props) {
         if(data.socketId === socket.id) {
             flip = -180;
             scale = false;
+
+            if($('#unoEndTurnBtn').is(":visible")) {
+                $('#unoEndTurnBtn').css({ visibility: 'hidden' });
+                $('#unoEndTurnBtn').css({ opacity: '0' });
+            }
         }
 
         // Zufällige Rotation zwischen -15 und + 15 Grad
@@ -309,8 +320,18 @@ function UnoGameBoard(props) {
         socket.emit('uno:draw-card');
     }
 
+    const endTurn = () => {
+        socket.emit('uno:end-turn');
+
+        $('#unoEndTurnBtn').css({ visibility: 'hidden' });
+        $('#unoEndTurnBtn').css({ opacity: '0' });
+    }
+
     return (
         <div id='uno-gameboard' >
+            <div id='unoBtnContainer'>
+                <input id='unoEndTurnBtn' type='button' value='Zug Beenden' onClick={ endTurn } />
+            </div>
             <div id='uno-deck-wrapper'>
                 <div id='uno-deal-deck'>
                     <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' } draggable="false" onClick={ drawCard }/>
@@ -361,10 +382,6 @@ function UnoGameBoard(props) {
                     return card;
                 })
             }
-            {/*
-            <div id='from' className='marker'></div>
-            <div id='to' className='marker'></div>
-            */}
         </div>
     );
 }
