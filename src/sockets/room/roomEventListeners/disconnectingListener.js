@@ -163,10 +163,9 @@ module.exports = (io, socket) => {
 
             // Aktuelles Spiel ist Uno
             } else if(room.gameTypeId === 1) {
-                console.log("-------");
+
                 // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
                 if(room.activePlayer.socketId === socket.id) {
-                    console.log("-");
                     setNextPlayer(io, room.roomId, player.position);
                 }
             }

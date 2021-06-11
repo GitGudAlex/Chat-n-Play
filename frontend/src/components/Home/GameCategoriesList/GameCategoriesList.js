@@ -62,22 +62,22 @@ function GameCategoriesList() {
 
     return (
         <div>
-            <nav className="nav nav-pills flex-column flex-sm-row">
+            <div className='game-categories-navbar'>
                 { 
                     gameCategories.map(gameCategory => {
                         if(activeCategory === 0 && gameCategory.gameCategoryId === 0) {
                             setActiveCategory(gameCategory);
-                          //  activeCategory.gameCategoryId("").style.textDecorationColor = activeCategory.color;
                         }
 
-                        return <button key = { gameCategory.gameCategoryId }
-                                    className="flex-sm-fill text-sm-center nav-link"
-                                    onClick={ () => setGameCategory(gameCategory ) } >
-                                        { gameCategory.gameCategoryName }
-                                </button>
+                        return <input key = { gameCategory.gameCategoryId }
+                                    className='game-category-nav-item'
+                                    type='button'
+                                    style={{ textDecorationColor: (gameCategory.gameCategoryId === activeCategory.gameCategoryId ? gameCategory.color : 'black') }}
+                                    value={ gameCategory.gameCategoryName }
+                                    onClick={ () => setGameCategory(gameCategory ) }/>
                     })
                 }
-            </nav>
+            </div>
             <div>
                 <GameCategory gameCategoryId = { activeCategory.gameCategoryId } 
                     color = { activeCategory.color } 
