@@ -55,7 +55,7 @@ function Footer(props){
                 <div className="container" id="container-footer">
                     <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
                     <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
-                    <input id = "btn-privacy-policy" type='button' value='Privacy Policy' className="text-footer" onClick={ openPolicy } />
+                    <input id = "btn-privacy-policy" type='button' value='Datenschutzerklärung' className="text-footer" onClick={ openPolicy } />
                     <span className="text-muted">E-Mail: chat-n-play@gmail.com</span>
                 </div>
             </footer>
@@ -67,7 +67,7 @@ function Footer(props){
                     <input id = "btn-startpage" type='button' value='Startseite' className="text-footer" onClick={ openStart } /> 
                     <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
                     <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
-                    <input id = "btn-privacy-policy" type='button' value='Privacy Policy' className="text-footer" onClick={ openPolicy } />
+                    <input id = "btn-privacy-policy" type='button' value='Datenschutzerklärung' className="text-footer" onClick={ openPolicy } />
                     <span className="text-muted">E-Mail: chat-n-play@web.com</span>
                 </div>
             </footer>

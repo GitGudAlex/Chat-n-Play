@@ -1,6 +1,9 @@
 #aboutus{
-    height: 100%;
-    background-image: url(../../../img/background_9.png);
+    background-image: url(../../../img/background_6.png);
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 200px;
+}
+
+p {
+    margin: 80px;
 }

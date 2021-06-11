@@ -10,9 +10,9 @@ function AboutUs (){
     return(
         <div id='aboutus'>
             <header id='aboutus-header'>
-                <Title text="Über uns" height="10vh" fontSize="4vw"/>
+                <Title text="About Us" height="10vh" fontSize="4vw"/>
             </header>
-            <h1>Hi, wir sind das Team von Chat n' Play!</h1>
+            <h1>Hi, wir sind das Team von Chat N' Play!</h1>
             <div id = 'aboutus-team' class = 'aboutus-content'>
                 <h2>Unser Team:</h2>
                 <Member name = 'Timothy Geiger' role = 'Developer'></Member>
