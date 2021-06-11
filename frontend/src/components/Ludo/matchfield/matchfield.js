@@ -31,7 +31,7 @@ function Matchfield(props) {
                 <div>
                     <button id = "b39"  className = "white" ></button>
                     <button id = "b40"  className = "white" ></button>
-                    <button id = "b1"   className = "mf-top-right" >S</button>
+                    <button id = "b1"   className = "mf-top-right" ></button>
                 </div>
                 <div>
                     <button id = "b38"  className = "white" ></button>
@@ -49,7 +49,7 @@ function Matchfield(props) {
                     <button id = "b4"   className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "b31"  className = "mf-top-left" >S</button>
+                    <button id = "b31"  className = "mf-top-left" ></button>
                     <button id = "b32"  className = "white" ></button>
                     <button id = "b33"  className = "white" ></button>
                     <button id = "b34"  className = "white" ></button>
@@ -86,7 +86,7 @@ function Matchfield(props) {
                     <button id = "b14"  className = "white" ></button>
                     <button id = "b13"  className = "white" ></button>
                     <button id = "b12"  className = "white" ></button>
-                    <button id = "b11"  className = "mf-bottom-right" >S</button>
+                    <button id = "b11"  className = "mf-bottom-right" ></button>
                 </div>
                 <div>
                     <button id = "b24"  className = "white" ></button>
@@ -104,7 +104,7 @@ function Matchfield(props) {
                     <button id = "b18"  className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "b21"  className = "mf-bottom-left" >S</button>
+                    <button id = "b21"  className = "mf-bottom-left" ></button>
                     <button id = "b20"  className = "white" ></button>
                     <button id = "b19"  className = "white" ></button>
                 </div>

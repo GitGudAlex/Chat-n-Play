@@ -40,7 +40,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 }
 
 .dice{
-  border-color: black;
+  border-color: white;
 }
 
 .blue{
@@ -86,7 +86,8 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 .mf-top-right{
   border-radius: 50%;
   padding: 10px 10px;
-  margin: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
   border: 2px solid #474747;
 }
 
@@ -107,7 +108,8 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 .mf-bottom-left{
   border-radius: 50%;
   padding: 10px 10px;
-  margin: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
   border: 2px solid #474747;
 }
 
@@ -125,12 +127,31 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 #buffer {
   background-color: white; 
   border-radius: 50%;
-  padding: 10px 33px;
+  padding: 10px 24px;
   margin: 8px;
   border: none;
 }
 
 #b21{
+  padding: 13px 13px;
+  margin: 6px;
+}
+
+#b11{
+  padding: 13px 13px;
+  margin: 6px;
+}
+
+#b31{
+  padding: 13px 13px;
+  margin: 6px;
+}
+
+#b1{
+  padding: 13px 13px;
+  margin: 6px;
+}
+/*#b21{
   padding: 2px 10px;
 }
 
@@ -145,3 +166,4 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 #b1{
   padding: 2px 10px;
 }
+*/
