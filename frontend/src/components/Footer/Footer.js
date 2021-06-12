@@ -56,7 +56,7 @@ function Footer(props){
                     <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
                     <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
                     <input id = "btn-privacy-policy" type='button' value='Datenschutzerklärung' className="text-footer" onClick={ openPolicy } />
-                    <span className="text-muted">E-Mail: chat-n-play@gmail.com</span>
+                    <span className="text-footer">E-Mail: chat-n-play@gmail.com</span>
                 </div>
             </footer>
         )
@@ -68,7 +68,7 @@ function Footer(props){
                     <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
                     <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
                     <input id = "btn-privacy-policy" type='button' value='Datenschutzerklärung' className="text-footer" onClick={ openPolicy } />
-                    <span className="text-muted">E-Mail: chat-n-play@web.com</span>
+                    <span className="text-footer">E-Mail: chat-n-play@web.com</span>
                 </div>
             </footer>
         )

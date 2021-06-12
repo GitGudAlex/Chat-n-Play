@@ -29,14 +29,14 @@
 #backgroundimg1{
     height: 150px;
     float: left;
-    margin-left: 50px;
+    margin-left: 100px;
     opacity: 70%;
     transform: rotate(350deg);
 }
 #backgroundimg2{
     height: 150px;
     float: right;
-    margin-right: 60px;
+    margin-right: 30px;
     opacity: 70%;
     transform: rotate(20deg);
 }
