@@ -164,7 +164,10 @@ function Ludo(props) {
 
     //Nach dem Würfeln, Würfel entsperren
     useEffect(()=>{
-        socket.on('ludo:unlockDice', (player)=>{
+        socket.on('ludo:unlockDice', ()=>{
+            setTimeout(function(){
+                setDiceimg(WuerfelDefault);
+            }, 1950);
             setTimeout(function(){
                 $('#dice').css({'display':'inline'});
                 $("#dice").prop("disabled",false);
@@ -252,7 +255,7 @@ function Ludo(props) {
         return (
             <div id='game-content'>
                 <div id = 'game-board' className = 'game-board'> 
-                    <button  className="btn " id = "dice" onClick={ roll }><img src={diceimg} height="40px" alt="Würfeln"></img> </button>
+                    <button  className="btn " id = "dice" onClick={ roll }><img src={diceimg} height="40px" alt="Würfeln" ></img> </button>
                     <Matchfield players={ props.players }/>
                 </div>
             </div>
