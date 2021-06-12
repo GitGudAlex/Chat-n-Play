@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import './UnoGameBoard.css';
 
 import { BsArrowRight } from 'react-icons/bs';
+import { GoPrimitiveDot } from 'react-icons/go';
 import { IconContext } from "react-icons";
 
 import $ from 'jquery';
@@ -277,7 +278,12 @@ function UnoGameBoard(props) {
                 setActiveCards([...activeCardsRef.current]);
             }
         });
-    }, [socket.id, props.players]); 
+    }, [socket.id, props.players]);
+
+    const handleGetColorEvent = useCallback(() => {
+        $('#uno-color-selection').css({ visibility: 'visible', height: '230px', width: '230px' });
+        $('.uno-color-selection-item').css({ height: '85px', width: '85px' });
+    }, []);
 
     useEffect(() => {
 
@@ -293,13 +299,17 @@ function UnoGameBoard(props) {
         // Wenn eine Karte gespielt wurde
         socket.on('uno:card-played', handleCardPlayedEvent);
 
+        // Wenn man eine Farbeaussuchen Karte spielt => Farbauswahl anzeigen
+        socket.on('uno:get-color', handleGetColorEvent);
+
         return () => {
             socket.off('uno:deal-card', handleDealCardEvent);
             socket.off('uno:set-first-player', handleSetFirstPlayerEvent);
             socket.off('uno:set-next-player', handleNextPlayerEvent);
             socket.off('uno:card-played', handleCardPlayedEvent);
+            socket.off('uno:get-color', handleGetColorEvent);
         }
-    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent]);
+    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent, handleGetColorEvent]);
 
     // Übergibt die Karte dem Server
     const submitCard = (index) => {
@@ -327,6 +337,13 @@ function UnoGameBoard(props) {
         $('#unoEndTurnBtn').css({ opacity: '0' });
     }
 
+    const setColor = (color) => {
+        socket.emit('uno:set-color', { color: color });
+
+        $('#uno-color-selection').css({ visibility: 'hidden', height: '0px', width: '0px' });
+        $('.uno-color-selection-item').css({ height: '0px', width: '0px' });
+    }
+
     return (
         <div id='uno-gameboard' >
             <div id='unoBtnContainer'>
@@ -337,24 +354,31 @@ function UnoGameBoard(props) {
                     <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' } draggable="false" onClick={ drawCard }/>
                 </div>
                 <div id='uno-player-arrow'>
-                    <IconContext.Provider value={{ size: '80px' }}>
-                        <BsArrowRight style={{ marginLeft: '55px' }} />
+                    <IconContext.Provider value={{ size : '80px' }}>
+                        <BsArrowRight style={{ position: 'absolute', marginLeft: '30px' }} />
                     </IconContext.Provider>
+                    <GoPrimitiveDot style={{ position: 'absolute' }} size = '22px' />
                 </div>
                 <div id='uno-discard-deck'>
                     <img id='uno-discard-deck-ref' className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
                     {
-                        lastCards.map(card => {
+                        lastCards.map((card, index) => {
 
                             // Oberste Karte
                             if(card.id === lastCard.current.id) {
                                 // Sicher gehen, dass diese oben angezeigt wird
-                                return <UnoCard key={ card.id + '-discard' } card={ card } onTop={ true } />
+                                return <UnoCard key={ card.id + '-discard' } card={ card } zIndex={ index + 2 } />
                             }
 
-                            return <UnoCard key={ card.id + '-discard' } card={ card } />
+                            return <UnoCard key={ card.id + '-discard' } card={ card } zIndex={ index + 2 } />
                         })
                     }
+                    <div id='uno-color-selection'>
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(0) } />
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(1) } />
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(2) } />
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(3) } />
+                    </div>
                 </div>
             </div>
             {

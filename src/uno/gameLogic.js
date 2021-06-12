@@ -45,6 +45,9 @@ const initUno = (hostId, socket, io) => {
     // Ob der Spieler aussetzen muss
     room['isSkip'] = false;
 
+    // Wenn sich jemand eine Farbe aussgesucht hat
+    room['customColor'] = false;
+
     // Wenn +2 oder +4 Karten gelegt werden -> aufaddieren
     room['cardsCount'] = 0;
 
@@ -55,9 +58,11 @@ const initUno = (hostId, socket, io) => {
      * Der Nächste Input der erwartet wird
      * 
      * 1 = Karte ablegen
-     * 2 = Farbauswahl
-     * 3 = +2 / +4 => Ob man eine weitere +2 / +4 Karte drauflegen kann oder ob man ziehen muss
+     * 2 = +2
+     * 3 = +4
      * 4 = Klopf Klopf
+     * 5 = Auf Farben input warten (von +4 Karte)
+     * 6 = Auf Farben input warten (von Farbwahl Karte)
      */
     room['moveType'] = 1;
 

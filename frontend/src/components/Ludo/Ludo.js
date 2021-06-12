@@ -169,7 +169,10 @@ function Ludo(props) {
 
     //Nach dem Würfeln, Würfel entsperren
     useEffect(()=>{
-        socket.on('ludo:unlockDice', (player)=>{
+        socket.on('ludo:unlockDice', ()=>{
+            setTimeout(function(){
+                setDiceimg(WuerfelDefault);
+            }, 1950);
             setTimeout(function(){
                 $('#dice').css({'display':'inline'});
                 $("#dice").prop("disabled",false);

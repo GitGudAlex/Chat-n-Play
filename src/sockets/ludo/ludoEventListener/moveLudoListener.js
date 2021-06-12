@@ -22,8 +22,10 @@ module.exports = (io, socket, id) => {
         const nextPlayer = nextPlayerInRoom(player.roomId, player);
         io.in(player.roomId).emit('ludo:nextPlayer', nextPlayer);
         io.to(nextPlayer.socketId).emit("ludo:unlockDice", nextPlayer);
+
     }else{
         io.to(player.socketId).emit("ludo:unlockDice", player);
+
     }
 
     const res = [newPosition, player.color, id];
