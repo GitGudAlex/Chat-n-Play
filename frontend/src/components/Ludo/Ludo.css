@@ -39,11 +39,27 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   text-align: center;
 }
 
+.matchfield{
+  position:absolute;
+  margin:auto;
+  top: 70px;
+  left: 0;
+  right: 45px;
+  bottom: 0;
+
+}
+
 #dice{
   border-color: white;
   border: 2px solid;
   outline: none;
   border-radius: .2em;
+
+  position: absolute;
+  margin:auto;
+  top: 10px;
+  right: 40px;  
+  left: 0;
 }
 
 .blue{
@@ -138,4 +154,9 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 .start{
   padding: 13px 13px;
   margin: 6px;
+}
+
+.middle{
+  margin-left: 9px;
+  margin-right: 9px;
 }

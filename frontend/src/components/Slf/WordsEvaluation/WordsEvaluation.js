@@ -119,7 +119,7 @@ function WordsEvaluation(props) {
                 </div>
                 <div id='slf-submit-evaluated-words-btn-wrapper'>
                     <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>
-                    <input id='slf-submit-evaluated-words-btn' className='btn-lg btn-primary' type='button' value='Fertig' onClick={ () => submitVotes(answers) } />
+                    <input id='slf-submit-evaluated-words-btn' className='btn-lg btn-dark' type='button' value='Fertig' onClick={ () => submitVotes(answers) } />
                 </div>
             </div>
         );

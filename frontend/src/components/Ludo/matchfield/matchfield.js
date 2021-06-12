@@ -30,7 +30,7 @@ function Matchfield(props) {
         <div className = "matchfield">
                 <div>
                     <button id = "39"  className = "white" ></button>
-                    <button id = "40"  className = "white" ></button>
+                    <button id = "40"  className = "white middle" ></button>
                     <button id = "1"   className = "mf-top-right start" ></button>
                 </div>
                 <div>
@@ -105,7 +105,7 @@ function Matchfield(props) {
                 </div>
                 <div>
                     <button id = "21"  className = "mf-bottom-left start" ></button>
-                    <button id = "20"  className = "white" ></button>
+                    <button id = "20"  className = "white middle" ></button>
                     <button id = "19"  className = "white" ></button>
                 </div>
             </div>
