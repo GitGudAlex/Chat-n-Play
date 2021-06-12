@@ -32,7 +32,7 @@ function UnoCard(props) {
             } else {
                 let cardStyle = {
                     transform: 'rotateZ(' + props.card.rotation + 'deg)',
-                    zIndex: props.onTop === true ? '2' : '0'
+                    zIndex: props.zIndex
                 }
     
                 // Karte liegt auf dem Kartenstapel
@@ -52,7 +52,8 @@ function UnoCard(props) {
         let rotation = props.card.rotation === undefined ? 0 : props.card.rotation;
 
         let rotationStyle = {
-            transform: 'rotateZ(' + rotation + 'deg)'
+            transform: 'rotateZ(' + rotation + 'deg)',
+            zIndex: 19
         }
 
         // Karte vom Kartenstapel zu einem Gegenspieler => Karte unbekannt

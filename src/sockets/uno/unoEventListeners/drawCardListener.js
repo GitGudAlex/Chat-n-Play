@@ -61,7 +61,7 @@ module.exports = (io, socket) => {
         drawCard(1, true);
 
     // Karten ziehen wegen +2 oder +4 Karten
-    } else if(room.moveType === 3) {
+    } else if(room.moveType === 2 || room.moveType === 3) {
         drawCard(room.cardsCount, false);
 
         // Card Count reseten
