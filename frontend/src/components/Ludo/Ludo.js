@@ -9,9 +9,17 @@ import WuerfelDefault from '../../img/Wuerfeln.png'
 
 import SocketContext from '../../services/socket';
 
+import one from '../../img/Wuerfel1_ohneRand.png'
+import two from '../../img/Wuerfel2_ohneRand.png'
+import three from '../../img/Wuerfel3_ohneRand.png'
+import four from '../../img/Wuerfel4_ohneRand.png'
+import five from '../../img/Wuerfel5_ohneRand.png'
+import six from '../../img/Wuerfel6_ohneRand.png'
+
 function Ludo(props) {
 
     const [gamestatus, setGamestatus] = useState(0);
+    const [diceimg, setDiceimg] = useState(WuerfelDefault);
 
     // Socket.io
     const socket = useContext(SocketContext);
@@ -45,14 +53,25 @@ function Ludo(props) {
     useEffect(() => {
         socket.on("ludo:dicedValue", dice => {
             $('#dice').css({'display':'inline'});
-            $("#dice").html(dice);
+            if(dice === 1){
+                setDiceimg(one);
+            }else if(dice ===2){
+                setDiceimg(two);
+            }else if(dice === 3){
+                setDiceimg(three);
+            }else if(dice === 4){
+                setDiceimg(four);
+            }else if(dice === 5){
+                setDiceimg(five);
+            }else{
+                setDiceimg(six);
+            }
         });
     
         socket.on("ludo:showMoves", show => {
             show.res.forEach(element => {
-                $('#'+element).css({'border-color': show[1]});
+                $('#'+element).css({'border-color': show.color});
             })
-            //show.color
         });
 
         // Events unsubscriben
@@ -108,7 +127,7 @@ function Ludo(props) {
     // Figur laufen
     useEffect(() => {
         socket.on("ludo:moveFigure", move => {
-            $(".matchfield").find(":button").html('');
+            //$(".matchfield").find(":button").html('');
             $("#"+move[2]).css({'background-color':''});
             $("#"+move[2]).css({'border-color':''});
             $("#"+move[0]).css({'background-color':move[1]});     
@@ -143,14 +162,13 @@ function Ludo(props) {
         }
     });
 
-    //Nach dem Würfeln, Würfel sperren
+    //Nach dem Würfeln, Würfel entsperren
     useEffect(()=>{
         socket.on('ludo:unlockDice', (player)=>{
             setTimeout(function(){
                 $('#dice').css({'display':'inline'});
-                $('.dice').html('Würfeln');
                 $("#dice").prop("disabled",false);
-            }, 2000);
+            }, 2000);       
         });
 
         // Event unsubscriben
@@ -234,7 +252,7 @@ function Ludo(props) {
         return (
             <div id='game-content'>
                 <div id = 'game-board' className = 'game-board'> 
-                    <button  className="btn " id = "dice" onClick={ roll }><img src={WuerfelDefault} height="40px" alt="Würfeln"></img> </button>
+                    <button  className="btn " id = "dice" onClick={ roll }><img src={diceimg} height="40px" alt="Würfeln"></img> </button>
                     <Matchfield players={ props.players }/>
                 </div>
             </div>
