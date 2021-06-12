@@ -39,8 +39,11 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   text-align: center;
 }
 
-.dice{
+#dice{
   border-color: white;
+  border: 2px solid;
+  outline: none;
+  border-radius: .2em;
 }
 
 .blue{

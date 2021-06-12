@@ -130,7 +130,12 @@ function Ludo(props) {
             //$(".matchfield").find(":button").html('');
             $("#"+move[2]).css({'background-color':''});
             $("#"+move[2]).css({'border-color':''});
-            $("#"+move[0]).css({'background-color':move[1]});     
+            $("#"+move[0]).css({'background-color':move[1]});   
+            $('.white').css({'border-color': '#474747'});
+            $('.mf-bottom-right').css({'border-color': '#474747'});
+            $('.mf-top-right').css({'border-color': '#474747'});
+            $('.mf-bottom-left').css({'border-color': '#474747'});
+            $('.mf-top-left').css({'border-color': '#474747'});
         });
 
         // Event unsubscriben
@@ -252,7 +257,7 @@ function Ludo(props) {
         return (
             <div id='game-content'>
                 <div id = 'game-board' className = 'game-board'> 
-                    <button  className="btn " id = "dice" onClick={ roll }><img src={diceimg} height="40px" alt="Würfeln"></img> </button>
+                    <button id="dice" onClick={ roll }><img src={diceimg} height="40px" alt="Würfeln"></img> </button>
                     <Matchfield players={ props.players }/>
                 </div>
             </div>
