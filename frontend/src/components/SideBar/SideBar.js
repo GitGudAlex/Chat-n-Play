@@ -108,12 +108,29 @@ function SideBar(props) {
 
   }
 
+  //Bereich Sidebar Button Handling
   const disableWebcam = () =>{
     socket.emit("webcam:disable");
+    $("#enableWebcam").removeClass("d-none");
+    $("#disableWebcam").addClass("d-none");
   }
 
   const enableWebcam = () =>{
     socket.emit("webcam:enable");
+    $("#enableWebcam").addClass("d-none");
+    $("#disableWebcam").removeClass("d-none");
+  }
+
+  const muteMic = () =>{
+    socket.emit("webcam:unmuteMic");
+    $("#unmuteMic").removeClass("d-none");
+    $("#muteMic").addClass("d-none");
+  }
+
+  const unmuteMic = () =>{
+    socket.emit("webcam:muteMic");
+    $("#muteMic").removeClass("d-none");
+    $("#unmuteMic").addClass("d-none");
   }
 
   // Wenn die Fenster größe verändert wird, muss auch die Sidebar größe angepasst werden, da position: fixed
@@ -132,9 +149,24 @@ function SideBar(props) {
     });   
   });
 
+  //UnmuteMic Mikrofon symbol
+  //MuteMic Mikrofon durchgestrichen Symbol
+
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
       <div className='sidebar-bar-wrapper' style={{ width: props.sideBarWidth + 'px'}} >
+        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ enableWebcam }>
+          <RiCameraOffFill size={ 28 } />
+        </button>
+        <button id = "disableWebcam" title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip d-none" onClick={ disableWebcam }>
+          <RiCameraFill size={28}/>
+        </button>
+        <button id = "unmuteMic" title='Mikrofon deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip bi bi-camera-video" onClick={ unmuteMic }>
+          <BsFillMicFill size={ 28 } />
+        </button>
+        <button id = "muteMic" title='Mikrofon aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip d-none" onClick={ muteMic }>
+          <BsFillMicMuteFill size={ 28 } />
+        </button>
         <button title='Chat' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-chat") }>
           <span style={{ display: 'inline-block', position: 'relative' }}>
             <BsFillChatDotsFill textAnchor="middle" alignmentBaseline="middle" size={ 28 } />
@@ -149,18 +181,6 @@ function SideBar(props) {
         </button>
         <button title='Regeln' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-rules") }>
           <ImBook size={ 28 } />
-        </button>
-        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ enableWebcam }>
-        <RiCameraFill size={28}/>
-        </button>
-        <button title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ disableWebcam }>
-        <RiCameraOffFill size={ 28 } />
-        </button>
-        <button title='Mikrofon aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip bi bi-camera-video">
-        <BsFillMicFill size={ 28 } />
-        </button>
-        <button title='Mikrofon deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip">
-        <BsFillMicMuteFill size={ 28 } />
         </button>
         <span className='sidebar-btn-tooltip' title='Verlassen' data-toggle="tooltip" data-placement="right">
           <button id='leave-room-btn' className="sidebar-btn" data-toggle="modal" data-target="#leaveModal">

@@ -71,3 +71,7 @@
 #chat-unread-btn-icon {
     visibility: hidden;
 }
+
+.d-none{
+    display: none;
+}
