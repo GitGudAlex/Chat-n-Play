@@ -39,6 +39,8 @@ function UnoGameBoard(props) {
     // Socket.io
     const socket = useContext(SocketContext);
 
+    const dealCardAnimationTime = 400;
+
     const handleDealCardEvent = useCallback((data) => {
 
         data.card.socketId = data.socketId;
@@ -71,7 +73,7 @@ function UnoGameBoard(props) {
             activeCardsCounterRef.current += 1;
 
             // Animation abspielen
-            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, 500, 0, false, undefined, () => {
+            animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, dealCardAnimationTime, 0, false, undefined, () => {
                 
                 // Zuletzt gespielte Karten updaten
                 setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
@@ -130,7 +132,7 @@ function UnoGameBoard(props) {
                 let newCards = JSON.parse(JSON.stringify(handCardsRef.current));
 
                 // Animation abspielen
-                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, 400, 0, false, 'uno-deck-ref-scaling-' + data.card.id, () => {
+                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, dealCardAnimationTime, 0, false, 'uno-deck-ref-scaling-' + data.card.id, () => {
 
                     // Updated DOM
                     setHandCards(newCards);
@@ -174,7 +176,7 @@ function UnoGameBoard(props) {
                 let newCards = JSON.parse(JSON.stringify(handCardsRef.current));
 
                 // Animation abspielen
-                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, 400, undefined, true, 'uno-deck-ref-scaling-' + data.card.id, () => {
+                animateCard('uno-deal-deck-img', 'uno-deck-ref-' + data.card.id, data.card, dealCardAnimationTime, undefined, true, 'uno-deck-ref-scaling-' + data.card.id, () => {
                     
                     // Updated DOM
                     setHandCards(newCards);
@@ -273,7 +275,7 @@ function UnoGameBoard(props) {
         activeCardsCounterRef.current += 1;
 
         // Animation abspielen
-        animateCard(data.card.id + '-uno-card', 'uno-discard-deck-ref', data.card, 400, flip, scale, 'uno-my-card-wrapper-' + data.card.id, () => {
+        animateCard(data.card.id + '-uno-card', 'uno-discard-deck-ref', data.card, dealCardAnimationTime, flip, scale, 'uno-my-card-wrapper-' + data.card.id, () => {
             
             // Zuletzt gespielte Karten updaten
             setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));

@@ -95,7 +95,7 @@ const initUno = (hostId, socket, io) => {
             if(nextPlayer === undefined) return;
 
             // Alle Karten verteilt
-            if(nextPlayer.hand.getHandSize() === 20) {
+            if(nextPlayer.hand.getHandSize() === 7) {
                 setFirstPlayer(room, io);
 
             // Weitere Karte verteilen
