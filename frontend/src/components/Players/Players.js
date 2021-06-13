@@ -11,7 +11,7 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = true;
+    const useVideos = process.env.NODE_ENV === 'production';
     //process.env.NODE_ENV === 'production';
 
     // Router Stuff
