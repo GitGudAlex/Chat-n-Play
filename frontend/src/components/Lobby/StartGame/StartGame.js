@@ -53,6 +53,7 @@ function Chat(props) {
   const startGame = () => {
     socket.emit('room:start-game', (error) => {
       $('#start-game-error').text(error);
+      document.getElementById("game-content-wrapper").style.backgroundImage = "url(../../../img/background_white.png)";
 
       setTimeout(() => {
         $('#start-game-error').text('');

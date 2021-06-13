@@ -6,7 +6,7 @@ import StartGame from './StartGame/StartGame';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import ColorSelector from './ColorSelector/ColorSelector';
 
-//import './Lobby.css'
+import './Lobby.css'
 
 import SocketContext from '../../services/socket';
 
@@ -20,6 +20,8 @@ function Lobby(props) {
 
     // Wenn das Spiel gestarted wurde
     const handleGameStartedEvent = useCallback((data) => {
+
+    $('#game-content-wrapper').css({'background-image': 'url (../../img/background_9.png)'});
 
         history.push({
             pathname: '/game' + data.route,
