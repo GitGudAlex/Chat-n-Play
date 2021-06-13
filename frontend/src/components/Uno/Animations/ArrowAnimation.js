@@ -4,6 +4,9 @@ let lastDegrees = 0;
 
 const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, callback) => {
 
+    // Startzeitpunkt der Animation
+    let startTime;
+
     // Man muss nur einmal die Zeit messen
     let inactiveBlocker = false;
 
@@ -43,9 +46,6 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
     // Event handler initialisieren, falls man den Tab wechelt
     document.addEventListener('visibilitychange', tabInactiveCardHandler);
 
-    // Startzeitpunkt der Animation
-    let startTime;
-
     let endRotation;
     let sumRotation;
 
@@ -69,7 +69,7 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
 
         // Pfeil auf exakte Posiiton bringen
         $('#uno-player-arrow').css({ transform: 'rotate(' + endRotation + 'deg)' });
-        console.log("set: " + endRotation);
+
         lastDegrees = endRotation;
 
         callback();
@@ -82,8 +82,6 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
     } else {
         sumRotation = endRotation;
     }
-
-    console.log(sumRotation);
 
     // Animationsfunktion
     const easeInOutQuad = (x) => {

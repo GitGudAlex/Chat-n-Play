@@ -84,7 +84,7 @@ function UnoGameBoard(props) {
                         activeCardsRef.current = [];
                         setActiveCards([...activeCardsRef.current]);
                     }
-                }, 100);
+                }, 200);
             });
             
         // Ein Spieler bekommt eine Karte
@@ -137,7 +137,7 @@ function UnoGameBoard(props) {
                             activeCardsRef.current = [];
                             setActiveCards([...activeCardsRef.current]);
                     }
-                }, 100);
+                }, 200);
                 });
 
             // Ein Gegenspieler bekommt eine Karte
@@ -180,7 +180,7 @@ function UnoGameBoard(props) {
                             activeCardsRef.current = [];
                             setActiveCards([...activeCardsRef.current]);
                         }
-                    }, 100);
+                    }, 200);
                 });
             }
         }
@@ -197,21 +197,30 @@ function UnoGameBoard(props) {
         $('#uno-player-arrow').css({ opacity: '1' });
 
         setTimeout(() => {
-            animateArrow(3000, true, playerPosition, false,  () => {
-
-                setTimeout(() => {
-                    // Wenn die Animation zuende ist
-                    if(props.isHost) {
-                        socket.emit('uno:select-random-player-animation-ready');
-                    } 
-                }, [500]);
-            });
+            animateArrow(3000, true, playerPosition, false,  () => { });
         }, [700]);
-    }, [socket, props]);
+
+    }, [props]);
 
     const handleNextPlayerEvent = useCallback((data) => {
-        animateArrow(500, false, data.position, data.isReverse, () => {});
-    }, []);
+        animateArrow(500, false, data.position, data.isReverse, () => {
+
+            // Wenn man selbst dran ist hover Effekt beim Kartenstapel aktivieren
+            if(data.socketId === socket.id) {
+                $('#uno-deal-deck-img').hover(() => {
+                    $('#uno-deal-deck-img').css({ boxShadow: '0 0 10px rgb(88, 88, 88)' });
+                }, () => {
+                    $('#uno-deal-deck-img').css({ boxShadow: 'none' });
+                });
+
+            // Wenn man nicht dran ist => hover Effekt beim Kartenstapel deaktivieren
+            } else {
+                $('#uno-deal-deck-img').css({ boxShadow: 'none' });
+                $('#uno-deal-deck-img').unbind('mouseenter mouseleave')
+
+            }
+        });
+    }, [socket.id]);
 
     const handleCardPlayedEvent = useCallback((data) => {
         let flip = 0;
@@ -285,6 +294,50 @@ function UnoGameBoard(props) {
         $('.uno-color-selection-item').css({ height: '85px', width: '85px' });
     }, []);
 
+    const handleSelctedColorEvent = useCallback((data) => {
+        let path;
+
+        // +4
+        if(data.mode === 5) {
+            if(data.color === 0) {
+                path = '60.png';
+
+            } else if(data.color === 1) {
+                path = '61.png';
+
+            } else if(data.color === 2) {
+                path = '62.png';
+
+            } else if(data.color === 3) {
+                path = '63.png';
+
+            }
+
+        // +2
+        } else if(data.mode === 6) {
+            if(data.color === 0) {
+                path = '70.png';
+
+            } else if(data.color === 1) {
+                path = '71.png';
+
+            } else if(data.color === 2) {
+                path = '72.png';
+
+            } else if(data.color === 3) {
+                path = '73.png';
+
+            }
+        }
+
+        setLastCards((cards) => {
+            cards[cards.length - 1].path = path;
+            console.log("s " + cards.length);
+            console.log("setting color card");
+            return JSON.parse(JSON.stringify(cards));
+        });
+    }, []);
+
     useEffect(() => {
 
         // Wenn jemand eine Karte zieht
@@ -302,14 +355,18 @@ function UnoGameBoard(props) {
         // Wenn man eine Farbeaussuchen Karte spielt => Farbauswahl anzeigen
         socket.on('uno:get-color', handleGetColorEvent);
 
+        // Die ausgewählte Farbe anzeigen
+        socket.on('uno:color-selected', handleSelctedColorEvent);
+
         return () => {
             socket.off('uno:deal-card', handleDealCardEvent);
             socket.off('uno:set-first-player', handleSetFirstPlayerEvent);
             socket.off('uno:set-next-player', handleNextPlayerEvent);
             socket.off('uno:card-played', handleCardPlayedEvent);
             socket.off('uno:get-color', handleGetColorEvent);
+            socket.off('uno:color-selected', handleSelctedColorEvent);
         }
-    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent, handleGetColorEvent]);
+    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent, handleGetColorEvent, handleSelctedColorEvent]);
 
     // Übergibt die Karte dem Server
     const submitCard = (index) => {
@@ -366,11 +423,12 @@ function UnoGameBoard(props) {
 
                             // Oberste Karte
                             if(card.id === lastCard.current.id) {
+
                                 // Sicher gehen, dass diese oben angezeigt wird
-                                return <UnoCard key={ card.id + '-discard' } card={ card } zIndex={ index + 2 } />
+                                return <UnoCard key={ card.id + '-' + card.path + '-discard' } card={ card } zIndex={ index + 2 } />
                             }
 
-                            return <UnoCard key={ card.id + '-discard' } card={ card } zIndex={ index + 2 } />
+                            return <UnoCard key={ card.id + '-' + card.path + '-discard' } card={ card } zIndex={ index + 2 } />
                         })
                     }
                     <div id='uno-color-selection'>

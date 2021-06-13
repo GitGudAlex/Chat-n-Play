@@ -34,6 +34,8 @@ module.exports = (io, socket, data) => {
     // Speichern dass eine Farbe ausgesucht wurde
     room.customColor = true;
     
+    io.in(room.roomId).emit('uno:color-selected', { color: data.color, mode: room.moveType });
+
     // Bei +4 Karte
     if(room.moveType === 5) {
         room.moveType = 3;
@@ -43,7 +45,7 @@ module.exports = (io, socket, data) => {
         room.moveType = 1;
 
     }
-    
+
     // Nächsten Spieler setzten
     setNextPlayer(io, room.roomId);
 }

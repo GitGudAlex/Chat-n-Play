@@ -133,7 +133,33 @@ const setFirstPlayer = (room, players, io) => {
 
         // Allen Spielern die SocketId des nächsten Spielers schicken
         io.in(firstPlayer.roomId).emit('uno:set-first-player', { socketId: firstPlayer.socketId });
+
+        setTimeout(() => {
+            setFirstCard(io, room);
+
+        }, 5000);
     }, 1000);
+}
+
+const setFirstCard = (io, room) => {
+
+    // Karte vom Deck nehmen
+    let card = room.deck.takeCard();
+    room.cardOnBoard = card;
+
+    // socketId = 0 heißt, dass die Karte vom kartenstapel kommt (Für die Animation wichtig)
+    // Sonst handelt es sich hierbei um eine SocketId um die Animation richtig abzuspielen
+    io.in(room.roomId).emit('uno:deal-card', { card: card, socketId: 0 });
+
+    setTimeout(() => {
+        // Wenn es sich um eine Spezial Karte handelt -> neue Karte legen
+        if(card.isSpecial()) {
+            setFirstCard(io, room);
+
+        // Sonst kann der erste Spieler anfangen zu Spielen
+        }
+
+    }, 2000);
 }
 
 // Reihnfolge der Positionen
