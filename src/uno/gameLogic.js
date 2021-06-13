@@ -86,7 +86,7 @@ const initUno = (hostId, socket, io) => {
             let nextPlayer = getNextPlayer(room.roomId);
 
             // Alle Karten verteilt
-            if(nextPlayer.hand.getHandSize() === 7) {
+            if(nextPlayer.hand.getHandSize() === 20) {
                 setFirstPlayer(room, players, io);
 
             // Weitere Karte verteilen

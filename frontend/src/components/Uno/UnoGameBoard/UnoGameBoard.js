@@ -19,6 +19,8 @@ function UnoGameBoard(props) {
 
     // Die zuletzt gespielten karten (welche auf dem Kartenstapel liegen)
     const [lastCards, setLastCards] = useState([]);
+    const lastCardsRef = useRef([]);
+
     const lastCard = useRef(0);
 
     // Karten für die animationen
@@ -48,7 +50,16 @@ function UnoGameBoard(props) {
             // Animations Karte hinzufügen
             let card = <UnoCard key={ data.card.id + '-animation' } card={ data.card } hidden={ true } animate={ true } />
 
-            // Die zuletzt gespielete Karte extra speichern
+            // Die zuletzt gespieleten Karten speichern
+            if(lastCardsRef.current.length === 8) {
+                lastCardsRef.current.slice(1, lastCardsRef.current.length);
+                lastCardsRef.current.push(data.card);
+
+            } else {
+                lastCardsRef.current.push(data.card);
+
+            }
+
             lastCard.current = data.card;
 
             activeCardsRef.current.push(card);
@@ -60,16 +71,7 @@ function UnoGameBoard(props) {
             animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, 500, 0, false, undefined, () => {
                 
                 // Zuletzt gespielte Karten updaten
-                setLastCards(cards => {
-                    if(cards.length === 8) {
-                        return [...cards.slice(1, cards.length), data.card]
-    
-                    } else {
-                        return [...cards, data.card]
-    
-                    }
-                    
-                });
+                setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
 
                 // Flackern der Karten verhindern
                 setTimeout(() => {
@@ -243,7 +245,16 @@ function UnoGameBoard(props) {
         // Animations Karte hinzufügen
         let card = <UnoCard key={ data.card.id + '-animation-discard' } card={ data.card } hidden={ true } animate={ true } />
 
-        // Die zuletzt gespielte Karte extra speichern
+        // Die zuletzt gespieleten Karten speichern
+        if(lastCardsRef.current.length === 8) {
+            lastCardsRef.current.slice(1, lastCardsRef.current.length);
+            lastCardsRef.current.push(data.card);
+
+        } else {
+            lastCardsRef.current.push(data.card);
+
+        }
+
         lastCard.current = data.card;
 
         activeCardsRef.current.push(card);
@@ -255,16 +266,7 @@ function UnoGameBoard(props) {
         animateCard(data.card.id + '-uno-card', 'uno-discard-deck-ref', data.card, 400, flip, scale, 'uno-my-card-wrapper-' + data.card.id, () => {
             
             // Zuletzt gespielte Karten updaten
-            setLastCards(cards => {
-                if(cards.length === 8) {
-                    return [...cards.slice(1, cards.length), data.card]
-
-                } else {
-                    return [...cards, data.card]
-
-                }
-                
-            });
+            setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
 
             // Karte aus dem Deck entfernen
             let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
@@ -330,12 +332,21 @@ function UnoGameBoard(props) {
             }
         }
 
-        setLastCards((cards) => {
-            cards[cards.length - 1].path = path;
-            console.log("s " + cards.length);
-            console.log("setting color card");
-            return JSON.parse(JSON.stringify(cards));
-        });
+        // Die letzte Karte abspeichern
+        let newCard = lastCardsRef.current[lastCardsRef.current.length - 1];
+
+        // Die Karte anpassen
+        newCard.path = path;
+
+        // Die Karte aus dem Array löschen
+        lastCardsRef.current.pop();
+
+        // Die neue Karte wieder hinzufügen
+        lastCardsRef.current.push(newCard);
+
+        // DOM Update
+        setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
+
     }, []);
 
     useEffect(() => {
