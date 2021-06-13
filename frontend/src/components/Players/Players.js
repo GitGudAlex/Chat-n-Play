@@ -11,7 +11,8 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = process.env.NODE_ENV === 'production';
+    const useVideos = true;
+    //process.env.NODE_ENV === 'production';
 
     // Router Stuff
     const history = useHistory();
@@ -47,7 +48,7 @@ function Players(props) {
      */
 
     useLayoutEffect(() => {
-        setTimeout(clickEvent, 3000);
+        setTimeout(clickEvent, 2000);
         let constraints = {
             'video': true,
             'audio': true
@@ -125,29 +126,41 @@ function Players(props) {
                         addVideoStream(otherSocketId, userVideoStream);
                     });
                 });
-                
+
                 socket.on("room:joined", ()=>{
-                    setTimeout(clickEvent, 3000);
+                    setTimeout(clickEvent, 2000);
                 });
 
                 //Kamera deaktivieren
                 socket.on("webcam:disabled",() =>{
                     console.log("webcam:disabled");
-                    stream.getTracks().forEach(function(track) {
+                    stream.getVideoTracks().forEach(function(track) {
                         track.stop();
                       });
                 });
 
+                socket.on("webcam:micMuted", () =>{
+                    console.log("webcam:micMuted");
+                    stream.getAudioTracks().forEach(function(track){
+                        track.stop();
+                    });
+                });
+
+                socket.on("webcam:micUnmuted", () =>{
+                    clickEvent();
+                });
+
             // Kamera wird nicht erlaubt
             }).catch(function(err) {
-                alert("Bitte aktiviere deine Kamera oder nur dein Mikrofon um spielen zu können. Danach bitte auf das Kamera Symbol klicken zum aktualisieren.");
+                //Beim joinen der Lobby
+                alert("Bitte aktiviere deine Kamera oder dein Mikrofon um spielen zu können.");
 
                 //Nur nach Mikrofon fragen
                 constraints = {
                     'video': false,
                     'audio': true
                 }
-
+    
                 navigator.mediaDevices.getUserMedia(constraints).then(stream => {
                     let peerOptions;
 
@@ -200,7 +213,8 @@ function Players(props) {
                 });
 
                 });
-
+                //Jede 10 Sekunden nach Mikrofon fragen, solange noch nichts freigegeben wurde
+                setTimeout(clickEvent,10000);
             });
         }
         }
