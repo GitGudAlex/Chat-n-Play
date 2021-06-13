@@ -33,6 +33,9 @@ function UnoGameBoard(props) {
 
     const activeCardsCounterRef = useRef(0);
 
+    // Die SpielerId von dem Spieler der das Spiel anfängt
+    const startPlayerIdRef = useRef(0);
+
     // Socket.io
     const socket = useContext(SocketContext);
 
@@ -44,7 +47,7 @@ function UnoGameBoard(props) {
         if(data.socketId === 0) {
 
             // Zufällige Rotation zwischen -15 und + 15 Grad
-            let rotation = Math.floor(Math.random() * 30) - 15; 
+            let rotation = Math.floor(Math.random() * 40) - 20; 
             data.card.rotation = rotation;
             
             // Animations Karte hinzufügen
@@ -73,6 +76,11 @@ function UnoGameBoard(props) {
                 // Zuletzt gespielte Karten updaten
                 setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
 
+                // Wenn keine Spezial Karte => Hover effekt aktivieren für abhebe deck
+                if(data.card.color !== 4 && data.card.value < 10 && startPlayerIdRef.current === socket.id) {
+                    $('#uno-deal-deck-img').addClass('unoDeckHover');
+                }
+
                 // Flackern der Karten verhindern
                 setTimeout(() => {
                     let index = activeCardsRef.current.findIndex(c => c.props.card.id === data.card.id);
@@ -94,6 +102,9 @@ function UnoGameBoard(props) {
 
             // Der eigene Spieler bekommt eine Karte
             if(data.socketId === socket.id) {
+
+                $('#uno-deal-deck-img').removeClass('unoDeckHover');
+                $('#uno-deal-deck-img').addClass('unoDeckNoHover');
 
                 // Damit man den Zug beenden kann (nicht anzigen bei +2 / +4 zieh Karten)
                 if(data.normalTurn === true) {
@@ -191,6 +202,8 @@ function UnoGameBoard(props) {
     // Setzt am Anfang den Spieler
     const handleSetFirstPlayerEvent = useCallback((data) => {
 
+        startPlayerIdRef.current = data.socketId;
+
         // Spieler Position bekommen
         let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
         let playerPosition = props.players[playerIndex].position;
@@ -209,16 +222,13 @@ function UnoGameBoard(props) {
 
             // Wenn man selbst dran ist hover Effekt beim Kartenstapel aktivieren
             if(data.socketId === socket.id) {
-                $('#uno-deal-deck-img').hover(() => {
-                    $('#uno-deal-deck-img').css({ boxShadow: '0 0 10px rgb(88, 88, 88)' });
-                }, () => {
-                    $('#uno-deal-deck-img').css({ boxShadow: 'none' });
-                });
+                $('#uno-deal-deck-img').removeClass('unoDeckHover');
+                $('#uno-deal-deck-img').addClass('unoDeckHover');
 
             // Wenn man nicht dran ist => hover Effekt beim Kartenstapel deaktivieren
             } else {
-                $('#uno-deal-deck-img').css({ boxShadow: 'none' });
-                $('#uno-deal-deck-img').unbind('mouseenter mouseleave')
+                $('#uno-deal-deck-img').removeClass('unoDeckHover');
+                $('#uno-deal-deck-img').addClass('unoDeckNoHover');
 
             }
         });
@@ -239,7 +249,7 @@ function UnoGameBoard(props) {
         }
 
         // Zufällige Rotation zwischen -15 und + 15 Grad
-        let rotation = Math.floor(Math.random() * 30) - 15; 
+        let rotation = Math.floor(Math.random() * 40) - 20; 
         data.card.rotation = rotation;
         
         // Animations Karte hinzufügen
@@ -423,7 +433,7 @@ function UnoGameBoard(props) {
                 </div>
                 <div id='uno-player-arrow'>
                     <IconContext.Provider value={{ size : '80px' }}>
-                        <BsArrowRight style={{ position: 'absolute', marginLeft: '30px' }} />
+                        <BsArrowRight style={{ position: 'absolute', left: '-10px' }} />
                     </IconContext.Provider>
                     <GoPrimitiveDot style={{ position: 'absolute' }} size = '22px' />
                 </div>

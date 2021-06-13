@@ -5,7 +5,7 @@ let lastDegrees = 0;
 const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, callback) => {
 
     // Startzeitpunkt der Animation
-    let startTime;
+    let startTime = 0;
 
     // Man muss nur einmal die Zeit messen
     let inactiveBlocker = false;
@@ -89,7 +89,7 @@ const animateArrow = (duration, isPlayerSelection, toPlayerPosition, isReverse, 
     }
 
     const initAnimation = (timestamp) => {
-        startTime = timestamp;
+        startTime += timestamp;
 
         $('#uno-player-arrow').css({ transform: 'rotate(' + lastDegrees + 'deg)' });
 

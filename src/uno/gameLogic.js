@@ -18,6 +18,9 @@ const initUno = (hostId, socket, io) => {
     // Raum des Spiels bekommen
     const room = getRoom(player.roomId);
 
+    // Falls der Spieler in keinem Raum ist
+    if(room === undefined) return;
+
     // Neue Attribute für den Raum setzten
 
     // Das Kartendeck
@@ -69,6 +72,9 @@ const initUno = (hostId, socket, io) => {
     // Jedem Spieler 7 Karten geben
     const players = getPlayersInRoom(player.roomId);
 
+    // Wenn Raum mitlerweile gelöscht wurde
+    if(players === undefined) return;
+
     // Die Hand erstellen
     for(let player of players) {
         player['hand'] = new Hand();
@@ -85,9 +91,12 @@ const initUno = (hostId, socket, io) => {
             // Nächster Spieler
             let nextPlayer = getNextPlayer(room.roomId);
 
+            // Falls Raum geschlossen wurde
+            if(nextPlayer === undefined) return;
+
             // Alle Karten verteilt
             if(nextPlayer.hand.getHandSize() === 20) {
-                setFirstPlayer(room, players, io);
+                setFirstPlayer(room, io);
 
             // Weitere Karte verteilen
             } else {
@@ -120,9 +129,11 @@ const dealCard = (io, room, player, normalTurn) => {
         
 }
 
-const setFirstPlayer = (room, players, io) => {
+const setFirstPlayer = (room, io) => {
 
     setTimeout(() => {
+        let players = getPlayersInRoom(room.roomId);
+
         // Zufällig den ersten Spieler auswählen
         let firstPlayer = players[Math.floor(Math.random() * players.length)];
 
@@ -159,7 +170,7 @@ const setFirstCard = (io, room) => {
         // Sonst kann der erste Spieler anfangen zu Spielen
         }
 
-    }, 2000);
+    }, 1200);
 }
 
 // Reihnfolge der Positionen
@@ -168,6 +179,9 @@ const order = [0, 2, 1, 3]
 const getNextPlayer = (roomId) => {
     
     const room = getRoom(roomId);
+
+    // Falls Raum geschlossen
+    if(room === undefined) return;
 
     // Ob die Reihnfolge zurzeit umgekehrt ist
     let isReverse = room.isReverse;
@@ -236,11 +250,17 @@ const setNextPlayer = (io, roomId) => {
 
     nextPlayer = getNextPlayer(roomId);
 
+    // Falls Raum geschlossen wurde
+    if(nextPlayer === undefined) return;
+
     let room = getRoom(roomId);
 
     // Spieler muss aussetzten
     if(room.isSkip === true) {
         nextPlayer = getNextPlayer(roomId);
+
+        // Falls Raum geschlossen wurde
+        if(nextPlayer === undefined) return;
 
         room.isSkip = false;
         room.moveType = 1;

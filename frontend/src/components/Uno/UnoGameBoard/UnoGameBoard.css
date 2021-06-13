@@ -181,3 +181,20 @@
     transition: all 0.15s ease;
     border-radius: 10px;
 }
+
+.unoDeckNoHover {
+    cursor: default;
+}
+
+.unoDeckHover:hover {
+    box-shadow: 0 0 10px rgb(88, 88, 88);
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.unoDeckHover:active {
+    cursor: -moz-grabbing !important;
+    cursor: -webkit-grabbing !important;
+    cursor: grabbing !important;
+}
