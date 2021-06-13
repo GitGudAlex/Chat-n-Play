@@ -5,14 +5,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 
 .start-game-text {
     color: #474747;
+    font-size: larger;
 }
 
 .start-game-btn {
-    margin-top: 14px;
     text-align: center;
 }
 
@@ -22,7 +23,13 @@
     border-radius: 10px;
 }
 
+.speechbubble{
+    height: auto;
+    width: 100%;
+    max-width: 400px;
+}
+
 #start-game-error {
-    margin-top: 18px;
+    margin-top: 12px;
     height: 20px;
 }

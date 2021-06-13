@@ -80,8 +80,8 @@ function WinnerDisplay(props) {
                     <p className='endgame-modal-body-text w-100'>Möchtest du noch ein Spiel starten oder den Raum beenden?</p>
                 </div>
                 <div id='endgame-modal-footer' className="modal-footer">
-                    <button type="button" className="btn btn-primary" onClick={ newGame }>Neues Spiel</button>
-                    <button type="button" className="btn btn-primary" onClick={ closeRoom }>Raum beenden</button>
+                    <button type="button" className="btn btn-dark" onClick={ newGame }>Neues Spiel</button>
+                    <button type="button" className="btn btn-dark" onClick={ closeRoom }>Raum beenden</button>
                 </div>
             </div>
         );
@@ -109,7 +109,7 @@ function WinnerDisplay(props) {
                 <p className='endgame-modal-body-text'>Der Host wird ein neues Spiel starten oder den Raum beenden</p>
             </div>
             <div id='endgame-modal-footer' className="modal-footer">
-                <button type="button" className="btn btn-primary" onClick={ leaveRoom }>Raum verlassen</button>
+                <button type="button" className="btn btn-dark" onClick={ leaveRoom }>Raum verlassen</button>
             </div>
         </div>
     );

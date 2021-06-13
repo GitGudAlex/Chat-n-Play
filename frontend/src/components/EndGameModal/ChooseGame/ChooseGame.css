@@ -7,21 +7,53 @@
 }
 
 .endgame-modal-game {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 
     padding: 4px;
     border-radius: 4px;
+
+    font-family: 'coffee+tea demo';
+    font-size: 28px;
     
     background-clip: content-box;
-    background-color: rgb(78, 80, 189);
+    opacity: 80%;
 
     color: white;
 }
 
-.endgame-modal-game:hover {
+#slf{
+    background-color: #0b97f0;
+}
+
+#ludo{
+    background-color: #00bf02 ;
+}
+
+#uno{
+    background-color: #ff3030;
+}
+
+#slf:hover {
     padding: 0px;
-    background-color: rgb(55, 57, 185);
+    background-color:#0b97f0 ;
+    opacity: 100%;
+
+    cursor: pointer;
+}
+
+#ludo:hover {
+    padding: 0px;
+    background-color:#00bf02;
+    opacity: 100%;
+
+    cursor: pointer;
+}
+
+#uno:hover {
+    padding: 0px;
+    background-color:#ff3030;
+    opacity: 100%;
 
     cursor: pointer;
 }

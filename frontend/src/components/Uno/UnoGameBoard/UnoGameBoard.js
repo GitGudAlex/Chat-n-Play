@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import './UnoGameBoard.css';
 
 import { BsArrowRight } from 'react-icons/bs';
+import { GoPrimitiveDot } from 'react-icons/go';
 import { IconContext } from "react-icons";
 
 import $ from 'jquery';
@@ -18,6 +19,8 @@ function UnoGameBoard(props) {
 
     // Die zuletzt gespielten karten (welche auf dem Kartenstapel liegen)
     const [lastCards, setLastCards] = useState([]);
+    const lastCardsRef = useRef([]);
+
     const lastCard = useRef(0);
 
     // Karten für die animationen
@@ -47,7 +50,16 @@ function UnoGameBoard(props) {
             // Animations Karte hinzufügen
             let card = <UnoCard key={ data.card.id + '-animation' } card={ data.card } hidden={ true } animate={ true } />
 
-            // Die zuletzt gespielete Karte extra speichern
+            // Die zuletzt gespieleten Karten speichern
+            if(lastCardsRef.current.length === 8) {
+                lastCardsRef.current.slice(1, lastCardsRef.current.length);
+                lastCardsRef.current.push(data.card);
+
+            } else {
+                lastCardsRef.current.push(data.card);
+
+            }
+
             lastCard.current = data.card;
 
             activeCardsRef.current.push(card);
@@ -59,16 +71,7 @@ function UnoGameBoard(props) {
             animateCard('uno-deal-deck-img', 'uno-discard-deck-ref', data.card, 500, 0, false, undefined, () => {
                 
                 // Zuletzt gespielte Karten updaten
-                setLastCards(cards => {
-                    if(cards.length === 8) {
-                        return [...cards.slice(1, cards.length), data.card]
-    
-                    } else {
-                        return [...cards, data.card]
-    
-                    }
-                    
-                });
+                setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
 
                 // Flackern der Karten verhindern
                 setTimeout(() => {
@@ -83,7 +86,7 @@ function UnoGameBoard(props) {
                         activeCardsRef.current = [];
                         setActiveCards([...activeCardsRef.current]);
                     }
-                }, 100);
+                }, 200);
             });
             
         // Ein Spieler bekommt eine Karte
@@ -91,6 +94,12 @@ function UnoGameBoard(props) {
 
             // Der eigene Spieler bekommt eine Karte
             if(data.socketId === socket.id) {
+
+                // Damit man den Zug beenden kann (nicht anzigen bei +2 / +4 zieh Karten)
+                if(data.normalTurn === true) {
+                    $('#unoEndTurnBtn').css({ visibility: 'visible' });
+                    $('#unoEndTurnBtn').css({ opacity: '1' });
+                }
 
                 // Animations Karte hinzufügen
                 let card = <UnoCard key={ data.card.id + '-animation' } card={ data.card } hidden={ true } animate={ true } />
@@ -130,7 +139,7 @@ function UnoGameBoard(props) {
                             activeCardsRef.current = [];
                             setActiveCards([...activeCardsRef.current]);
                     }
-                }, 100);
+                }, 200);
                 });
 
             // Ein Gegenspieler bekommt eine Karte
@@ -173,7 +182,7 @@ function UnoGameBoard(props) {
                             activeCardsRef.current = [];
                             setActiveCards([...activeCardsRef.current]);
                         }
-                    }, 100);
+                    }, 200);
                 });
             }
         }
@@ -190,21 +199,30 @@ function UnoGameBoard(props) {
         $('#uno-player-arrow').css({ opacity: '1' });
 
         setTimeout(() => {
-            animateArrow(3000, true, playerPosition, false,  () => {
-
-                setTimeout(() => {
-                    // Wenn die Animation zuende ist
-                    if(props.isHost) {
-                        socket.emit('uno:select-random-player-animation-ready');
-                    } 
-                }, [500]);
-            });
+            animateArrow(3000, true, playerPosition, false,  () => { });
         }, [700]);
-    }, [socket, props]);
+
+    }, [props]);
 
     const handleNextPlayerEvent = useCallback((data) => {
-        animateArrow(500, false, data.position, data.isReverse, () => {});
-    }, []);
+        animateArrow(500, false, data.position, data.isReverse, () => {
+
+            // Wenn man selbst dran ist hover Effekt beim Kartenstapel aktivieren
+            if(data.socketId === socket.id) {
+                $('#uno-deal-deck-img').hover(() => {
+                    $('#uno-deal-deck-img').css({ boxShadow: '0 0 10px rgb(88, 88, 88)' });
+                }, () => {
+                    $('#uno-deal-deck-img').css({ boxShadow: 'none' });
+                });
+
+            // Wenn man nicht dran ist => hover Effekt beim Kartenstapel deaktivieren
+            } else {
+                $('#uno-deal-deck-img').css({ boxShadow: 'none' });
+                $('#uno-deal-deck-img').unbind('mouseenter mouseleave')
+
+            }
+        });
+    }, [socket.id]);
 
     const handleCardPlayedEvent = useCallback((data) => {
         let flip = 0;
@@ -213,6 +231,11 @@ function UnoGameBoard(props) {
         if(data.socketId === socket.id) {
             flip = -180;
             scale = false;
+
+            if($('#unoEndTurnBtn').is(":visible")) {
+                $('#unoEndTurnBtn').css({ visibility: 'hidden' });
+                $('#unoEndTurnBtn').css({ opacity: '0' });
+            }
         }
 
         // Zufällige Rotation zwischen -15 und + 15 Grad
@@ -222,7 +245,16 @@ function UnoGameBoard(props) {
         // Animations Karte hinzufügen
         let card = <UnoCard key={ data.card.id + '-animation-discard' } card={ data.card } hidden={ true } animate={ true } />
 
-        // Die zuletzt gespielte Karte extra speichern
+        // Die zuletzt gespieleten Karten speichern
+        if(lastCardsRef.current.length === 8) {
+            lastCardsRef.current.slice(1, lastCardsRef.current.length);
+            lastCardsRef.current.push(data.card);
+
+        } else {
+            lastCardsRef.current.push(data.card);
+
+        }
+
         lastCard.current = data.card;
 
         activeCardsRef.current.push(card);
@@ -234,16 +266,7 @@ function UnoGameBoard(props) {
         animateCard(data.card.id + '-uno-card', 'uno-discard-deck-ref', data.card, 400, flip, scale, 'uno-my-card-wrapper-' + data.card.id, () => {
             
             // Zuletzt gespielte Karten updaten
-            setLastCards(cards => {
-                if(cards.length === 8) {
-                    return [...cards.slice(1, cards.length), data.card]
-
-                } else {
-                    return [...cards, data.card]
-
-                }
-                
-            });
+            setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
 
             // Karte aus dem Deck entfernen
             let playerIndex = props.players.findIndex(p => p.socketId === data.socketId);
@@ -266,7 +289,65 @@ function UnoGameBoard(props) {
                 setActiveCards([...activeCardsRef.current]);
             }
         });
-    }, [socket.id, props.players]); 
+    }, [socket.id, props.players]);
+
+    const handleGetColorEvent = useCallback(() => {
+        $('#uno-color-selection').css({ visibility: 'visible', height: '230px', width: '230px' });
+        $('.uno-color-selection-item').css({ height: '85px', width: '85px' });
+    }, []);
+
+    const handleSelctedColorEvent = useCallback((data) => {
+        let path;
+
+        // +4
+        if(data.mode === 5) {
+            if(data.color === 0) {
+                path = '60.png';
+
+            } else if(data.color === 1) {
+                path = '61.png';
+
+            } else if(data.color === 2) {
+                path = '62.png';
+
+            } else if(data.color === 3) {
+                path = '63.png';
+
+            }
+
+        // +2
+        } else if(data.mode === 6) {
+            if(data.color === 0) {
+                path = '70.png';
+
+            } else if(data.color === 1) {
+                path = '71.png';
+
+            } else if(data.color === 2) {
+                path = '72.png';
+
+            } else if(data.color === 3) {
+                path = '73.png';
+
+            }
+        }
+
+        // Die letzte Karte abspeichern
+        let newCard = lastCardsRef.current[lastCardsRef.current.length - 1];
+
+        // Die Karte anpassen
+        newCard.path = path;
+
+        // Die Karte aus dem Array löschen
+        lastCardsRef.current.pop();
+
+        // Die neue Karte wieder hinzufügen
+        lastCardsRef.current.push(newCard);
+
+        // DOM Update
+        setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
+
+    }, []);
 
     useEffect(() => {
 
@@ -282,13 +363,21 @@ function UnoGameBoard(props) {
         // Wenn eine Karte gespielt wurde
         socket.on('uno:card-played', handleCardPlayedEvent);
 
+        // Wenn man eine Farbeaussuchen Karte spielt => Farbauswahl anzeigen
+        socket.on('uno:get-color', handleGetColorEvent);
+
+        // Die ausgewählte Farbe anzeigen
+        socket.on('uno:color-selected', handleSelctedColorEvent);
+
         return () => {
             socket.off('uno:deal-card', handleDealCardEvent);
             socket.off('uno:set-first-player', handleSetFirstPlayerEvent);
             socket.off('uno:set-next-player', handleNextPlayerEvent);
             socket.off('uno:card-played', handleCardPlayedEvent);
+            socket.off('uno:get-color', handleGetColorEvent);
+            socket.off('uno:color-selected', handleSelctedColorEvent);
         }
-    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent]);
+    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent, handleGetColorEvent, handleSelctedColorEvent]);
 
     // Übergibt die Karte dem Server
     const submitCard = (index) => {
@@ -309,31 +398,56 @@ function UnoGameBoard(props) {
         socket.emit('uno:draw-card');
     }
 
+    const endTurn = () => {
+        socket.emit('uno:end-turn');
+
+        $('#unoEndTurnBtn').css({ visibility: 'hidden' });
+        $('#unoEndTurnBtn').css({ opacity: '0' });
+    }
+
+    const setColor = (color) => {
+        socket.emit('uno:set-color', { color: color });
+
+        $('#uno-color-selection').css({ visibility: 'hidden', height: '0px', width: '0px' });
+        $('.uno-color-selection-item').css({ height: '0px', width: '0px' });
+    }
+
     return (
         <div id='uno-gameboard' >
+            <div id='unoBtnContainer'>
+                <input id='unoEndTurnBtn' type='button' value='Zug Beenden' onClick={ endTurn } />
+            </div>
             <div id='uno-deck-wrapper'>
                 <div id='uno-deal-deck'>
                     <img id='uno-deal-deck-img' className='uno-card' src={ '/UnoCardsImages/-1.png' } alt={ 'Rückseite einer Karte' } draggable="false" onClick={ drawCard }/>
                 </div>
                 <div id='uno-player-arrow'>
-                    <IconContext.Provider value={{ size: '80px' }}>
-                        <BsArrowRight style={{ marginLeft: '55px' }} />
+                    <IconContext.Provider value={{ size : '80px' }}>
+                        <BsArrowRight style={{ position: 'absolute', marginLeft: '30px' }} />
                     </IconContext.Provider>
+                    <GoPrimitiveDot style={{ position: 'absolute' }} size = '22px' />
                 </div>
                 <div id='uno-discard-deck'>
                     <img id='uno-discard-deck-ref' className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='Referenz Bild' />
                     {
-                        lastCards.map(card => {
+                        lastCards.map((card, index) => {
 
                             // Oberste Karte
                             if(card.id === lastCard.current.id) {
+
                                 // Sicher gehen, dass diese oben angezeigt wird
-                                return <UnoCard key={ card.id + '-discard' } card={ card } onTop={ true } />
+                                return <UnoCard key={ card.id + '-' + card.path + '-discard' } card={ card } zIndex={ index + 2 } />
                             }
 
-                            return <UnoCard key={ card.id + '-discard' } card={ card } />
+                            return <UnoCard key={ card.id + '-' + card.path + '-discard' } card={ card } zIndex={ index + 2 } />
                         })
                     }
+                    <div id='uno-color-selection'>
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(0) } />
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(1) } />
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(2) } />
+                        <input className='uno-color-selection-item' type='button' onClick={ () => setColor(3) } />
+                    </div>
                 </div>
             </div>
             {
@@ -361,10 +475,6 @@ function UnoGameBoard(props) {
                     return card;
                 })
             }
-            {/*
-            <div id='from' className='marker'></div>
-            <div id='to' className='marker'></div>
-            */}
         </div>
     );
 }

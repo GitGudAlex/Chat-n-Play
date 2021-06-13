@@ -5,6 +5,7 @@ import './GameCategoriesList.css'
 
 import SocketContext from '../../../services/socket';
 import GameCategory from './GameCategory/GameCategory';
+import GameCategoryButton from './GameCategoryButton/GameCategoryButton';
 
 function GameCategoriesList() {
 
@@ -55,28 +56,28 @@ function GameCategoriesList() {
         }
     }, [socket, handleRoomCreated])
     
-    const setGameCategory = (gameCategory) => {
+    const setActiveGameCategory = (gameCategory) => {
         setActiveCategory(gameCategory);
+
     }
 
 
     return (
         <div>
-            <nav className="nav nav-pills flex-column flex-sm-row">
+            <div className='game-categories-navbar'>
                 { 
                     gameCategories.map(gameCategory => {
                         if(activeCategory === 0 && gameCategory.gameCategoryId === 0) {
                             setActiveCategory(gameCategory);
                         }
 
-                        return <button key = { gameCategory.gameCategoryId }
-                                    className="flex-sm-fill text-sm-center nav-link"
-                                    onClick={ () => setGameCategory(gameCategory ) } >
-                                        { gameCategory.gameCategoryName }
-                                </button>
+                        return <GameCategoryButton key={ gameCategory.gameCategoryId }
+                                    category={ gameCategory }
+                                    onClickHandler={ setActiveGameCategory } 
+                                    activeCategory={ activeCategory }/>
                     })
                 }
-            </nav>
+            </div>
             <div>
                 <GameCategory gameCategoryId = { activeCategory.gameCategoryId } 
                     color = { activeCategory.color } 

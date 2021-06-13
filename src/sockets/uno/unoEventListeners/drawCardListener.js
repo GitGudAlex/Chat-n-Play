@@ -27,42 +27,47 @@ module.exports = (io, socket) => {
     // Spiel noch nicht angefangen
     if(room.cardOnBoard === 0) return;
 
-    if(player.active === false) return;
+    // Nur einemal eine Karte ziehen
+    if(player.didDrawCard === true) return;
 
-    // Spieler kann nicht mehr interagieren
-    player.active = false;
+    player.didDrawCard = true;
 
-    const drawCard = (numCards) => {
+    // normalTurn = true, wenn man normal eine Karte vom Kartenstapel zieht => um 'Zug beenden' Btn anzuzeigne
+    const drawCard = (numCards, normalTurn) => {
 
         // Karte ziehen
-        dealCard(io, room, player);
+        dealCard(io, room, player, normalTurn);
 
         // noch eine Karte ziehen
         if(--numCards !== 0) {
             setTimeout(() => {
                 drawCard(numCards);
+
             }, 500);
 
         // Alle Karten gezogen
         } else {
-            setNextPlayer(io, room.roomId);
+            if(!normalTurn) {
+                setTimeout(() => {
+                    setNextPlayer(io, room.roomId);
+                }, 500);
+            }
 
         }
     }
 
     // Normaler Zug => Eine Karte nehmen
     if(room.moveType === 1) {
-        drawCard(1);
+        drawCard(1, true);
 
     // Karten ziehen wegen +2 oder +4 Karten
-    } else if(room.moveType === 3) {
-        drawCard(room.cardsCount);
+    } else if(room.moveType === 2 || room.moveType === 3) {
+        drawCard(room.cardsCount, false);
 
         // Card Count reseten
         room.cardsCount = 0;
 
         // Karten wurden gezogen => nächster muss keine Karten mehr ziehen
         room.moveType = 1;
-
     }
 }

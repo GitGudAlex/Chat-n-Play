@@ -1,16 +1,11 @@
-.nav-pills .nav-link {
-    border-radius: 0;
+.game-categories-navbar {
+    width: 100%;
     height: 110px;
-    width: 300px;
-    font-size: 70px;
-    background-color:transparent;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: transparent;
-    font-family: 'coffee+tea demo','Calibri';
-}
 
-.flex-sm-row {
-    padding-top: 50px;
+    margin-top: 50px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }

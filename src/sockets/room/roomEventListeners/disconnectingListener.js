@@ -162,7 +162,7 @@ module.exports = (io, socket) => {
                 io.in(player.roomId).emit('ludo:playerLeave', player.playerPosition);
 
             // Aktuelles Spiel ist Uno
-            } else if(room.gameTypeId === 2) {
+            } else if(room.gameTypeId === 1) {
 
                 // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
                 if(room.activePlayer.socketId === socket.id) {

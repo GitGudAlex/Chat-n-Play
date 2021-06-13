@@ -77,13 +77,13 @@ function ChooseGame(props) {
                 <div id='endgame-modal-body' className="modal-body text-center">
                     <p className='endgame-modal-body-text w-100'>Wähle ein Spiel aus:</p>
                     <div className='endgame-modal-games-list'>
-                        <div className='endgame-modal-game' onClick={ () => createGame(0) } >
+                        <div className='endgame-modal-game' id="ludo" onClick={ () => createGame(0) } >
                             <p>Ludo</p>
                         </div>
-                        <div className='endgame-modal-game' onClick={ () => createGame(1) }>
+                        <div className='endgame-modal-game' id="uno" onClick={ () => createGame(1) }>
                             <p>Uno</p>
                         </div>
-                        <div className='endgame-modal-game' onClick={ () => createGame(2) }>
+                        <div className='endgame-modal-game' id="slf" onClick={ () => createGame(2) }>
                             <p>Stadt, Land, Fluss</p>
                         </div>
                     </div>

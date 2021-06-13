@@ -13,6 +13,9 @@ import Home from '../Home/Home';
 import Invitation from '../Invitation/Invitation';
 import GameBase from '../GameBase/GameBase';
 import PageNotFound from '../PageNotFound/PageNotFound';
+import AboutUs from "../Footer/AboutUs/AboutUs";
+import FAQ from "../Footer/FAQ/FAQ";
+import PrivacyPolicy from "../Footer/PrivacyPolicy/PrivacyPolicy";
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
           <Route path='/' exact render={ () => <Home /> } />
           <Route path='/invitation/:roomid' exact render={ ({match}) => <Invitation match={ match } /> } />
           <Route path='/game' render={ ({match}) => <GameBase match={ match } /> } />
+          <Route path='/aboutus' exact render={ () => <AboutUs/> } />
+          <Route path='/faq' exact render={ () => <FAQ/> } />
+          <Route path='/privacypolicy' exact render={ () => <PrivacyPolicy/> } />
           <Route render={ () => <PageNotFound /> } />
         </Switch>
       </Router>

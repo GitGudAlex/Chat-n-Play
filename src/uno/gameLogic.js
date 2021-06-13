@@ -2,7 +2,12 @@
 const { getPlayer, getPlayersInRoom } = require('../models/players');
 const { getRoom } = require('../models/rooms');
 const { Deck } = require('./Cards/Deck');
-const { Hand } = require('./Cards/Hand'); 
+const { Hand } = require('./Cards/Hand');
+
+// Modolo bug fix
+const mod = (n, m) => {
+    return ((n % m) + m) % m;
+  }
 
 const initUno = (hostId, socket, io) => {
     const player = getPlayer(hostId);
@@ -40,6 +45,9 @@ const initUno = (hostId, socket, io) => {
     // Ob der Spieler aussetzen muss
     room['isSkip'] = false;
 
+    // Wenn sich jemand eine Farbe aussgesucht hat
+    room['customColor'] = false;
+
     // Wenn +2 oder +4 Karten gelegt werden -> aufaddieren
     room['cardsCount'] = 0;
 
@@ -50,9 +58,11 @@ const initUno = (hostId, socket, io) => {
      * Der Nächste Input der erwartet wird
      * 
      * 1 = Karte ablegen
-     * 2 = Farbauswahl
-     * 3 = +2 / +4 => Ob man eine weitere +2 / +4 Karte drauflegen kann oder ob man ziehen muss
+     * 2 = +2
+     * 3 = +4
      * 4 = Klopf Klopf
+     * 5 = Auf Farben input warten (von +4 Karte)
+     * 6 = Auf Farben input warten (von Farbwahl Karte)
      */
     room['moveType'] = 1;
 
@@ -66,6 +76,8 @@ const initUno = (hostId, socket, io) => {
         // Ob man klopfklopf gesagt / gedrückt hat wenn man nur noch eine Karte oder 2 hat.
         player['klopfKlopf'] = false;
 
+        player['didDrawCard'] = false;
+
     }
 
     const dealHandCards = () => {
@@ -74,7 +86,7 @@ const initUno = (hostId, socket, io) => {
             let nextPlayer = getNextPlayer(room.roomId);
 
             // Alle Karten verteilt
-            if(nextPlayer.hand.getHandSize() === 7) {
+            if(nextPlayer.hand.getHandSize() === 20) {
                 setFirstPlayer(room, players, io);
 
             // Weitere Karte verteilen
@@ -89,16 +101,19 @@ const initUno = (hostId, socket, io) => {
         }, 300);
     }
 
-    dealHandCards();
+    // Kurze Pause bevor das Spiel startet
+    setTimeout(() => {
+        dealHandCards();
+    }, 1500);
 }
 
-const dealCard = (io, room, player) => {
+const dealCard = (io, room, player, normalTurn) => {
     // Hand Karten verteilen
     let card = room.deck.takeCard();
     player.hand.addCard(card);
 
     // Sich selber die Karte schicken
-    io.to(player.socketId).emit('uno:deal-card', { card: card, socketId: player.socketId });
+    io.to(player.socketId).emit('uno:deal-card', { card: card, socketId: player.socketId, normalTurn: normalTurn });
 
     // Den anderen die Karte schicken (Nur ohne Wert)
     (io.sockets.sockets.get(player.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: player.socketId });
@@ -118,7 +133,33 @@ const setFirstPlayer = (room, players, io) => {
 
         // Allen Spielern die SocketId des nächsten Spielers schicken
         io.in(firstPlayer.roomId).emit('uno:set-first-player', { socketId: firstPlayer.socketId });
+
+        setTimeout(() => {
+            setFirstCard(io, room);
+
+        }, 5000);
     }, 1000);
+}
+
+const setFirstCard = (io, room) => {
+
+    // Karte vom Deck nehmen
+    let card = room.deck.takeCard();
+    room.cardOnBoard = card;
+
+    // socketId = 0 heißt, dass die Karte vom kartenstapel kommt (Für die Animation wichtig)
+    // Sonst handelt es sich hierbei um eine SocketId um die Animation richtig abzuspielen
+    io.in(room.roomId).emit('uno:deal-card', { card: card, socketId: 0 });
+
+    setTimeout(() => {
+        // Wenn es sich um eine Spezial Karte handelt -> neue Karte legen
+        if(card.isSpecial()) {
+            setFirstCard(io, room);
+
+        // Sonst kann der erste Spieler anfangen zu Spielen
+        }
+
+    }, 2000);
 }
 
 // Reihnfolge der Positionen
@@ -172,7 +213,8 @@ const getNextPlayer = (roomId) => {
         // Man kann nicht einfach die nächste Position nehmen, da ein Spieler disconnectet sein kann.
         // Nach dem Start des Spiels akualisieren sich die Positionen nicht mehr
         for(let i = orderIndex - 1; i > orderIndex - 5; i--) {
-            let newOrderIndex = i % 4;
+            let newOrderIndex = mod(i, 4);
+
             let newPosition = order[newOrderIndex];
 
             let newPlayerIndex = players.findIndex(p => p.position === newPosition);
@@ -205,6 +247,7 @@ const setNextPlayer = (io, roomId) => {
     }
 
     nextPlayer.active = true;
+    nextPlayer.didDrawCard = false;
 
     io.in(roomId).emit('uno:set-next-player', { socketId: nextPlayer.socketId, position: nextPlayer.position, isReverse: room.isReverse });
 }

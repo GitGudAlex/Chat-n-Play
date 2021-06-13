@@ -39,8 +39,27 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   text-align: center;
 }
 
-.dice{
-  border-color: black;
+.matchfield{
+  position:absolute;
+  margin:auto;
+  top: 70px;
+  left: 0;
+  right: 45px;
+  bottom: 0;
+
+}
+
+#dice{
+  border-color: white;
+  border: 2px solid;
+  outline: none;
+  border-radius: .2em;
+
+  position: absolute;
+  margin:auto;
+  top: 10px;
+  right: 40px;  
+  left: 0;
 }
 
 .blue{
@@ -78,15 +97,16 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 .white{
   background-color: white; 
   border-radius: 50%;
-  padding: 10px 10px;
-  margin: 8px;
+  padding: 13px 13px;
+  margin: 6px;
   border: 2px solid #474747;
 }
 
 .mf-top-right{
   border-radius: 50%;
   padding: 10px 10px;
-  margin: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
   border: 2px solid #474747;
 }
 
@@ -107,7 +127,8 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 .mf-bottom-left{
   border-radius: 50%;
   padding: 10px 10px;
-  margin: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
   border: 2px solid #474747;
 }
 
@@ -125,7 +146,17 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 #buffer {
   background-color: white; 
   border-radius: 50%;
-  padding: 10px 10px;
+  padding: 10px 24px;
   margin: 8px;
   border: none;
+}
+
+.start{
+  padding: 13px 13px;
+  margin: 6px;
+}
+
+.middle{
+  margin-left: 9px;
+  margin-right: 9px;
 }

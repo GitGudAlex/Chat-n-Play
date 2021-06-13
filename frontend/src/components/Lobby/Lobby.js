@@ -6,6 +6,8 @@ import StartGame from './StartGame/StartGame';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import ColorSelector from './ColorSelector/ColorSelector';
 
+//import './Lobby.css'
+
 import SocketContext from '../../services/socket';
 
 function Lobby(props) {

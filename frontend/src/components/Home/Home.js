@@ -10,6 +10,7 @@ import SocketContext from '../../services/socket';
 import Header from './Header/Header';
 import Description from './Description/Description';
 import GameCategoriesList from './GameCategoriesList/GameCategoriesList';
+import Footer from '../Footer/Footer';
 
 function Home({ match }) {
 
@@ -75,11 +76,7 @@ function Home({ match }) {
                     </div>
                 </div>
             </main>
-            <footer className="footer">
-                <div className="container" id="container-footer">
-                    <span className="text-muted">Impressum</span>
-                </div>
-            </footer>
+            <Footer start='true'></Footer>
         </div>
     );
 }

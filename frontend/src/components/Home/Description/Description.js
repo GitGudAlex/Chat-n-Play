@@ -78,7 +78,7 @@ function Description() {
                                     <small id='join-game-error-output' className="text-danger"></small>
                                 </div>
                                 <div className='text-center'>
-                                    <button type="submit" className="btn btn-primary" onClick={ joinRoom }>Raum beitreten</button>
+                                    <button type="submit" className="btn btn-dark" onClick={ joinRoom }>Raum beitreten</button>
                                 </div>
                             </div>
                         </div>

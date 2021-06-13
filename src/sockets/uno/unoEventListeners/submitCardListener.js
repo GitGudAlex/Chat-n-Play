@@ -1,6 +1,6 @@
-const { getPlayer } = require("../../../models/players");
+const { getPlayer, getPlayersInRoom } = require("../../../models/players");
 const { getRoom } = require("../../../models/rooms");
-const { setNextPlayer } = require("../../../uno/gameLogic");
+const { setNextPlayer, dealCard } = require("../../../uno/gameLogic");
 
 module.exports = (io, socket, data) => {
     
@@ -24,6 +24,9 @@ module.exports = (io, socket, data) => {
 
     // Spiel noch nicht angefangen
     if(room.cardOnBoard === 0) return; 
+
+    // Wenn man auf die Farbwahl wartet => keine Karten ziehen
+    if(room.moveType === 5 || room.moveType === 6) return; 
 
     const placeCard = (card) => {
 
@@ -50,11 +53,19 @@ module.exports = (io, socket, data) => {
             // +2 Karte
             if(card.value === 10) {
                 room.cardsCount += 2;
-                room.moveType = 3;
+                room.moveType = 2;
                 
             // Reverse Karte
             } else if(card.value === 11) {
                 room.isReverse = !room.isReverse;
+
+                // Bei 2 Spielern wie eine Aussetzkarte
+                let playersLen = getPlayersInRoom(room.roomId).length;
+
+                if(playersLen === 2) {
+                    room.isSkip = true;
+                }
+
                 room.moveType = 1;
 
             // Aussetz Karte
@@ -68,13 +79,12 @@ module.exports = (io, socket, data) => {
                 // +4
                 if(card.value === 0) {
                     room.cardsCount += 4;
-                    room.moveType = 3;
+                    room.moveType = 5;
 
                 // Farbe aussuchen
                 } else if(card.value === 1) {
-                    room.moveType = 2;
+                    room.moveType = 6;
                     
-
                 // Klopf Klopf
                 } else if(card.value === 2) {
                     room.moveType = 4;
@@ -95,35 +105,35 @@ module.exports = (io, socket, data) => {
         io.to(room.roomId).emit('uno:card-played', { card: card, socketId: player.socketId });
 
         setTimeout(() => {
-            // Ob man vergessen hat 'KlopfKlopf' zu sagen / zu drücken
-            if(player.hand.getHandSize() === 1) {
-
-                // Wurde vergessen => +1 Karte ziehen
-                if(!player.klopfKlopf) {
-                    let card = room.deck.takeCard();
-                    player.hand.addCard(card);
-
-                    // Sich selber die Karte schicken
-                    io.to(nextPlayer.socketId).emit('uno:deal-card', { card: card, socketId: player.socketId });
-
-                    // Den anderen die Karte schicken (Nur ohne Wert)
-                    (io.sockets.sockets.get(nextPlayer.socketId)).to(room.roomId).emit('uno:deal-card', { card: { id: card.id, path: '-1.png' }, socketId: player.socketId });
-
-                    // Nächste Runde
-                    setNextPlayer(io, room.roomId);
-
-                } else {
-                    // resetten
-                    player.klopfKlopf = false;
-                }
 
             // Wenn ein Spieler keine Karten mehr hat => gewonnen
-            } else if (player.hand.getHandSize() === 0) {
+            if (player.hand.getHandSize() === 0) {
                 io.in(player.roomId).emit('room:end-game', { winners: [player] });
 
-            // Nächster Spieler ist dran
+            // Spieler hat noch nicht gewonnen
             } else {
-                setNextPlayer(io, room.roomId);
+
+                // Ob man vergessen hat 'KlopfKlopf' zu sagen / zu drücken
+                if(player.hand.getHandSize() === 1) {
+
+                    // Wurde vergessen => +1 Karte ziehen
+                    if(!player.klopfKlopf) {
+                        dealCard(io, room, player, false);
+
+                    } else {
+                        // resetten
+                        player.klopfKlopf = false;
+                    }     
+                }
+
+                // Auf Farb Input warten
+                if(room.moveType === 5 || room.moveType === 6) {
+                    socket.emit('uno:get-color');
+    
+                // Nächster Spieler ist dran
+                } else {
+                    setNextPlayer(io, room.roomId);
+                }
             }
         }, 1000);
     }
@@ -137,35 +147,65 @@ module.exports = (io, socket, data) => {
         // Normaler Zug
         if(room.moveType === 1) {
 
-            // Karte schwarz -> Darf gelegt werden
-            if(data.card.color === 4) {
-                placeCard(data.card);
+            // Wenn sich eine farbe gewünscht wurde
+            if(room.customColor === true) {
 
+                // Karte schwarz oder gewünschte Farbe -> Darf gelegt werden
+                if(room.nextColor === data.card.color || data.card.color === 4) {
+                    room.customColor = false;
+                    room.nextColor = -1;
+
+                    placeCard(data.card);
+                }
+
+            // Es wurde sich keine farbe gewünscht
             } else {
 
                 // Gleiche Farbe oder gleiche Zahl
-                if(room.cardOnBoard.value === data.card.value || room.cardOnBoard.color === data.card.color) {
+                if(room.cardOnBoard.value === data.card.value || room.cardOnBoard.color === data.card.color || data.card.color === 4) {
+                    placeCard(data.card);
+                }
+
+            }
+
+        // +2 Karte zuletzt gelegt
+        } else if(room.moveType === 2) {
+            // Wenn sich eine farbe gewünscht wurde
+            if(room.customColor === true) {
+
+                // Man selber muss auch eine +2 oder +4 Karte legen
+                if(data.card.value === 10 && data.card.color === room.nextColor|| (data.card.color === 4 && data.card.value === 0 )) {
+                    room.customColor = false;
+                    room.nextColor = -1;
+                    
+                    placeCard(data.card);
+                }
+
+            } else {
+                // Man selber muss auch eine +2 oder +4 Karte legen
+                if(data.card.value === 10 || (data.card.color === 4 && data.card.value === 0 )) {
                     placeCard(data.card);
                 }
             }
 
-        // Farbwahl
-        } else if(room.moveType === 2) {
-
-            // Gewünschte Farbe
-            if(room.nextColor === data.card.value || data.card.value === 4) {
-                placeCard(data.card);
-
-            }
-
-        // +2 oder +4 Karte liegt unten
+        // +4 Karte zuletzt gelegt
         } else if(room.moveType === 3) {
+            
+            // Eine weitere +4 Karte
+            if(data.card.color === 4 && data.card.value === 0 ||
+                // +2 Karte in der gewünschten Farbe
+                data.card.value === 10 && data.card.color === room.nextColor) {
 
-            // Man selber muss auch eine +2 oder +4 Karte legen
-            if(data.card.value === 10 || (data.card.color === 4 && data.card.value === 0 )) {
+                room.customColor = false;
+                room.nextColor = -1;
+                
                 placeCard(data.card);
             }
+            
 
+        // Klopf Klopf Karte zuletzt gelegt
+        } else if(room.moveType === 4) {
+            placeCard(data.card);
         }
 
     // Spieler ist gerade nicht dran
@@ -173,7 +213,15 @@ module.exports = (io, socket, data) => {
 
         // Exakt gleiche Karte
         if(room.cardOnBoard.value === data.card.value && room.cardOnBoard.color === data.card.color) {
-            room.acticePlayer = { socketId: player.socketId, position: player.position };
+
+            // Alten Spieler inaktiv setzten
+            let oldPlayer = getPlayer(room.activePlayer.socketId);
+            oldPlayer.active = false;
+
+            // Neuen aktiven Spieler setzten
+            room.activePlayer = { socketId: player.socketId, position: player.position };
+            player.active = true;
+            
             placeCard(data.card);
         }
 

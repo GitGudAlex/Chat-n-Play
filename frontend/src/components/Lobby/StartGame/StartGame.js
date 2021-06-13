@@ -3,6 +3,10 @@ import $ from 'jquery';
 
 import './StartGame.css'
 
+import SprechblaseHost from '../../../img/SprechblaseHost.png';
+
+import SprechblaseGast from '../../../img/SprechblaseGast.png'
+
 import SocketContext from '../../../services/socket';
 
 function Chat(props) {
@@ -61,15 +65,15 @@ function Chat(props) {
   if(isHost) {
     return (
         <div className='start-game'>
-            <p className='start-game-text'>Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten</p>
-            <input className='start-game-btn btn-lg btn-primary' type='button' value='Spiel starten' onClick={ startGame } />
+            <img src={SprechblaseHost} alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble" height="200px"></img>
+            <input className='start-game-btn btn-lg btn-dark' type='button' value='Spiel starten' onClick={ startGame } />
             <small id='start-game-error' className='text-danger'></small>
         </div>
       );
   } else {
     return (
         <div className='start-game'>
-            <p className='start-game-text'>Der Host wird das Spiel in kürze starten</p>
+            <img src={SprechblaseGast} alt="Der Host wird das Spiel in Kürze starten." className="speechbubble" height="250px"></img>
         </div>
       );
   }

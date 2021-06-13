@@ -1,0 +1,19 @@
+.footer{
+    height: 50px;
+    background-color: #474747;
+}
+
+.text-footer{
+    background-color: transparent;
+    border: none;
+    margin-right: 30px; 
+    color: rgb(211, 211, 211);
+}
+
+#container-footer{
+    padding-top: 10px;
+}
+
+#mail{
+   float: right;
+}
