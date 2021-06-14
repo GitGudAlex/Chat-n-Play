@@ -2,7 +2,7 @@ const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms'
 
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
 const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores, addVotes } = require('../../../slf/gameLogic');
-const { setNextPlayer } = require('../../../uno/gameLogic');
+const { setNextPlayer, getNextPlayer } = require('../../../uno/gameLogic');
 
 module.exports = (io, socket) => {
     // Spieler löschen
@@ -169,7 +169,12 @@ module.exports = (io, socket) => {
 
                     // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
                     if(room.activePlayer.socketId === socket.id) {
+
                         setNextPlayer(io, room.roomId, player.position);
+
+                        if(room.moveType === 7 || room.moveType === 8) {
+                            io.to(getNextPlayer(room.roomId)).emit('uno:get-klopf');
+                        }
                     }
                 }
             }

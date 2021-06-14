@@ -169,7 +169,12 @@ module.exports = (io, socket) => {
 
                 // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
                 if(room.activePlayer.socketId === socket.id) {
+
                     setNextPlayer(io, room.roomId, player.position);
+
+                    if(room.moveType === 7 || room.moveType === 8) {
+                        io.to(getNextPlayer(room.roomId)).emit('uno:get-klopf');
+                    }
                 }
             }
         }

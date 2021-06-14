@@ -28,6 +28,9 @@ module.exports = (io, socket, data) => {
     // Wenn man auf die Farbwahl wartet => keine Karten ziehen
     if(room.moveType === 5 || room.moveType === 6) return; 
 
+    // Wenn man auf Klopf Input warten => keine Karten ziehen
+    if(room.moveType === 7 || room.moveType === 8) return; 
+
     const placeCard = (card) => {
 
         if(player.active === false) return;
@@ -85,9 +88,9 @@ module.exports = (io, socket, data) => {
                 } else if(card.value === 1) {
                     room.moveType = 6;
                     
-                // Klopf Klopf
+                // Klopf Karte
                 } else if(card.value === 2) {
-                    room.moveType = 4;
+                    room.moveType = 7;
 
                 }
 
@@ -129,7 +132,11 @@ module.exports = (io, socket, data) => {
                 // Auf Farb Input warten
                 if(room.moveType === 5 || room.moveType === 6) {
                     socket.emit('uno:get-color');
-    
+
+                // Auf Klopf Input warten
+                } else if(room.moveType === 7 || room.moveType === 8) {
+                    socket.emit('uno:get-klopf');
+
                 // Nächster Spieler ist dran
                 } else {
                     setNextPlayer(io, room.roomId);

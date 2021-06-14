@@ -54,6 +54,9 @@ const initUno = (hostId, socket, io) => {
     // Wenn +2 oder +4 Karten gelegt werden -> aufaddieren
     room['cardsCount'] = 0;
 
+    // bei der Klopf Karte, wie oft jeder geklopft hat
+    room['klopfValues'] = [0, 0];
+
     // Der aktuelle Spieler
     room['activePlayer'] = 0;
 
@@ -66,6 +69,8 @@ const initUno = (hostId, socket, io) => {
      * 4 = Klopf Klopf
      * 5 = Auf Farben input warten (von +4 Karte)
      * 6 = Auf Farben input warten (von Farbwahl Karte)
+     * 7 = Klopf input warten (Spieler 1)
+     * 8 = Klopf input warten (Spieler 2)
      */
     room['moveType'] = 1;
 
@@ -95,7 +100,7 @@ const initUno = (hostId, socket, io) => {
             if(nextPlayer === undefined) return;
 
             // Alle Karten verteilt
-            if(nextPlayer.hand.getHandSize() === 7) {
+            if(nextPlayer.hand.getHandSize() === 20) {
                 setFirstPlayer(room, io);
 
             // Weitere Karte verteilen
@@ -117,6 +122,7 @@ const initUno = (hostId, socket, io) => {
 }
 
 const dealCard = (io, room, player, normalTurn) => {
+
     // Hand Karten verteilen
     let card = room.deck.takeCard();
     player.hand.addCard(card);
@@ -249,7 +255,7 @@ const setNextPlayer = (io, roomId) => {
     let nextPlayer;
 
     nextPlayer = getNextPlayer(roomId);
-
+    
     // Falls Raum geschlossen wurde
     if(nextPlayer === undefined) return;
 

@@ -36,6 +36,10 @@ function UnoGameBoard(props) {
     // Die SpielerId von dem Spieler der das Spiel anfängt
     const startPlayerIdRef = useRef(0);
 
+    // Klopf Value
+    const [klopfValue, setKlopfValue] = useState(0);
+    const klopfValueRef = useRef(0);
+
     // Socket.io
     const socket = useContext(SocketContext);
 
@@ -361,6 +365,17 @@ function UnoGameBoard(props) {
 
     }, []);
 
+    // Wenn man einen Klopf Wert abgeben muss
+    const handleGetKlopfEvent = useCallback(() => {
+        $('#uno-klopf-wrapper').css({ visibility: 'visible', height: '120px', width: '120px', opacity: '1' });
+        $('#uno-klopf-text').css({ visibility: 'visible', height: '40px', width: '40px', opacity: '1' });
+
+    }, []);
+
+    const handleShowKlopfResult = useCallback(() => {
+        
+    }, []);
+
     useEffect(() => {
 
         // Wenn jemand eine Karte zieht
@@ -381,6 +396,9 @@ function UnoGameBoard(props) {
         // Die ausgewählte Farbe anzeigen
         socket.on('uno:color-selected', handleSelctedColorEvent);
 
+        // Auf Input warten von Klopf Karte
+        socket.on('uno:get-klopf', handleGetKlopfEvent);
+
         return () => {
             socket.off('uno:deal-card', handleDealCardEvent);
             socket.off('uno:set-first-player', handleSetFirstPlayerEvent);
@@ -388,8 +406,11 @@ function UnoGameBoard(props) {
             socket.off('uno:card-played', handleCardPlayedEvent);
             socket.off('uno:get-color', handleGetColorEvent);
             socket.off('uno:color-selected', handleSelctedColorEvent);
+            socket.off('uno:get-klopf', handleGetKlopfEvent);
+            socket.off('uno:show-klopf-result', handleShowKlopfResult);
         }
-    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent, handleGetColorEvent, handleSelctedColorEvent]);
+    }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent,
+        handleGetColorEvent, handleSelctedColorEvent, handleGetKlopfEvent]);
 
     // Übergibt die Karte dem Server
     const submitCard = (index) => {
@@ -422,6 +443,39 @@ function UnoGameBoard(props) {
 
         $('#uno-color-selection').css({ visibility: 'hidden', height: '0px', width: '0px' });
         $('.uno-color-selection-item').css({ height: '0px', width: '0px' });
+    }
+
+    const addKopfValue = () => {
+
+        if(klopfValueRef.current >= 3) {
+            klopfValueRef.current = 0;
+        }
+
+        $('#uno-klopf-btn').addClass('klopfRotationAnimation');
+
+        setTimeout(() => {
+            klopfValueRef.current += 1;
+            setKlopfValue(klopfValueRef.current);
+
+        }, 200);
+
+
+        setTimeout(() => {
+            $('#uno-klopf-btn').removeClass('klopfRotationAnimation');
+
+        }, 400);
+    }
+
+    const submitKlopfValue = () => {
+        if(klopfValueRef.current > 0 && klopfValueRef.current < 4) {
+            $('#uno-klopf-wrapper').css({ visibility: 'hidden', height: '0px', width: '0px', opacity: '0' });
+            $('#uno-klopf-text').css({ visibility: 'hidden', height: '0px', width: '0px', opacity: '0'  });
+
+            socket.emit('uno:set-klopf', { value: klopfValueRef.current });
+
+            setKlopfValue(0);
+            klopfValueRef.current = 0;
+        }
     }
 
     return (
@@ -459,6 +513,11 @@ function UnoGameBoard(props) {
                         <input className='uno-color-selection-item' type='button' onClick={ () => setColor(1) } />
                         <input className='uno-color-selection-item' type='button' onClick={ () => setColor(2) } />
                         <input className='uno-color-selection-item' type='button' onClick={ () => setColor(3) } />
+                    </div>
+                    <div id='uno-klopf-wrapper'>
+                        <input id='uno-klopf-btn' type='button' onClick={ addKopfValue }/>
+                        <p id='uno-klopf-text'>{ klopfValue + 'x' }</p>
+                        <input id='unoSubmitKlopfValue' type='button' value='Fertig' onClick={ submitKlopfValue } />
                     </div>
                 </div>
             </div>
