@@ -172,8 +172,14 @@ module.exports = (io, socket) => {
 
                         setNextPlayer(io, room.roomId, player.position);
 
-                        if(room.moveType === 7 || room.moveType === 8) {
-                            io.to(getNextPlayer(room.roomId)).emit('uno:get-klopf');
+                        if(room.moveType === 7) {
+                            room.moveType = 4;
+
+                        } else if(room.moveType === 8) {
+
+                            setTimeout(() => {
+                                io.to(room.activePlayer.socketId).emit('uno:get-klopf');
+                            }, 400);
                         }
                     }
                 }

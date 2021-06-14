@@ -56,8 +56,8 @@ module.exports = (io, socket) => {
         }
     }
 
-    // Normaler Zug => Eine Karte nehmen
-    if(room.moveType === 1) {
+    // Normaler Zug => Eine Karte nehmen || Nach Klopf Karte
+    if(room.moveType === 1 || room.moveType === 4) {
         drawCard(1, true);
 
     // Karten ziehen wegen +2 oder +4 Karten
