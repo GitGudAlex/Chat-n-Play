@@ -9,6 +9,8 @@ module.exports = (io, socket, data, callback) => {
     if(player !== undefined) {
         const room = getRoom(player.roomId);
 
+        if(room === undefined) return;
+
         // Spieler noch nicht abgegeben
         if(room.readyPlayers.find(p => p.socketId === player.socketId) === undefined) {
             room.readyPlayers.push(player.socketId);
@@ -17,6 +19,8 @@ module.exports = (io, socket, data, callback) => {
             io.in(player.roomId).emit('slf:players-ready-count', { playersReady: room.readyPlayers });
 
             const players = getPlayersInRoom(room.roomId);
+
+            if(players === undefined) return;
 
             // Alle Spieler sind fertig
             if(room.readyPlayers.length === players.length) {

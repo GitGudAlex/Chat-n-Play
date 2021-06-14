@@ -21,6 +21,8 @@ module.exports = (io, socket, data, callback) => {
 
     // Host bekommen
     const player = getPlayer(socket.id);
+
+    if(player === undefined) return;
     
     // Spiel initialisieren
     let initialPlayerScores = initilazeGame(player.roomId, data.categories, data.rounds);
@@ -35,6 +37,9 @@ module.exports = (io, socket, data, callback) => {
     setTimeout(() => {
         chooseLetter(player.roomId, (letter) => {
             const room = getRoom(player.roomId);
+
+            if(room === undefined) return;
+
             room.currentRound += 1;
             
             io.in(player.roomId).emit('slf:start-round', { letter });

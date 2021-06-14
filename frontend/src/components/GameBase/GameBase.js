@@ -78,6 +78,7 @@ function GameBase({ match }) {
                 setWinners(undefined);
                 setScores([]);
                 setPlayersReady([]);
+                setGameNameStarted('-');
 
             } catch {}
         }
@@ -194,7 +195,7 @@ function GameBase({ match }) {
             setGameNameStarted('uno');
 
         } else {
-            setGameNameStarted('');
+            setGameNameStarted('-');
 
         }
     }, []);

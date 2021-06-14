@@ -372,10 +372,6 @@ function UnoGameBoard(props) {
 
     }, []);
 
-    const handleShowKlopfResult = useCallback(() => {
-        
-    }, []);
-
     useEffect(() => {
 
         // Wenn jemand eine Karte zieht
@@ -407,7 +403,7 @@ function UnoGameBoard(props) {
             socket.off('uno:get-color', handleGetColorEvent);
             socket.off('uno:color-selected', handleSelctedColorEvent);
             socket.off('uno:get-klopf', handleGetKlopfEvent);
-            socket.off('uno:show-klopf-result', handleShowKlopfResult);
+           // socket.off('uno:show-klopf-result', handleShowKlopfResult);
         }
     }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent,
         handleGetColorEvent, handleSelctedColorEvent, handleGetKlopfEvent]);
