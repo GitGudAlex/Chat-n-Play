@@ -56,3 +56,8 @@
 .noAnswer {
     color: red;
 }
+
+/* Eigene Antwort Input */
+.slf-evaluation-own-input {
+    height: 18px;
+}

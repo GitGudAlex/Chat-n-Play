@@ -15,6 +15,7 @@ function EvaluationItem(props) {
         <div className='slf-evaluation-item'>
             <p className='slf-evaluation-item-category slf-evaluation-wrapper'>{ props.content.category }</p>
             <div className='slf-evaluation-usernames-wrapper slf-evaluation-wrapper'>
+                <p className='slf-evaluation-username'>{ 'Du:' }</p>
                 {
                     props.content.answers.map(entry => (
                         <p key={ entry.socketId } className='slf-evaluation-username'>{ entry.username + ':' }</p>
@@ -22,6 +23,13 @@ function EvaluationItem(props) {
                 }
             </div>
             <div className='slf-evaluation-words-wrapper slf-evaluation-wrapper'>
+                {
+                    props.ownAnswer.word === '' ? (
+                        <p className='slf-evaluation-words noAnswer'>-</p>
+                    ) : (
+                        <p className='slf-evaluation-words'>{ props.ownAnswer.word }</p>
+                    )
+                }
                 {
                     props.content.answers.map(entry => (
                         entry.word === '' ? (
@@ -33,6 +41,7 @@ function EvaluationItem(props) {
                 }
             </div>
             <div className='slf-evaluation-input-wrapper slf-evaluation-wrapper'>
+                <div className='slf-evaluation-own-input'></div>
                 {
                     props.content.answers.map((entry) => (
                             entry.word.length > 0 ? (

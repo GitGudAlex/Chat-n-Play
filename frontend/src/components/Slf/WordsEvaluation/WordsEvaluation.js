@@ -18,6 +18,7 @@ function WordsEvaluation(props) {
      * id, category, 
      */
      const [answers, setAnswers] = useState([]);
+     const [ownAnswers, setOwnAnswers] = useState();
 
      const handlePlayerSubmittedEvent = useCallback((data) => {
         setReadyUsers(data.playersReady.length);
@@ -63,6 +64,10 @@ function WordsEvaluation(props) {
     
                 result.push(resultJson);
             }
+
+            // Eigene Wörter
+            let tmpOwnAnswers = props.words.find(entry => entry.socketId === socket.id);
+            setOwnAnswers(tmpOwnAnswers.words);
         }
 
         setAnswers(result);
@@ -111,11 +116,11 @@ function WordsEvaluation(props) {
                         <p className='slf-evaluate-letter'>{ 'Buchstabe: ' + props.letter.toUpperCase() }</p>
                     </div>
                     <div className='slf-state-describtion-wrapper'>
-                        <p className='slf-state-describtion'>Bewerte die Antworten deiner Freunde</p>
+                        <p className='slf-state-describtion'>Setzte bei jeder korrekten Antwort ein Kreuz. Haben mindestens 50% der Spieler ein Kreuz bei einer Antwort gesetzt, wird diese als gültig makiert.</p>
                     </div>
                 </div>
                 <div id='slf-evaluation-wrapper'>
-                    <EvaluationList answers={ answers } setRatingHandler={ setRating } isReady={ isReady } />
+                    <EvaluationList answers={ answers } ownAnswers={ ownAnswers } setRatingHandler={ setRating } isReady={ isReady } />
                 </div>
                 <div id='slf-submit-evaluated-words-btn-wrapper'>
                     <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>

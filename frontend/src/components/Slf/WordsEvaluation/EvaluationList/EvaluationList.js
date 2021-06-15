@@ -17,7 +17,7 @@ function EvaluationList(props) {
         }
     });
 
-    if(props.answers.length === 0) {
+    if(props.answers.length === 0 || props.ownAnswers.length === 0) {
         return (
             <div className='slf-evaluation'>
                 <div style={{ height: '100%' }}>
@@ -37,7 +37,7 @@ function EvaluationList(props) {
                     <div className='slf-evaluation-list'>
                         {
                             props.answers.map((entry, index) => (
-                                <EvaluationItem key={ index } content={ entry } index={ index } setRatingHandler={ props.setRatingHandler } disable={ props.isReady }/>
+                                <EvaluationItem key={ index } ownAnswer={ props.ownAnswers[index] } content={ entry } index={ index } setRatingHandler={ props.setRatingHandler } disable={ props.isReady }/>
                             ))
                         }
                     </div>

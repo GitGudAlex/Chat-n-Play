@@ -20,14 +20,14 @@
 
 
 .slf-state-describtion-wrapper {
-    margin: 8px;
+    width: 40%;
+    margin: 8px auto;
 }
 
 
 .slf-state-describtion {
-    font-size: larger;
-
-    margin: 0;
+    text-align: center;
+    margin: auto;
 }
 
 
