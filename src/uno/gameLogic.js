@@ -100,11 +100,12 @@ const initUno = (hostId, socket, io) => {
             if(nextPlayer === undefined) return;
 
             // Alle Karten verteilt
-            if(nextPlayer.hand.getHandSize() === 20) {
+            if(nextPlayer.hand.getHandSize() === 2) {
                 setFirstPlayer(room, io);
 
             // Weitere Karte verteilen
             } else {
+
                 // Karte aussuchen & verteilen => emit
                 dealCard(io, room, nextPlayer);
 

@@ -172,8 +172,30 @@ module.exports = (io, socket) => {
 
                     setNextPlayer(io, room.roomId, player.position);
 
-                    if(room.moveType === 7 || room.moveType === 8) {
-                        io.to(getNextPlayer(room.roomId)).emit('uno:get-klopf');
+                    // Wenn Farb Input erwartet
+                    if(room.moveType === 5) {
+                        room.moveType = 3;
+
+                        room.customColor = true;
+                        room.nextColor = 4;
+
+                    // Wenn Farb Input erwartet (+4 Karte)
+                    } else if(room.moveType === 6) {
+                        room.moveType = 1;
+
+                        room.customColor = true;
+                        room.nextColor = 4;
+
+                    // Klopf Input warten (Spieler 1)
+                    } else if(room.moveType === 7) {
+                        room.moveType = 4;
+
+                    // Klopf Input warten (Spieler 2)
+                    } else if(room.moveType === 8) {
+
+                        setTimeout(() => {
+                            io.to(room.activePlayer.socketId).emit('uno:get-klopf');
+                        }, 400);
                     }
                 }
             }

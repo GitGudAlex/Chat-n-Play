@@ -45,6 +45,9 @@ function UnoGameBoard(props) {
 
     const dealCardAnimationTime = 400;
 
+    // Wenn Spiel anfängt
+    const [gameHasStarted, setGameHasStarted] = useState(false);
+
     const handleDealCardEvent = useCallback((data) => {
 
         data.card.socketId = data.socketId;
@@ -218,7 +221,9 @@ function UnoGameBoard(props) {
         $('#uno-player-arrow').css({ opacity: '1' });
 
         setTimeout(() => {
-            animateArrow(3000, true, playerPosition, false,  () => { });
+            animateArrow(3000, true, playerPosition, false,  () => {
+                setGameHasStarted(true);
+            });
         }, [700]);
 
     }, [props]);
@@ -238,6 +243,7 @@ function UnoGameBoard(props) {
 
             }
         });
+
     }, [socket.id]);
 
     const handleCardPlayedEvent = useCallback((data) => {
@@ -372,6 +378,21 @@ function UnoGameBoard(props) {
 
     }, []);
 
+    const setHasLastCard = useCallback((data) => {
+        // Klopf anzeigen
+        console.log("....");
+        // Nicht die eigene Karte
+        if(data.socketId !== socket.id) {
+            $('#' + data.socketId + '-uno-bubble').css({ visibility: 'visible', opacity: 1 });
+
+            setTimeout(() => {
+                $('#' + data.socketId + '-uno-bubble').css({ visibility: 'hidden', opacity: 0 });
+            }, 2000);
+        }
+
+        // Karten Border animieren
+    }, [socket.id]);
+
     useEffect(() => {
 
         // Wenn jemand eine Karte zieht
@@ -395,6 +416,9 @@ function UnoGameBoard(props) {
         // Auf Input warten von Klopf Karte
         socket.on('uno:get-klopf', handleGetKlopfEvent);
 
+        // Wenn jemand nur noch eine Karte hat
+        socket.on('uno:has-last-card', setHasLastCard);
+
         return () => {
             socket.off('uno:deal-card', handleDealCardEvent);
             socket.off('uno:set-first-player', handleSetFirstPlayerEvent);
@@ -403,10 +427,11 @@ function UnoGameBoard(props) {
             socket.off('uno:get-color', handleGetColorEvent);
             socket.off('uno:color-selected', handleSelctedColorEvent);
             socket.off('uno:get-klopf', handleGetKlopfEvent);
+            socket.off('uno:has-last-card', setHasLastCard);
            // socket.off('uno:show-klopf-result', handleShowKlopfResult);
         }
     }, [socket, handleDealCardEvent, handleSetFirstPlayerEvent, handleNextPlayerEvent, handleCardPlayedEvent,
-        handleGetColorEvent, handleSelctedColorEvent, handleGetKlopfEvent]);
+        handleGetColorEvent, handleSelctedColorEvent, handleGetKlopfEvent, setHasLastCard]);
 
     // Übergibt die Karte dem Server
     const submitCard = (index) => {
@@ -474,8 +499,13 @@ function UnoGameBoard(props) {
         }
     }
 
+    const setLastCard = () => {
+        socket.emit('uno:klopf-klopf');
+    }
+
     return (
         <div id='uno-gameboard' >
+            <input id='uno-one-card-btn' type='button' value='Klopf!' onClick={ setLastCard } />
             <div id='unoBtnContainer'>
                 <input id='unoEndTurnBtn' type='button' value='Zug Beenden' onClick={ endTurn } />
             </div>
@@ -534,7 +564,8 @@ function UnoGameBoard(props) {
                                     left={ p.position === 0 || p.position === 3 ? true : false }
                                     cards={ handCards[p.position] }
                                     activeCards={ activeCardsList }
-                                    submitCard={ p.socketId === socket.id ? submitCard : undefined }/>
+                                    submitCard={ p.socketId === socket.id ? submitCard : undefined } 
+                                    hasStarted={ gameHasStarted } />
                 })
             }
             {

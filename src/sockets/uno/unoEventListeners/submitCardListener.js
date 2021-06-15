@@ -124,9 +124,17 @@ module.exports = (io, socket, data) => {
                         dealCard(io, room, player, false);
 
                     } else {
+                        
                         // resetten
                         player.klopfKlopf = false;
                     }     
+                }
+
+                // Wenn man fälschlicherweise KlopfKlopf Drück => resetten
+                if(player.klopfKlopf) {
+
+                    // resetten
+                    player.klopfKlopf = false;
                 }
 
                 // Auf Farb Input warten
@@ -157,12 +165,21 @@ module.exports = (io, socket, data) => {
             // Wenn sich eine farbe gewünscht wurde
             if(room.customColor === true) {
 
-                // Karte schwarz oder gewünschte Farbe -> Darf gelegt werden
-                if(room.nextColor === data.card.color || data.card.color === 4) {
+                // Schwarze Karte unten (von disconnect event)
+                if(room.nextColor === 4) {
                     room.customColor = false;
                     room.nextColor = -1;
 
                     placeCard(data.card);
+
+                } else {
+                    // Karte schwarz oder gewünschte Farbe -> Darf gelegt werden
+                    if(room.nextColor === data.card.color || data.card.color === 4) {
+                        room.customColor = false;
+                        room.nextColor = -1;
+
+                        placeCard(data.card);
+                    }
                 }
 
             // Es wurde sich keine farbe gewünscht
@@ -177,6 +194,7 @@ module.exports = (io, socket, data) => {
 
         // +2 Karte zuletzt gelegt
         } else if(room.moveType === 2) {
+
             // Wenn sich eine farbe gewünscht wurde
             if(room.customColor === true) {
 
@@ -197,18 +215,33 @@ module.exports = (io, socket, data) => {
 
         // +4 Karte zuletzt gelegt
         } else if(room.moveType === 3) {
-            
-            // Eine weitere +4 Karte
-            if(data.card.color === 4 && data.card.value === 0 ||
-                // +2 Karte in der gewünschten Farbe
-                data.card.value === 10 && data.card.color === room.nextColor) {
 
-                room.customColor = false;
-                room.nextColor = -1;
-                
-                placeCard(data.card);
-            }
-            
+            // Schwarze Karte unten (von disconnect event)
+            if(room.nextColor === 4) {
+
+                // Eine weitere +4 Karte
+                if(data.card.color === 4 && data.card.value === 0 ||
+                    // +2 Karte in beliebiger Farbe
+                    data.card.value === 10) {
+                        
+                    room.customColor = false;
+                    room.nextColor = -1;
+    
+                    placeCard(data.card);
+                }
+
+            } else {
+                // Eine weitere +4 Karte
+                if(data.card.color === 4 && data.card.value === 0 ||
+                    // +2 Karte in der gewünschten Farbe
+                    data.card.value === 10 && data.card.color === room.nextColor) {
+
+                    room.customColor = false;
+                    room.nextColor = -1;
+                    
+                    placeCard(data.card);
+                }
+            }            
 
         // Klopf Klopf Karte zuletzt gelegt
         } else if(room.moveType === 4) {

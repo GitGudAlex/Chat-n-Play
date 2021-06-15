@@ -326,3 +326,23 @@
 #klopfResultContainer > p {
     margin: 0;
 }
+
+#uno-one-card-btn {
+    position: absolute;
+
+    top: 40px;
+
+    height: 48px;
+    width: 125px;
+
+    border-radius: 4px;
+
+    border: none;
+    text-align: center;
+    text-decoration: none;
+
+    background-color: rgb(56, 56, 56);
+    color: white;
+
+    transition: opacity 0.4s, visibility 0.4s, background-color 0.14s;
+}

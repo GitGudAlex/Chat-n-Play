@@ -16,17 +16,11 @@ function UnoHand(props) {
             setPlayerWidth($('.player').width());
 
         } else {
-            // Spieler der sich oben befindet
-            if(props.top) {
-                setPlayerWidth($('.player').width());
-
-            // Spieler der sich unten befindet
-            } else {
-                setPlayerHeight($('.player').height());
-            }
+            setPlayerWidth($('.player').width());
+            setPlayerHeight($('.player').height());
         }
 
-    }, [props.top, props.self]);
+    }, [props.self]);
 
     // Width setzten bei Windows resize event
     useLayoutEffect(() => {
@@ -46,14 +40,8 @@ function UnoHand(props) {
             setPlayerWidth($('.player').width());
 
         } else {
-            // Spieler der sich oben befindet
-            if(props.top) {
-                setPlayerWidth($('.player').width());
-
-            // Spieler der sich unten befindet
-            } else {
-                setPlayerHeight($('.player').height());
-            }
+            setPlayerWidth($('.player').width());
+            setPlayerHeight($('.player').height());
         }
     }, [props.top, props.self]);
 
@@ -68,8 +56,8 @@ function UnoHand(props) {
         let cardWidth = $('.uno-card').width();
 
         posStyle = {
-            left: playerWidth + 80 + 'px',
-            right: playerWidth + 80 + cardWidth / 2 + 'px',
+            left: playerWidth + 100 + 'px',
+            right: playerWidth + 60 + cardWidth / 2 + 'px',
             height: cardHeight + 'px'
         }
 
@@ -83,6 +71,19 @@ function UnoHand(props) {
                 <div id={ props.socketId + '-uno-player' } className='uno-my-hand'>
                     {
                         props.cards.map((card, index) => {
+
+                            // letzte Karte
+                            if(props.cards.length === 1 && props.hasStarted) {
+                                return (
+                                    <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-my-card-wrapper' onClick={ () => onClickHandler(index) }>
+                                        <div className='uno-rainbow-wrapper'>
+                                            <div className='uno-rainbow'></div>
+                                        </div>
+                                        <UnoCard card={ card } />
+                                    </div>
+                                );
+                            }
+
                             return (
                                 <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-my-card-wrapper' onClick={ () => onClickHandler(index) }>
                                     <UnoCard card={ card } />
@@ -104,26 +105,41 @@ function UnoHand(props) {
         )
     }
 
-     // Card width
-     let cardWidth = $('.uno-card').width();
+    // Card width
+    let cardWidth = $('.uno-card').width();
+    let bubble;
 
     if(props.top) {
 
         // oben + links
         if(props.left) {
             posStyle = {
-                top: '40px',
-                left: playerWidth + 60 + 'px',
+                top: 40 + 'px',
+                left: playerWidth + cardWidth / 2 + 40 + 'px',
                 flexDirection: 'row'
             }
+
+            let bubbleStyle = {
+                top: playerHeight + 25 + 'px',
+                left: - 100 + 'px',
+            }
+
+            bubble = <div id={ props.socketId + '-uno-bubble' } style={ bubbleStyle } className='uno-bubble-top-left'>Klopf!</div>
 
         // oben + rechts
         } else {
             posStyle = {
                 top: '40px',
-                right: playerWidth + cardWidth / 2 + 60 + 'px',
+                right: playerWidth + cardWidth / 2 + 40 + 'px',
                 flexDirection: 'row-reverse'
             }
+
+            let bubbleStyle = {
+                top: playerHeight + 25 + 'px',
+                right: - 100 + 'px',
+            }
+
+            bubble = <div id={ props.socketId + '-uno-bubble' } style={ bubbleStyle } className='uno-bubble-top-right'>Klopf!</div>
 
         }
     } else {
@@ -131,17 +147,31 @@ function UnoHand(props) {
         if(props.left) {
             posStyle = {
                 bottom: playerHeight + 60 + 'px',
-                left: '40px',
+                left: '60px',
                 flexDirection: 'row'
             }
+            
+            let bubbleStyle = {
+                left: (playerWidth - 100) + 'px',
+                bottom: '0px'
+            }
+
+            bubble = <div id={ props.socketId + '-uno-bubble' } style={ bubbleStyle } className='uno-bubble-bottom-left'>Klopf!</div>
 
         // unten + rechts
         } else {
             posStyle = {
                 bottom: playerHeight + 60 + 'px',
-                right: 40 + cardWidth / 2 + 'px',
+                right: 20 + cardWidth / 2 + 'px',
                 flexDirection: 'row-reverse'
             }
+
+            let bubbleStyle = {
+                right: (playerWidth - 100) + 'px',
+                bottom: '0px'
+            }
+
+            bubble = <div id={ props.socketId + '-uno-bubble' } style={ bubbleStyle } className='uno-bubble-bottom-right'>Klopf!</div>
 
         }
     }
@@ -150,7 +180,23 @@ function UnoHand(props) {
     return (
         <div id={ props.socketId + '-uno-player' } className='uno-other-hand' style={ posStyle }>
             {
+                bubble
+            }
+            {
                 props.cards.map((card) => {
+
+                    // letzte Karte
+                    if(props.cards.length === 1 && props.hasStarted) {
+                        return (
+                            <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-other-card-wrapper'>
+                                <div className='uno-rainbow-wrapper-small'>
+                                    <div className='uno-rainbow'></div>
+                                </div>
+                                <UnoCard card={ card } />
+                            </div>
+                        );
+                    }
+
                     return (
                         <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-other-card-wrapper'>
                             <UnoCard card={ card } />

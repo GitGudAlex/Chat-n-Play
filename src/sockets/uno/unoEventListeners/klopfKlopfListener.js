@@ -1,3 +1,6 @@
+const { getPlayer } = require("../../../models/players");
+const { getRoom } = require("../../../models/rooms");
+const { dealCard } = require("../../../uno/gameLogic");
 
 module.exports = (io, socket) => {
 
@@ -20,10 +23,28 @@ module.exports = (io, socket) => {
     if(room.hasStarted === false) return;
 
     // Spieler nicht an der Reihe
-    if(room.activePlayer.roomId !== socket.id) return;
+    if(room.activePlayer.socketId !== socket.id) return;
 
-    // Mehr wie eine bzw. 2 Karten
-    if(player.hand.getHandSize() != 2) return;
-    
-    player.klopfKlopf = true;
+    // Spiel noch nicht angefangen
+    if(room.cardOnBoard === 0) return;
+
+    // Nur einmal pro Zug   
+    if(!player.klopfKlopf) {
+
+        // Mehr wie eine bzw. 2 Karten
+        if(player.hand.getHandSize() != 2) {
+            player.klopfKlopf = true;
+            
+            io.to(room.roomId).emit('uno:has-last-card', { socketId: socket.id });
+
+            setTimeout(() => {
+                dealCard(io, room, player, false);
+            }, 500);
+
+        } else {
+            player.klopfKlopf = true;
+
+            io.to(room.roomId).emit('uno:has-last-card', { socketId: socket.id });
+        }   
+    }
 }

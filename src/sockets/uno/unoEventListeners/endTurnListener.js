@@ -1,6 +1,6 @@
 const { getPlayer } = require("../../../models/players");
 const { getRoom } = require("../../../models/rooms");
-const { setNextPlayer } = require("../../../uno/gameLogic");
+const { setNextPlayer, dealCard } = require("../../../uno/gameLogic");
 
 module.exports = (io, socket) => {
 
@@ -35,6 +35,13 @@ module.exports = (io, socket) => {
 
     // Spieler kann nicht mehr interagieren
     player.active = false;
+
+    // schauen ob man fälchlischerweiße Klopf gedrückt hat
+    if(player.klopfKlopf) {
+        player.klopfKlopf = false;
+
+        dealCard(io, room, player, false);
+    }
 
     // Nächsten Spieler setzten
     setNextPlayer(io, room.roomId);

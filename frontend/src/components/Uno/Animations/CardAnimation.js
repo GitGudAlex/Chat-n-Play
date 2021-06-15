@@ -58,7 +58,33 @@ const animateCard = (fromId, toId, card, animationDuration, startRotationParam, 
     // Startzeitpunkt der Animation
     let startTime;
 
+    // Sidebar abziehen
     let sidebarWidth = $('#sidebar-wrapper').width();
+
+    let chatWindowMargin = parseInt($('#sidebar-chat').css('marginLeft'));
+    let rulesWindowMargin = parseInt($('#sidebar-rules').css('marginLeft'));
+
+    let windowWidth = parseInt($('#sidebar-rules').css('width'));
+
+    let widthDiff;
+
+    // Wenn Chat und Rules nicht angzeigt werden
+    if(chatWindowMargin === rulesWindowMargin) {
+        widthDiff = sidebarWidth;
+
+    // Wenn Chat ausgefahren
+    } else if(chatWindowMargin > rulesWindowMargin) {
+        widthDiff = chatWindowMargin + windowWidth;
+
+    // Wenn Rules ausgefahren
+    } else {
+        widthDiff = rulesWindowMargin + windowWidth;
+
+    }
+
+    console.log(widthDiff);
+
+    // Titel Höhe abziehen
     let titleHeight = $('#titleWrapper').height();
 
     let fromElement = $('#' + fromId).offset();
@@ -71,8 +97,13 @@ const animateCard = (fromId, toId, card, animationDuration, startRotationParam, 
     }
 
     // X Position
-    let startPosAbsX = fromElement.left - sidebarWidth;
-    let endPosAbsX = toElement.left - sidebarWidth;
+    let startPosAbsX = fromElement.left - widthDiff;
+    let endPosAbsX = toElement.left - widthDiff;
+
+    console.log(fromElement.left);
+    console.log(toElement.left);
+    console.log(startPosAbsX);
+    console.log(endPosAbsX);
 
     // Y Position
     let startPosAbsY = fromElement.top - titleHeight;
@@ -203,7 +234,7 @@ const animateCard = (fromId, toId, card, animationDuration, startRotationParam, 
                         return;
                     }
 
-                    endPosAbsX = toElement.left - sidebarWidth;
+                    endPosAbsX = toElement.left - widthDiff;
                 }
             }
 
