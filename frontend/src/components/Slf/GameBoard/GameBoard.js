@@ -47,10 +47,7 @@ function GameBoard(props) {
     }
 
     const handleStartRoundEvent = useCallback((data) => {
-        if(data.letter === undefined) {
-            console.log('Spiel schon vorbei!');
-
-        } else {
+        if(data.letter !== undefined) {
             setLetter(data.letter);
         }
     }, []);

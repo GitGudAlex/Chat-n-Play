@@ -100,7 +100,7 @@ const initUno = (hostId, socket, io) => {
             if(nextPlayer === undefined) return;
 
             // Alle Karten verteilt
-            if(nextPlayer.hand.getHandSize() === 2) {
+            if(nextPlayer.hand.getHandSize() === 7) {
                 setFirstPlayer(room, io);
 
             // Weitere Karte verteilen
@@ -252,7 +252,7 @@ const getNextPlayer = (roomId) => {
     }
 }
 
-const setNextPlayer = (io, roomId) => {
+const setNextPlayer = (io, roomId, callback) => {
     let nextPlayer;
 
     nextPlayer = getNextPlayer(roomId);
@@ -277,6 +277,11 @@ const setNextPlayer = (io, roomId) => {
     nextPlayer.didDrawCard = false;
 
     io.in(roomId).emit('uno:set-next-player', { socketId: nextPlayer.socketId, position: nextPlayer.position, isReverse: room.isReverse });
+
+    // Callback um danach den MoveStatus zu ändern
+    if(callback !== undefined) {
+        callback();
+    }
 }
 
 module.exports = { initUno, getNextPlayer, setNextPlayer, dealCard }

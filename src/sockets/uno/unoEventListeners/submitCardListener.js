@@ -29,7 +29,10 @@ module.exports = (io, socket, data) => {
     if(room.moveType === 5 || room.moveType === 6) return; 
 
     // Wenn man auf Klopf Input warten => keine Karten ziehen
-    if(room.moveType === 7 || room.moveType === 8) return; 
+    if(room.moveType === 7 || room.moveType === 8) return;
+
+    // Fall keine Karte übergeben wurde
+    if(data.card === undefined) return;
 
     const placeCard = (card) => {
 
@@ -127,14 +130,16 @@ module.exports = (io, socket, data) => {
                         
                         // resetten
                         player.klopfKlopf = false;
-                    }     
-                }
+                    }
 
-                // Wenn man fälschlicherweise KlopfKlopf Drück => resetten
-                if(player.klopfKlopf) {
+                } else {
+                    // Wenn man fälschlicherweise KlopfKlopf Drück => resetten
+                    if(player.klopfKlopf) {
+                        dealCard(io, room, player, false);
 
-                    // resetten
-                    player.klopfKlopf = false;
+                        // resetten
+                        player.klopfKlopf = false;
+                    }
                 }
 
                 // Auf Farb Input warten

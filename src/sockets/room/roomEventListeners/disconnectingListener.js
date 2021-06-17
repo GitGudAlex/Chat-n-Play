@@ -170,7 +170,7 @@ module.exports = (io, socket) => {
                     // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
                     if(room.activePlayer.socketId === socket.id) {
 
-                        setNextPlayer(io, room.roomId, player.position);
+                        setNextPlayer(io, room.roomId);
 
                         // Wenn Farb Input erwartet
                         if(room.moveType === 5) {

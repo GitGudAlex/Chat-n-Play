@@ -14,6 +14,7 @@ import UnoCard from '../UnoCard/UnoCard';
 import { animateCard } from '../Animations/CardAnimation';
 import UnoHand from '../UnoHand/UnoHand';
 import { animateArrow } from '../Animations/ArrowAnimation';
+import KlopfButton from '../KlopfButton/KlopfButton';
 
 function UnoGameBoard(props) {
 
@@ -32,6 +33,9 @@ function UnoGameBoard(props) {
     const [handCards, setHandCards] = useState([[], [], [], []]);
 
     const activeCardsCounterRef = useRef(0);
+
+    // Welche Spieler gerade dran ist
+    const [activePlayerId, setActivePlayerId] = useState(0);
 
     // Die SpielerId von dem Spieler der das Spiel anfängt
     const startPlayerIdRef = useRef(0);
@@ -85,7 +89,7 @@ function UnoGameBoard(props) {
                 // Zuletzt gespielte Karten updaten
                 setLastCards(JSON.parse(JSON.stringify(lastCardsRef.current)));
 
-                // Wenn keine Spezial Karte => Hover effekt aktivieren für abhebe deck
+                // Wenn keine Spezial Karte => Hover effekt aktivieren für Abhebedeck
                 if(data.card.color !== 4 && data.card.value < 10 && startPlayerIdRef.current === socket.id) {
                     $('#uno-deal-deck-img').addClass('unoDeckHover');
                 }
@@ -112,6 +116,7 @@ function UnoGameBoard(props) {
             // Der eigene Spieler bekommt eine Karte
             if(data.socketId === socket.id) {
 
+                // Nur einmal eine Karte ziehen
                 $('#uno-deal-deck-img').removeClass('unoDeckHover');
                 $('#uno-deal-deck-img').addClass('unoDeckNoHover');
 
@@ -223,10 +228,19 @@ function UnoGameBoard(props) {
         setTimeout(() => {
             animateArrow(3000, true, playerPosition, false,  () => {
                 setGameHasStarted(true);
+                setActivePlayerId(data.socketId);
+
+                if(data.socketId === socket.id) {
+                    $('#uno-last-card-btn').prop('checked', false);
+    
+                } else {
+                    $('#uno-last-card-btn').prop('checked', true);
+    
+                }
             });
         }, [700]);
 
-    }, [props]);
+    }, [props, socket.id]);
 
     const handleNextPlayerEvent = useCallback((data) => {
         animateArrow(500, false, data.position, data.isReverse, () => {
@@ -236,12 +250,18 @@ function UnoGameBoard(props) {
                 $('#uno-deal-deck-img').removeClass('unoDeckHover');
                 $('#uno-deal-deck-img').addClass('unoDeckHover');
 
+                $('#uno-last-card-btn').prop('checked', false);
+
             // Wenn man nicht dran ist => hover Effekt beim Kartenstapel deaktivieren
             } else {
                 $('#uno-deal-deck-img').removeClass('unoDeckHover');
                 $('#uno-deal-deck-img').addClass('unoDeckNoHover');
 
+                $('#uno-last-card-btn').prop('checked', true);
+
             }
+
+            setActivePlayerId(data.socketId);
         });
 
     }, [socket.id]);
@@ -380,7 +400,6 @@ function UnoGameBoard(props) {
 
     const setHasLastCard = useCallback((data) => {
         // Klopf anzeigen
-        console.log("....");
         // Nicht die eigene Karte
         if(data.socketId !== socket.id) {
             $('#' + data.socketId + '-uno-bubble').css({ visibility: 'visible', opacity: 1 });
@@ -501,11 +520,12 @@ function UnoGameBoard(props) {
 
     const setLastCard = () => {
         socket.emit('uno:klopf-klopf');
+        $('#uno-last-card-btn').prop('checked', true);
+
     }
 
     return (
         <div id='uno-gameboard' >
-            <input id='uno-one-card-btn' type='button' value='Klopf!' onClick={ setLastCard } />
             <div id='unoBtnContainer'>
                 <input id='unoEndTurnBtn' type='button' value='Zug Beenden' onClick={ endTurn } />
             </div>
@@ -565,13 +585,24 @@ function UnoGameBoard(props) {
                                     cards={ handCards[p.position] }
                                     activeCards={ activeCardsList }
                                     submitCard={ p.socketId === socket.id ? submitCard : undefined } 
-                                    hasStarted={ gameHasStarted } />
+                                    hasStarted={ gameHasStarted }
+                                    klopfHandler={ setLastCard } />
                 })
             }
             {
                 activeCards.map(card => {
                     return card;
                 })
+            }
+            {
+                props.players.length === 0 ? (
+                    <div></div>
+                ) : (
+                    <KlopfButton position={ props.players.find(p => p.socketId === socket.id).position }
+                        color={ props.players.find(p => p.socketId === socket.id).color }
+                        clickHandler={ setLastCard }
+                        turn={ activePlayerId === socket.id ? true : false } />
+                )
             }
         </div>
     );

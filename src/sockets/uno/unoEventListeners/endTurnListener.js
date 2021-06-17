@@ -40,9 +40,21 @@ module.exports = (io, socket) => {
     if(player.klopfKlopf) {
         player.klopfKlopf = false;
 
-        dealCard(io, room, player, false);
-    }
+        if(player.hand.getHandSize() !== 1) {
+            setTimeout(() => {
+                dealCard(io, room, player, false);
 
-    // Nächsten Spieler setzten
-    setNextPlayer(io, room.roomId);
+                // Nächsten Spieler setzten
+                setNextPlayer(io, room.roomId);
+            }, 500);
+
+        } else {
+            // Nächsten Spieler setzten
+            setNextPlayer(io, room.roomId);
+        }
+
+    } else {
+        // Nächsten Spieler setzten
+        setNextPlayer(io, room.roomId);
+    }
 }

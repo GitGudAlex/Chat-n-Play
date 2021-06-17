@@ -81,9 +81,7 @@ const animateCard = (fromId, toId, card, animationDuration, startRotationParam, 
         widthDiff = rulesWindowMargin + windowWidth;
 
     }
-
-    console.log(widthDiff);
-
+    
     // Titel Höhe abziehen
     let titleHeight = $('#titleWrapper').height();
 
@@ -100,17 +98,9 @@ const animateCard = (fromId, toId, card, animationDuration, startRotationParam, 
     let startPosAbsX = fromElement.left - widthDiff;
     let endPosAbsX = toElement.left - widthDiff;
 
-    console.log(fromElement.left);
-    console.log(toElement.left);
-    console.log(startPosAbsX);
-    console.log(endPosAbsX);
-
     // Y Position
     let startPosAbsY = fromElement.top - titleHeight;
     let endPosAbsY = toElement.top - titleHeight;
-
-    $('#from').css({ left: startPosAbsX + 'px', top: startPosAbsY + 'px' });
-    $('#to').css({ left: endPosAbsX + 'px', top: endPosAbsY + 'px' });
 
     // Z Rotation
     let startRotationZ = 0;

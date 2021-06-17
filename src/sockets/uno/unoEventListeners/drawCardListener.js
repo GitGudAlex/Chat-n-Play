@@ -30,6 +30,8 @@ module.exports = (io, socket) => {
     // Nur einemal eine Karte ziehen
     if(player.didDrawCard === true) return;
 
+    if(player.active === false) return;
+
     player.didDrawCard = true;
 
     // normalTurn = true, wenn man normal eine Karte vom Kartenstapel zieht => um 'Zug beenden' Btn anzuzeigne
@@ -49,7 +51,13 @@ module.exports = (io, socket) => {
         } else {
             if(!normalTurn) {
                 setTimeout(() => {
-                    setNextPlayer(io, room.roomId);
+                    setNextPlayer(io, room.roomId, () => {
+                        // Card Count reseten
+                        room.cardsCount = 0;
+
+                        // Karten wurden gezogen => nächster muss keine Karten mehr ziehen
+                        room.moveType = 1;
+                    });
                 }, 500);
             }
 
@@ -63,11 +71,5 @@ module.exports = (io, socket) => {
     // Karten ziehen wegen +2 oder +4 Karten
     } else if(room.moveType === 2 || room.moveType === 3) {
         drawCard(room.cardsCount, false);
-
-        // Card Count reseten
-        room.cardsCount = 0;
-
-        // Karten wurden gezogen => nächster muss keine Karten mehr ziehen
-        room.moveType = 1;
     }
 }

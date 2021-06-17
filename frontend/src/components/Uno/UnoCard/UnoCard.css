@@ -21,6 +21,19 @@
     height: 91px;
 }
 
+.uno-card-wide {
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 250px;
+    height: 136px;
+
+    background-color: chartreuse;
+}
+
 .uno-card-back, .uno-card-front {
     position: absolute;
     width: 100%;

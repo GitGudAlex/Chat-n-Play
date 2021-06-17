@@ -53,15 +53,33 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    transition: bottom 0.04s linear;
 }
 
-.uno-my-card-wrapper:hover {
-    height: 156px;
-    z-index: 2;
+.uno-my-card-wrapper-wide {
+    position: relative;
+    width: 250px;
+    height: 136px;
+    bottom: 0px;
 
-    bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.uno-small-deck-hover {
+    transition: bottom 0.1s, height 0.1s;
+}
+
+.uno-small-deck-hover:hover {
+    height: 176px;
+
+    bottom: 40px;
+    z-index: 2;
+}
+
+.uno-big-deck-hover {
+    transition: width 0.2s, height 0.1s;
 }
 
 .uno-card-ref-wrapper {
@@ -254,4 +272,10 @@
     bottom: -13px;
     left: 70%;
     margin-left: -16px;
+}
+
+#aabbcc {
+    position: absolute;
+    width: 100px;
+    height: 100px;
 }

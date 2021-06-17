@@ -53,7 +53,7 @@ function UnoCard(props) {
 
         let rotationStyle = {
             transform: 'rotateZ(' + rotation + 'deg)',
-            zIndex: 19
+            zIndex: 100
         }
 
         // Karte vom Kartenstapel zu einem Gegenspieler => Karte unbekannt

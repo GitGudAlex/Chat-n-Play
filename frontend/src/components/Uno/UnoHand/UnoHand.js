@@ -11,6 +11,8 @@ function UnoHand(props) {
     const [playerWidth, setPlayerWidth] = useState();
     const [playerHeight, setPlayerHeight] = useState()
 
+    const [hoverCardIndex, setHoverCardIndex] = useState(-1);
+
     const resizeHandHandler = useCallback(() => {
         if(props.self) {
             setPlayerWidth($('.player').width());
@@ -66,16 +68,28 @@ function UnoHand(props) {
             props.submitCard(index);
         }
 
+        const setHoverEffect = (index) => {
+
+            if(index < hoverCardIndex - 2 || index > hoverCardIndex + 2) {
+                setHoverCardIndex(index);
+            }
+        }
+
+        const removeHoverEffect = () => {
+            setHoverCardIndex(-1);
+        }
+
+        
         return(
             <div id='uno-own-hand' className='uno-my-hand-wrapper' style={ posStyle }>
-                <div id={ props.socketId + '-uno-player' } className='uno-my-hand'>
+                <div id={ props.socketId + '-uno-player' } className='uno-my-hand' onMouseLeave={ removeHoverEffect }>
                     {
                         props.cards.map((card, index) => {
 
                             // letzte Karte
                             if(props.cards.length === 1 && props.hasStarted) {
                                 return (
-                                    <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-my-card-wrapper' onClick={ () => onClickHandler(index) }>
+                                    <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-my-card-wrapper uno-small-deck-hover' onClick={ () => onClickHandler(index) } >
                                         <div className='uno-rainbow-wrapper'>
                                             <div className='uno-rainbow'></div>
                                         </div>
@@ -84,15 +98,57 @@ function UnoHand(props) {
                                 );
                             }
 
+                            // Großes Deck
+                            if(props.cards.length > 15) {
+
+                                // Breitere Karten
+                                if(index < hoverCardIndex + 6 && index > hoverCardIndex - 6 && hoverCardIndex !== -1) {
+                                    return (
+                                        <div style={{ width: '250px' }}
+                                            key={ card.id }
+                                            id={ 'uno-my-card-wrapper-' + card.id }
+                                            className={ 'uno-my-card-wrapper uno-big-deck-hover' }
+                                            onClick={ () => onClickHandler(index) }
+                                            onMouseEnter={ () => setHoverEffect(index) } >
+                                            <UnoCard card={ card } />
+                                        </div>
+                                    );
+                                }
+
+                                // Normale Karten
+                                return (
+                                    <div style={{ width: '90px' }}
+                                        key={ card.id }
+                                        id={ 'uno-my-card-wrapper-' + card.id }
+                                        className={ 'uno-my-card-wrapper uno-big-deck-hover' }
+                                        onClick={ () => onClickHandler(index) }
+                                        onMouseEnter={ () => setHoverEffect(index) }>
+                                        <UnoCard card={ card } />
+                                    </div>
+                                );
+                            }
+
+                            // Kleines Deck
                             return (
-                                <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id } className='uno-my-card-wrapper' onClick={ () => onClickHandler(index) }>
+                                <div key={ card.id } id={ 'uno-my-card-wrapper-' + card.id }
+                                    className={ 'uno-my-card-wrapper uno-small-deck-hover' }
+                                    onClick={ () => onClickHandler(index) } >
                                     <UnoCard card={ card } />
                                 </div>
                             )
                         })
                     }
                     {
-                        props.activeCards.map((card) => {
+                        props.activeCards.map((card, index) => {
+
+                            if(props.cards.length + props.activeCards.length > 15 && hoverCardIndex !== -1 && hoverCardIndex + 6 > props.cards.length + index + 1) {
+                                return(
+                                    <div key={ card.props.card.id + '-' + card.props.card.path } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-my-card-wrapper-wide uno-card-ref-wrapper'>
+                                        <img id={ 'uno-deck-ref-' + card.props.card.id } className='uno-card-wide invisible' src={ '/UnoCardsImages/-1.png' } alt='' />
+                                    </div>
+                                )
+                            }
+
                             return(
                                 <div key={ card.props.card.id + '-' + card.props.card.path } id={ 'uno-deck-ref-scaling-' + card.props.card.id } className='uno-my-card-wrapper uno-card-ref-wrapper'>
                                     <img id={ 'uno-deck-ref-' + card.props.card.id } className='uno-card invisible' src={ '/UnoCardsImages/-1.png' } alt='' />

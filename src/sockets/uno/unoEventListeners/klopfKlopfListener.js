@@ -31,20 +31,7 @@ module.exports = (io, socket) => {
     // Nur einmal pro Zug   
     if(!player.klopfKlopf) {
 
-        // Mehr wie eine bzw. 2 Karten
-        if(player.hand.getHandSize() != 2) {
-            player.klopfKlopf = true;
-            
-            io.to(room.roomId).emit('uno:has-last-card', { socketId: socket.id });
-
-            setTimeout(() => {
-                dealCard(io, room, player, false);
-            }, 500);
-
-        } else {
-            player.klopfKlopf = true;
-
-            io.to(room.roomId).emit('uno:has-last-card', { socketId: socket.id });
-        }   
+        player.klopfKlopf = true;
+        io.to(room.roomId).emit('uno:has-last-card', { socketId: socket.id });  
     }
 }
