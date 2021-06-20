@@ -1,4 +1,4 @@
-const { getPlayer, nextPlayerInRoom, getCurrentPlayerInRoom} = require('../../../models/players');
+const { getPlayer, nextPlayerInRoom} = require('../../../models/players');
 const {moveFigure, throwFigure, checkWinner} = require ('../../../ludo/gamelogic.js');
 const { getRoom } = require('../../../models/rooms');
 

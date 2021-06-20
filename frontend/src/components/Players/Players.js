@@ -12,6 +12,7 @@ function Players(props) {
 
     const socket = useContext(SocketContext);
     const useVideos = process.env.NODE_ENV === 'production';
+    //const useVideos = true;
     //process.env.NODE_ENV === 'production';
 
     // Router Stuff
