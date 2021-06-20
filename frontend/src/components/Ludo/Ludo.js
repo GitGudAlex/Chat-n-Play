@@ -84,9 +84,34 @@ function Ludo(props) {
 
     //Figur laufen
     const handleMoveFigureEvent = useCallback((move) =>{
-        $("#"+move[2]).css({'background-color':''});
-        $("#"+move[2]).css({'border-color':''});
-        $("#"+move[0]).css({'background-color':move[1]});   
+        let oldPosition = parseInt(move[2]);
+        let newPosition = parseInt(move[2]);
+        let color = '';
+
+        for(let i = 0; i < move[4]; i ++){
+            setTimeout(function(){
+                oldPosition = newPosition;
+                    if (newPosition === 40 && move[3] === 2){
+                        newPosition = 201;
+                    }else if (newPosition === 10 && move[3] === 1){
+                        newPosition = 205;
+                    }else if (newPosition === 20 && move[3] === 3){
+                        newPosition = 209;
+                    }else if (newPosition === 30 && move[3] === 0){
+                        newPosition = 213;
+                    }else if (newPosition === 40){
+                        newPosition = 1;
+                    }else{
+                        newPosition = newPosition +1;
+                    }
+    
+                    console.log(newPosition, oldPosition);
+                        $("#"+oldPosition).css({'background-color':color});
+                        color = $("#"+newPosition).css( "background-color" );
+                        $("#"+newPosition).css({'background-color':move[1]}); 
+            }, 300*i);  
+        }
+        
         $('.white').css({'border-color': '#474747'});
         $('.mf-bottom-right').css({'border-color': '#474747'});
         $('.mf-top-right').css({'border-color': '#474747'});

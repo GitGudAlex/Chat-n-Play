@@ -51,7 +51,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 
 #dice{
   border-color: white;
-  border: 2px solid;
+  border: 3px solid;
   outline: none;
   border-radius: .2em;
 
