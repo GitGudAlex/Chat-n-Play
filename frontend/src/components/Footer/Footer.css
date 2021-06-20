@@ -1,6 +1,12 @@
+
+body{
+    min-height: 100%;
+}
+
 .footer{
     height: 50px;
     background-color: #474747;
+    width: 100%;
 }
 
 .text-footer{
@@ -10,10 +16,65 @@
     color: rgb(211, 211, 211);
 }
 
+.title-footer{
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.text-privacy-policy{
+    margin-left: 200px;
+    margin-right: 200px;
+    font-size: large;
+}
+
+.button-faq{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.answer{
+    font-size: large;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.aboutus-content{
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+
+#paragraph-faq{
+    font-size: large;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top:40px ;
+}
+
 #container-footer{
     padding-top: 10px;
 }
 
 #mail{
    float: right;
+}
+
+#link-privacy-policy{
+    color: blue;
+}
+
+#faq{
+    height: 100%;
+    background: url(../../img/background_6.png), url(../../img/background_7.png) top right;
+    background-repeat: no-repeat;
+    background-size: 200px;
+}
+
+#privacy-policy{
+    background: url(../../img/background_6.png), url(../../img/background_7.png) top right;
+    background-repeat: no-repeat;
+    background-size: 200px;
 }

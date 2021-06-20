@@ -260,7 +260,7 @@ function Ludo(props) {
         return (
             <div id='game-content'>
                 <div id = 'game-board' className = 'game-board'> 
-                    <button id="dice" onClick={ roll }><img src={diceimg} height="40px" alt="Würfeln"></img> </button>
+                    <button id="dice" onClick={ roll }><img src={diceimg} height="40px" width="40px" alt="Würfeln"></img> </button>
                     <Matchfield players={ props.players }/>
                 </div>
             </div>

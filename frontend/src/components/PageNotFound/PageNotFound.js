@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../Home/Header/Header';
 import { Link } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 import './PageNotFound.css'
 
@@ -15,6 +16,7 @@ const NotFound = () => (
         <button type="button" className="btn btn-dark btn-lg"> Zur Startseite</button>
       </div>
     </Link>
+    <Footer/>
   </div>
 );
 

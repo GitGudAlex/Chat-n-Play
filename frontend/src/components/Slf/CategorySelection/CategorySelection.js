@@ -77,7 +77,7 @@ function CategorySelection(props) {
             <div className='category-selector-wrapper'>
                 <div className='round-selector'>
                     <p className='round-selector-header'>Bitte gib die Anzahl der Runden ein</p>
-                    <NumericInput id="round-selector-input" type="number" min="0" max="20" step="1" value={num} onChange={setNum}></NumericInput>
+                    <NumericInput style={{ borderColor: 'white', backgroundColor: "white"}} id="round-selector-input" type="number" min="0" max="20" step="1" value={num} onChange={setNum}></NumericInput>
                 </div>
                 <div className='category-selector'>
                     <p className='category-selector-header'>Bitte wähle 3-6 Kategorien aus</p>
@@ -97,7 +97,7 @@ function CategorySelection(props) {
                             categories.length < 6 ? (
                                 <div id='add-category'>
                                     <button id='add-category-btn' className='btn btn-dark' onClick={ addCategory }>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" id="cancel-button" viewBox="0 0 16 16">
                                             <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z"/>
                                         </svg>
                                     </button>
