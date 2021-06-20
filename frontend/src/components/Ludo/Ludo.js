@@ -33,6 +33,7 @@ function Ludo(props) {
     //Würfel für ersten Spieler entsperren
     socket.once("ludo:unlockDice-firstPlayer", () =>{
         setDisable(false);
+        $("#dice").css("animation", "pulse 2s infinite");
     });
 
     // Spielfeld anzeigen
@@ -42,6 +43,7 @@ function Ludo(props) {
 
     // Augenanzahl des Würfels anzeigen
     const handleDicedValueEvent = useCallback((dice) => {
+        $("#dice").css("animation", "");
         if(dice === 1){
             setDiceimg(one);
         }else if(dice ===2){
@@ -68,6 +70,7 @@ function Ludo(props) {
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
         figures.forEach(element =>{
             $("#"+element).prop("disabled", false);
+            $("#"+element).css("animation", "pulse 2s infinite");
         });
     }, []);
 
@@ -116,6 +119,7 @@ function Ludo(props) {
         $('.mf-top-right').css({'border-color': '#474747'});
         $('.mf-bottom-left').css({'border-color': '#474747'});
         $('.mf-top-left').css({'border-color': '#474747'});
+        $("#"+move[2]).css("animation", "");
     }, []);
 
     //nächsten Spieler anzeigen
@@ -131,6 +135,7 @@ function Ludo(props) {
         setTimeout(function(){
             setDiceimg(WuerfelDefault);
             setDisable(false);
+            $("#dice").css("animation", "pulse 2s infinite");
         }, 2000);    
     }, []);
 
