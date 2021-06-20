@@ -48,7 +48,8 @@ function Players(props) {
      */
 
     useLayoutEffect(() => {
-        setTimeout(clickEvent, 2000);
+        setTimeout(clickEvent, 1000);
+
         let constraints = {
             'video': true,
             'audio': true
@@ -128,26 +129,26 @@ function Players(props) {
                 });
 
                 socket.on("room:joined", ()=>{
-                    setTimeout(clickEvent, 2000);
+                    setTimeout(clickEvent, 1000);
+                });
+
+                //Übergangslösung um Spieler in Ludo zu sehen
+                socket.on("ludo:first-player", () =>{
+                    console.log("test");
+                    video.play();
                 });
 
                 //Kamera deaktivieren
                 socket.on("webcam:disabled",() =>{
-                    console.log("webcam:disabled");
-                    stream.getVideoTracks().forEach(function(track) {
-                        track.stop();
-                      });
+                     stream.getVideoTracks()[0].enabled = false;
                 });
 
                 socket.on("webcam:micMuted", () =>{
-                    console.log("webcam:micMuted");
-                    stream.getAudioTracks().forEach(function(track){
-                        track.stop();
-                    });
+                   stream.getAudioTracks()[0].enabled = false;
                 });
 
                 socket.on("webcam:micUnmuted", () =>{
-                    clickEvent();
+                    stream.getAudioTracks()[0].enabled = true;
                 });
 
             // Kamera wird nicht erlaubt

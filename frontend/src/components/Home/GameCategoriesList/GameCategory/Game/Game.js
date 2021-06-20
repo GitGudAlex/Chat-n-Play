@@ -55,6 +55,15 @@ function Game(props) {
 
     }, [isCollapsed]);
 
+    useEffect(()=>{
+        //Enter input für Submit Button ermöglichen
+        $(".modal").keyup(function(event) {
+            if (event.keyCode === 13) {
+                document.getElementById("room:create").click();
+            }
+        });
+    });
+
     return (
         <div className='m-5'>
             <div className="d-flex align-items-center justify-content-center">
@@ -96,7 +105,7 @@ function Game(props) {
                                     <small id={ 'create-game-error-output-' + gameId } className="text-danger"></small>
                                 </div>
                                 <div className='text-center'>
-                                    <button type="submit" className="btn btn-dark" onClick={ createRoom }>Raum erstellen</button>
+                                    <button id="room:create" type="submit" className="btn btn-dark" onClick={ createRoom }>Raum erstellen</button>
                                 </div>
                             </div>
                         </div>
