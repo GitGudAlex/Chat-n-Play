@@ -105,10 +105,9 @@ function Ludo(props) {
                         newPosition = newPosition +1;
                     }
     
-                    console.log(newPosition, oldPosition);
-                        $("#"+oldPosition).css({'background-color':color});
-                        color = $("#"+newPosition).css( "background-color" );
-                        $("#"+newPosition).css({'background-color':move[1]}); 
+                    $("#"+oldPosition).css({'background-color':color});
+                    color = $("#"+newPosition).css( "background-color" );
+                    $("#"+newPosition).css({'background-color':move[1]}); 
             }, 300*i);  
         }
         
