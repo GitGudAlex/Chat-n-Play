@@ -1,4 +1,4 @@
-import React, { useEffect,  useContext, useState, useCallback } from 'react';
+import React, { useEffect,  useContext, useState, useCallback, useLayoutEffect } from 'react';
 import $, { hasData } from "jquery";
 
 import './Ludo.css'
@@ -27,25 +27,21 @@ function Ludo(props) {
     
     // ersten Spieler anzeigen
     socket.once('ludo:first-player', player => {
-        console.log('ludo:firstplayer');
         $('#dice').css({'border-color':player.color});
     });
 
     //Würfel für ersten Spieler entsperren
     socket.once("ludo:unlockDice-firstPlayer", () =>{
-        console.log('ludo:unlockDice');
         setDisable(false);
     });
 
     // Spielfeld anzeigen
     const handleShowMatchfieldEvent = useCallback(() => {
-        console.log('ludo:showMatchfield');
         setGamestatus(1);
     }, []);
 
     // Augenanzahl des Würfels anzeigen
     const handleDicedValueEvent = useCallback((dice) => {
-        console.log('ludo:dicedValue');
         if(dice === 1){
             setDiceimg(one);
         }else if(dice ===2){
@@ -63,7 +59,6 @@ function Ludo(props) {
 
     //mögliche Züge anzeigen 
     const handleShowMovesEvent = useCallback((show) => {
-        console.log('ludo:showMoves');
         show.res.forEach(element => {
             $('#'+element).css({'border-color': show.color});
         })
@@ -71,7 +66,6 @@ function Ludo(props) {
 
     //Figuren zum Laufen freischalten
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
-        console.log('ludo:unlockMoveFiled');
         figures.forEach(element =>{
             $("#"+element).prop("disabled", false);
         });
@@ -79,20 +73,17 @@ function Ludo(props) {
 
     //Figur aus dem Haus holen
     const handleLeaveHouseEvent = useCallback((move)=> {
-        console.log('ludo:leaveHouse');
         $("#"+move[1]).css({'background-color':move[2]});
         $("#"+move[0]).css({'background-color':'white'});
     }, []);
 
     //Figur schmeißen
     const handleThrowFigureEvent = useCallback((move) => {
-        console.log('ludo:throwFigure');
         $("#"+move[0]).css({'background-color':move[1]});
     }, []);
 
     //Figur laufen
     const handleMoveFigureEvent = useCallback((move) =>{
-        console.log('ludo:moveFigure');
         $("#"+move[2]).css({'background-color':''});
         $("#"+move[2]).css({'border-color':''});
         $("#"+move[0]).css({'background-color':move[1]});   
@@ -105,7 +96,6 @@ function Ludo(props) {
 
     //nächsten Spieler anzeigen
     const hanldeNextPlayerEvent = useCallback((player)=>{
-        console.log('ludo:nextPlayer');
         setTimeout(function(){
             $('#dice').css({'border-color':player.color});
             setDiceimg(emptyWuerfel);
@@ -114,7 +104,6 @@ function Ludo(props) {
 
     //Würfel entsperren
     const hanldeUnlockDiceEvent = useCallback(() =>{
-        console.log('ludo:unlockDice');
         setTimeout(function(){
             setDiceimg(WuerfelDefault);
             setDisable(false);
@@ -123,7 +112,6 @@ function Ludo(props) {
 
     //Spielfiguren entfernen wenn Spieler das Spiel verlässt
     const handlePlayerLeaveEvent = useCallback((positionen) => {
-        console.log('ludo:playerleave');
         positionen.forEach(p => {
             $('#'+p[0]).css({'background-color':''});
         });
@@ -175,12 +163,6 @@ function Ludo(props) {
         //Alle Buttons sperren
         $(".matchfield").find(":button").prop("disabled", true);
 
-        // sobald ein Button im Spielfeld geklickt wird, wird die Funktion moveFigur() aufgerufen
-        $(".matchfield").find(":button").click((event)=> {
-            const id = $(event.currentTarget).attr('id');
-            moveFigure(id);
-        });
-
         //Wenn Spielmodus geändert wird
         $(".form-check-input").change(function(){
             const mode = $("input:checked").val();
@@ -192,12 +174,6 @@ function Ludo(props) {
     const roll = () => {
         socket.emit("ludo:rollDice");
         setDisable(true);
-    }
-    
-    //emit -> Figur die laufen soll
-    const moveFigure = (id) => {
-        socket.emit("ludo:clickFigure", id);
-        $(".matchfield").find(":button").prop("disabled", true);
     }
 
     //Emit -> erster Spieler soll zufällig festgelegt werden
