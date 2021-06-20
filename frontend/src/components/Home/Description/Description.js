@@ -32,6 +32,14 @@ function Description() {
         $(document).on('shown.bs.modal', '#join-game-modal', function () {
             $('#join-game-username-input').focus();
         });
+
+        //Enter input für Submit Button ermöglichen
+        $(".modal").keyup(function(event) {
+            if (event.keyCode === 13) {
+                console.log("button pressed via Enter");
+                document.getElementById("room:join").click();
+            }
+        });
     });
 
     return (
@@ -78,7 +86,7 @@ function Description() {
                                     <small id='join-game-error-output' className="text-danger"></small>
                                 </div>
                                 <div className='text-center'>
-                                    <button type="submit" className="btn btn-dark" onClick={ joinRoom }>Raum beitreten</button>
+                                    <button id="room:join" type="submit" className="btn btn-dark" onClick={ joinRoom }>Raum beitreten</button>
                                 </div>
                             </div>
                         </div>

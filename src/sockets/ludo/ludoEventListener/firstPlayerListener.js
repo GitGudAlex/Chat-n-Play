@@ -13,6 +13,8 @@ module.exports = (io, socket, mode) => {
     const player = getPlayer(socket.id);
     const allPlayers = getPlayersInRoom(player.roomId);
 
+    io.in(player.roomId).emit('ludo:showMatchfield');
+
     //ersten Spieler festlegen
     const index = Math.floor(Math.random()*allPlayers.length);
     allPlayers[index].active = true;

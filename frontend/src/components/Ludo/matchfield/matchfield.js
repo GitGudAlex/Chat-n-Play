@@ -1,9 +1,13 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import $ from 'jquery';
 
 import '../Ludo.css';
+import SocketContext from '../../../services/socket';
 
 function Matchfield(props) {
+
+    // Socket.io
+    const socket = useContext(SocketContext);
 
     useLayoutEffect(() => {
 
@@ -26,87 +30,94 @@ function Matchfield(props) {
 
     }, [props]);
 
+    //emit -> Figur die laufen soll
+    const moveFigure = (event) => {
+        const id = event.target.id;
+        socket.emit("ludo:clickFigure", id);
+        $(".matchfield").find(":button").prop("disabled", true);
+    }
+
     return(
         <div className = "matchfield">
                 <div>
-                    <button id = "39"  className = "white" ></button>
-                    <button id = "40"  className = "white middle" ></button>
-                    <button id = "1"   className = "mf-top-right start" ></button>
+                    <button id = "39"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "40"  onClick = {moveFigure} className = "white middle" ></button>
+                    <button id = "1"   onClick = {moveFigure} className = "mf-top-right start" ></button>
                 </div>
                 <div>
-                    <button id = "38"  className = "white" ></button>
-                    <button id = "201" className = "mf-top-right" ></button>
-                    <button id = "2"   className = "white" ></button>
+                    <button id = "38"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "201" onClick = {moveFigure} className = "mf-top-right" ></button>
+                    <button id = "2"   onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "37"  className = "white" ></button>
-                    <button id = "202" className = "mf-top-right" ></button>
-                    <button id = "3"   className = "white" ></button>
+                    <button id = "37"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "202" onClick = {moveFigure} className = "mf-top-right" ></button>
+                    <button id = "3"   onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "36"  className = "white" ></button>
-                    <button id = "203" className = "mf-top-right" ></button>
-                    <button id = "4"   className = "white" ></button>
+                    <button id = "36"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "203" onClick = {moveFigure} className = "mf-top-right" ></button>
+                    <button id = "4"   onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "31"  className = "mf-top-left start" ></button>
-                    <button id = "32"  className = "white" ></button>
-                    <button id = "33"  className = "white" ></button>
-                    <button id = "34"  className = "white" ></button>
-                    <button id = "35"  className = "white" ></button>
-                    <button id = "204" className = "mf-top-right" ></button>
-                    <button id = "5"   className = "white" ></button>
-                    <button id = "6"   className = "white" ></button>
-                    <button id = "7"   className = "white" ></button>
-                    <button id = "8"   className = "white" ></button>
-                    <button id = "9"   className = "white" ></button>
+                    <button id = "31"  onClick = {moveFigure} className = "mf-top-left start" ></button>
+                    <button id = "32"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "33"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "34"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "35"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "204" onClick = {moveFigure} className = "mf-top-right" ></button>
+                    <button id = "5"   onClick = {moveFigure} className = "white" ></button>
+                    <button id = "6"   onClick = {moveFigure} className = "white" ></button>
+                    <button id = "7"   onClick = {moveFigure} className = "white" ></button>
+                    <button id = "8"   onClick = {moveFigure} className = "white" ></button>
+                    <button id = "9"   onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "30"  className = "white" ></button>
-                    <button id = "213" className = "mf-top-left" ></button>
-                    <button id = "214" className = "mf-top-left" ></button>
-                    <button id = "215" className = "mf-top-left" ></button>
-                    <button id = "216" className = "mf-top-left" ></button>
+                    <button id = "30"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "213" onClick = {moveFigure} className = "mf-top-left" ></button>
+                    <button id = "214" onClick = {moveFigure} className = "mf-top-left" ></button>
+                    <button id = "215" onClick = {moveFigure} className = "mf-top-left" ></button>
+                    <button id = "216" onClick = {moveFigure} className = "mf-top-left" ></button>
                     {/* Würfel */}
                     <button id="buffer"></button>
-                    <button id = "208" className = "mf-bottom-right" ></button>
-                    <button id = "207" className = "mf-bottom-right" ></button>
-                    <button id = "206" className = "mf-bottom-right" ></button>
-                    <button id = "205" className = "mf-bottom-right" ></button>
-                    <button id = "10"  className = "white" ></button>
+                    <button id = "208" onClick = {moveFigure} className = "mf-bottom-right" ></button>
+                    <button id = "207" onClick = {moveFigure} className = "mf-bottom-right" ></button>
+                    <button id = "206" onClick = {moveFigure} className = "mf-bottom-right" ></button>
+                    <button id = "205" onClick = {moveFigure} className = "mf-bottom-right" ></button>
+                    <button id = "10"  onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "29"  className = "white" ></button>
-                    <button id = "28"  className = "white" ></button>
-                    <button id = "27"  className = "white" ></button>
-                    <button id = "26"  className = "white" ></button>
-                    <button id = "25"  className = "white" ></button>
-                    <button id = "212" className = "mf-bottom-left" ></button>
-                    <button id = "15"  className = "white" ></button>
-                    <button id = "14"  className = "white" ></button>
-                    <button id = "13"  className = "white" ></button>
-                    <button id = "12"  className = "white" ></button>
-                    <button id = "11"  className = "mf-bottom-right start" ></button>
+                    <button id = "29"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "28"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "27"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "26"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "25"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "212" onClick = {moveFigure} className = "mf-bottom-left" ></button>
+                    <button id = "15"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "14"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "13"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "12"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "11"  onClick = {moveFigure} className = "mf-bottom-right start" ></button>
                 </div>
                 <div>
-                    <button id = "24"  className = "white" ></button>
-                    <button id = "211" className = "mf-bottom-left" ></button>
-                    <button id = "16"  className = "white" ></button>
+                    <button id = "24"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "211" onClick = {moveFigure} className = "mf-bottom-left" ></button>
+                    <button id = "16"  onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "23"  className = "white" ></button>
-                    <button id = "210" className = "mf-bottom-left" ></button>
-                    <button id = "17"  className = "white" ></button>
+                    <button id = "23"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "210" onClick = {moveFigure} className = "mf-bottom-left" ></button>
+                    <button id = "17"  onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "22"  className = "white" ></button>
-                    <button id = "209" className = "mf-bottom-left" ></button>
-                    <button id = "18"  className = "white" ></button>
+                    <button id = "22"  onClick = {moveFigure} className = "white" ></button>
+                    <button id = "209" onClick = {moveFigure} className = "mf-bottom-left" ></button>
+                    <button id = "18"  onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "21"  className = "mf-bottom-left start" ></button>
-                    <button id = "20"  className = "white middle" ></button>
-                    <button id = "19"  className = "white" ></button>
+                    <button id = "21"  onClick = {moveFigure} className = "mf-bottom-left start" ></button>
+                    <button id = "20"  onClick = {moveFigure} className = "white middle" ></button>
+                    <button id = "19"  onClick = {moveFigure} className = "white" ></button>
                 </div>
             </div>
     )
