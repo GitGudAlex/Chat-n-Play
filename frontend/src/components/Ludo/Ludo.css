@@ -45,7 +45,6 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   left: 0;
   right: 45px;
   bottom: 0;
-
 }
 
 #dice{
@@ -54,14 +53,32 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   outline: none;
   border-radius: .2em;
 
-  position: absolute;
+  position: relative;
   margin:auto;
-  top: 10px;
-  right: 40px;  
+  top: -50px;
+  right: 40px;
   left: 0;
 
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
 	transform: scale(1);
+}
+
+@media screen and (max-height: 600px) {
+  #dice { 
+    border-color: white;
+    border: 3px solid;
+    outline: none;
+    border-radius: .2em;
+  
+    position: relative;
+    margin:auto;
+    top:-10px;
+    right: 40px;
+    left: 0;
+  
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+    transform: scale(1);   
+ }
 }
 
 @keyframes pulse {
