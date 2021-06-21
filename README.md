@@ -1,11 +1,3 @@
-Um das Projekt zu starten folgendes ausführen:
+Um das Backend zu starten folgendes Kommando ausführen:
 
-
-In diesem Ordner folgendes ausführen:
-
-### `node src/app.js`
-
-
-Im frontend Ordner folgendes ausführen:
-
-### `npm start`
+`node src/app.js`

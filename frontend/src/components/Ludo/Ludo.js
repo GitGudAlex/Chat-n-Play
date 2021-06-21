@@ -14,12 +14,12 @@ import three from '../../img/Wuerfel3_ohneRand.png';
 import four from '../../img/Wuerfel4_ohneRand.png';
 import five from '../../img/Wuerfel5_ohneRand.png';
 import six from '../../img/Wuerfel6_ohneRand.png';
-import emptyWuerfel from '../../img/Wuerfel_gespeert.png';
+import emptyWuerfel from '../../img/empty.png';
 
 function Ludo(props) {
 
     const [gamestatus, setGamestatus] = useState(0);
-    const [diceimg, setDiceimg] = useState(WuerfelDefault);
+    const [diceimg, setDiceimg] = useState(emptyWuerfel);
     const [disable, setDisable] = useState(true);
 
     // Socket.io
@@ -33,6 +33,8 @@ function Ludo(props) {
     //Würfel für ersten Spieler entsperren
     socket.once("ludo:unlockDice-firstPlayer", () =>{
         setDisable(false);
+        setDiceimg(WuerfelDefault);
+        $("#dice").css("animation", "pulse 2s infinite");
     });
 
     // Spielfeld anzeigen
@@ -42,6 +44,7 @@ function Ludo(props) {
 
     // Augenanzahl des Würfels anzeigen
     const handleDicedValueEvent = useCallback((dice) => {
+        $("#dice").css("animation", "");
         if(dice === 1){
             setDiceimg(one);
         }else if(dice ===2){
@@ -68,11 +71,13 @@ function Ludo(props) {
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
         figures.forEach(element =>{
             $("#"+element).prop("disabled", false);
+            $("#"+element).css("animation", "pulse 2s infinite");
         });
     }, []);
 
     //Figur aus dem Haus holen
     const handleLeaveHouseEvent = useCallback((move)=> {
+        $("#"+move[1]).removeClass('img');
         $("#"+move[1]).css({'background-color':move[2]});
         $("#"+move[0]).css({'background-color':'white'});
     }, []);
@@ -104,9 +109,13 @@ function Ludo(props) {
                     }else{
                         newPosition = newPosition +1;
                     }
-    
+                   
                     $("#"+oldPosition).css({'background-color':color});
+                    if (oldPosition === 1 || oldPosition === 11 || oldPosition === 21 | oldPosition === 31){
+                        $("#"+oldPosition).addClass('img');
+                    }
                     color = $("#"+newPosition).css( "background-color" );
+                    $("#"+newPosition).removeClass('img');
                     $("#"+newPosition).css({'background-color':move[1]}); 
             }, 300*i);  
         }
@@ -116,6 +125,7 @@ function Ludo(props) {
         $('.mf-top-right').css({'border-color': '#474747'});
         $('.mf-bottom-left').css({'border-color': '#474747'});
         $('.mf-top-left').css({'border-color': '#474747'});
+        $("#"+move[2]).css("animation", "");
     }, []);
 
     //nächsten Spieler anzeigen
@@ -131,6 +141,7 @@ function Ludo(props) {
         setTimeout(function(){
             setDiceimg(WuerfelDefault);
             setDisable(false);
+            $("#dice").css("animation", "pulse 2s infinite");
         }, 2000);    
     }, []);
 

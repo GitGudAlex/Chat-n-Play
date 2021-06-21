@@ -1,5 +1,11 @@
-// Env Variables
-require('dotenv').config();
+/**
+ * @file Die **App.js** Datei ist root Datei des Backends. Ausführen kann man diese mit `"node App.js"`.
+ * @author Alexander Kraus
+ * @author Kira Frankenfeld
+ * @author Timothy Geiger
+ * @author Susanne Weiß
+ * @see https://chat-n-play.vm.mi.hdm-stuttgart.de
+ */
 
 const fs = require('fs');
 
@@ -14,6 +20,7 @@ const { ExpressPeerServer } = require('peer');
 
 let peerOptions = {}
 
+// Auf dem Server soll das Zertifikat eingebunden werden für eine sichere Verbindung
 if(process.env.NODE_ENV === 'production') {
     peerOptions = {
         proxied: true,
@@ -26,7 +33,6 @@ if(process.env.NODE_ENV === 'production') {
 
 const peerServer = ExpressPeerServer(server, peerOptions);
 app.use('/peerjs', peerServer);
-
 
 // Routes
 app.use('/', require('./routes/routesIndex'));

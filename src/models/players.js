@@ -1,12 +1,31 @@
 /**
- * { socketId, username, roomId, position, color }
+ * Spieler Object.
+ * @typedef {Object} Player
+ * @property {String} socketId - Die SockeId des Spielers.
+ * @property {Number} username - Der Benutzername des Spielers.
+ * @property {String} roomId - Die Raum Id des Raumes, indem sich der Spieler befindet.
+ * @property {number} position - Die Position des Spielers auf dem Spielfeld.
+ * @property {boolean} color - Die Farbe des Spielers.
+ */
+
+/**
+ * @namespace
  */
 const players = [];
 
-// Farben der Spieler
+/**
+ * Ein Array aller verfügbaren Farben.
+ */
 const colors = ['#0B97F0', '#FCA701', '#00BF02', '#FF3030'];
 
-// add a player
+/**
+ * Fügt einen Spieler hinzu.
+ * @memberof players
+ * @param {String} socketId SocketId des Spielers, der hinzugefügt werden soll.
+ * @param {String} username Der Benutzername der hinzugefügt werden soll.
+ * @param {String} roomId Die RaumId, des Raumes, den der Spieler beitreten will.
+ * @returns {Player} Das erzeugte Spieler Objekt oder eine Error Message.
+ */
 const addPlayer = ( socketId, username, roomId ) => {
     const existingPlayer = players.find((player) => player.roomId === roomId && player.username === username);
 
@@ -24,7 +43,12 @@ const addPlayer = ( socketId, username, roomId ) => {
     return { player };
 }
  
-// remove a player
+/**
+ * Löscht einen Spieler anhand seiner SocketId.
+ * @memberof players
+ * @param {String} socketId Die SocketId des Spielers.
+ * @returns {Player} Das Spieler Object, des gelöschten Spielers.
+ */
 const removePlayer = (socketId) => {
     const playerIndex = players.findIndex((player) => player.socketId === socketId);
 
@@ -39,13 +63,23 @@ const removePlayer = (socketId) => {
 }
 
 
-// get a player with a playerId
+/**
+ * Das Spielerobjekt anhand seiner SocketId bekommen.
+ * @memberof players
+ * @param {String} socketId Die SocketId des Spielers.
+ * @returns {Player} Das Spieler Objekt.
+ */
 const getPlayer = (socketId) => { 
     return players.find((player) => player.socketId === socketId);
 }
 
 
-// get all players from a room with the roomId
+/**
+ * Liefert die Spieler Objekte zurück aller Spieler in einem angegebenen Raum.
+ * @memberof players
+ * @param {String} roomId Die RaumId des Raumes.
+ * @returns {Player[]} Alle Spielerobjekte als Array.
+ */
 const getPlayersInRoom = (roomId) => {
     let playersInRoom = players.filter((player) => player.roomId == roomId);
 
@@ -54,19 +88,32 @@ const getPlayersInRoom = (roomId) => {
     });
 }
 
-// return aktuellen Spieler
+/**
+ * Liefert den Spieler zurück, der zurzeit am zug ist bei Turn Based Games.
+ * @memberof players
+ * @param {String} roomId Die RaumId des Raumes.
+ * @returns {Player} Das Spielerobjekt des aktuellen Spielers.
+ */
 const getCurrentPlayerInRoom = (roomId) => {
     const allPlayers = getPlayersInRoom(roomId);
     let currentPlayer = null;
+
     allPlayers.forEach(p => {
         if(p.active == true){
             currentPlayer = p;
         }
     });
+
     return currentPlayer;
 }
 
-//setzt den nächsten Spieler auf active=true
+/**
+ * Gibt den Spieler zurück, der als nächstes an der Reihe ist.
+ * @memberof players
+ * @param {String} roomId Die RaumId des Raums.
+ * @param {Player} currentPlayer Die aktuelle Spieler.
+ * @returns {Player} Die nächste Spieler.
+ */
 const nextPlayerInRoom = (roomId, currentPlayer) => {
     const allPlayers = getPlayersInRoom(roomId);
     currentPlayer.active = false;
@@ -103,8 +150,13 @@ const nextPlayerInRoom = (roomId, currentPlayer) => {
     return nextPlayer;
 }
 
-// Schaut ob die ausgesucht farbe genommen werden darf 
-// und gibt die farben zurück, die noch übrig sind
+/**
+ * Setzt die Farbe eines Spielers.
+ * @memberof players
+ * @param {String} socketId Die SocketId des Spielers.
+ * @param {String} color Die neue Farbe des Spielers.
+ * @returns {Boolean} Returnt einen boolean. True: Die Farbe konnte gesetzt werden / False: Die Farbe konnte ncht gestezt werden.
+ */
 const setColor = (socketId, color) => {
     let player = getPlayer(socketId);
     let colorArr = getColors(player.roomId);
@@ -134,8 +186,13 @@ const setColor = (socketId, color) => {
     }
 }
 
-// Gibt einen Array von JSON-Objekten zurück. In einem JSON Objekt steht jeweils die farbe und wer diese
-// Farbe ausgesucht hat (undefinded, wenn noch niemand diese Farbe ausgewählt hat)
+/**
+ * Liefert für alle Spieler in einem Raum seine ausgesuchte Farbe. 
+ * @memberof players
+ * @param {String} roomId Die RaumId des Raums.
+ * @returns {Object[]} Ein Array von Objekten. In einem Objekt steht jeweils die socketId des Spielers
+ * und seine Farbe. Wurde noch keine Farbe ausgesucht ist der Wert 'undefined'.
+ */
 const getColors = (roomId) => {
     let result = []
     let playersInRoom = players.filter((p) => p.roomId == roomId);
@@ -158,7 +215,12 @@ const getColors = (roomId) => {
     return result;
 }
 
-
+/**
+ * Sotiert die Spielerpositionen neu. Wird beispielsweise bei einem disconnect in der Lobby gebraucht. Dort muss die
+ * Position des Spieler neu berechnet werden.
+ * @memberof players
+ * @param {String} roomId Die RaumId des Raums.
+ */
 const reorderPlayerPositions = (roomId) => {
     let playersInRoom = getPlayersInRoom(roomId);
     
