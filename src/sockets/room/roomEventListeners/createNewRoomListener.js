@@ -1,6 +1,11 @@
 const { isHost } = require('../../../models/rooms');
 const { getPlayer } = require('../../../models/players');
 
+/**
+ * 
+ * @param {*} io 
+ * @param {*} socket 
+ */
 module.exports = (io, socket) => {
     const player = getPlayer(socket.id);
 

@@ -14,6 +14,7 @@ const { ExpressPeerServer } = require('peer');
 
 let peerOptions = {}
 
+// Auf dem Server soll das Zertifikat eingebunden werden für eine sichere Verbindung
 if(process.env.NODE_ENV === 'production') {
     peerOptions = {
         proxied: true,
@@ -26,7 +27,6 @@ if(process.env.NODE_ENV === 'production') {
 
 const peerServer = ExpressPeerServer(server, peerOptions);
 app.use('/peerjs', peerServer);
-
 
 // Routes
 app.use('/', require('./routes/routesIndex'));

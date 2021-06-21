@@ -4,7 +4,9 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-// get all available games (returns id + gamenames)
+/**
+ * Liefert alle möglichen Spiele zurück: Spiel Id (id) + Spiel Name (name)
+ */
 router.get('/', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) console.log(err);
@@ -21,7 +23,10 @@ router.get('/', (req, res) => {
     });
 })
 
-// get all Game Categories (id + name)
+/**
+ * Liefert alle möglichen Spielekategorien zurück: Kategorie Id (gameCategoryId), Kategorie Name (gameCategoryName),
+ * Farbe (color), Banner Bild (img), Hintergrundbild 1 (imgbg1), Hintergrundbild 2 (imgbg2)
+ */
 router.get('/gamecategories', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/gameCategories.json'), 'utf8', (err, json) => {
         if (err) console.log(err);
@@ -38,7 +43,9 @@ router.get('/gamecategories', (req, res) => {
     });
 })
 
-// get all games from a specific category{ card, board, ... } (returns game names and descriptions of the games)
+/**
+ * Liefert alle Spiele von einer bestimmten Kategorie zurück: Spiel Id (id), Spiel Name (name), Beschreibung des Spiels (description)
+ */
 router.get('/category', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) console.log(err);
@@ -55,7 +62,9 @@ router.get('/category', (req, res) => {
     });
 })
 
-// get the name of a game
+/**
+ * Liefert nur den Namen eines Spiels zurück: Spiel Name (name)
+ */
 router.get('/name', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) console.log(err);
@@ -73,7 +82,9 @@ router.get('/name', (req, res) => {
 })
 
 
-// get tge rules of a game
+/**
+ * Liefert nur die Regeln eines Spiels zurück: Spiel Regeln (rules)
+ */
 router.get('/rules', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) console.log(err);
