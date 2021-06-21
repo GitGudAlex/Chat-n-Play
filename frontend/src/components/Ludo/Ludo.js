@@ -19,7 +19,7 @@ import emptyWuerfel from '../../img/empty.png';
 function Ludo(props) {
 
     const [gamestatus, setGamestatus] = useState(0);
-    const [diceimg, setDiceimg] = useState(WuerfelDefault);
+    const [diceimg, setDiceimg] = useState(emptyWuerfel);
     const [disable, setDisable] = useState(true);
 
     // Socket.io
@@ -33,6 +33,7 @@ function Ludo(props) {
     //Würfel für ersten Spieler entsperren
     socket.once("ludo:unlockDice-firstPlayer", () =>{
         setDisable(false);
+        setDiceimg(WuerfelDefault);
         $("#dice").css("animation", "pulse 2s infinite");
     });
 
