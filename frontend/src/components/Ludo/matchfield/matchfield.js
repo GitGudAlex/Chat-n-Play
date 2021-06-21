@@ -35,6 +35,7 @@ function Matchfield(props) {
         const id = event.target.id;
         socket.emit("ludo:clickFigure", id);
         $(".matchfield").find(":button").prop("disabled", true);
+        $(".matchfield").find(":button").css("animation", "");
     }
 
     return(
