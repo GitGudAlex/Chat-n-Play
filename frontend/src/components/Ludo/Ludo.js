@@ -14,7 +14,7 @@ import three from '../../img/Wuerfel3_ohneRand.png';
 import four from '../../img/Wuerfel4_ohneRand.png';
 import five from '../../img/Wuerfel5_ohneRand.png';
 import six from '../../img/Wuerfel6_ohneRand.png';
-import emptyWuerfel from '../../img/Wuerfel_gespeert.png';
+import emptyWuerfel from '../../img/empty.png';
 
 function Ludo(props) {
 
@@ -124,9 +124,9 @@ function Ludo(props) {
 
     //nächsten Spieler anzeigen
     const hanldeNextPlayerEvent = useCallback((player)=>{
+        setDiceimg(emptyWuerfel);
         setTimeout(function(){
             $('#dice').css({'border-color':player.color});
-            setDiceimg(emptyWuerfel);
         }, 2000);
     }, []);
 
