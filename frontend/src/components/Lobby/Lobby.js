@@ -42,6 +42,7 @@ function Lobby(props) {
         return () => {
             // Events unmounten
             socket.off('room:game-started', handleGameStartedEvent);
+            document.getElementById("game-content-wrapper").style.backgroundImage = "url(../../img/background_white.png)";
         };
 
     }, [socket, handleGameStartedEvent]);

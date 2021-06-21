@@ -1,7 +1,7 @@
 .background{
-   background: url(../../img/background_9.png);
+   background: url(../../img/background_6.png), url(../../img/background_7.png) top right;
    background-repeat: no-repeat;
-   background-size: 100%;
+   background-size: 330px, 200px;
    height: 100%;
 }
 h2 {

@@ -18,7 +18,7 @@ function PrivacyPolicy (){
                 <p className="text-privacy-policy">Um die Video- und Chatfunktion während eines Spiels bereitzustellen, werden entsprechend der Dauer des Spiels die Daten vom Mikrofon und der Webcam Ihres Endgerät verarbeitet. Sie können das Mikrofon und/ oder die Kamera jederzeit selbst über die Buttons in der Sidebar (links) abschalten. Im Chat werden Ihre Eingaben verarbeitet und mit Ihrem selbst gewählten Namen angezeigt.</p>  
                 <p className="text-privacy-policy">Da dieser Server von der HdM gehostet wird, entnehmen Sie bitte weiteres der <a id="link-privacy-policy" href ='https://www.hdm-stuttgart.de/datenschutz'>Datenschutzerklärung der Hochschule der Medien</a>.</p>
             </div>
-            <footer className = "footer">
+            <footer className = "footer" style={{position: "fixed", bottom: 0}}>
                 <Footer start='false'/>
             </footer>   
         </div>
