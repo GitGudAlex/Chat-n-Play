@@ -77,6 +77,7 @@ function Ludo(props) {
 
     //Figur aus dem Haus holen
     const handleLeaveHouseEvent = useCallback((move)=> {
+        $("#"+move[1]).removeClass('img');
         $("#"+move[1]).css({'background-color':move[2]});
         $("#"+move[0]).css({'background-color':'white'});
     }, []);
@@ -108,9 +109,13 @@ function Ludo(props) {
                     }else{
                         newPosition = newPosition +1;
                     }
-    
+                   
                     $("#"+oldPosition).css({'background-color':color});
+                    if (oldPosition === 1 || oldPosition === 11 || oldPosition === 21 | oldPosition === 31){
+                        $("#"+oldPosition).addClass('img');
+                    }
                     color = $("#"+newPosition).css( "background-color" );
+                    $("#"+newPosition).removeClass('img');
                     $("#"+newPosition).css({'background-color':move[1]}); 
             }, 300*i);  
         }

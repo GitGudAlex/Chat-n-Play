@@ -43,7 +43,7 @@ function Matchfield(props) {
                 <div>
                     <button id = "39"  onClick = {moveFigure} className = "white" ></button>
                     <button id = "40"  onClick = {moveFigure} className = "white middle" ></button>
-                    <button id = "1"   onClick = {moveFigure} className = "mf-top-right start" ></button>
+                    <button id = "1"   onClick = {moveFigure} className = "mf-top-right start img" ></button>
                 </div>
                 <div>
                     <button id = "38"  onClick = {moveFigure} className = "white" ></button>
@@ -61,7 +61,7 @@ function Matchfield(props) {
                     <button id = "4"   onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "31"  onClick = {moveFigure} className = "mf-top-left start" ></button>
+                    <button id = "31"  onClick = {moveFigure} className = "mf-top-left start img" ></button>
                     <button id = "32"  onClick = {moveFigure} className = "white" ></button>
                     <button id = "33"  onClick = {moveFigure} className = "white" ></button>
                     <button id = "34"  onClick = {moveFigure} className = "white" ></button>
@@ -98,7 +98,7 @@ function Matchfield(props) {
                     <button id = "14"  onClick = {moveFigure} className = "white" ></button>
                     <button id = "13"  onClick = {moveFigure} className = "white" ></button>
                     <button id = "12"  onClick = {moveFigure} className = "white" ></button>
-                    <button id = "11"  onClick = {moveFigure} className = "mf-bottom-right start" ></button>
+                    <button id = "11"  onClick = {moveFigure} className = "mf-bottom-right start img" ></button>
                 </div>
                 <div>
                     <button id = "24"  onClick = {moveFigure} className = "white" ></button>
@@ -116,7 +116,7 @@ function Matchfield(props) {
                     <button id = "18"  onClick = {moveFigure} className = "white" ></button>
                 </div>
                 <div>
-                    <button id = "21"  onClick = {moveFigure} className = "mf-bottom-left start" ></button>
+                    <button id = "21"  onClick = {moveFigure} className = "mf-bottom-left start img" ></button>
                     <button id = "20"  onClick = {moveFigure} className = "white middle" ></button>
                     <button id = "19"  onClick = {moveFigure} className = "white" ></button>
                 </div>

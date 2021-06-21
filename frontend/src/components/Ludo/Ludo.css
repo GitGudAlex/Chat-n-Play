@@ -151,19 +151,19 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 }
 
 .blue-light {
-  background-color: #8ab8d4;
+  background-color: #abcee4;
 }
 
 .red-light {
-  background-color: #e79494;
+  background-color: #eeacac;
 }
 
 .green-light {
-  background-color: hsl(121, 54%, 68%);
+  background-color: hsl(120, 48%, 84%);
 }
 
 .yellow-light {
-  background-color: #e0c081;
+  background-color: #dfcba3;
 }
 
 .white{
@@ -223,9 +223,17 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   border: none;
 }
 
+
 .start{
   padding: 13px 13px;
   margin: 6px;
+}
+
+.img{
+  background-image: url('../../img/letter_S.png');
+  background-size: auto 60%;
+  background-repeat: no-repeat;
+  background-position:center;
 }
 
 .middle{

@@ -7,6 +7,11 @@ const slfEvents = require("./slf/slfIndex")
 const footerEvents = require("./footer/footerIndex")
 
 module.exports = function(io) {
+
+    /**
+     * Socket.io onConnection Event
+     * @param {*} socket Der Socket, der die Verbindung aufbaut.
+     */
     const onConnection = (socket) => {
         
         // all room events
@@ -27,9 +32,11 @@ module.exports = function(io) {
         // all slf events
         slfEvents(io, socket);
 
+        // all footer event
         footerEvents(io, socket);
     }
     
+    // Hören auf das Connection Event
     io.on("connection", onConnection);
 }
 
