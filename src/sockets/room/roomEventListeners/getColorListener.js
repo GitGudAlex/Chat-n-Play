@@ -1,9 +1,5 @@
 const { getPlayer, getColors } = require('../../../models/players');
 
-/**
- * 
- * @param {*} socket 
- */
 module.exports = (socket) => {
     const player = getPlayer(socket.id);
 

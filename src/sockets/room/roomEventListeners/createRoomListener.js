@@ -4,14 +4,6 @@ const path = require('path');
 const { getPlayer, getPlayersInRoom } = require('../../../models/players');
 const { addRoom, removeRoom, isHost } = require('../../../models/rooms');
 
-/**
- * 
- * @param {*} io 
- * @param {*} socket 
- * @param {*} data 
- * @param {*} callback 
- * @returns 
- */
 module.exports = (io, socket, data, callback) => {
 
     // Man kann ertsmal keinen Raum erstellen, wenn man noch in einem Raum drin ist

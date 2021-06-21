@@ -1,14 +1,6 @@
 const { addPlayer, getPlayersInRoom, getPlayer, getColors, removePlayer } = require('../../../models/players');
 const { getRoom } = require('../../../models/rooms');
 
-/**
- * 
- * @param {*} io 
- * @param {*} socket 
- * @param {*} data 
- * @param {*} callback 
- * @returns 
- */
 module.exports = (io, socket, data, callback) => {
 
     // Man kann keinen Raum joinen, wenn man noch in einem Raum drin ist

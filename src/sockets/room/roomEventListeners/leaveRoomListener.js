@@ -2,12 +2,6 @@ const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms'
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
 const { removePlayerWordsFromCurrentRound, checkAllSubmitted, calculateScore, chooseLetter, getPlayersScores } = require('../../../slf/gameLogic');
 
-/**
- * 
- * @param {*} io 
- * @param {*} socket 
- * @returns 
- */
 module.exports = (io, socket) => {
 
     console.log("room-event-listener");

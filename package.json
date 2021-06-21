@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-docs": "jsdoc -c doc/conf.json"
+    "doc": "jsdoc -c jsdoc.json"
   },
   "repository": {
     "type": "git",

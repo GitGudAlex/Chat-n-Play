@@ -1,11 +1,6 @@
 const { getHost } = require('../../../models/rooms');
 const { getPlayer, getPlayersInRoom } = require('../../../models/players');
 
-/**
- * 
- * @param {*} socket 
- * @param {*} callback 
- */
 module.exports = (socket, callback) => {
     const player = getPlayer(socket.id);
 

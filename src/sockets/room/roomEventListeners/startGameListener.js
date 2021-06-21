@@ -3,13 +3,6 @@ const { getPlayersInRoom, getPlayer, setColor, getColors } = require('../../../m
 const { startGameLudo } = require('../../../ludo/startGame');
 const { initUno } = require('../../../uno/gameLogic');
 
-/**
- * 
- * @param {*} io 
- * @param {*} socket 
- * @param {*} callback 
- * @returns 
- */
 module.exports = (io, socket, callback) => {
     
     // Farben setzten, bei denen, die noch keine Farbe ausgesucht haben

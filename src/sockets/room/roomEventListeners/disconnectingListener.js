@@ -4,12 +4,6 @@ const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCu
 const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores, addVotes } = require('../../../slf/gameLogic');
 const { setNextPlayer } = require('../../../uno/gameLogic');
 
-/**
- * 
- * @param {*} io 
- * @param {*} socket 
- * @returns 
- */
 module.exports = (io, socket) => {
     // Spieler löschen
     const player = removePlayer(socket.id);
