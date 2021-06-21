@@ -40,9 +40,8 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 }
 
 .matchfield{
-  position:absolute;
+  position:relative;
   margin:auto;
-  top: 70px;
   left: 0;
   right: 45px;
   bottom: 0;

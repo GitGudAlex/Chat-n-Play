@@ -7,7 +7,7 @@ body{
     height: 50px;
     background-color: #474747;
     width: 100%;
-    position: relative;
+    position: absolute;
 }
 
 .text-footer{

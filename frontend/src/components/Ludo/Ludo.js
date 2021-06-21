@@ -125,9 +125,9 @@ function Ludo(props) {
 
     //nächsten Spieler anzeigen
     const hanldeNextPlayerEvent = useCallback((player)=>{
-        setDiceimg(emptyWuerfel);
         setTimeout(function(){
             $('#dice').css({'border-color':player.color});
+            setDiceimg(emptyWuerfel);
         }, 2000);
     }, []);
 
