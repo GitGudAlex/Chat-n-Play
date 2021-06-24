@@ -4,7 +4,6 @@ import Member from './Member/Member';
 
 import './AboutUs.css'
 
-
 function AboutUs (){
 
     return(
@@ -27,7 +26,7 @@ function AboutUs (){
                 </p>
             </div>
             <footer className = "footer" style={{position: "fixed", bottom: 0}}>
-                <Footer start='flase'/>
+                <Footer/>
             </footer>    
         </div>
     )

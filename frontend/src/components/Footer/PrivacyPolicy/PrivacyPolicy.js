@@ -19,7 +19,7 @@ function PrivacyPolicy (){
                 <p className="text-privacy-policy">Da dieser Server von der HdM gehostet wird, entnehmen Sie bitte weiteres der <a id="link-privacy-policy" href ='https://www.hdm-stuttgart.de/datenschutz'>Datenschutzerklärung der Hochschule der Medien</a>.</p>
             </div>
             <footer className = "footer" style={{position: "fixed", bottom: 0}}>
-                <Footer start='false'/>
+                <Footer/>
             </footer>   
         </div>
     )

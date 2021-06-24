@@ -76,7 +76,7 @@ function Home({ match }) {
                     </div>
                 </div>
             </main>
-            <Footer start='true'></Footer>
+            <Footer></Footer>
         </div>
     );
 }

@@ -152,6 +152,12 @@ function Ludo(props) {
             $('#'+p[0]).css({'background-color':''});
         });
         $(".matchfield").find(":button").html('');
+
+        $('.white').css({'border-color': '#474747'});
+        $('.mf-bottom-right').css({'border-color': '#474747'});
+        $('.mf-top-right').css({'border-color': '#474747'});
+        $('.mf-bottom-left').css({'border-color': '#474747'});
+        $('.mf-top-left').css({'border-color': '#474747'});
     }, []);
 
     //Spielmodus ändern

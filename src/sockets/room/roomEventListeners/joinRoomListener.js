@@ -3,11 +3,15 @@ const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket, data, callback) => {
 
+    console.log("Joining Room with Id: " + data.roomId);
+
     // Man kann keinen Raum joinen, wenn man noch in einem Raum drin ist
     const oldPlayer = getPlayer(socket.id);
 
     // Spieler befindet sich schon im Speicher
     if(oldPlayer !== undefined) {
+
+        console.log("Joining new Room after a game has ended. Old RoomId: " + oldPlayer.roomId);
 
         // Spielernamen vom aktuellen Spieler holen
         data.username = oldPlayer.username;
@@ -18,12 +22,17 @@ module.exports = (io, socket, data, callback) => {
         // alten Raum verlassen
         socket.leave(oldRoomId);
 
+        console.log("Leaving old room");
+
         // Spieler löschen
         removePlayer(oldPlayer.socketId);
     }
     
     // Wenn Spielername oder Raum Code nicht angegeben
     if (data.username == '' || data.roomId == '') {
+
+        console.log("Cannot join new room, beacause data is missing");
+
         if(data.username != '') {
             return callback("Du musst einen Raum-Code angeben!");
 
