@@ -60,10 +60,13 @@ module.exports = (io, socket, data) => {
             if(card.value === 10) {
                 room.cardsCount += 2;
                 room.moveType = 2;
+                console.log("played +2 Card");
                 
             // Reverse Karte
             } else if(card.value === 11) {
                 room.isReverse = !room.isReverse;
+
+                console.log("played reverse Card");
 
                 // Bei 2 Spielern wie eine Aussetzkarte
                 let playersLen = getPlayersInRoom(room.roomId).length;
@@ -76,11 +79,14 @@ module.exports = (io, socket, data) => {
 
             // Aussetz Karte
             } else if(card.value === 12) {
+                console.log("played - Card");
                 room.isSkip = true;
                 room.moveType = 1;
 
             // Schwarze Farbe
             } else {
+
+                console.log("played special Card");
 
                 // +4
                 if(card.value === 0) {
@@ -101,6 +107,7 @@ module.exports = (io, socket, data) => {
 
         // Normaler Karte
         } else {
+            console.log("played normal Card");
             room.moveType = 1;
 
         }
@@ -115,6 +122,7 @@ module.exports = (io, socket, data) => {
             // Wenn ein Spieler keine Karten mehr hat => gewonnen
             if (player.hand.getHandSize() === 0) {
                 io.in(player.roomId).emit('room:end-game', { winners: [player] });
+                console.log("player has won game");
 
             // Spieler hat noch nicht gewonnen
             } else {
@@ -122,8 +130,11 @@ module.exports = (io, socket, data) => {
                 // Ob man vergessen hat 'KlopfKlopf' zu sagen / zu drücken
                 if(player.hand.getHandSize() === 1) {
 
+                    console.log("one card left");
+
                     // Wurde vergessen => +1 Karte ziehen
                     if(!player.klopfKlopf) {
+                        console.log("klopf klopf vergessen");
                         dealCard(io, room, player, false);
 
                     } else {
@@ -135,6 +146,7 @@ module.exports = (io, socket, data) => {
                 } else {
                     // Wenn man fälschlicherweise KlopfKlopf Drück => resetten
                     if(player.klopfKlopf) {
+                        console.log("klopf vergessen"),
                         dealCard(io, room, player, false);
 
                         // resetten
@@ -145,13 +157,16 @@ module.exports = (io, socket, data) => {
                 // Auf Farb Input warten
                 if(room.moveType === 5 || room.moveType === 6) {
                     socket.emit('uno:get-color');
+                    console.log("Farb Input warten");
 
                 // Auf Klopf Input warten
                 } else if(room.moveType === 7 || room.moveType === 8) {
                     socket.emit('uno:get-klopf');
+                    console.log("Klopf Input warten");
 
                 // Nächster Spieler ist dran
                 } else {
+                    console.log("setting new Player");
                     setNextPlayer(io, room.roomId);
                 }
             }

@@ -36,6 +36,7 @@ function EndGameModal(props) {
 
     const resetModal = () => {
         setEndGameStatus(0);
+        console.log("resetting Modal");
     }
 
     useEffect(() => {
