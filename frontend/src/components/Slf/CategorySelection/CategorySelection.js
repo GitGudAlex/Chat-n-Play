@@ -12,6 +12,8 @@ import SocketContext from '../../../services/socket';
 
 import NumericInput from 'react-numeric-input';
 
+import sprechblaseWartenHost from '../../../img/SprechblaseWartenAufHost.png'
+
 function CategorySelection(props) {
 
 
@@ -118,7 +120,7 @@ function CategorySelection(props) {
     } else {
         return (
             <div>
-                <p>Der Host ist dabei die Kategorien für das Spiel auszusuchen.</p>
+                <img src={sprechblaseWartenHost} height="270px"/> 
             </div>
         );
     }

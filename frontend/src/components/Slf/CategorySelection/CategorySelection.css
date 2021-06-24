@@ -1,6 +1,7 @@
 b{
     background: white !important;
     border-color: white !important;
+    box-shadow: none !important;
 }
 
 .category-selector-header{
@@ -13,7 +14,7 @@ b{
 }
 
 #cancel-button{
-    margin-bottom: 4px;
+    margin-bottom: 4px !important;
 }
 
 .category-selector-wrapper {

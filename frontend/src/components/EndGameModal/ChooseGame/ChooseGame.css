@@ -23,10 +23,15 @@
 
 .img-game{
     height: 120px;
-    border-radius: 0.2rem;
+    border-radius: 0.4rem;
+    border: solid 1px #474747;
 }
 
-
+#endgame-modal-content{
+    background-image: url(../../../img/modal_background_1.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
 
 #slf:hover {
     padding: 0px;

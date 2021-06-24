@@ -108,7 +108,7 @@ function ChooseGame(props) {
             </div>
             <div id='endgame-modal-footer' className="modal-footer">
                 <small id='endgame-modal-error-output' className="text-danger" />
-                <button type="button" className="btn btn-primary" onClick={ leaveRoom }>Raum verlassen</button>
+                <button type="button" className="btn btn-dark" onClick={ leaveRoom }>Raum verlassen</button>
             </div>
             <small id='endgame-modal-error-output' className="text-danger" />
         </div>

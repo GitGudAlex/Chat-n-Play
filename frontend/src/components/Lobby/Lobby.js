@@ -25,7 +25,6 @@ function Lobby(props) {
     // Wenn das Spiel gestarted wurde
     const handleGameStartedEvent = useCallback((data) => {
 
-    //$('#game-content-wrapper').css({backgroundImage: 'url (../../img/background_9.png)'});
 
         history.push({
             pathname: '/game' + data.route,
@@ -38,19 +37,20 @@ function Lobby(props) {
     }, [history, props.gameId]);
 
     // Sets the background image
-    //const setBackground = (image) => {
+    /*const setBackground = useCallback(() => {
         
-   // $("#game-wrapper-content").css({backgroundImage: lobbyred})
-    //    if (id = 0) {
-     //       setBackground(lobbyred);
-    //    } else if (id = 1) {
-    //        setBackground(lobbygreen);
-     //   } else {
-     //       setBackground(lobbyblue);
-     //    }
+        $("#game-wrapper-content").css({backgroundImage: lobbyred});
+        if (props.gameId == 1) {
+            setBackground(lobbygreen)
+        } else if (probs.gameId == 2) {
+            setBackground(lobbyblue)
+        } else {
+            setBackground(lobbyred)
+        }
+    
+    }, []);
+    */
 
-        
-   // }
 
     // Socket Events
     useEffect(() => {
