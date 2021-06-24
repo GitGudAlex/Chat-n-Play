@@ -86,7 +86,7 @@ function FAQ (){
                 <p id="paragraph-faq">Deine Frage wurde nicht beantwortet? Dann schreib uns einfach eine E-Mail an: chat-n-play@web.de</p>
             </div>
             <footer className = "footer" style={{position: "fixed", bottom: 0}}>
-                <Footer start='false'/>
+                <Footer/>
             </footer>   
         </div>
     )
