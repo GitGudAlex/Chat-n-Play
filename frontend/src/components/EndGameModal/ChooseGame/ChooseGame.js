@@ -6,6 +6,10 @@ import './ChooseGame.css';
 import SocketContext from "../../../services/socket";
 import { useHistory } from 'react-router';
 
+import imgLudo from '../../../img/Ludo.png'
+import imgKlopfKlopf from '../../../img/KlopfKlopf.png'
+import imgSLF from '../../../img/SLF.png'
+
 function ChooseGame(props) {
 
     // Socket 
@@ -78,13 +82,13 @@ function ChooseGame(props) {
                     <p className='endgame-modal-body-text w-100'>Wähle ein Spiel aus:</p>
                     <div className='endgame-modal-games-list'>
                         <div className='endgame-modal-game' id="ludo" onClick={ () => createGame(0) } >
-                            <p>Ludo</p>
+                        <img src={imgLudo} className="img-game" />
                         </div>
                         <div className='endgame-modal-game' id="uno" onClick={ () => createGame(1) }>
-                            <p>Uno</p>
+                            <img src={imgKlopfKlopf} className="img-game" />
                         </div>
                         <div className='endgame-modal-game' id="slf" onClick={ () => createGame(2) }>
-                            <p>Stadt, Land, Fluss</p>
+                            <img src={imgSLF} className="img-game"/>
                         </div>
                     </div>
                     <small id='endgame-modal-error-output' className="text-danger" />

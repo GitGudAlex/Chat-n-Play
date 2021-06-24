@@ -5,10 +5,24 @@
     min-height: 100%;
 }
 
+.aboutus-content{
+    margin-left: 130px;
+    margin-right: 130px;
+}
+
+.aboutus-headline{
+    font-family: 'coffee+tea demo';
+    font-size: 50px;
+}
+
+#member-name{
+    margin-bottom: 0.5rem;
+}
+
 #aboutus-team{
     text-align: center;
     float: left;
-    width: 30%;
+    width: 35%;
     padding-bottom: 32px;
 }
 

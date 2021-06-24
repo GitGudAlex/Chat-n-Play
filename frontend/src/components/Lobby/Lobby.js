@@ -6,6 +6,10 @@ import StartGame from './StartGame/StartGame';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import ColorSelector from './ColorSelector/ColorSelector';
 
+import lobbyblue from '../../img/background_lobby_blue.png';
+import lobbyred from '../../img/background_lobby.png';
+import lobbygreen from '../../img/background_lobby_green.png';
+
 import './Lobby.css'
 
 import SocketContext from '../../services/socket';
@@ -21,7 +25,7 @@ function Lobby(props) {
     // Wenn das Spiel gestarted wurde
     const handleGameStartedEvent = useCallback((data) => {
 
-    $('#game-content-wrapper').css({'background-image': 'url (../../img/background_9.png)'});
+    //$('#game-content-wrapper').css({backgroundImage: 'url (../../img/background_9.png)'});
 
         history.push({
             pathname: '/game' + data.route,
@@ -32,6 +36,21 @@ function Lobby(props) {
 
 
     }, [history, props.gameId]);
+
+    // Sets the background image
+    //const setBackground = (image) => {
+        
+   // $("#game-wrapper-content").css({backgroundImage: lobbyred})
+    //    if (id = 0) {
+     //       setBackground(lobbyred);
+    //    } else if (id = 1) {
+    //        setBackground(lobbygreen);
+     //   } else {
+     //       setBackground(lobbyblue);
+     //    }
+
+        
+   // }
 
     // Socket Events
     useEffect(() => {

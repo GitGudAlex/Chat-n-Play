@@ -4,6 +4,12 @@
     padding-top: 20px;
 }
 
+#modal-create-game{
+    background-image: url(../../../../../img/modal_background_2.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
 .m-5{
     padding-right: 12rem;
     padding-left: 12rem;

@@ -83,7 +83,7 @@ function Game(props) {
             {/* Modal */}
             <div className="modal fade" id={ "create-game-modal-" + gameId } role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
-                    <div className="modal-content">
+                    <div className="modal-content" id="modal-create-game">
                         <div className="modal-header">
                             <h5 className="modal-title">Erstelle ein "{ props.name }" Spiel</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">

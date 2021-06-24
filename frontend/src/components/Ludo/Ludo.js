@@ -15,6 +15,7 @@ import four from '../../img/Wuerfel4_ohneRand.png';
 import five from '../../img/Wuerfel5_ohneRand.png';
 import six from '../../img/Wuerfel6_ohneRand.png';
 import emptyWuerfel from '../../img/empty.png';
+import zugVorschau from '../../img/Zug_Vorschau.png'
 
 function Ludo(props) {
 
@@ -223,6 +224,7 @@ function Ludo(props) {
             <div id='game-content'>
             <div id = 'ludo-selection' className='ludo-selection'>
                 <div id = "choose_game_mode">
+                    <img src={zugVorschau} id="move-preview"/>
                     <label>Mögliche Spielzüge sollen vorgeschlagen und angezeigt werden:</label>
                     <br></br>
                     <label>(kann nur vor Spielbeginn geändert werden)</label>
@@ -241,7 +243,9 @@ function Ludo(props) {
                 </div>
                 <br></br>
                 <br></br>
-                <button id='firstPlayer' className="btn btn-dark" onClick={ setFirstPlayer }>Spiel starten</button>
+                <div className="d-flex justify-content-center">
+                    <button id='firstPlayer' className="btn btn-dark" onClick={ setFirstPlayer }>Spiel starten</button>
+                </div>
             </div>
         </div>
         )
@@ -249,7 +253,7 @@ function Ludo(props) {
         return (
             <div id='game-content'>
                 <div id = 'game-board' className = 'game-board'> 
-                    <button id="dice" disabled ={disable} onClick={ roll } ><img src={diceimg} height="40px"  width="40px" alt="Würfeln"></img> </button>
+                    <button id="dice"  width="43px" height="43px" disabled ={disable} onClick={ roll } ><img src={diceimg} height="40px"  width="40px" alt="Würfeln"></img> </button>
                     <Matchfield players={ props.players }/>
                 </div>
             </div>

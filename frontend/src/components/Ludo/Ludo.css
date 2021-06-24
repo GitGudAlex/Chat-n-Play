@@ -223,6 +223,14 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   border: none;
 }
 
+#move-preview{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 200px;
+  margin-bottom: 30px;
+}
+
 
 .start{
   padding: 13px 13px;
