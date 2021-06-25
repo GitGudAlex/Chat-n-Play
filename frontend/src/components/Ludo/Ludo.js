@@ -71,8 +71,8 @@ function Ludo(props) {
     //Figuren zum Laufen freischalten
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
         figures.forEach(element =>{
-            $("#"+element).prop("disabled", false);
             $("#"+element).css("animation", "pulse 2s infinite");
+            $("#"+element).prop("disabled", false);
         });
     }, []);
 
@@ -84,8 +84,10 @@ function Ludo(props) {
     }, []);
 
     //Figur schmeißen
-    const handleThrowFigureEvent = useCallback((move) => {
-        $("#"+move[0]).css({'background-color':move[1]});
+    const handleThrowFigureEvent = useCallback((data) => {
+        setTimeout(function(){
+            $("#"+data.throwFig[0]).css({'background-color':data.throwFig[1]});
+        }, 300*data.dice);
     }, []);
 
     //Figur laufen
@@ -224,6 +226,10 @@ function Ludo(props) {
         socket.emit('ludo:firstPlayer', {mode:mode});
     }
 
+    const unlockMatchfield = () => {
+        $(".matchfield").find(":button").prop("disabled", false);
+    }
+
 
     if(gamestatus === 0){
         return (
@@ -261,6 +267,7 @@ function Ludo(props) {
                 <div id = 'game-board' className = 'game-board'> 
                     <button id="dice"  width="43px" height="43px" disabled ={disable} onClick={ roll } ><img src={diceimg} height="40px"  width="40px" alt="Würfeln"></img> </button>
                     <Matchfield players={ props.players }/>
+                    <button id="unlockMatchfield" onClick={unlockMatchfield}></button>
                 </div>
             </div>
         )

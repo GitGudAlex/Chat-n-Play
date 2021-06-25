@@ -35,7 +35,7 @@ module.exports = (io, socket, id) => {
     io.in(player.roomId).emit('ludo:moveFigure', res);
 
     if(throwFig.length > 0){
-        io.in(player.roomId).emit('ludo:throwFigure', throwFig);
+        io.in(player.roomId).emit('ludo:throwFigure', {throwFig, dice});
     }
 
 }

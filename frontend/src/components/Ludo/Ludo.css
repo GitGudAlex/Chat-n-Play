@@ -244,3 +244,8 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   margin-left: 9px;
   margin-right: 9px;
 }
+
+#unlockMatchfield{
+  background-color: white; 
+  border: none;
+}
