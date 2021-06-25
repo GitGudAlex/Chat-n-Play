@@ -59,7 +59,7 @@ function FAQ (){
                     </button>
                 <h2>Zu wievielt kann ein Spiel gespielt werden?</h2>
                 </div>
-                <p className="answer collapse" id="answer3">Jedes Spiel kann von mindestents zwei Spielern und maximal vier Spielern gespielt werden.</p>
+                <p className="answer collapse" id="answer3">Jedes Spiel kann von mindestents zwei Spieler*innen und maximal vier Spieler*innen gespielt werden.</p>
             
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="collapseExample" >

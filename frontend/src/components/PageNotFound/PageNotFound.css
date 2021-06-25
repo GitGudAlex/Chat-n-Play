@@ -1,5 +1,5 @@
 .background{
-   background: url(../../img/background_6.png), url(../../img/background_7.png) top right;
+   background: url(../../img/background_6.png), url(../../img/background_7.png) top right, url(../../img/background_8.png)100% 560px;
    background-repeat: no-repeat;
    background-size: 330px, 200px;
    height: 100%;
