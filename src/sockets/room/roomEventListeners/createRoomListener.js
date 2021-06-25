@@ -6,8 +6,12 @@ const { addRoom, removeRoom, isHost } = require('../../../models/rooms');
 
 module.exports = (io, socket, data, callback) => {
 
+    console.log("Socket '" + socket.id + "' wants to create a room.");
+
     // Man kann ertsmal keinen Raum erstellen, wenn man noch in einem Raum drin ist
     const oldPlayer = getPlayer(socket.id);
+
+    console.log("Getting Player Object for socket '" + socket.id + "': ", oldPlayer);
 
     // Wenn ein neues Spiel erstellt wurde, nachdem man zuende gespielt hat
     let newGame = false;
@@ -15,8 +19,12 @@ module.exports = (io, socket, data, callback) => {
     // Spieler befindet sich schon im Speicher
     if(oldPlayer !== undefined) {
 
+        console.log("Player '" + socket.id + "' already exists. Old Room: " + oldPlayer.roomId);
+
         // Ob Spieler Host ist
         if(isHost(oldPlayer.socketId)) {
+
+            console.log("Player '" + socket.id + "' was host in old Room " + oldPlayer.roomId + " => delete room");
             
             // alten Raum löschen
             removeRoom(oldPlayer.roomId);
@@ -36,10 +44,12 @@ module.exports = (io, socket, data, callback) => {
 
     // Ein Spiel erstellen, nachdem man eins zuende gespielt hat
     if(newGame) {
+        console.log("Player '" + socket.id + "' creted a new room with id: '" + room.roomId + "' after a game.");
         io.in(oldPlayer.roomId).emit('room:created-new', { roomId: room.roomId, gameId: data.gameTypeId });
 
     // Normales Spiel erstellen
     } else {
+        console.log("Player '" + socket.id + "' created a new room with id: '" + room.roomId + "'.");
         socket.emit('room:created', { roomId: room.roomId, gameId: data.gameTypeId });
 
     }

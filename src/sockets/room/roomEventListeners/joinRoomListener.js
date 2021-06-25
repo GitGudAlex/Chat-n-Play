@@ -3,15 +3,17 @@ const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket, data, callback) => {
 
-    console.log("Joining Room with Id: " + data.roomId);
+    console.log("Socket '" + socket.id + "' wants to join Room with Id: " + data.roomId);
 
     // Man kann keinen Raum joinen, wenn man noch in einem Raum drin ist
     const oldPlayer = getPlayer(socket.id);
 
+    console.log("Getting Player Object for socket '" + socket.id + "': ", oldPlayer);
+
     // Spieler befindet sich schon im Speicher
     if(oldPlayer !== undefined) {
 
-        console.log("Joining new Room after a game has ended. Old RoomId: " + oldPlayer.roomId);
+        console.log("Player '" + socket.id + "' already exists. Old Room: " + oldPlayer.roomId + " - new Room: " + data.roomId);
 
         // Spielernamen vom aktuellen Spieler holen
         data.username = oldPlayer.username;
@@ -22,16 +24,19 @@ module.exports = (io, socket, data, callback) => {
         // alten Raum verlassen
         socket.leave(oldRoomId);
 
-        console.log("Leaving old room");
+        console.log("Player '" + socket.id + "' leaving old room");
 
         // Spieler löschen
         removePlayer(oldPlayer.socketId);
+    } else {
+        console.log("Player Object undefined for socket '" + socket.id + "' => creating new Player Object");
+
     }
     
     // Wenn Spielername oder Raum Code nicht angegeben
     if (data.username == '' || data.roomId == '') {
 
-        console.log("Cannot join new room, beacause data is missing");
+        console.log("Cannot join new room, beacause data is missing - username: " + data.username + ", roomId: " + data.roomId);
 
         if(data.username != '') {
             return callback("Du musst einen Raum-Code angeben!");
@@ -59,7 +64,7 @@ module.exports = (io, socket, data, callback) => {
     if (getPlayersInRoom(data.roomId).length > 3) return callback("Der angegbene Raum hat das Maximum an Spielern bereits erreicht.");
 
     // Spieler in DB speichern
-    const { error, player } = addPlayer(socket.id, data.username, data.roomId );
+    const { error, player } = addPlayer(socket.id, data.username, data.roomId);
     
     // Raum exestiert nicht oder Spiername schon vergeben
     if(error) return callback(error);
@@ -83,6 +88,8 @@ module.exports = (io, socket, data, callback) => {
 
     // dem neuen Spieler alle anderen Spieler schicken
     socket.emit('room:joined', { gameTypeId, roomId: player.roomId, hostId, players });
+
+    console.log("Player '" + socket.id + "' joined room '" + data.roomId + "'");
 
     // Im Chat anzeigen, dass man gejoint ist (einem selbst und Mitspieler)
     socket.to(player.roomId).emit('chat:message', { username: '', text: `${player.username} ist dem Spiel beigetreten!` });
