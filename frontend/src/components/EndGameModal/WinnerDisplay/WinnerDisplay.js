@@ -43,6 +43,8 @@ function WinnerDisplay(props) {
 
 
     const closeRoom = () => {
+        $('#endgame-modal').modal('hide');
+
         socket.emit('room:close-room');
 
     }
@@ -50,8 +52,6 @@ function WinnerDisplay(props) {
 
     // Spiel verlassen
     const leaveRoom = () => {
-        $('#endgame-modal').modal('hide');
-
         socket.emit('room:leave-room');
         history.push('/');
 

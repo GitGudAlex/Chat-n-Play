@@ -32,8 +32,6 @@ function ChooseGame(props) {
             if(error) {
                 $('#endgame-modal-error-output').text(error);
 
-            } else {
-                props.resetModal();
             }
         });
     }
@@ -52,13 +50,15 @@ function ChooseGame(props) {
     // Wenn man einem Spiel gejoint ist -> Lobby laden
     const handleRoomJoinedEvent = useCallback((data) => {
         $('#endgame-modal').modal('hide');
+
+        props.resetModal();
         
         history.push({
             pathname: '/game/lobby/' + data.roomId,
             state: { data: data }
         });
 
-    }, [history]);
+    }, [history, props]);
 
     useEffect(() => {
         socket.on('room:created-new', handleRoomCreatedEvent);

@@ -18,14 +18,19 @@ function EndGameModal(props) {
 
     const [endGameStatus, setEndGameStatus] = useState(0);
 
+    const resetModal = useCallback(() => {
+        setEndGameStatus(0);
+    }, []);
+
     // Wenn der Raum geschlossen wird
     const handleCloseRoomEvent = useCallback(() => {
         $('#endgame-modal').modal('hide');
+        resetModal();
         
         // Zur Startseite
         history.push('/');
 
-    }, [history]);
+    }, [history, resetModal]);
 
     // Wenn der Host ein neues Spiel erstellt hat
     const handleNewRoomEvent = useCallback(() => {
@@ -33,11 +38,6 @@ function EndGameModal(props) {
         // Modal Content ändern
         setEndGameStatus(1);
     }, []);
-
-    const resetModal = () => {
-        setEndGameStatus(0);
-        console.log("resetting Modal");
-    }
 
     useEffect(() => {
         socket.on('room:room-closed', handleCloseRoomEvent);
@@ -47,6 +47,7 @@ function EndGameModal(props) {
             socket.off('room:room-closed');
             socket.off('room:creating-new-room');
 
+            setEndGameStatus(0);
             $('#endgame-modal').modal('hide');
         }
     }, [socket, handleCloseRoomEvent, handleNewRoomEvent]);
@@ -57,7 +58,7 @@ function EndGameModal(props) {
         modalContent = <WinnerDisplay winners={ props.winners } isHost={ props.isHost } />
 
     } else {
-        modalContent = <ChooseGame isHost={ props.isHost } resetModal = { resetModal } />
+        modalContent = <ChooseGame isHost={ props.isHost } resetModal={ resetModal } />
     }
 
     return (
