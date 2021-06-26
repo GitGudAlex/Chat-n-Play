@@ -1,4 +1,4 @@
-import { useContext, useEffect, useCallback } from 'react';
+import { useContext, useEffect, useCallback, useLayoutEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import $ from 'jquery';
 
@@ -6,9 +6,12 @@ import StartGame from './StartGame/StartGame';
 import InvitationCopyBoards from './InvitationCopyBoards/InvitationCopyBoards';
 import ColorSelector from './ColorSelector/ColorSelector';
 
-import lobbyblue from '../../img/background_lobby_blue.png';
-import lobbyred from '../../img/background_lobby.png';
-import lobbygreen from '../../img/background_lobby_green.png';
+import lobbybluetop from '../../img/background_lobby_blue_top.png';
+import lobbybluebottom from '../../img/background_lobby_blue_bottom.png';
+import lobbyredtop from '../../img/background_lobby_top.png';
+import lobbyredbottom from '../../img/background_lobby_bottom.png';
+import lobbygreentop from '../../img/background_lobby_green_top.png';
+import lobbygreenbottom from '../../img/background_lobby_green_bottom.png';
 
 import './Lobby.css'
 
@@ -37,6 +40,25 @@ function Lobby(props) {
     }, [history, props.gameId]);
 
     // Sets the background image
+    useLayoutEffect(() => {
+    
+        if (props.gameId == 0) {
+            $("#game-content-wrapper").css({background: "url("+lobbyredtop+") top left, url("+lobbyredbottom+") bottom right"});
+            $("#game-content-wrapper").css({"background-repeat" : "no-repeat"})
+            $("#game-content-wrapper").css({"background-size" : "200px, 450px"})
+        } else if (props.gameId == 1) {
+            $("#game-content-wrapper").css({background: "url("+lobbygreentop+") top left, url("+lobbygreenbottom+") bottom right"});
+            $("#game-content-wrapper").css({"background-repeat" : "no-repeat"})
+            $("#game-content-wrapper").css({"background-size" : "200px, 450px"})
+        } else {
+            $("#game-content-wrapper").css({background: "url("+lobbybluetop+") top left, url("+lobbybluebottom+") bottom right"});
+            $("#game-content-wrapper").css({"background-repeat" : "no-repeat"})  
+            $("#game-content-wrapper").css({"background-size" : "200px, 450px"}) 
+        }
+    },[props]);
+
+
+
     /*const setBackground = useCallback(() => {
         
         $("#game-wrapper-content").css({backgroundImage: lobbyred});
