@@ -73,8 +73,8 @@ function Description() {
                                     <input id='join-game-username-input' type="text" className="form-control" placeholder="Username" />
                                 </div>
                                 <div className="form-group">
+                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code für einen bereits erstellten Raum ein:</small>
                                     <input id='join-game-roomid-input' type="text" className="form-control" placeholder="Code" />
-                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code ein, den du von deinem Freund bekommen hast.</small>
                                 </div>
                                 <div>
                                     <small id='join-game-error-output' className="text-danger"></small>

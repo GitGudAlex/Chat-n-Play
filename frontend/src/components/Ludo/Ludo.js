@@ -70,6 +70,7 @@ function Ludo(props) {
 
     //Figuren zum Laufen freischalten
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
+        console.log("Figuren freischalten: ", figures);
         figures.forEach(element =>{
             $("#"+element).css("animation", "pulse 2s infinite");
             $("#"+element).prop("disabled", false);
