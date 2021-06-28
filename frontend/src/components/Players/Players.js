@@ -11,7 +11,7 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = process.env.NODE_ENV === 'production';
+    const useVideos = true;
     //const useVideos = true;
     //process.env.NODE_ENV === 'production';
 
@@ -27,7 +27,7 @@ function Players(props) {
     }, []);
 
     const clickEvent = () =>{
-        document.getElementById("enableWebcam").click()
+        document.getElementById("startWebcam").click();
     }
 
     useLayoutEffect(() => {
@@ -49,7 +49,11 @@ function Players(props) {
      */
 
     useLayoutEffect(() => {
-        setTimeout(clickEvent, 1000);
+        setTimeout(clickEvent, 3000);
+        
+        socket.on("room:joined", ()=>{
+            setTimeout(clickEvent, 5000);
+        });
 
         let constraints = {
             'video': true,
@@ -59,16 +63,19 @@ function Players(props) {
         if(useVideos) {
             const addVideoStream = (socketId, stream) => {
                 let video = document.getElementById('player-video-' + socketId);
-                video.srcObject = stream;
+                video.srcObject = stream.clone();
     
                 video.onloadedmetadata = function(e) {
                     video.play();
                 };
             }
 
-            const captureVideoButton = document.querySelector('#enableWebcam');
+            const captureVideoButton = document.querySelector('#startWebcam');
             captureVideoButton.onclick = () =>{
                 navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                $("#enableWebcam").addClass("d-none");
+                $("#disableWebcam").removeClass("d-none");
+
                 let peerOptions;
 
                 // Production
@@ -121,28 +128,24 @@ function Players(props) {
                 }
     
                 peer.on('call', call => {
+                    console.log("disconnected status: ",peer.disconnected);
                     let otherSocketId = call.metadata.socketId;
                     call.answer(stream, { metadata: { socketId: socket.id }});
-    
+
                     call.on('stream', userVideoStream => {
                         addVideoStream(otherSocketId, userVideoStream);
                     });
+                    console.log("allConns: ", peer.connections);
                 });
-
-                socket.on("room:joined", ()=>{
-                    setTimeout(clickEvent, 1000);
-                });
-
-                //Übergangslösung um Spieler in Ludo zu sehen
-                socket.on("ludo:first-player", () =>{
-                    console.log("test");
-                    video.play();
-                });
-
+            
                 //Kamera deaktivieren
                 socket.on("webcam:disabled",() =>{
                      stream.getVideoTracks()[0].enabled = false;
                 });
+
+                socket.on("webcam:enabled",() =>{
+                    stream.getVideoTracks()[0].enabled = true;
+               });
 
                 socket.on("webcam:micMuted", () =>{
                    stream.getAudioTracks()[0].enabled = false;
