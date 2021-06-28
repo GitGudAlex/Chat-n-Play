@@ -53,7 +53,7 @@ function Game(props) {
             $('#desciption-collapse-btn-' + props.gameId).css({ transform: 'rotateZ(0deg)' });
         }
 
-    }, [isCollapsed]);
+    }, [isCollapsed, props.gameId]);
 
     useEffect(()=>{
         //Enter input für Submit Button ermöglichen
