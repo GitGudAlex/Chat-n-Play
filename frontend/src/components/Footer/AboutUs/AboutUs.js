@@ -14,8 +14,8 @@ function AboutUs (){
             <h1 className="title-footer"> Über uns</h1>
             <div id = "aboutus-team" className = "aboutus-content">
                 <h2 className="aboutus-headline">Unser Team</h2>
-                <Member name = 'Timothy Geiger' role = 'Developer'></Member>
-                <Member name = 'Alexander Kraus' role = 'Developer'></Member>
+                <Member name = 'Timothy Geiger' role = 'Developer/ Design'></Member>
+                <Member name = 'Alexander Kraus' role = 'Developer/ Design'></Member>
                 <Member name = 'Susanne Weiß' role = 'Developer/ Design'></Member>
                 <Member name = 'Kira Frankenfeld' role = 'UI/ UX Design'></Member>
             </div>
