@@ -52,7 +52,7 @@ function FAQ () {
                     </button>
                 <h2>Wie kann ich mein Mikrofon in Chrome wechseln?</h2>
                 </div>
-                <p className="answer collapse" id="answer2">Wechsle in Chrome in die Browsereinstellungen (3 Punkte oben rechts). Unter "Datenschutz und Sicherheit" &lt;  "Website-Einstelllungen" &lt;  "Berechtigungen" &lt;  "Mikrofon" kannst du im Menü das Mikrofon wechseln. Anschließend muss der Browser neu gestartet werden.</p>
+                <p className="answer collapse" id="answer2">Wechsle in Chrome in die Browsereinstellungen (3 Punkte oben rechts). Unter "Datenschutz und Sicherheit" &gt;  "Website-Einstelllungen" &gt;  "Berechtigungen" &gt;  "Mikrofon" kannst du im Menü das Mikrofon wechseln. Anschließend muss der Browser neu gestartet werden.</p>
                 
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question3" data-toggle="collapse" data-target="#answer3" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(2) }>
@@ -62,7 +62,7 @@ function FAQ () {
                     </button>
                 <h2>Zu wievielt kann ein Spiel gespielt werden?</h2>
                 </div>
-                <p className="answer collapse" id="answer3">Jedes Spiel kann von mindestents zwei Spieler*innen und maximal vier Spieler*innen gespielt werden.</p>
+                <p className="answer collapse" id="answer3">Jedes Spiel kann von mindestens zwei und maximal vier Spielenden gespielt werden.</p>
             
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question4" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(3) }>
@@ -72,7 +72,7 @@ function FAQ () {
                     </button>
                 <h2>Wie kann ich einen Raum erstellen?</h2>
                 </div>
-                <p className="answer collapse" id="answer4">Auf der Startseite gibt es mehrere Kategorien von Spielen zur Auswahl. Darunter werden die Spiele in den jeweiligen kategorien aufgelistet. Klicke auf den Button "Raum erstellen" der hinter jedem Spiel ist, danach wirst du nach deinem Spielernamen gefragt und du kannst den Raum starten.</p>
+                <p className="answer collapse" id="answer4">Auf der Startseite gibt es mehrere Kategorien von Spielen zur Auswahl. Darunter werden die Spiele in den jeweiligen kategorien aufgelistet. Klicke auf den Button "Raum erstellen" der hinter jedem Spiel ist, danach wirst du nach deinem Spielnamen gefragt und du kannst den Raum starten.</p>
 
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question5" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(4) }>
@@ -82,7 +82,7 @@ function FAQ () {
                     </button>
                 <h2>Wie kann ich einem Raum beitreten?</h2>
                 </div>
-                <p className="answer collapse" id="answer5">Zuerst muss ein Freund von dir einen Raum erstellt haben. Danach gibt es zwei Möglichkeiten, wenn dein Freund dir den Code zukommen lässt, besuche unsere Seite unter "https://chat-n-play.vm.mi.hdm-stuttgart.de" und gebe dort den Code und deinen Spielernamen unter "Raum beitreten" ein. Wenn dein Freund dir den Link schickt, kannst du einfach dem Link folgen und deinen Spielernamen eingeben. Zuletzt musst du noch auf "Raum beitreten" klicken.</p>
+                <p className="answer collapse" id="answer5">Zuerst muss eine Person einen Raum erstellt haben. Nun kannst du dem Spiel direkt über den geteilten Link beitreten oder indem du die Seite "https://chat-n-play.vm.mi.hdm-stuttgart.de" aufrufst und über "Raum beitreten" deinen Spielnamen und den Code einträgst.</p>
 
             </div>
             <div className="d-flex justify-content-center" id='faq-email'>

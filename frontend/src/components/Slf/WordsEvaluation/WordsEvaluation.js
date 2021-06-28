@@ -123,7 +123,7 @@ function WordsEvaluation(props) {
                     <EvaluationList answers={ answers } ownAnswers={ ownAnswers } setRatingHandler={ setRating } isReady={ isReady } />
                 </div>
                 <div id='slf-submit-evaluated-words-btn-wrapper'>
-                    <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>
+                    <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielenden' }</p>
                     <input id='slf-submit-evaluated-words-btn' className='btn-lg btn-dark' type='button' value='Fertig' onClick={ () => submitVotes(answers) } />
                 </div>
             </div>

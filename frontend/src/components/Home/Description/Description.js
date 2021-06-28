@@ -48,9 +48,9 @@ function Description() {
                     <div>
                         <img src={Grafik} id="img-Startseite" alt='Zwei Menschen nutzen mobile Geräte um miteinader zu kommunizieren'></img>
                     </div>
-                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden auch über Distanz das Spieleabend-Feeling erleben.<br />
-                Erstelle einfach einen Raum und lade deine Freunde über einen Link ein<br />
-                oder lasse Ihnen den Zugangscode zukommen.</p>
+                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden*innen auch über Distanz das Spieleabend-Feeling erleben.<br />
+                Erstelle einfach einen Raum und lade sie über einen Link ein<br />
+                oder lasse ihnen den Zugangscode zukommen.</p>
             </div>
             <div id='home-description-join-game-btn' className='d-flex justify-content-center'>
                 <button type="button" className="btn btn-dark btn-lg" data-toggle="modal" data-target="#join-game-modal">Spiel beitreten</button>
