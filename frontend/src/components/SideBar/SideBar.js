@@ -109,6 +109,10 @@ function SideBar(props) {
   }
 
   //Bereich Sidebar Button Handling
+  const startWebcam = () =>{
+    socket.emit("webcam:start");
+  }
+
   const disableWebcam = () =>{
     socket.emit("webcam:disable");
     $("#enableWebcam").removeClass("d-none");
@@ -187,6 +191,8 @@ function SideBar(props) {
             <BsBoxArrowLeft size={ 28} />
           </button>
         </span>
+        <button id= "startWebcam" className="sidebar-btn sidebar-btn-tooltip" onClick={ startWebcam }>
+        </button>
       </div>
       <div id="sidebar-chat" className='sidebar-window'>
         <Chat closeFunction={ toggleSideBar } sideBarWidth={ props.sideBarWidth }/>
