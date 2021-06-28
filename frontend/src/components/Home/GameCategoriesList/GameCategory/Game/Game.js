@@ -56,13 +56,13 @@ function Game(props) {
     }, [isCollapsed, props.gameId]);
 
     useEffect(()=>{
-        //Enter input für Submit Button ermöglichen
-        $(".modal").keyup(function(event) {
+        // Enter input für Submit Button ermöglichen
+        $(".create-game-modal").keyup(function(event) {
             if (event.keyCode === 13) {
                 document.getElementById("room:create").click();
             }
         });
-    });
+    }, []);
 
     return (
         <div className='m-5'>
@@ -81,7 +81,7 @@ function Game(props) {
 
 
             {/* Modal */}
-            <div className="modal fade" id={ "create-game-modal-" + gameId } role="dialog" aria-hidden="true">
+            <div className="modal fade create-game-modal" id={ "create-game-modal-" + gameId } role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content" id="modal-create-game">
                         <div className="modal-header text-center" id="modal-header">

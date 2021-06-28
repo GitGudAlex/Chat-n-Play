@@ -33,10 +33,9 @@ function Description() {
             $('#join-game-username-input').focus();
         });
 
-        //Enter input für Submit Button ermöglichen
-        $(".modal").keyup(function(event) {
+        // Enter input für Submit Button ermöglichen
+        $("#join-game-modal").keyup(function(event) {
             if (event.keyCode === 13) {
-                console.log("button pressed via Enter");
                 document.getElementById("room:join").click();
             }
         });
