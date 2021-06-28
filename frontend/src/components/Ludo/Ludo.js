@@ -68,15 +68,6 @@ function Ludo(props) {
         })
     }, []);
 
-    //Figuren zum Laufen freischalten
-    const handleUnlockMoveFieldsEvent = useCallback((figures) => {
-        console.log("Figuren freischalten: ", figures);
-        figures.forEach(element =>{
-            $("#"+element).css("animation", "pulse 2s infinite");
-            $("#"+element).prop("disabled", false);
-        });
-    }, []);
-
     //Figur aus dem Haus holen
     const handleLeaveHouseEvent = useCallback((move)=> {
         $("#"+move[1]).removeClass('img');
@@ -177,7 +168,6 @@ function Ludo(props) {
         socket.on('ludo:showMatchfield', handleShowMatchfieldEvent);
         socket.on("ludo:dicedValue", handleDicedValueEvent);
         socket.on('ludo:showMoves', handleShowMovesEvent);
-        socket.on('ludo:unlockMoveFields', handleUnlockMoveFieldsEvent);
         socket.on('ludo:leaveHouse', handleLeaveHouseEvent);
         socket.on('ludo:throwFigure', handleThrowFigureEvent);
         socket.on("ludo:moveFigure", handleMoveFigureEvent);
@@ -191,7 +181,6 @@ function Ludo(props) {
             socket.off('ludo:showMatchfield');
             socket.off('ludo:dicedValue');
             socket.off('ludo:showMoves');
-            socket.off('ludo:unlockMoveFields');
             socket.off('ludo:leaveHouse');
             socket.off('ludo:throwFigure');
             socket.off('ludo:moveFigure');
@@ -201,13 +190,10 @@ function Ludo(props) {
             socket.off('ludo:mode');
         }
 
-    }, [socket, handleShowMatchfieldEvent, handleDicedValueEvent, handleShowMovesEvent, handleUnlockMoveFieldsEvent, handleLeaveHouseEvent, handleThrowFigureEvent, handleMoveFigureEvent, hanldeNextPlayerEvent, hanldeUnlockDiceEvent, handlePlayerLeaveEvent, handleModeEvent]);
+    }, [socket, handleShowMatchfieldEvent, handleDicedValueEvent, handleShowMovesEvent, handleLeaveHouseEvent, handleThrowFigureEvent, handleMoveFigureEvent, hanldeNextPlayerEvent, hanldeUnlockDiceEvent, handlePlayerLeaveEvent, handleModeEvent]);
 
     
     useEffect(()=>{
-        //Alle Buttons sperren
-        $(".matchfield").find(":button").prop("disabled", true);
-
         //Wenn Spielmodus geändert wird
         $(".form-check-input").change(function(){
             const mode = $("input:checked").val();

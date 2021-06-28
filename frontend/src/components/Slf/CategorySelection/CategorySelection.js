@@ -80,7 +80,7 @@ function CategorySelection(props) {
             <div className='category-selector-wrapper'>
                 <div className='round-selector'>
                     <p className='round-selector-header'>Bitte gib die Anzahl der Runden ein</p>
-                    <NumericInput id="round-selector-input" type="number" min="0" max="20" step="1" value={num} onChange={setNum}></NumericInput>
+                    <NumericInput id="round-selector-input" type="number" min="1" max="20" step="1" value={num} onChange={setNum}></NumericInput>
                 </div>
                 <div className='category-selector'>
                     <p className='category-selector-header'>Bitte wähle 3-6 Kategorien aus</p>
