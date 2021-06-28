@@ -11,8 +11,8 @@
 }
 
 .m-5{
-    padding-right: 14rem;
-    padding-left: 14rem;
+    padding-right: 19rem;
+    padding-left: 19rem;
 }
 
 .home-collase-button {
@@ -21,4 +21,12 @@
     outline: none;
 
     transition: all 0.25s linear;
+}
+
+.modal-title{
+    text-align: center;
+}
+
+#modal-header{
+    border-bottom: none;
 }

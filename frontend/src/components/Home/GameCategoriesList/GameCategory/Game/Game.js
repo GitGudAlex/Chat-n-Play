@@ -84,7 +84,7 @@ function Game(props) {
             <div className="modal fade" id={ "create-game-modal-" + gameId } role="dialog" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content" id="modal-create-game">
-                        <div className="modal-header">
+                        <div className="modal-header text-center" id="modal-header">
                             <h5 className="modal-title">Erstelle ein "{ props.name }" Spiel</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -94,12 +94,6 @@ function Game(props) {
                             <div>
                                 <div className="form-group">
                                     <input id={ 'create-game-username-input-' + gameId } type="text" className="form-control" placeholder="Username"/>
-                                </div>
-                                <div className="form-check m-4">
-                                    <input className="form-check-input" type="checkbox" value="" id={ "acceptBtn-" + gameId } />
-                                    <label className="form-check-label" htmlFor={ "acceptBtn-" + gameId }>
-                                        Hier mit stimme ich zu, dass während des Spiels Aufnahmen gemacht werden dürfen.
-                                    </label>
                                 </div>
                                 <div>
                                     <small id={ 'create-game-error-output-' + gameId } className="text-danger"></small>

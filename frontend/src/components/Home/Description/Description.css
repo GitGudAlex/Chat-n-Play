@@ -48,3 +48,7 @@
 body {
     font-family: 'Calibri';
 }
+
+#modal-header{
+    border-bottom: none;
+}

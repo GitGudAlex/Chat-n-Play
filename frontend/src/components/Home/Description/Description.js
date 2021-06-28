@@ -61,7 +61,7 @@ function Description() {
             <div className="modal fade" id="join-game-modal" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content" id="modal-join-game">
-                        <div className="modal-header">
+                        <div className="modal-header text-center" id="modal-header">
                             <h5 className="modal-title">Trete einem Spiel bei</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -73,14 +73,8 @@ function Description() {
                                     <input id='join-game-username-input' type="text" className="form-control" placeholder="Username" />
                                 </div>
                                 <div className="form-group">
+                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code für einen bereits erstellten Raum ein:</small>
                                     <input id='join-game-roomid-input' type="text" className="form-control" placeholder="Code" />
-                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code ein, den du von deinem Freund bekommen hast.</small>
-                                </div>
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="" id="acceptBtn1" />
-                                    <label className="form-check-label" htmlFor="acceptBtn1">
-                                        Hier mit stimme ich zu, dass während des Spiels Aufnahmen gemacht werden dürfen.
-                                    </label>
                                 </div>
                                 <div>
                                     <small id='join-game-error-output' className="text-danger"></small>
