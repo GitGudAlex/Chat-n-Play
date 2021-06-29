@@ -104,7 +104,7 @@ function ChooseGame(props) {
                 <p id='endgame-modal-title' className="modal-title w-100">Neues Spiel</p>
             </div>
             <div id='endgame-modal-body' className="modal-body  text-center">
-                <p className='endgame-modal-body-text'>Der Host wählt ein Spiel aus</p>
+                <p className='endgame-modal-body-text'>Der*Die Host wählt ein Spiel aus.</p>
             </div>
             <div id='endgame-modal-footer' className="modal-footer">
                 <small id='endgame-modal-error-output' className="text-danger" />

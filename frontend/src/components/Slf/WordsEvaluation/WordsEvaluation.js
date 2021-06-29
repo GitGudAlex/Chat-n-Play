@@ -116,7 +116,7 @@ function WordsEvaluation(props) {
                         <p className='slf-evaluate-letter'>{ 'Buchstabe: ' + props.letter.toUpperCase() }</p>
                     </div>
                     <div className='slf-state-describtion-wrapper'>
-                        <p className='slf-state-describtion'>Setzte bei jeder korrekten Antwort ein Kreuz</p>
+                        <p className='slf-state-describtion'>Setzte bei jeder korrekten Antwort ein Kreuz.</p>
                     </div>
                 </div>
                 <div id='slf-evaluation-wrapper'>
