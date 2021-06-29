@@ -20,38 +20,6 @@
     border-radius: 10px;
 }
 
-<<<<<<< HEAD
-.speechbubble{
-    height: 100px;
-}
-
-@media  screen and (min-width: 720px) {
-    .speechbubble{
-        height: 150px;
-    }
-    
-}
-
-@media  screen and (min-width: 1024px) {
-    .speechbubble{
-        height: 180px;
-    }
-    
-}
-
-@media  screen and (min-width: 1200px) {
-    .speechbubble{
-        height: 210px;
-    }
-    
-}
-
-@media  screen and (min-width: 1600px) {
-    .speechbubble{
-        height: 320px;
-    }
-    
-=======
 .speechbubble-info{
     width: 80%;
     margin-left: 10%;
@@ -61,7 +29,6 @@
     width: 80%;
     margin-top: 40px;
     margin-left: 10%;
->>>>>>> b834309e82611e395b04a667af985a7397b57768
 }
 
 #start-game-error {
