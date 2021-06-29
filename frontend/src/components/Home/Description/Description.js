@@ -33,10 +33,9 @@ function Description() {
             $('#join-game-username-input').focus();
         });
 
-        //Enter input für Submit Button ermöglichen
-        $(".modal").keyup(function(event) {
+        // Enter input für Submit Button ermöglichen
+        $("#join-game-modal").keyup(function(event) {
             if (event.keyCode === 13) {
-                console.log("button pressed via Enter");
                 document.getElementById("room:join").click();
             }
         });
@@ -49,9 +48,9 @@ function Description() {
                     <div>
                         <img src={Grafik} id="img-Startseite" alt='Zwei Menschen nutzen mobile Geräte um miteinader zu kommunizieren'></img>
                     </div>
-                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden auch über Distanz das Spieleabend-Feeling erleben.<br />
-                Erstelle einfach einen Raum und lade deine Freunde über einen Link ein<br />
-                oder lasse Ihnen den Zugangscode zukommen.</p>
+                <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden*innen auch über Distanz das Spieleabend-Feeling erleben.<br />
+                Erstelle einfach einen Raum und lade sie über einen Link ein<br />
+                oder lasse ihnen den Zugangscode zukommen.</p>
             </div>
             <div id='home-description-join-game-btn' className='d-flex justify-content-center'>
                 <button type="button" className="btn btn-dark btn-lg" data-toggle="modal" data-target="#join-game-modal">Spiel beitreten</button>
@@ -73,8 +72,8 @@ function Description() {
                                     <input id='join-game-username-input' type="text" className="form-control" placeholder="Username" />
                                 </div>
                                 <div className="form-group">
+                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code für einen bereits erstellten Raum ein:</small>
                                     <input id='join-game-roomid-input' type="text" className="form-control" placeholder="Code" />
-                                    <small htmlFor="exampleInputPassword1">Gebe hier den Code ein, den du von deinem Freund bekommen hast.</small>
                                 </div>
                                 <div>
                                     <small id='join-game-error-output' className="text-danger"></small>

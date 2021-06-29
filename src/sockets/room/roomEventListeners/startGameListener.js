@@ -15,9 +15,9 @@ module.exports = (io, socket, callback) => {
 
     const allPlayers = getPlayersInRoom(player.roomId);
 
-    if(allPlayers.length < 2) return callback('Es müssen mindestens 2 Spieler anwesend sein!');
+    if(allPlayers.length < 2) return callback('Es müssen mindestens 2 Spielende anwesend sein!');
 
-    if(!isHost(socket.id)) return callback('Nur der Host kann ein Spiel starten.');
+    if(!isHost(socket.id)) return callback('Nur der*die Host kann ein Spiel starten.');
 
     const colors = getColors(player.roomId);
     const availableColors = colors.filter((color) => color.socketId === undefined);

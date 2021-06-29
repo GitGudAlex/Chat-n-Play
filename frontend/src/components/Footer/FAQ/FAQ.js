@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useContext } from 'react';
+import { useRef } from 'react';
 import $ from 'jquery';
 
 import Header from "../../Home/Header/Header";
@@ -8,23 +8,26 @@ import imgMail from '../../../img/Mail.png'
 
 import '../Footer.css'
 
-function FAQ (){
+function FAQ () {
 
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const collapsedItemsRef = useRef([]);
 
-    const setCollapse = () => {
-        setIsCollapsed((state) => !state);
-    }
+    const setCollapse = (index) => {
+        let collapseIndex = collapsedItemsRef.current.findIndex(c => c === index);
 
-    useEffect(() => {
-        if(isCollapsed) {
-            $('#button-question1').css({ transform: 'rotateZ(90deg)' });
+        // Wird ausgeklappt
+        if(collapseIndex === undefined || collapseIndex === -1) {
+            $('#button-question' + (index + 1)).css({ transform: 'rotateZ(90deg)' });
+
+            collapsedItemsRef.current.push(index);
+
+        // Wird eingeklappt
         } else {
-            $('#button-question1').css({ transform: 'rotateZ(0deg)' });
+            $('#button-question' + (index + 1)).css({ transform: 'rotateZ(0deg)' });
+
+            collapsedItemsRef.current.splice(collapseIndex, 1);
         }
-
-    }, [isCollapsed]);
-
+    }
 
     return(
         <div id='faq'>
@@ -34,7 +37,7 @@ function FAQ (){
             <h1 className="title-footer">FAQ</h1>
             <div id = 'faq-questions'>
                 <div className="d-flex question-faq">
-                    <button type="button" className ="button-faq" id="button-question1" data-toggle="collapse" data-target="#answer1" aria-expanded="false" aria-controls="collapseExample" onClick={ setCollapse }>
+                    <button type="button" className ="button-faq" id="button-question1" data-toggle="collapse" data-target="#answer1" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(0) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
@@ -44,37 +47,37 @@ function FAQ (){
                 <p className="answer collapse" id="answer1" >Über F11 kannnst du in den Browsern Chrome, Firefox und Microsoft Edge in den Vollbildmodus wechseln.</p>
                
                 <div className="d-flex question-faq">
-                    <button type="button" className ="button-faq" id="button-question2" data-toggle="collapse" data-target="#answer2" aria-expanded="false" aria-controls="collapseExample">
+                    <button type="button" className ="button-faq" id="button-question2" data-toggle="collapse" data-target="#answer2" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(1) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <h2 className="faq-question-text">Wie kann ich mein Mikrofon in Chrome wechseln?</h2>
                 </div>
-                <p className="answer collapse" id="answer2">Wechsle in Chrome in die Browsereinstellungen (3 Punkte oben rechts). Unter "Datenschutz und Sicherheit" &lt;  "Website-Einstelllungen" &lt;  "Berechtigungen" &lt;  "Mikrofon" kannst du im Menü das Mikrofon wechseln. Anschließend muss der Browser neu gestartet werden.</p>
+                <p className="answer collapse" id="answer2">Wechsle in Chrome in die Browsereinstellungen (3 Punkte oben rechts). Unter "Datenschutz und Sicherheit" &gt;  "Website-Einstelllungen" &gt;  "Berechtigungen" &gt;  "Mikrofon" kannst du im Menü das Mikrofon wechseln. Anschließend muss der Browser neu gestartet werden.</p>
                 
                 <div className="d-flex question-faq">
-                    <button type="button" className ="button-faq" data-toggle="collapse" data-target="#answer3" aria-expanded="false" aria-controls="collapseExample">
+                    <button type="button" className ="button-faq" id="button-question3" data-toggle="collapse" data-target="#answer3" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(2) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <h2 className="faq-question-text">Zu wievielt kann ein Spiel gespielt werden?</h2>
                 </div>
-                <p className="answer collapse" id="answer3">Jedes Spiel kann von mindestents zwei Spieler*innen und maximal vier Spieler*innen gespielt werden.</p>
+                <p className="answer collapse" id="answer3">Jedes Spiel kann von mindestens zwei und maximal vier Spielenden gespielt werden.</p>
             
                 <div className="d-flex question-faq">
-                    <button type="button" className ="button-faq" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="collapseExample" >
+                    <button type="button" className ="button-faq" id="button-question4" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(3) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <h2 className="faq-question-text">Wie kann ich einen Raum erstellen?</h2>
                 </div>
-                <p className="answer collapse" id="answer4">Auf der Startseite gibt es mehrere Kategorien von Spielen zur Auswahl. Darunter werden die Spiele in den jeweiligen Kategorien aufgelistet. Klicke auf den Button "Raum erstellen" der hinter jedem Spiel ist, danach wirst du nach deinem Spielernamen gefragt und du kannst einen Raum starten.</p>
+                <p className="answer collapse" id="answer4">Ganz unten auf der Startseite findest unter den Kategorien "Brett-, Karten- und Pausenspiele" eine Auswahl von Spielen. Nachdem du ein Spiel ausgewählt hast, kannst du über den Button "Raum erstellen" einen Raum für das jeweilige Spiel erstellen. Du musst nur noch deinen Namen eintragen und schon wurde dein Raum erstellt und du kannst den Link/ Code mit deinen Freunden*innen teilen.</p>
 
                 <div className="d-flex question-faq">
-                    <button type="button" className ="button-faq" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="collapseExample" >
+                    <button type="button" className ="button-faq" id="button-question5" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(4) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>

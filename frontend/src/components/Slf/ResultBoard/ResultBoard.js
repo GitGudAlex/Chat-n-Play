@@ -78,7 +78,7 @@ function ResultBoard(props) {
                 <p className='slf-evaluate-letter'>{ 'Buchstabe: ' + props.letter.toUpperCase() }</p>
             </div>
             <div id='slf-scores-main'>
-                <p id='slf-scores-main-title'>Punkte</p>
+                <p id='slf-scores-main-title'>Punkteübersicht der aktuellen Runde:</p>
                 <div id='slf-scores-main-scores-wrapper'>
                     {
                         sortedPlayerScores.map((entry, index) => (
@@ -92,7 +92,7 @@ function ResultBoard(props) {
                 </div>
             </div>
             <div id='slf-scores-footer'>
-                <p id="slf-scores-show-players-ready">{ 'Bereit: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>
+                <p id="slf-scores-show-players-ready">{ 'Bereit: ' + readyUsers + ' von ' + props.players.length + ' Spielenden' }</p>
                 <input id='slf-scores-continue' className='btn-lg btn-dark' type='button' value='Nächste Runde' onClick={ voteNewRound } />
             </div>
         </div>

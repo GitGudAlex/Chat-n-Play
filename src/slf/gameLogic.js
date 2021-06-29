@@ -84,7 +84,6 @@ const submitWords = (socketId, words, allSubmittedCallback) => {
     const playerNum = getPlayersInRoom(room.roomId).length;
 
     if(playerNum == room['currentWords'].length) {
-        room.gameStatus = 2;
         allSubmittedCallback(room['currentWords'], room['currentLetter']);
     }
 }

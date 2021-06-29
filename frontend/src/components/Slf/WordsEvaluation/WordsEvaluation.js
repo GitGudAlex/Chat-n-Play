@@ -116,14 +116,14 @@ function WordsEvaluation(props) {
                         <p className='slf-evaluate-letter'>{ 'Buchstabe: ' + props.letter.toUpperCase() }</p>
                     </div>
                     <div className='slf-state-describtion-wrapper'>
-                        <p className='slf-state-describtion'>Setzte bei jeder korrekten Antwort ein Kreuz</p>
+                        <p className='slf-state-describtion'>Setzte bei jeder korrekten Antwort ein Kreuz.</p>
                     </div>
                 </div>
                 <div id='slf-evaluation-wrapper'>
                     <EvaluationList answers={ answers } ownAnswers={ ownAnswers } setRatingHandler={ setRating } isReady={ isReady } />
                 </div>
                 <div id='slf-submit-evaluated-words-btn-wrapper'>
-                    <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielern' }</p>
+                    <p id="slf-show-count-players-ready">{ 'Abgegeben: ' + readyUsers + ' von ' + props.players.length + ' Spielenden' }</p>
                     <input id='slf-submit-evaluated-words-btn' className='btn-lg btn-dark' type='button' value='Fertig' onClick={ () => submitVotes(answers) } />
                 </div>
             </div>
