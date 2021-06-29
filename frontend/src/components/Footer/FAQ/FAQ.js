@@ -84,7 +84,7 @@ function FAQ () {
                     </button>
                 <h2 className="faq-question-text">Wie kann ich einem Raum beitreten?</h2>
                 </div>
-                <p className="answer collapse" id="answer5">Zuerst muss ein Raum erstellt worden sein. Danach gibt es zwei Möglichkeiten, mit dem Code, besuche unsere Seite unter "https://chat-n-play.vm.mi.hdm-stuttgart.de" und gebe dort den Code und deinen Spielernamen unter "Raum beitreten" ein. Mit dem Link gelangst du direkt auf unsere Seite und kannst deinen Spielernamen eingeben. Zuletzt musst du noch auf "Raum beitreten" klicken.</p>
+                <p className="answer collapse" id="answer5">Zuerst muss eine Person einen Raum erstellt haben. Nun kannst du dem Spiel direkt über den geteilten Link beitreten oder indem du die Seite "https://chat-n-play.vm.mi.hdm-stuttgart.de" aufrufst und über "Raum beitreten" deinen Namen und den Code einträgst.</p>
 
             <img src={imgMail} id="image-mail"/>
             </div>

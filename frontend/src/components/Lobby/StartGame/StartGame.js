@@ -67,7 +67,7 @@ function Chat(props) {
   if(isHost) {
     return (
         <div className='start-game'>
-            <img src={SprechblaseHost} alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble"></img>
+            <img src={SprechblaseHost} alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten. In der Sidebar links, findest du Regeln, Chat und weitere Funktionen."  className="speechbubble"></img>
             <div className="d-flex justify-content-center">
             <input className='start-game-btn btn-lg btn-dark' type='button' value='Spiel starten' onClick={ startGame } />
             </div>
@@ -79,7 +79,7 @@ function Chat(props) {
   } else {
     return (
         <div className='start-game'>
-            <img src={SprechblaseGast} alt="Der Host wird das Spiel in Kürze starten." className="speechbubble"></img>
+            <img src={SprechblaseGast} alt="Der Host wird das Spiel in Kürze starten. In der Sidebar links, findest du Regeln, Chat und weitere Funktionen." className="speechbubble"></img>
         </div>
       );
   }
