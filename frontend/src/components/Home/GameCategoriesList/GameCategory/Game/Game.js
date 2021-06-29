@@ -85,7 +85,7 @@ function Game(props) {
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content" id="modal-create-game">
                         <div className="modal-header text-center" id="modal-header">
-                            <h5 className="modal-title">Erstelle ein "{ props.name }" Spiel</h5>
+                            <h5 className="modal-title w-100">Erstelle ein "{ props.name }" Spiel</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>

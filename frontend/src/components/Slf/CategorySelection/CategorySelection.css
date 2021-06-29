@@ -1,7 +1,8 @@
 b{
-    background: white !important;
-    border-color: white !important;
+    background: transparent !important;
+    border-color: transparent !important;
     box-shadow: none !important;
+    transform: scale(1.2);
 }
 
 .category-selector-header{
@@ -50,6 +51,7 @@ b{
     width: 100%;
     height: 10%;
     margin-top: 30px;
+    margin-bottom: -30px;
 
     text-align: center;
     font-size: 1rem;
@@ -136,6 +138,9 @@ b{
     .category-selector-header{
         margin-top: 10px;
         margin-bottom: 5px;
+    }
+    b{
+        transform: scale(1);
     }
     
 }

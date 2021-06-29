@@ -76,10 +76,9 @@ function ChooseGame(props) {
         return (
             <div id='endgame-modal-content' className="modal-content">
                 <div id='endgame-modal-header' className="modal-header text-center">
-                    <p id='endgame-modal-title' className="modal-title w-100">Neues Spiel</p>
+                    <p id='endgame-modal-title' className="modal-title w-100">Wähle ein neues Spiel aus</p>
                 </div>
                 <div id='endgame-modal-body' className="modal-body text-center">
-                    <p className='endgame-modal-body-text w-100'>Wähle ein Spiel aus:</p>
                     <div className='endgame-modal-games-list'>
                         <div className='endgame-modal-game' id="ludo" onClick={ () => createGame(0) } >
                         <img src={imgLudo} className="img-game" />
