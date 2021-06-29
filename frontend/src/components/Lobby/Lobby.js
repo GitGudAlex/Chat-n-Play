@@ -58,22 +58,6 @@ function Lobby(props) {
     },[props]);
 
 
-
-    /*const setBackground = useCallback(() => {
-        
-        $("#game-wrapper-content").css({backgroundImage: lobbyred});
-        if (props.gameId == 1) {
-            setBackground(lobbygreen)
-        } else if (probs.gameId == 2) {
-            setBackground(lobbyblue)
-        } else {
-            setBackground(lobbyred)
-        }
-    
-    }, []);
-    */
-
-
     // Socket Events
     useEffect(() => {
         $('.invitation-button').height($('.invitation-button').width());

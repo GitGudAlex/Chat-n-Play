@@ -42,7 +42,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 400px;
+    height: 150px;
 }
 
 body {
@@ -51,4 +51,53 @@ body {
 
 #modal-header{
     border-bottom: none;
+}
+
+@media screen and (min-width: 720px){
+    #img-Startseite{
+        height: 180px;
+    }
+    #home-description-wrapper h2{
+        font-size: 2,5em;
+    }
+    #home-description-wrapper p {
+        font-size: 1.0em;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    #img-Startseite{
+        height: 200px;
+    }
+    #home-description-wrapper h2{
+        font-size: 3em;
+    }
+    #home-description-wrapper p {
+        font-size: 1.0em;
+    }
+}
+
+@media screen and (min-width: 1200px){
+    #img-Startseite{
+        height: 300px;
+    }
+    #home-description-wrapper h2{
+        font-size: 3em;
+    }
+    #home-description-wrapper p {
+        font-size: 1.2em;
+    }
+}
+
+
+@media screen and (min-width: 1800px){
+    #img-Startseite{
+        height: 400px;
+    }
+    #home-description-wrapper h2{
+        font-size: 4em;
+    }
+    #home-description-wrapper p {
+        font-size: 1.6em;
+    }
 }

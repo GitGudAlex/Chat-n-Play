@@ -24,9 +24,35 @@
 }
 
 .speechbubble{
-    height: auto;
-    width: 100%;
-    max-width: 400px;
+    height: 100px;
+}
+
+@media  screen and (min-width: 720px) {
+    .speechbubble{
+        height: 150px;
+    }
+    
+}
+
+@media  screen and (min-width: 1024px) {
+    .speechbubble{
+        height: 180px;
+    }
+    
+}
+
+@media  screen and (min-width: 1200px) {
+    .speechbubble{
+        height: 210px;
+    }
+    
+}
+
+@media  screen and (min-width: 1600px) {
+    .speechbubble{
+        height: 320px;
+    }
+    
 }
 
 #start-game-error {
