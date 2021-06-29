@@ -51,7 +51,7 @@ function Footer(){
 
     return(
         <footer className="footer">
-            <div className="container" id="container-footer">
+            <div id="container-footer">
                 <a href = '#'><input id = "btn-startpage" type='button' value='Startseite' className="text-footer" onClick={ openStart } /></a>
                 <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
                 <a href = '#'><input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } /></a>

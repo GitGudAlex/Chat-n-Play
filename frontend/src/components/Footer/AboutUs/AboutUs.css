@@ -19,7 +19,7 @@
     float: left;
     width: 35%;
     padding-bottom: 32px;
-    margin-left: 130px;
+    margin-left: 200px;
 }
 
 #aboutus-project{
@@ -27,6 +27,8 @@
     top: 200px;
     right: 50px;
     float: right;
-    width: 30%;
-    margin-right: 130px;
+    width: 35%;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: 200px;
 }
