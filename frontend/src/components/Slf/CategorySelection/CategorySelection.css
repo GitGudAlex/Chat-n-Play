@@ -7,10 +7,19 @@ b{
 .category-selector-header{
     width: 100%;
     height: 10%;
-    margin: 0;
+
 
     text-align: center;
     font-size: 1rem;
+}
+
+#round-selector-input{
+    height: 38px;
+    width: 267px;
+}
+
+.round-selector-header{
+    margin-top: 50px;
 }
 
 #cancel-button{
@@ -40,7 +49,7 @@ b{
 .category-selector-header {
     width: 100%;
     height: 10%;
-    margin: 0;
+    margin-top: 30px;
 
     text-align: center;
     font-size: 1rem;
@@ -100,4 +109,33 @@ b{
 
 #slf-select-words-error {
     height: 20px;
+}
+
+.bi-x-lg{
+    margin-bottom: 4px;
+}
+
+#image-waiting-host{
+    height: 250px;
+}
+
+@media screen and (max-width: 1500px) {
+    #round-selector-input{
+        height: 30px;
+        width: 267px;
+    }
+    #category-selector-input-10f67e2b-891a-414f-a3c6-e52b18ede27c{
+        height: 30px;
+    }
+    .round-selector-header{
+        margin-top: 20px;
+    }
+    .selector-category{
+        margin: 0px;
+    }
+    .category-selector-header{
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    
 }

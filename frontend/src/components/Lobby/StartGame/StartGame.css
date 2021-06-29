@@ -28,29 +28,40 @@
 }
 
 @media  screen and (min-width: 720px) {
-    .speechbubble{
+    #speechbubble-host{
         height: 150px;
+    }
+    #speechbubble-guest{
+        height: 120px;
     }
     
 }
 
 @media  screen and (min-width: 1024px) {
-    .speechbubble{
+    #speechbubble-host{
         height: 180px;
+    }
+    #speechbubble-guest{
+        height: 120px;
     }
     
 }
 
 @media  screen and (min-width: 1200px) {
-    .speechbubble{
-        height: 210px;
+    #speechbubble-host{
+        height: 180px;
     }
-    
+    #speechbubble-guest{
+        height: 160px;
+    }
 }
 
 @media  screen and (min-width: 1600px) {
-    .speechbubble{
-        height: 320px;
+    #speechbubble-host{
+        height: 250px;
+    }
+    #speechbubble-guest{
+        height: 220px;
     }
     
 }

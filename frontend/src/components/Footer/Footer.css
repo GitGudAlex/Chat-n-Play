@@ -64,9 +64,6 @@ body{
         margin-top: 40px;
         padding-bottom: 60px;
     }
-    #image-mail{
-        height: 200px;
-    }
     
 }
 
@@ -86,7 +83,7 @@ body{
     margin-left: 200px;
     margin-right: 200px;
     margin-top: 40px;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
 }
 
 #image-mail{
@@ -94,7 +91,7 @@ body{
     margin-left: auto;
     margin-right: auto;
     height: 150px;
-    margin-top: 60px;
+    margin-top: 80px;
 }
 
 #container-footer{
