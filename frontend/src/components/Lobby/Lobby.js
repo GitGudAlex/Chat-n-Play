@@ -28,6 +28,8 @@ function Lobby(props) {
     // Wenn das Spiel gestarted wurde
     const handleGameStartedEvent = useCallback((data) => {
 
+        document.getElementById("game-content-wrapper").style.backgroundImage = "none";
+
 
         history.push({
             pathname: '/game' + data.route,
@@ -67,7 +69,8 @@ function Lobby(props) {
         return () => {
             // Events unmounten
             socket.off('room:game-started', handleGameStartedEvent);
-            document.getElementById("game-content-wrapper").style.backgroundImage = "none";
+            
+
         };
 
     }, [socket, handleGameStartedEvent]);
