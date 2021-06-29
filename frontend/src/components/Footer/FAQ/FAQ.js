@@ -86,6 +86,16 @@ function FAQ () {
                 </div>
                 <p className="answer collapse" id="answer5">Zuerst muss eine Person einen Raum erstellt haben. Nun kannst du dem Spiel direkt über den geteilten Link beitreten oder indem du die Seite "https://chat-n-play.vm.mi.hdm-stuttgart.de" aufrufst und über "Raum beitreten" deinen Namen und den Code einträgst.</p>
 
+                <div className="d-flex question-faq">
+                    <button type="button" className ="button-faq" id="button-question6" data-toggle="collapse" data-target="#answer6" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(5) }>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                    </button>
+                <h2 className="faq-question-text">Werde ich aufgezeichnet? Sind die Aufnahmen dauerhaft im Internet zu finden?</h2>
+                </div>
+                <p className="answer collapse" id="answer6">Nein, du musst dir keine Sorgen machen. Wir verarbeiten lediglich während des Spiels deine Video- und Audiodaten, um euch einen Videochat zur Verfügung zu stellen. Das Material wird weder aufgezeichnet, noch gespeichert oder an Dritte weitergegeben. Sobald du einem Raum beigetreten bist, kannst du jederzeit dein Mikrofon stummschalten oder deine Kamera ausschalten.</p>
+
             <img src={imgMail} id="image-mail"/>
             </div>
             <div className="d-flex justify-content-center" id='faq-email'>
