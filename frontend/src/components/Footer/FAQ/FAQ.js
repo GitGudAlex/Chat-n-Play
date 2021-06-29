@@ -72,7 +72,7 @@ function FAQ () {
                     </button>
                 <h2>Wie kann ich einen Raum erstellen?</h2>
                 </div>
-                <p className="answer collapse" id="answer4">Auf der Startseite gibt es mehrere Kategorien von Spielen zur Auswahl. Darunter werden die Spiele in den jeweiligen kategorien aufgelistet. Klicke auf den Button "Raum erstellen" der hinter jedem Spiel ist, danach wirst du nach deinem Spielnamen gefragt und du kannst den Raum starten.</p>
+                <p className="answer collapse" id="answer4">Ganz unten auf der Startseite findest unter den Kategorien "Brett-, Karten- und Pausenspiele" eine Auswahl von Spielen. Nachdem du ein Spiel ausgewählt hast, kannst du über den Button "Raum erstellen" einen Raum für das jeweilige Spiel erstellen. Du musst nur noch deinen Namen eintragen und schon wurde dein Raum erstellt und du kannst den Link/ Code mit deinen Freunden*innen teilen.</p>
 
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question5" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(4) }>
