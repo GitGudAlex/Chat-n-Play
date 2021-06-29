@@ -44,6 +44,27 @@ body{
     margin-right: 300px;
 }
 
+@media  screen and (min-width: 1200px) {
+    .question-faq{
+        margin-left: 380px;
+        margin-right: 300px;
+        font-size: x-large;
+    }
+    
+    .faq-question-text{
+        font-size: x-large;
+    }
+    
+    #paragraph-faq{
+        font-size: large;
+        margin-left: 300px;
+        margin-right: 300px;
+        margin-top: 40px;
+        padding-bottom: 60px;
+    }
+    
+}
+
 .question-faq{
     margin-left: 280px;
     margin-right: 200px;

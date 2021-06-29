@@ -89,17 +89,17 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   }
   #dice{
     zoom:1;
-    top: -30px;
+    top: -20px;
   }
 }
 
 @media screen and (min-width: 1260px) {
   .matchfield{
-    zoom:1.2;
+    zoom:1;
   }
   #dice{
     zoom:1.2;
-    top: -30px;
+    top: -20px;
   }
 }
 
