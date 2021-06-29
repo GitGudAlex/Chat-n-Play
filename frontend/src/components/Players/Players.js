@@ -55,10 +55,12 @@ function Players(props) {
             setTimeout(clickEvent, 5000);
         });
 
-        let constraints = {
-            'video': true,
-            'audio': true
-        }
+        var constraints = {
+            'audio': true, 
+            'video': {
+                'quality': 5,
+            }
+        };
 
         if(useVideos) {
             const addVideoStream = (socketId, stream) => {
@@ -128,14 +130,12 @@ function Players(props) {
                 }
     
                 peer.on('call', call => {
-                    console.log("disconnected status: ",peer.disconnected);
                     let otherSocketId = call.metadata.socketId;
                     call.answer(stream, { metadata: { socketId: socket.id }});
 
                     call.on('stream', userVideoStream => {
                         addVideoStream(otherSocketId, userVideoStream);
                     });
-                    console.log("allConns: ", peer.connections);
                 });
             
                 //Kamera deaktivieren
