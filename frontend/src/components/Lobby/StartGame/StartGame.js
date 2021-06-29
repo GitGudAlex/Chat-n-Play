@@ -6,6 +6,8 @@ import './StartGame.css'
 import Sprechblase_Host_warten from '../../../img/Sprechblase_Host_warten.png';
 import Sprechblase_Info from '../../../img/Sprechblase_Info.png';
 import Sprechblase_Gast_Hostinfo from '../../../img/Sprechblase_Gast_Hostinfo.png';
+import SprechblaseHost from '../../../img/SprechblaseHost.png'
+import SprechblaseGast from '../../../img/SprechblaseGast.png'
 
 import SocketContext from '../../../services/socket';
 
@@ -64,44 +66,20 @@ function Chat(props) {
 
   if(isHost) {
     return (
-<<<<<<< HEAD
         <div className='start-game'>
             <img src={SprechblaseHost} alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble"></img>
+            <div className="d-flex justify-content-center">
             <input className='start-game-btn btn-lg btn-dark' type='button' value='Spiel starten' onClick={ startGame } />
+            </div>
+            <div className="d-flex justify-content-center">
             <small id='start-game-error' className='text-danger'></small>
-=======
-        <div className='start-game container'>
-          <div class="row">
-            <div class="col-6">
-              <img src={Sprechblase_Host_warten} id="host-warten" alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble"></img>
             </div>
-            <div class="col">
-              <img src={Sprechblase_Info} alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble-info"></img>
-            </div>
-          </div>
-          <div class="d-flex justify-content-center">
-            <input className='start-game-btn btn-lg btn-dark text-center' type='button' value='Spiel starten' onClick={ startGame } />
-            <small id='start-game-error' className='text-danger text-center'></small>
-          </div>
->>>>>>> b834309e82611e395b04a667af985a7397b57768
         </div>
       );
   } else {
     return (
-<<<<<<< HEAD
         <div className='start-game'>
             <img src={SprechblaseGast} alt="Der Host wird das Spiel in Kürze starten." className="speechbubble"></img>
-=======
-        <div className='start-game container'>
-          <div class="row">
-            <div class="col-6">
-              <img src={Sprechblase_Gast_Hostinfo} id="host-warten" alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble"></img>
-            </div>
-            <div class="col">
-              <img src={Sprechblase_Info} alt="Wenn alle Teilnehmer anwesend sind, kannst du das Spiel starten"  className="speechbubble-info"></img>
-            </div>
-          </div>
->>>>>>> b834309e82611e395b04a667af985a7397b57768
         </div>
       );
   }
