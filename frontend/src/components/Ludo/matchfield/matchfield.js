@@ -156,7 +156,6 @@ function Matchfield(props) {
 
     //Figuren zum Laufen freischalten
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
-        console.log("Figuren freischalten: ", figures);
         setEnableFields(figures);
         figures.forEach(element =>{
             disableButton[element](false);

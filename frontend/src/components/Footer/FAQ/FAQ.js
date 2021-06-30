@@ -5,6 +5,7 @@ import Header from "../../Home/Header/Header";
 import Footer from "../Footer";
 
 import imgMail from '../../../img/Mail.png'
+import imageFAQ from '../../../img/FAQ.png'
 
 import '../Footer.css'
 
@@ -34,7 +35,7 @@ function FAQ () {
             <header id='faq-header' className="sticky-top">
                 <Header/>
             </header>
-            <h1 className="title-footer">FAQ</h1>
+            <img src={imageFAQ} className="title-image-footer"/>
             <div id = 'faq-questions'>
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question1" data-toggle="collapse" data-target="#answer1" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(0) }>

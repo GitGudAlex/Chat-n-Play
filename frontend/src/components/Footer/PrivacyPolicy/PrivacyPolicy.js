@@ -1,6 +1,8 @@
 import Header from "../../Home/Header/Header";
 import Footer from "../Footer";
 
+import imagePrivacyPolicy from '../../../img/PrivacyPolicy.png'
+
 
 function PrivacyPolicy (){
 
@@ -9,9 +11,7 @@ function PrivacyPolicy (){
             <header id='privacy-policy-header'>
                 <Header/>
             </header>
-            <h1 className="title-footer">
-                Datenschutzerklärung
-            </h1>
+            <img src={imagePrivacyPolicy} class="title-image-footer"/>
             <div id = 'privacy-policy-hdm'>
                 <p className="text-privacy-policy">Es werden langfristig keine personenbezogenen Daten abgespeichert. </p>
                 <h2 id="headline-privacy-policy">Audio, Video und Textdateien</h2>

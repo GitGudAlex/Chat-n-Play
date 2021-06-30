@@ -17,14 +17,13 @@
 #aboutus-team{
     text-align: center;
     float: left;
-    width: 35%;
     padding-bottom: 32px;
     margin-left: 200px;
 }
 
 #aboutus-project{
     position: absolute;
-    top: 200px;
+    top: 260px;
     right: 50px;
     float: right;
     width: 35%;
