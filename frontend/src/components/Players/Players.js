@@ -1,4 +1,4 @@
-import { useCallback, useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useLayoutEffect, useRef } from 'react';
 import { useHistory } from 'react-router';
 import $ from 'jquery';
 import Peer from 'peerjs';
