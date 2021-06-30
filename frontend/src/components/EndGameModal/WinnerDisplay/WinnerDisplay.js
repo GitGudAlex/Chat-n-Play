@@ -38,7 +38,7 @@ function WinnerDisplay(props) {
     }
 
     const newGame = () => {
-        socket.emit('room:create-new-room');
+        socket.emit('room:change-game');
     }
 
 

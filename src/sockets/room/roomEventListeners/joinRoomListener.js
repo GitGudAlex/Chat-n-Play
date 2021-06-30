@@ -11,27 +11,7 @@ module.exports = (io, socket, data, callback) => {
     console.log("Getting Player Object for socket '" + socket.id + "': ", oldPlayer);
 
     // Spieler befindet sich schon im Speicher
-    if(oldPlayer !== undefined) {
-
-        console.log("Player '" + socket.id + "' already exists. Old Room: " + oldPlayer.roomId + " - new Room: " + data.roomId);
-
-        // Spielernamen vom aktuellen Spieler holen
-        data.username = oldPlayer.username;
-
-        // Aktuellen Raum bekommen
-        const oldRoomId = oldPlayer.roomId;
-
-        // alten Raum verlassen
-        socket.leave(oldRoomId);
-
-        console.log("Player '" + socket.id + "' leaving old room");
-
-        // Spieler löschen
-        removePlayer(oldPlayer.socketId);
-    } else {
-        console.log("Player Object undefined for socket '" + socket.id + "' => creating new Player Object");
-
-    }
+    if(oldPlayer !== undefined) return callback("Du befindest dich bereits in einem Spiel.");
     
     // Wenn Spielername oder Raum Code nicht angegeben
     if (data.username == '' || data.roomId == '') {

@@ -11,8 +11,8 @@ import SocketContext from "../../services/socket";
 function Players(props) {
 
     const socket = useContext(SocketContext);
-    const useVideos = process.env.NODE_ENV === 'production';
-    //const useVideos = true;
+    //const useVideos = process.env.NODE_ENV === 'production';
+    const useVideos = true;
     //process.env.NODE_ENV === 'production';
 
     // Router Stuff
@@ -25,10 +25,6 @@ function Players(props) {
         $('.player').height($('.player').width()/16 * 9);
 
     }, []);
-
-    const clickEvent = () =>{
-        document.getElementById("startWebcam").click();
-    }
 
     useLayoutEffect(() => {
         // Wenn die Fenstergröße geändert wird -> Größe anpassen
@@ -48,13 +44,7 @@ function Players(props) {
      * 4. Nur bauen alle schon im Raum bestehenden Sockets eine Verbindung zum neuen Socket auf.
      */
 
-    useLayoutEffect(() => {
-        setTimeout(clickEvent, 3000);
-        
-        socket.on("room:joined", ()=>{
-            setTimeout(clickEvent, 5000);
-        });
-
+    const ask4Video = useCallback(() => {
         var constraints = {
             'audio': true, 
             'video': {
@@ -62,169 +52,113 @@ function Players(props) {
             }
         };
 
-        if(useVideos) {
-            const addVideoStream = (socketId, stream) => {
-                let video = document.getElementById('player-video-' + socketId);
-                video.srcObject = stream.clone();
-    
-                video.onloadedmetadata = function(e) {
-                    video.play();
-                };
+        const addVideoStream = (socketId, stream) => {
+            let video = document.getElementById('player-video-' + socketId);
+            video.srcObject = stream.clone();
+
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
+        }
+
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+            $("#enableWebcam").addClass("d-none");
+            $("#disableWebcam").removeClass("d-none");
+
+            let peerOptions;
+
+            // Production
+            if(process.env.NODE_ENV === 'production') {
+                peerOptions = {
+                    undefined,
+                    path: '/',
+                    secure: true
+                }
+                
+            // Development
+            } else {
+                peerOptions = {
+                    undefined,
+                    path: '/peerjs',
+                    host: '/',
+                    port: '8080'
+                }
             }
 
-            const captureVideoButton = document.querySelector('#startWebcam');
-            captureVideoButton.onclick = () =>{
-                navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-                $("#enableWebcam").addClass("d-none");
-                $("#disableWebcam").removeClass("d-none");
+            // Eigener Peer
+            const peer = new Peer(peerOptions);
 
-                let peerOptions;
+            // Kamera wird erlaubt
+            let video = document.getElementById('player-video-' + socket.id);
+            video.muted = true;
+            video.srcObject = stream;
 
-                // Production
-                if(process.env.NODE_ENV === 'production') {
-                    peerOptions = {
-                        undefined,
-                        path: '/',
-                        secure: true
-                    }
-                    
-                // Development
-                } else {
-                    peerOptions = {
-                        undefined,
-                        path: '/peerjs',
-                        host: '/',
-                        port: '8080'
-                    }
-                }
-
-                // Eigener Peer
-                const peer = new Peer(peerOptions);
-    
-                // Kamera wird erlaubt
-                let video = document.getElementById('player-video-' + socket.id);
-                video.muted = true;
-                video.srcObject = stream;
-    
-                // Eigene Kamera abspielen
-                video.onloadedmetadata = function(e) {
-                    video.play();
-                };
-    
-                peer.on('open', id => {
-                    // Server sagen, dass man nun einen Stream hat zum senden
-                    socket.emit('webcam:joined', { peerId: id });
-                });
-    
-                // Wenn ein neuer User connected => mit neuem User verbinden
-                socket.on('webcam:user-joined', data => {
-                    connectToNewUser(data.peerId, data.socketId);
-                });
-    
-                const connectToNewUser = (peerId, otherSocketId) => {
-                    const call = peer.call(peerId, stream, { metadata: { socketId: socket.id }});
-    
-                    call.on('stream', userVideoStream => {
-                        addVideoStream(otherSocketId, userVideoStream);
-                    });
-                }
-    
-                peer.on('call', call => {
-                    let otherSocketId = call.metadata.socketId;
-                    call.answer(stream, { metadata: { socketId: socket.id }});
-
-                    call.on('stream', userVideoStream => {
-                        addVideoStream(otherSocketId, userVideoStream);
-                    });
-                });
+            // Eigene Kamera abspielen
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
             
-                //Kamera deaktivieren
-                socket.on("webcam:disabled",() =>{
-                     stream.getVideoTracks()[0].enabled = false;
-                });
-
-                socket.on("webcam:enabled",() =>{
-                    stream.getVideoTracks()[0].enabled = true;
-               });
-
-                socket.on("webcam:micMuted", () =>{
-                   stream.getAudioTracks()[0].enabled = false;
-                });
-
-                socket.on("webcam:micUnmuted", () =>{
-                    stream.getAudioTracks()[0].enabled = true;
-                });
-
-            // Kamera wird nicht erlaubt
-            }).catch(function(err) {
-                //Beim joinen der Lobby
-                alert("Bitte aktiviere deine Kamera oder dein Mikrofon um spielen zu können.");
-
-                //Nur nach Mikrofon fragen
-                constraints = {
-                    'video': false,
-                    'audio': true
-                }
-    
-                navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-                    let peerOptions;
-
-                // Production
-                if(process.env.NODE_ENV === 'production') {
-                    peerOptions = {
-                        undefined,
-                        path: '/',
-                        secure: true
-                    }
-                    
-                // Development
-                } else {
-                    peerOptions = {
-                        undefined,
-                        path: '/peerjs',
-                        host: '/',
-                        port: '8080'
-                    }
-                }
-
-                // Eigener Peer
-                const peer = new Peer(peerOptions);
-    
-                peer.on('open', id => {
-                    // Server sagen, dass man nun einen Stream hat zum senden
-                    socket.emit('webcam:joined', { peerId: id });
-                });
-    
-                // Wenn ein neuer User connected => mit neuem User verbinden
-                socket.on('webcam:user-joined', data => {
-                    connectToNewUser(data.peerId, data.socketId);
-                });
-    
-                const connectToNewUser = (peerId, otherSocketId) => {
-                    const call = peer.call(peerId, stream, { metadata: { socketId: socket.id }});
-    
-                    call.on('stream', userVideoStream => {
-                        addVideoStream(otherSocketId, userVideoStream);
-                    });
-                }
-    
-                peer.on('call', call => {
-                    let otherSocketId = call.metadata.socketId;
-                    call.answer(stream, { metadata: { socketId: socket.id }});
-    
-                    call.on('stream', userVideoStream => {
-                        addVideoStream(otherSocketId, userVideoStream);
-                    });
-                });
-
-                });
-                //Jede 10 Sekunden nach Mikrofon fragen, solange noch nichts freigegeben wurde
-                setTimeout(clickEvent,10000);
+            peer.on('open', id => {
+                // Server sagen, dass man nun einen Stream hat zum senden
+                socket.emit('webcam:joined', { peerId: id });
             });
-        }
+
+            // Wenn ein neuer User connected => mit neuem User verbinden
+            socket.on('webcam:user-joined', data => {
+                connectToNewUser(data.peerId, data.socketId);
+            });
+
+            const connectToNewUser = (peerId, otherSocketId) => {
+                const call = peer.call(peerId, stream, { metadata: { socketId: socket.id }});
+
+                call.on('stream', userVideoStream => {
+                    addVideoStream(otherSocketId, userVideoStream);
+                });
+            }
+
+            peer.on('call', call => {
+                let otherSocketId = call.metadata.socketId;
+                call.answer(stream, { metadata: { socketId: socket.id }});
+
+                call.on('stream', userVideoStream => {
+                    addVideoStream(otherSocketId, userVideoStream);
+                });
+            });
+        
+            //Kamera deaktivieren
+            socket.on("webcam:disabled",() =>{
+                stream.getVideoTracks()[0].enabled = false;
+            });
+
+            socket.on("webcam:enabled",() =>{
+                stream.getVideoTracks()[0].enabled = true;
+            });
+
+            socket.on("webcam:micMuted", () =>{
+                stream.getAudioTracks()[0].enabled = false;
+            });
+
+            socket.on("webcam:micUnmuted", () =>{
+                stream.getAudioTracks()[0].enabled = true;
+            });
+        })
+        .catch(err => {
+            alert("Um ein Spiel spielen zu können, benötigen wir deine Webcam. " +
+            "Später kannst du deine Webcam deaktivieren.");
+
+            socket.emit('room:leave-room');
+            history.push('/');
+        });
+
+    }, [socket, history]);
+
+    useLayoutEffect(() => {
+        if(useVideos) {
+            ask4Video();
         }
 
-    }, [socket, useVideos, history]);
+    }, [socket, useVideos, ask4Video]);
 
     return (
         <div className='players'>

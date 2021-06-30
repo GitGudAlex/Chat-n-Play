@@ -27,28 +27,12 @@ function ChooseGame(props) {
 
     }
 
-    const createGame = (gameId) => {
-        socket.emit('room:create', { gameTypeId: gameId }, (error) => {
-            if(error) {
-                $('#endgame-modal-error-output').text(error);
-
-            }
-        });
+    const changeGame = (gameId) => {
+        socket.emit('room:changing-game', { gameTypeId: gameId });
     }
 
-    // Wenn ein Spiel neu erstellt wurde -> Dem Spiel beitreten und den anderen mitspielern die neue RoomId mitteilen
-    const handleRoomCreatedEvent = useCallback((data) => {
-        socket.emit('room:join', { roomId: data.roomId, username: '' }, (error) => {
-            if(error) {
-                $('#endgame-modal-error-output').text(error);
-
-            }
-        });
-
-    }, [socket]);
-
     // Wenn man einem Spiel gejoint ist -> Lobby laden
-    const handleRoomJoinedEvent = useCallback((data) => {
+    const handleHameChangedEvent = useCallback((data) => {
         $('#endgame-modal').modal('hide');
 
         props.resetModal();
@@ -61,15 +45,13 @@ function ChooseGame(props) {
     }, [history, props]);
 
     useEffect(() => {
-        socket.on('room:created-new', handleRoomCreatedEvent);
-        socket.on('room:joined', handleRoomJoinedEvent);
+        socket.on('room:game-changed', handleHameChangedEvent);
 
         return () => {
-            socket.off('room:created-new');
-            socket.off('room:joined', handleRoomJoinedEvent);
+            socket.off('room:game-changed', handleHameChangedEvent);
         }
 
-    }, [socket, handleRoomCreatedEvent, handleRoomJoinedEvent]);
+    }, [socket, handleHameChangedEvent]);
 
     // Spieler ist host
     if(props.isHost) {
@@ -80,13 +62,13 @@ function ChooseGame(props) {
                 </div>
                 <div id='endgame-modal-body' className="modal-body text-center">
                     <div className='endgame-modal-games-list'>
-                        <div className='endgame-modal-game' id="ludo" onClick={ () => createGame(0) } >
+                        <div className='endgame-modal-game' id="ludo" onClick={ () => changeGame(0) } >
                         <img src={imgLudo} className="img-game" />
                         </div>
-                        <div className='endgame-modal-game' id="uno" onClick={ () => createGame(1) }>
+                        <div className='endgame-modal-game' id="uno" onClick={ () => changeGame(1) }>
                             <img src={imgKlopfKlopf} className="img-game" />
                         </div>
-                        <div className='endgame-modal-game' id="slf" onClick={ () => createGame(2) }>
+                        <div className='endgame-modal-game' id="slf" onClick={ () => changeGame(2) }>
                             <img src={imgSLF} className="img-game"/>
                         </div>
                     </div>

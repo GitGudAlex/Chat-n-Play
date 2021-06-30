@@ -33,7 +33,7 @@ function EndGameModal(props) {
     }, [history, resetModal]);
 
     // Wenn der Host ein neues Spiel erstellt hat
-    const handleNewRoomEvent = useCallback(() => {
+    const handleChangeGameEvent = useCallback(() => {
         
         // Modal Content ändern
         setEndGameStatus(1);
@@ -41,16 +41,16 @@ function EndGameModal(props) {
 
     useEffect(() => {
         socket.on('room:room-closed', handleCloseRoomEvent);
-        socket.on('room:creating-new-room', handleNewRoomEvent);
+        socket.on('room:change-game', handleChangeGameEvent);
 
         return() => {
             socket.off('room:room-closed');
-            socket.off('room:creating-new-room');
+            socket.off('room:change-game');
 
             setEndGameStatus(0);
             $('#endgame-modal').modal('hide');
         }
-    }, [socket, handleCloseRoomEvent, handleNewRoomEvent]);
+    }, [socket, handleCloseRoomEvent, handleChangeGameEvent]);
 
     let modalContent;
 
