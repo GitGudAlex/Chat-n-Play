@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useLayoutEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import $ from 'jquery';
 
@@ -146,6 +146,28 @@ function SideBar(props) {
     window.addEventListener('resize', handleResize);
   }, []);
 
+  useLayoutEffect(() => {
+    let buttonEn = document.querySelector('#enableWebcam');
+    let buttonDis = document.querySelector('#disableWebcam');
+
+
+    // Wenn die Kamera nicht erlaubt ist => button deaktivieren
+    if(!props.allowCamera) {
+      buttonEn.disabled = true;
+      buttonDis.disabled = true;
+
+    } else {
+      buttonEn.addEventListener("click", enableWebcam)
+      buttonDis.addEventListener("click", disableWebcam)
+    }
+
+    return () => {
+      buttonEn.removeEventListener("click", enableWebcam)
+      buttonDis.removeEventListener("click", disableWebcam)
+    }
+
+  }, [props.allowCamera]);
+
   // Bootstrap Tooltips anzeigen
   $(document).ready(function() {
     $('.sidebar-btn-tooltip').tooltip({
@@ -159,10 +181,10 @@ function SideBar(props) {
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
       <div className='sidebar-bar-wrapper' style={{ width: props.sideBarWidth + 'px'}} >
-        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ enableWebcam }>
+        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip">
           <RiCameraOffFill size={ 28 } />
         </button>
-        <button id = "disableWebcam" title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip d-none" onClick={ disableWebcam }>
+        <button id = "disableWebcam" title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip d-none">
           <RiCameraFill size={28}/>
         </button>
         <button id = "unmuteMic" title='Mikrofon deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip bi bi-camera-video" onClick={ unmuteMic }>
