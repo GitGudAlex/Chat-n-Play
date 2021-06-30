@@ -106,7 +106,7 @@ function WinnerDisplay(props) {
                 </p>
             </div>
             <div id='endgame-modal-body' className="modal-body  text-center">
-                <p className='endgame-modal-body-text'>Der*Die Host wird ein neues Spiel starten oder den Raum beenden.</p>
+                <p className='endgame-modal-body-text'>Warte bis ein neues Spiel gestart oder der Raum beendet wurde.</p>
             </div>
             <div id='endgame-modal-footer' className="modal-footer">
                 <button type="button" className="btn btn-dark" onClick={ leaveRoom }>Raum verlassen</button>
