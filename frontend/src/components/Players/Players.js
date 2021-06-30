@@ -1,5 +1,4 @@
-import { useCallback, useContext, useLayoutEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useCallback, useContext, useLayoutEffect, useRef } from 'react';
 import $ from 'jquery';
 import Peer from 'peerjs';
 
@@ -15,13 +14,11 @@ function Players(props) {
     const useVideos = true;
     //process.env.NODE_ENV === 'production';
 
-    // Router Stuff
-    const history = useHistory();
-
-    const [hasOwnVideo, setOwnVideo] = useState(true);
-
     // Positionen der Spieler
     const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
+
+    // Users Video Stream
+    const myStream = useRef();
 
     const resizePlayerHandler = useCallback(() => {
         $('.player').height($('.player').width()/16 * 9);
@@ -51,13 +48,6 @@ function Players(props) {
     }
 
     const ask4Video = useCallback(() => {
-        var constraints = {
-            'audio': true, 
-            'video': {
-                'quality': 5,
-            }
-        };
-
         const addVideoStream = (socketId, stream) => {
             let video = document.getElementById('player-video-' + socketId);
             video.srcObject = stream.clone();
@@ -87,8 +77,18 @@ function Players(props) {
             }
         }
 
+        let constraints = {
+            'audio': true,
+            'video': {
+                'quality': 5,
+            }
+        };
+
         navigator.mediaDevices.getUserMedia(constraints)
-        .then(stream => {
+        .then(streamWithVideo => {
+
+            myStream.current = streamWithVideo;
+
             $("#enableWebcam").addClass("d-none");
             $("#disableWebcam").removeClass("d-none");
 
@@ -98,7 +98,7 @@ function Players(props) {
             // Kamera wird erlaubt
             let video = document.getElementById('player-video-' + socket.id);
             video.muted = true;
-            video.srcObject = stream;
+            video.srcObject = streamWithVideo;
 
             // Eigene Kamera abspielen
             video.onloadedmetadata = function(e) {
@@ -116,7 +116,7 @@ function Players(props) {
             });
 
             const connectToNewUser = (peerId, otherSocketId) => {
-                const call = peer.call(peerId, stream, { metadata: { socketId: socket.id }});
+                const call = peer.call(peerId, streamWithVideo, { metadata: { socketId: socket.id }});
 
                 call.on('stream', userVideoStream => {
                     addVideoStream(otherSocketId, userVideoStream);
@@ -125,28 +125,35 @@ function Players(props) {
 
             peer.on('call', call => {
                 let otherSocketId = call.metadata.socketId;
-                call.answer(stream, { metadata: { socketId: socket.id }});
+                call.answer(streamWithVideo, { metadata: { socketId: socket.id }});
 
-                call.on('stream', userVideoStream => {
-                    addVideoStream(otherSocketId, userVideoStream);
+                call.on('stream', otherStream => {
+                    if(otherStream.getVideoTracks().length === 0) {
+                        call.close();
+                        connectToNewUser(call.peer, otherSocketId);
+
+                    } else {
+                        addVideoStream(otherSocketId, otherStream);
+
+                    }
                 });
             });
         
             // Kamera deaktivieren
             socket.on("webcam:disabled",() =>{
-                stream.getVideoTracks()[0].enabled = false;
+                streamWithVideo.getVideoTracks()[0].enabled = false;
             });
 
             socket.on("webcam:enabled",() =>{
-                stream.getVideoTracks()[0].enabled = true;
+                streamWithVideo.getVideoTracks()[0].enabled = true;
             });
 
             socket.on("webcam:micMuted", () =>{
-                stream.getAudioTracks()[0].enabled = false;
+                streamWithVideo.getAudioTracks()[0].enabled = false;
             });
 
             socket.on("webcam:micUnmuted", () =>{
-                stream.getAudioTracks()[0].enabled = true;
+                streamWithVideo.getAudioTracks()[0].enabled = true;
             });
 
             socket.emit("webcam:enable");
@@ -154,13 +161,15 @@ function Players(props) {
         })
         .catch((err) => {
             // Nur nach Mikrofon fragen
-            constraints = {
-                'video': false,
-                'audio': true
+            let constraintsAudioOnly = {
+                'audio': true,
+                'video': false
             }
 
-            navigator.mediaDevices.getUserMedia(constraints)
-            .then(stream => {
+            navigator.mediaDevices.getUserMedia(constraintsAudioOnly)
+            .then(streamAudioOnly => {
+
+                myStream.current = streamAudioOnly;
 
                 props.settingAllowCamera(false);
 
@@ -178,16 +187,16 @@ function Players(props) {
                 });
     
                 const connectToNewUser = (peerId, otherSocketId) => {
-                    const call = peer.call(peerId, stream, { metadata: { socketId: socket.id }});
-    
-                    call.on('stream', userVideoStream => {
-                        addVideoStream(otherSocketId, userVideoStream);
+                    const call = peer.call(peerId, streamAudioOnly, { metadata: { socketId: socket.id }});
+
+                    call.on('stream', otherStream => {
+                        addVideoStream(otherSocketId, otherStream);
                     });
                 }
 
                 peer.on('call', call => {
                     let otherSocketId = call.metadata.socketId;
-                    call.answer(stream, { metadata: { socketId: socket.id }});
+                    call.answer(streamAudioOnly, { metadata: { socketId: socket.id }});
     
                     call.on('stream', userVideoStream => {
                         addVideoStream(otherSocketId, userVideoStream);
@@ -195,25 +204,22 @@ function Players(props) {
                 });
 
                 socket.on("webcam:micMuted", () =>{
-                    stream.getAudioTracks()[0].enabled = false;
+                    streamAudioOnly.getAudioTracks()[0].enabled = false;
                 });
 
                 socket.on("webcam:micUnmuted", () =>{
-                    stream.getAudioTracks()[0].enabled = true;
+                    streamAudioOnly.getAudioTracks()[0].enabled = true;
                 });
 
                 socket.emit("webcam:disable");
                 socket.emit('webcam:unmuteMic');
-
-                setOwnVideo(false);
             })
             .catch(err => {
                 window.location.reload();
-
             });
         });
 
-    }, [socket, history]);
+    }, [socket, props.settingAllowCamera]);
 
     useLayoutEffect(() => {
         if(useVideos) {
@@ -225,6 +231,16 @@ function Players(props) {
             clickEvent();
         }
 
+        // Kamera & Audio stoppen
+        return () => {
+
+            if(myStream.current !== undefined) {
+                myStream.current.getTracks().forEach((track) => {
+                    track.stop();
+                });
+            }
+        }
+
     }, [socket, useVideos, ask4Video]);
 
     return (
@@ -233,7 +249,7 @@ function Players(props) {
                 props.players.map(player => {
                     let score = props.scores.find(score => score.username === player.username)
                    
-                    if(!player.hasVideo || !hasOwnVideo) {
+                    if(!player.hasVideo) {
                         $('#player-profile-' + player.socketId).css({ opacity: 1 });
                         $('#player-video-' + player.socketId).css({ opacity: 0 });
 
