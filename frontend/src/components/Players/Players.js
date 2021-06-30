@@ -200,6 +200,10 @@ function Players(props) {
                 socket.on("webcam:micUnmuted", () =>{
                     stream.getAudioTracks()[0].enabled = true;
                 });
+            })
+            .catch(err => {
+                window.location.reload();
+
             });
         });
 
