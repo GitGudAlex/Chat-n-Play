@@ -15,7 +15,7 @@ function AboutUs (){
             </header>
             <img src={imageAboutUs} className="title-image-footer"/>
             <div class="container">
-                <div class="row align-items-start">
+                <div class="row align-items-center">
                     <div id = "aboutus-team" className = "aboutus-content">
                          <div class="col">
                             <h2 className="aboutus-headline">Unser Team</h2>

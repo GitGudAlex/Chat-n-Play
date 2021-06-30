@@ -40,7 +40,7 @@ body{
     background-color: transparent;
     border: none;
     outline: none;
-    margin-top: -24px;
+    margin-top: -20px;
     margin-right: 5px;
     
 
@@ -53,23 +53,9 @@ body{
     margin-right: 300px;
 }
 
-@media  screen and (min-width: 1600px) {
-    .question-faq{
-        margin-left: 380px;
-        margin-right: 300px;
-        font-size: x-large;
-    }
-    
-    .faq-question-text{
-        font-size: x-large;
-    }
-    
-    #paragraph-faq{
-        font-size: large;
-        margin-left: 300px;
-        margin-right: 300px;
-        margin-top: 40px;
-        padding-bottom: 60px;
+@media screen and (max-width: 1300px){
+    .answer{
+        margin-top: 30px;
     }
     
 }
@@ -81,9 +67,10 @@ body{
     height: 50px;
 }
 
-.faq-question-text{
+.faq-question-text h2{
     font-size: x-large;
     margin-top: 0;
+    text-align: initial !important;
 }
 
 #paragraph-faq{

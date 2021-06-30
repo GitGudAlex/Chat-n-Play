@@ -7,7 +7,7 @@ function Category(props) {
 
     return (
         <div className='selector-category'>
-            <div className='input-group mb-3'>
+            <div className='input-group'>
                 <input id={ 'category-selector-input-' + props.id } className='selector-category-input form-control'
                     type='text'
                     defaultValue={ props.categoryValue }
