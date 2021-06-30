@@ -6,6 +6,9 @@
  * @property {String} roomId - Die Raum Id des Raumes, indem sich der Spieler befindet.
  * @property {number} position - Die Position des Spielers auf dem Spielfeld.
  * @property {boolean} color - Die Farbe des Spielers.
+ * @property {boolean} active - Ob ein Spieler dran is.
+ * @property {boolean} hasVideo - Ob der Spieler seine Video Kamera eingeschaltet hat.
+ * @property {boolean} isMuted - Ob der Spieler gemutet ist.
  */
 
 /**
@@ -36,7 +39,7 @@ const addPlayer = ( socketId, username, roomId ) => {
     let position = getPlayersInRoom(roomId).length;
     
     // adding player
-    const player = { socketId, username, roomId, position, color: undefined, active: false };
+    const player = { socketId, username, roomId, position, color: undefined, active: false, hasVideo: false, isMuted: true };
     players.push(player);
 
     // returning player object

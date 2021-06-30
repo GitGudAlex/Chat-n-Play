@@ -38,7 +38,10 @@ module.exports = (io, socket, data) => {
                 item !== 'username' &&
                 item !== 'roomId' &&
                 item !== 'position' &&
-                item !== 'color') {
+                item !== 'color' &&
+                item !== 'active' &&
+                item !== 'hasVideo' &&
+                item !== 'isMuted') {
                     delete player[item];
             }
         });

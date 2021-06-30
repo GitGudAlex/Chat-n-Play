@@ -54,7 +54,7 @@ module.exports = (io, socket, data, callback) => {
     
     // allen Spielern die neuen Spieler senden
     const players = getPlayersInRoom(player.roomId).map((player) => {
-        let playerObj = { socketId: player.socketId, username: player.username, position: player.position, color: player.color };
+        let playerObj = { socketId: player.socketId, username: player.username, position: player.position, color: player.color, isMuted: player.isMuted, hasVideo: player.hasVideo };
         
         return playerObj;
     });

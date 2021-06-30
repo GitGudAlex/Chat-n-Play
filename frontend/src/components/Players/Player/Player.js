@@ -16,6 +16,22 @@ function Player(props) {
 
     }, []);
 
+    let color;
+
+    if(props.color === '#0B97F0') {
+        color = 'blue';
+
+    } else if(props.color === '#00BF02') {
+        color = 'green';
+
+    } else if(props.color === '#FCA701') {
+        color = 'orange';
+
+    } else if(props.color === '#FF3030') {
+        color = 'red';
+
+    }
+
     // Falls div Struktur falsch aufgebaut ist
     if(parentElementWidth === undefined) {
         return (
@@ -54,6 +70,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid #474747' }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                    <img id={ 'player-profile-' + props.socketId } className='player-profile' src='/PlayerProfiles/profile-no-color.png' />
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>
@@ -68,6 +85,7 @@ function Player(props) {
                 <div className={ props.position + ' player'} style={ playerStyle }>
                     <div style={{ border: '3px solid ' + props.color }} className='camera'>
                         <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
                     </div>
                     <div className='player-name'>
                         <p style={ textAlignStyle }>{ props.username }</p>
@@ -81,6 +99,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
                 </div>
                 <House color={ props.color } position={ props.position } top={ onTop } left={ leftSide } />
                 <div className='player-name'>
@@ -94,6 +113,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>
@@ -106,6 +126,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>
@@ -137,6 +158,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
                 </div>
                 <div className='player-name-score' style={{ flexDirection: leftSide === true ? 'row' : 'row-reverse' }}>
                     <p>{ rank + props.username + (props.ready === true ? ` \u2713`: '') }</p>

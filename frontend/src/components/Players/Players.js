@@ -1,4 +1,4 @@
-import { useCallback, useContext, useLayoutEffect, useRef } from 'react';
+import { useCallback, useContext, useLayoutEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import $ from 'jquery';
 import Peer from 'peerjs';
@@ -18,7 +18,7 @@ function Players(props) {
     // Router Stuff
     const history = useHistory();
 
-    const denialCounterRef = useRef(0);
+    const [hasOwnVideo, setOwnVideo] = useState(true);
 
     // Positionen der Spieler
     const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
@@ -148,10 +148,11 @@ function Players(props) {
             socket.on("webcam:micUnmuted", () =>{
                 stream.getAudioTracks()[0].enabled = true;
             });
-        })
-        .catch(err => {
-            //alert("Um ein Spiel spielen zu können, brauchen wir mindestens Zugriff auf dein Mikrofon.");
 
+            socket.emit("webcam:enable");
+            socket.emit('webcam:unmuteMic');
+        })
+        .catch((err) => {
             // Nur nach Mikrofon fragen
             constraints = {
                 'video': false,
@@ -200,6 +201,11 @@ function Players(props) {
                 socket.on("webcam:micUnmuted", () =>{
                     stream.getAudioTracks()[0].enabled = true;
                 });
+
+                socket.emit("webcam:disable");
+                socket.emit('webcam:unmuteMic');
+
+                setOwnVideo(false);
             })
             .catch(err => {
                 window.location.reload();
@@ -219,10 +225,6 @@ function Players(props) {
             clickEvent();
         }
 
-        return () => {
-            denialCounterRef.current = 0;
-        }
-
     }, [socket, useVideos, ask4Video]);
 
     return (
@@ -230,7 +232,16 @@ function Players(props) {
             {
                 props.players.map(player => {
                     let score = props.scores.find(score => score.username === player.username)
-                    
+                   
+                    if(!player.hasVideo || !hasOwnVideo) {
+                        $('#player-profile-' + player.socketId).css({ opacity: 1 });
+                        $('#player-video-' + player.socketId).css({ opacity: 0 });
+
+                    } else {
+                        $('#player-profile-' + player.socketId).css({ opacity: 0 });
+                        $('#player-video-' + player.socketId).css({ opacity: 1 });
+                    }
+
                     return (
                         <Player key = { player.username  } 
 
@@ -263,6 +274,9 @@ function Players(props) {
                             
                             // Ob die Kamera / der Spieler man selbst ist
                             self = { player.socketId === socket.id }
+
+                            // Ob man gemuted ist
+                            muted = { player.isMuted }
                         />
                     )
                 })
