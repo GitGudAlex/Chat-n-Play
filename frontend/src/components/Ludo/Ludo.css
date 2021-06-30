@@ -69,7 +69,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   }
   #dice{
     transform:scale(0.6);
-    top: -20px;
+    top: 80px;
   }
 }
 
@@ -79,7 +79,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   }
   #dice{
     transform:scale(0.6);
-    top: -20px;
+    top: 75px;
   }
 }
 
@@ -88,8 +88,8 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
     transform: scale(0.7);
   }
   #dice{
-    transform:scale(0,8);
-    top: 20px;
+    transform:scale(0.6);
+    top: 75px;
   }
 }
 
@@ -100,7 +100,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   }
   #dice{
     transform:scale(1);
-    top: 20px;
+    top: 30px;
   }
 }
 
