@@ -3,6 +3,8 @@ import Footer from "../Footer";
 
 import imagePrivacyPolicy from '../../../img/PrivacyPolicy.png'
 
+import './PrivacyPolicy.css'
+
 
 function PrivacyPolicy (){
 
