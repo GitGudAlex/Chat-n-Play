@@ -6,6 +6,10 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 video {
@@ -40,4 +44,9 @@ video {
 
 .uno-hand-wrapper-bottom {
     margin-bottom: 32px;
+}
+
+.player-profile {
+    height: 90%;
+    position: absolute;
 }

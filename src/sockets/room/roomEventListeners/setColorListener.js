@@ -14,7 +14,7 @@ module.exports = (io, socket, data, callback) => {
 
     // allen Spieler mit den neuen Farben bekommen
     let mappedPlayers = getPlayersInRoom(player.roomId).map((player) => {
-        let playerObj = { socketId: player.socketId, username: player.username, position: player.position, color: player.color };
+        let playerObj = { socketId: player.socketId, username: player.username, position: player.position, color: player.color, isMuted: player.isMuted, hasVideo: player.hasVideo };
         
         return playerObj;
     });

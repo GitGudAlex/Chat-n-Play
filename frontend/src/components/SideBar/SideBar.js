@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useLayoutEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import $ from 'jquery';
 
@@ -113,28 +113,64 @@ function SideBar(props) {
     socket.emit("webcam:start");
   }
 
-  const disableWebcam = () =>{
+  const disableWebcam = () => {
+    $('.sidebar-btn-tooltip').tooltip('dispose')
+
     socket.emit("webcam:disable");
+
     $("#enableWebcam").removeClass("d-none");
+    $("#enableWebcam").addClass("sidebar-btn-tooltip");
+
     $("#disableWebcam").addClass("d-none");
+    $("#disableWebcam").removeClass("sidebar-btn-tooltip");
+
+    $('.sidebar-btn-tooltip').tooltip({
+      delay: { show: 1000, hide: 300 }
+  }); 
   }
 
-  const enableWebcam = () =>{
+  const enableWebcam = () => {
+    $('.sidebar-btn-tooltip').tooltip('dispose')
+
     socket.emit("webcam:enable");
+
     $("#enableWebcam").addClass("d-none");
+    $("#enableWebcam").removeClass("sidebar-btn-tooltip");
+
     $("#disableWebcam").removeClass("d-none");
+    $("#disableWebcam").addClass("sidebar-btn-tooltip");
+
+    $('.sidebar-btn-tooltip').tooltip({
+      delay: { show: 1000, hide: 300 }
+  }); 
   }
 
-  const muteMic = () =>{
+  const muteMic = () => {
+    $('.sidebar-btn-tooltip').tooltip('dispose')
+
     socket.emit("webcam:unmuteMic");
+
     $("#unmuteMic").removeClass("d-none");
+    $("#unmuteMic").addClass("sidebar-btn-tooltip");
+
     $("#muteMic").addClass("d-none");
+    $("#muteMic").removeClass("sidebar-btn-tooltip");
+
+    $('.sidebar-btn-tooltip').tooltip({
+      delay: { show: 1000, hide: 300 }
+  }); 
   }
 
-  const unmuteMic = () =>{
+  const unmuteMic = () => {
+    $('.sidebar-btn-tooltip').tooltip('dispose')
+    
     socket.emit("webcam:muteMic");
+
     $("#muteMic").removeClass("d-none");
+    $("#muteMic").addClass("sidebar-btn-tooltip");
+
     $("#unmuteMic").addClass("d-none");
+    $("#unmuteMic").removeClass("sidebar-btn-tooltip");
   }
 
   // Wenn die Fenster größe verändert wird, muss auch die Sidebar größe angepasst werden, da position: fixed
@@ -145,6 +181,28 @@ function SideBar(props) {
     
     window.addEventListener('resize', handleResize);
   }, []);
+
+  useLayoutEffect(() => {
+    let buttonEn = document.querySelector('#enableWebcam');
+    let buttonDis = document.querySelector('#disableWebcam');
+
+
+    // Wenn die Kamera nicht erlaubt ist => button deaktivieren
+    if(!props.allowCamera) {
+      buttonEn.disabled = true;
+      buttonDis.disabled = true;
+
+    } else {
+      buttonEn.addEventListener("click", enableWebcam)
+      buttonDis.addEventListener("click", disableWebcam)
+    }
+
+    return () => {
+      buttonEn.removeEventListener("click", enableWebcam)
+      buttonDis.removeEventListener("click", disableWebcam)
+    }
+
+  }, [props.allowCamera, enableWebcam, disableWebcam]);
 
   // Bootstrap Tooltips anzeigen
   $(document).ready(function() {
@@ -159,16 +217,16 @@ function SideBar(props) {
   return (
     <div className='sidebar' style={{ width: props.sideBarWidth + 'px'}}>
       <div className='sidebar-bar-wrapper' style={{ width: props.sideBarWidth + 'px'}} >
-        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ enableWebcam }>
+        <button id= "enableWebcam" title='Kamera aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip">
           <RiCameraOffFill size={ 28 } />
         </button>
-        <button id = "disableWebcam" title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip d-none" onClick={ disableWebcam }>
+        <button id = "disableWebcam" title='Kamera deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn d-none">
           <RiCameraFill size={28}/>
         </button>
         <button id = "unmuteMic" title='Mikrofon deaktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip bi bi-camera-video" onClick={ unmuteMic }>
           <BsFillMicFill size={ 28 } />
         </button>
-        <button id = "muteMic" title='Mikrofon aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip d-none" onClick={ muteMic }>
+        <button id = "muteMic" title='Mikrofon aktivieren' data-toggle="tooltip" data-placement="right" className="sidebar-btn d-none" onClick={ muteMic }>
           <BsFillMicMuteFill size={ 28 } />
         </button>
         <button title='Chat' data-toggle="tooltip" data-placement="right" className="sidebar-btn sidebar-btn-tooltip" onClick={ () => toggleSideBar("#sidebar-chat") }>

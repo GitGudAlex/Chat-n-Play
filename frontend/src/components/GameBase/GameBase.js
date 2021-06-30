@@ -27,6 +27,9 @@ function GameBase({ match }) {
     const history = useHistory();
     const location = useLocation();
 
+    // Ob Kamera erlaubt wird
+    const [allowCamera, setAllowCamera] = useState(true);
+
     // Game Data (roomid, gameid, players, ...)
     const [gameId, setGameId] = useState();
     const [roomId, setRoomId] = useState();
@@ -52,6 +55,10 @@ function GameBase({ match }) {
 
     // Socket.io
     const socket = useContext(SocketContext);
+
+    const settingAllowCamera = useCallback((value) => {
+        setAllowCamera(value);
+    }, []);
 
     // Schauen, ob man sich überhaupt in einem Raum befindet
     const handleInRoomCallback = useCallback((isInRoom) => {
@@ -291,7 +298,7 @@ function GameBase({ match }) {
                 <div className='container-fluid p-0'>
                     <div id='game-body' className='row m-0'>
                         <div id='sidebar-wrapper' className='p-0'>
-                            <SideBar position='left' contentId='#game-content-wrapper' sideBarWidth={ 40 } sideBarWindowWidth={ 350 } rules={ rules }/>
+                            <SideBar position='left' contentId='#game-content-wrapper' sideBarWidth={ 40 } sideBarWindowWidth={ 350 } rules={ rules } allowCamera={ allowCamera } />
                         </div>
                         <div id='game-content-wrapper' className='col p-0'>
                             <Switch>
@@ -303,7 +310,7 @@ function GameBase({ match }) {
                                 <Route component={ PageNotFound } />
                             </Switch>
                             <EndGameModal winners={ winners } isHost={ hostId === socket.id }/>
-                            <Players players={ players } scores={ scores } game={ gameNameStarted } readyPlayers={ playersReady }/>
+                            <Players players={ players } scores={ scores } game={ gameNameStarted } readyPlayers={ playersReady } settingAllowCamera={ settingAllowCamera }/>
                         </div>
                     </div>
                 </div>
