@@ -65,11 +65,11 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
 
 @media screen and (min-width: 375px) {
   .matchfield{
-    transform: scale(0.6);
+    transform: scale(0.5);
   }
   #dice{
-    transform:scale(0.6);
-    top: 80px;
+    transform:scale(0.5);
+    top: 100px;
   }
 }
 
