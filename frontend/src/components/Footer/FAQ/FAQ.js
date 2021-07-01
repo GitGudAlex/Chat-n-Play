@@ -8,6 +8,7 @@ import imgMail from '../../../img/Mail.png'
 import imageFAQ from '../../../img/FAQ.png'
 
 import '../Footer.css'
+import './FAQ.css'
 
 function FAQ () {
 

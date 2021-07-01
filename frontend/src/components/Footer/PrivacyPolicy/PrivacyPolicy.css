@@ -5,6 +5,12 @@
     background-size: 200px;
 }
 
+.text-privacy-policy{
+    margin-left: 250px;
+    margin-right: 250px;
+    font-size: large;
+}
+
 #headline-privacy-policy{
     font-size: x-large;
 }

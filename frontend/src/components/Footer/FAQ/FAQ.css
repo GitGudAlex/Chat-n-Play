@@ -1,0 +1,43 @@
+#faq{
+    min-height: 100%;
+    background: url(../../../img/background_6.png), url(../../../img/background_7.png) top right, url(../../../img/background_8.png) 100% 580px, url(../../../img/background_4.png) 0% 600px;
+    background-repeat: no-repeat;
+    background-size: 200px;
+}
+
+.question-faq{
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 985px){
+    .question-faq{
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+    .answer{
+        margin-left: 138px;
+        margin-right: 100px; 
+    }
+}
+
+
+@media screen and (max-width: 800px){
+    #faq{
+        background: none;
+    }
+    .question-faq{
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    .answer{
+        margin-left: 58px;
+        margin-right: 30px; 
+    }
+}
+
+@media screen and (max-width: 1300px){
+    .answer{
+        margin-top: 30px;
+    }
+    
+}
