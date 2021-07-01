@@ -24,3 +24,10 @@ a {
         background-size: 330px, 200px, 270px;
     }
 }
+
+@media screen and (max-width: 700px){
+    #startseite{
+        background: none;
+    }
+    
+}

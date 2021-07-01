@@ -33,10 +33,23 @@
     opacity: 70%;
     transform: rotate(350deg);
 }
+
 #backgroundimg2{
     height: 150px;
     float: right;
     margin-right: 30px;
     opacity: 70%;
     transform: rotate(20deg);
+}
+
+@media screen and (max-width: 800px) {
+    #banner{
+        height: 100px;
+    }
+    #backgroundimg1{
+        height: 0;
+    }
+    #backgroundimg2{
+        height: 0;
+    }
 }

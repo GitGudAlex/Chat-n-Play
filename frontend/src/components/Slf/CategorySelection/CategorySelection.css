@@ -21,6 +21,7 @@ b{
 
 .round-selector-header{
     margin-top: 50px;
+    text-align: center;
 }
 
 #cancel-button{
@@ -99,7 +100,6 @@ b{
 #slf-submit-categories-btn {
     width: 30%;
     max-width: 140px;
-
     margin-bottom: 10px;
 }
 
@@ -122,9 +122,8 @@ b{
 }
 
 @media screen and (max-width: 1300px) {
-    #round-selector-input{
-        height: 30px;
-        width: 240px;
+    .react-numeric-input{
+        transform: scale(0.8);
     }
     #category-selector-input-10f67e2b-891a-414f-a3c6-e52b18ede27c{
         height: 30px;
@@ -150,6 +149,44 @@ b{
     }
     #add-category-btn{
         transform: scale(0.8);
+    }
+    #add-category {
+        margin-top: 0;
+    }
+    
+}
+
+@media screen and (max-width: 1000px) {
+    .react-numeric-input{
+        transform: scale(0.6);
+    }
+    #category-selector-input-10f67e2b-891a-414f-a3c6-e52b18ede27c{
+        height: 30px;
+    }
+    .round-selector-header{
+        margin-top: 20px;
+    }
+    .selector-category{
+        margin: 0px;
+    }
+    .category-selector-header{
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    b{
+        transform: scale(1);
+    }
+    .input-group{
+        transform: scale(0.6);
+    }
+    .mb-3{
+        margin-bottom: 0 !important;
+    }
+    #add-category-btn{
+        transform: scale(0.6);
+    }
+    #add-category {
+        margin-top: 0;
     }
     
 }
