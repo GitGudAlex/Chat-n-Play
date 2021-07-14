@@ -1,6 +1,6 @@
 
-const { getPlayer, getPlayersInRoom } = require('../models/players');
-const { getRoom } = require('../models/rooms');
+const { getPlayer, getPlayersInRoom } = require('../../models/players');
+const { getRoom } = require('../../models/rooms');
 const { Deck } = require('./Cards/Deck');
 const { Hand } = require('./Cards/Hand');
 

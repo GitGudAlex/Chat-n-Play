@@ -1,5 +1,5 @@
 const { getPlayer } = require("../../../models/players");
-const { submitWords } = require("../../../slf/gameLogic");
+const { submitWords } = require("../../../games/slf/gameLogic");
 
 module.exports = (io, socket, data, callback) => {
 

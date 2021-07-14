@@ -1,6 +1,6 @@
 const { getPlayer, getPlayersInRoom } = require("../../../models/players");
 const { getRoom } = require("../../../models/rooms");
-const { chooseLetter, getPlayersScores } = require("../../../slf/gameLogic");
+const { chooseLetter, getPlayersScores } = require("../../../games/slf/gameLogic");
 
 module.exports = (io, socket, data, callback) => {
 

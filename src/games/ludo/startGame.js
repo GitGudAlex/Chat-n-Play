@@ -1,5 +1,5 @@
-const {getPlayersInRoom, setFirstPlayer} = require('../models/players.js');
-const { getRoom } = require('../models/rooms.js');
+const {getPlayersInRoom, setFirstPlayer} = require('../../models/players.js');
+const { getRoom } = require('../../models/rooms.js');
 const { addDice } = require('./Dice.js');
 
 const dices = [];

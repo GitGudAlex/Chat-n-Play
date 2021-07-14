@@ -1,6 +1,6 @@
 const { isHost, getRoom } = require('../../../models/rooms');
 const { getPlayer } = require('../../../models/players');
-const { initilazeGame, chooseLetter } = require('../../../slf/gameLogic');
+const { initilazeGame, chooseLetter } = require('../../../games/slf/gameLogic');
 
 module.exports = (io, socket, data, callback) => {
     

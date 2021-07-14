@@ -1,8 +1,8 @@
 const { removeRoom, isHost, setHost, getRoom } = require('../../../models/rooms');
 
 const { removePlayer, getPlayersInRoom, getColors, reorderPlayerPositions, getCurrentPlayerInRoom, nextPlayerInRoom } = require('../../../models/players');
-const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores, addVotes } = require('../../../slf/gameLogic');
-const { setNextPlayer } = require('../../../uno/gameLogic');
+const { removePlayerWordsFromCurrentRound, calculateScore, chooseLetter, getPlayersScores, addVotes } = require('../../../games/slf/gameLogic');
+const { setNextPlayer } = require('../../../games/uno/gameLogic');
 
 module.exports = (io, socket) => {
     // Spieler löschen

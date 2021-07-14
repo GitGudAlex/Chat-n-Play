@@ -1,6 +1,6 @@
 const { getPlayer } = require("../../../models/players");
 const { getRoom } = require("../../../models/rooms");
-const { setNextPlayer, dealCard } = require("../../../uno/gameLogic");
+const { setNextPlayer, dealCard } = require("../../../games/uno/gameLogic");
 
 module.exports = (io, socket) => {
 

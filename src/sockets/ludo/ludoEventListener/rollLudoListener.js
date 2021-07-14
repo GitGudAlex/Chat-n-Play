@@ -1,6 +1,6 @@
-const { roll, getDiceValue } = require('../../../ludo/Dice');
+const { roll, getDiceValue } = require('../../../games/ludo/Dice');
 const { getPlayer,  nextPlayerInRoom, getCurrentPlayerInRoom} = require('../../../models/players');
-const {checkField, checkHouse, showMove, showFigureFromHouse, throwFigure, onField, walkInHouse} = require ('../../../ludo/gamelogic.js');
+const {checkField, checkHouse, showMove, showFigureFromHouse, throwFigure, onField, walkInHouse} = require ('../../../games/ludo/gamelogic.js');
 const { getRoom } = require('../../../models/rooms');
 
 module.exports = (io, socket) => {
