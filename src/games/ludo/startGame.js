@@ -8,7 +8,8 @@ const startGameLudo = (roomId) => {
 
     const allPlayers = getPlayersInRoom(roomId);
 
-    //Spielern weitere Attribute hinzufügen
+    // Spielern weitere Attribute hinzufügen 
+    // (Startfeld, Positionen der Spielfiguren, Poitionen Haus, zuletzt gewürfelte Augenzahl)
     allPlayers.forEach(player => {
         switch (player.position) {
             case 2: //blau
@@ -38,9 +39,11 @@ const startGameLudo = (roomId) => {
           }
     });
 
+    // Raum einen Würfel hinzufügen
     addDice(roomId);
 
     room = getRoom(roomId);
+    
     // 0 : Spiel hat noch nicht begonnen, 1: Spiel hat begonnen, 2: Spiel ist vorbei
     room['gameStatus'] = 0
 
