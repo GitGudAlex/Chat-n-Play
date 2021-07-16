@@ -1,5 +1,3 @@
-const { DataBase } = require('../database/db');
-
 /**
  * Spieler Object.
  * @typedef {Object} Player
