@@ -167,35 +167,39 @@ module.exports = (io, socket) => {
             // Wenn das Spiel schon gestartet hat
             if(room.hasStarted) {
 
-                // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
-                if(room.activePlayer.socketId === socket.id) {
+                // Wenn der Active Spieler noch nicht defined ist
+                if(room.activePlayer !== undefined) {
 
-                    setNextPlayer(io, room.roomId);
+                    // Wenn der Spieler der gerade am Zug ist disconnected -> Nächsten Spieler suchen
+                    if(room.activePlayer.socketId === socket.id) {
 
-                    // Wenn Farb Input erwartet
-                    if(room.moveType === 5) {
-                        room.moveType = 3;
+                        setNextPlayer(io, room.roomId);
 
-                        room.customColor = true;
-                        room.nextColor = 4;
+                        // Wenn Farb Input erwartet
+                        if(room.moveType === 5) {
+                            room.moveType = 3;
 
-                    // Wenn Farb Input erwartet (+4 Karte)
-                    } else if(room.moveType === 6) {
-                        room.moveType = 1;
+                            room.customColor = true;
+                            room.nextColor = 4;
 
-                        room.customColor = true;
-                        room.nextColor = 4;
+                        // Wenn Farb Input erwartet (+4 Karte)
+                        } else if(room.moveType === 6) {
+                            room.moveType = 1;
 
-                    // Klopf Input warten (Spieler 1)
-                    } else if(room.moveType === 7) {
-                        room.moveType = 4;
+                            room.customColor = true;
+                            room.nextColor = 4;
 
-                    // Klopf Input warten (Spieler 2)
-                    } else if(room.moveType === 8) {
+                        // Klopf Input warten (Spieler 1)
+                        } else if(room.moveType === 7) {
+                            room.moveType = 4;
 
-                        setTimeout(() => {
-                            io.to(room.activePlayer.socketId).emit('uno:get-klopf');
-                        }, 400);
+                        // Klopf Input warten (Spieler 2)
+                        } else if(room.moveType === 8) {
+
+                            setTimeout(() => {
+                                io.to(room.activePlayer.socketId).emit('uno:get-klopf');
+                            }, 400);
+                        }
                     }
                 }
             }
