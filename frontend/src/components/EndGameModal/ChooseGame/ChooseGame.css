@@ -1,52 +1,54 @@
-.endgame-modal-games-list {
+#endgame-modal-content{
+    background-image: url(../../../img/modal_background_1.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    max-height: 350px;
+}
+
+
+#endgame-modal-body {
+    padding: 16px 0px 0px 0px;
+}
+
+#endgame-modal-games-list {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-around;
 
-    margin-bottom: 44px;
+    padding-bottom: 44px;
 }
 
 .endgame-modal-game {
-    width: 120px;
-    height: 120px;
+    height: 140px;
 
-    padding: 4px;
-    border-radius: 4px;
+    margin-top: 20px;
 
     font-family: 'coffee+tea demo';
     font-size: 28px;
     
     background-clip: content-box;
-
     color: white;
+
+    flex: 1 0 26%;
 }
 
-.img-game{
+.endgame-modal-game-img {
     height: 120px;
+    margin-top: 15px;
+
     border-radius: 0.4rem;
     border: solid 1px #474747;
+
+    transition: all 0.1s;
 }
 
-#endgame-modal-content{
-    background-image: url(../../../img/modal_background_1.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-}
-
-#slf:hover {
-    padding: 0px;
-
-    cursor: pointer;
-}
-
-#ludo:hover {
-    padding: 0px;
-
-    cursor: pointer;
-}
-
-#uno:hover {
-    padding: 0px;
-
+.endgame-modal-game-img:hover {
+    margin-top: 0px;
+    height: 125px;
     cursor: pointer;
 }
