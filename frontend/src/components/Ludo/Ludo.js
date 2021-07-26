@@ -87,6 +87,7 @@ function Ludo(props) {
         let oldPosition = parseInt(move[2]);
         let newPosition = parseInt(move[2]);
         let color = '';
+        let classname = '';
 
         for(let i = 0; i < move[4]; i ++){
             setTimeout(function(){
@@ -106,10 +107,12 @@ function Ludo(props) {
                     }
                    
                     $("#"+oldPosition).css({'background-color':color});
-                    if (oldPosition === 1 || oldPosition === 11 || oldPosition === 21 | oldPosition === 31){
-                        $("#"+oldPosition).addClass('img');
-                    }
+                    $("#"+oldPosition).attr("class", classname);
+                    //if (oldPosition === 1 || oldPosition === 11 || oldPosition === 21 | oldPosition === 31){
+                    //    $("#"+oldPosition).addClass('img');
+                    //}
                     color = $("#"+newPosition).css( "background-color" );
+                    classname = $("#"+newPosition).attr("class");
                     $("#"+newPosition).removeClass('img');
                     $("#"+newPosition).css({'background-color':move[1]}); 
             }, 300*i);  
