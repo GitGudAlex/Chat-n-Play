@@ -12,12 +12,6 @@ const startGameLudo = (roomId) => {
     // (Startfeld, Positionen der Spielfiguren, Poitionen Haus, zuletzt gewürfelte Augenzahl)
     allPlayers.forEach(player => {
         switch (player.position) {
-            case 2:
-                player['start'] = 1;
-                player['playerPosition'] = [[101, null], [102, null],[103, null], [104, null]];
-                player['house'] = [[101, true], [102, true], [103, true], [104, true]];
-                player['dicecount'] = 0;
-                break;
             case 0:
                 player['start'] = 31;
                 player['playerPosition'] = [[113, null], [114, null],[115, null], [116, null]];
@@ -28,6 +22,12 @@ const startGameLudo = (roomId) => {
                 player['start'] = 11;
                 player['playerPosition'] = [[105, null], [106, null],[107, null], [108, null]];
                 player['house'] = [[105, true], [106, true], [107, true], [108, true]];
+                player['dicecount'] = 0;
+                break;
+            case 2:
+                player['start'] = 1;
+                player['playerPosition'] = [[101, null], [102, null],[103, null], [104, null]];
+                player['house'] = [[101, true], [102, true], [103, true], [104, true]];
                 player['dicecount'] = 0;
                 break;
             case 3:
