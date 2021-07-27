@@ -7,13 +7,13 @@ const path = require('path');
 /**
  * Liefert alle möglichen Spiele zurück: Spiel Id (id) + Spiel Name (name)
  */
-router.get('/', (req, res) => {
+router.get('/games', (req, res) => {
     fs.readFile(path.join(__dirname + '/../data/games.json'), 'utf8', (err, json) => {
         if (err) console.log(err);
 
         try {
             const obj = JSON.parse(json);
-            const games = obj.map(game => ({ id: game.id, name: game.name }));
+            const games = obj.map(game => ({ id: game.id, name: game.name, endModalImgPath: game.endModalImgPath }));
 
             res.json(games);
 

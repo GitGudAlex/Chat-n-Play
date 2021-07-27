@@ -13,8 +13,9 @@ function AboutUs (){
             <header id='aboutus-header'>
                 <Header/>
             </header>
-            <img src={imageAboutUs} className="title-image-footer"/>
-            <div class="container">
+            <div id="content-aboutus">
+            <img src={imageAboutUs} alt="Über Uns" className="title-image-footer"/>
+            <div class="container container-about-us">
                 <div class="row">
                     <div id = "aboutus-team" className = "col-sm aboutus-content">
                             <h2 className="aboutus-headline">Unser Team</h2>
@@ -31,7 +32,8 @@ function AboutUs (){
                     </div>
                 </div>
             </div>
-            <footer className = "footer" style={{position: "fixed", bottom: 0}}>
+            </div>
+            <footer className = "footer">
                 <Footer/>
             </footer>    
         </div>

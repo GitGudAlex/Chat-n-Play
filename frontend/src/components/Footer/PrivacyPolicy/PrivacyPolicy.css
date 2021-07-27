@@ -5,6 +5,16 @@
     background-size: 200px;
 }
 
+#content-privacy-policy{
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+}
+
+#main-privacy-policy{
+    flex: 1;
+}
+
 .text-privacy-policy{
     margin-left: 250px;
     margin-right: 250px;

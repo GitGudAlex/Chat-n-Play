@@ -1,5 +1,5 @@
-const { getRoom } = require('../models/rooms');
-const { getPlayersInRoom, getPlayer } = require('../models/players');
+const { getRoom } = require('../../models/rooms');
+const { getPlayersInRoom, getPlayer } = require('../../models/players');
 
 /**
  * {roomId, [alphabet]}

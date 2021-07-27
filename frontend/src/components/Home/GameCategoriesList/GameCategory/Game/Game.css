@@ -23,10 +23,6 @@
     transition: all 0.25s linear;
 }
 
-.collapse{
-    margin-top: 30px;
-}
-
 .modal-title{
     text-align: center;
 }

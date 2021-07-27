@@ -70,7 +70,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid #474747' }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                    <img id={ 'player-profile-' + props.socketId } className='player-profile' src='/PlayerProfiles/profile-no-color.png' />
+                    <img id={ 'player-profile-' + props.socketId } className='player-profile' alt="Spielerplatzhalter" src='/PlayerProfiles/profile-no-color.png' />
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>
@@ -85,7 +85,7 @@ function Player(props) {
                 <div className={ props.position + ' player'} style={ playerStyle }>
                     <div style={{ border: '3px solid ' + props.color }} className='camera'>
                         <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' alt="Spielerplatzhalter" src={ '/PlayerProfiles/profile-' + color + '.png'} />
                     </div>
                     <div className='player-name'>
                         <p style={ textAlignStyle }>{ props.username }</p>
@@ -99,7 +99,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' alt="Spielerplatzhalter" src={ '/PlayerProfiles/profile-' + color + '.png'} />
                 </div>
                 <House color={ props.color } position={ props.position } top={ onTop } left={ leftSide } />
                 <div className='player-name'>
@@ -113,7 +113,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' alt="Spielerplatzhalter" src={ '/PlayerProfiles/profile-' + color + '.png'} />
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>

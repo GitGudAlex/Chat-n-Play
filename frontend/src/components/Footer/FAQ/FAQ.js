@@ -36,7 +36,7 @@ function FAQ () {
             <header id='faq-header' className="sticky-top">
                 <Header/>
             </header>
-            <img src={imageFAQ} className="title-image-footer"/>
+            <img src={imageFAQ} alt="FAQ" className="title-image-footer"/>
             <div id = 'faq-questions'>
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question1" data-toggle="collapse" data-target="#answer1" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(0) }>
@@ -98,7 +98,7 @@ function FAQ () {
                 </div>
                 <p className="answer collapse" id="answer6">Nein, du musst dir keine Sorgen machen. Wir verarbeiten lediglich während des Spiels deine Video- und Audiodaten, um euch einen Videochat zur Verfügung zu stellen. Das Material wird weder aufgezeichnet, noch gespeichert oder an Dritte weitergegeben. Sobald du einem Raum beigetreten bist, kannst du jederzeit dein Mikrofon stummschalten oder deine Kamera ausschalten.</p>
 
-            <img src={imgMail} id="image-mail"/>
+            <img src={imgMail} id="image-mail" alt=""/>
             </div>
             <div className="d-flex justify-content-center" id='faq-email'>
                 <p id="paragraph-faq">Deine Frage wurde nicht beantwortet? Dann schreib uns einfach eine E-Mail an: chat-n-play@web.de</p>

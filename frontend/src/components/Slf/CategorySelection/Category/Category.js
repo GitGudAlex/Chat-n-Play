@@ -1,8 +1,5 @@
 import './Category.css';
 
-import { RiDeleteBack2Fill } from 'react-icons/ri';
-import { IconContext } from "react-icons";
-
 function Category(props) {
 
     return (

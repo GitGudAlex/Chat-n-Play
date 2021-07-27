@@ -6,6 +6,7 @@ import SocketContext from '../../../services/socket';
 
 function Matchfield(props) {
 
+    // State, um Felder auf dem Spielbrett zu entsperren
     const [disable1, setDisable1] = useState(true);
     const [disable2, setDisable2] = useState(true);
     const [disable3, setDisable3] = useState(true);
@@ -123,16 +124,16 @@ function Matchfield(props) {
 
     useLayoutEffect(() => {
 
-        // Alle möglichen Positionen
+        // Alle möglichen Spielerpositionen
         const positions = ['top-left', 'bottom-right', 'top-right', 'bottom-left'];
 
-        // Alle Möglichen Farben
+        // Alle möglichen Spielerfarben
         const colors = [{ hex: '#FCA701', color: 'yellow' },
             { hex: '#00BF02', color: 'green'},
             { hex: '#FF3030', color: 'red' },
             { hex: '#0B97F0', color: 'blue' }];
 
-        // durch Spieler iterieren und deren Positionen bekommen um die Spielfelder farbig zu machen
+        // Durch Spieler iterieren und deren Positionen bekommen um die Spielfelder farbig zu machen
         for(let player of props.players) {
             let position = player.position;
             let colorindex = colors.findIndex(c => c.hex === player.color);
@@ -142,26 +143,25 @@ function Matchfield(props) {
 
     }, [props]);
 
-    //emit -> Figur die laufen soll
+    //Funktionsaufruf bei onClick auf die Spielfigur um zu ziehen wird ein emit ausgeführt
     const moveFigure = (event) => {
         const id = event.target.id;
+
         socket.emit("ludo:clickFigure", id);
+
         $(".matchfield").find(":button").css("animation", "");
         enableFields.forEach(element => {
             disableButton[element](true);
-            //const funktionname = "setDisable" + element;
-            //eval(funktionname)(true);
-        })
+        });
     }
 
-    //Figuren zum Laufen freischalten
+    //Spielfiguren werden für den Zug freigeschaltet
     const handleUnlockMoveFieldsEvent = useCallback((figures) => {
         setEnableFields(figures);
+
         figures.forEach(element =>{
             disableButton[element](false);
             $("#"+element).css("animation", "pulse 2s infinite");
-            //const funktionname = "setDisable" + element;
-            //eval(funktionname)(false);
         });
     }, []);
 
@@ -188,7 +188,7 @@ function Matchfield(props) {
                 <div>
                     <button id = "38"  onClick = {moveFigure} className = "white" disabled ={disable38}></button>
                     <button id = "201" onClick = {moveFigure} className = "mf-top-right" disabled ={disable201}></button>
-                    <button id = "2"   onClick = {moveFigure} className = "white" disabled ={disable2}></button>
+                    <button id = "2"   onClick = {moveFigure} className = "white arrow1" disabled ={disable2}></button>
                 </div>
                 <div>
                     <button id = "37"  onClick = {moveFigure} className = "white" disabled ={disable37}></button>
@@ -202,7 +202,7 @@ function Matchfield(props) {
                 </div>
                 <div>
                     <button id = "31"  onClick = {moveFigure} className = "mf-top-left start img" disabled ={disable31}></button>
-                    <button id = "32"  onClick = {moveFigure} className = "white" disabled ={disable32}></button>
+                    <button id = "32"  onClick = {moveFigure} className = "white arrow2" disabled ={disable32}></button>
                     <button id = "33"  onClick = {moveFigure} className = "white" disabled ={disable33}></button>
                     <button id = "34"  onClick = {moveFigure} className = "white" disabled ={disable34}></button>
                     <button id = "35"  onClick = {moveFigure} className = "white" disabled ={disable35}></button>
@@ -219,8 +219,7 @@ function Matchfield(props) {
                     <button id = "214" onClick = {moveFigure} className = "mf-top-left" disabled ={disable214}></button>
                     <button id = "215" onClick = {moveFigure} className = "mf-top-left" disabled ={disable215}></button>
                     <button id = "216" onClick = {moveFigure} className = "mf-top-left" disabled></button>
-                    {/* Würfel */}
-                    <button id="buffer"></button>
+                    <button id="buffer" disabled></button>
                     <button id = "208" onClick = {moveFigure} className = "mf-bottom-right" disabled></button>
                     <button id = "207" onClick = {moveFigure} className = "mf-bottom-right" disabled ={disable207}></button>
                     <button id = "206" onClick = {moveFigure} className = "mf-bottom-right" disabled ={disable206}></button>
@@ -237,7 +236,7 @@ function Matchfield(props) {
                     <button id = "15"  onClick = {moveFigure} className = "white" disabled ={disable15}></button>
                     <button id = "14"  onClick = {moveFigure} className = "white" disabled ={disable14}></button>
                     <button id = "13"  onClick = {moveFigure} className = "white" disabled ={disable13}></button>
-                    <button id = "12"  onClick = {moveFigure} className = "white" disabled ={disable12}></button>
+                    <button id = "12"  onClick = {moveFigure} className = "white arrow3" disabled ={disable12}></button>
                     <button id = "11"  onClick = {moveFigure} className = "mf-bottom-right start img" disabled ={disable11}></button>
                 </div>
                 <div>
@@ -251,7 +250,7 @@ function Matchfield(props) {
                     <button id = "17"  onClick = {moveFigure} className = "white" disabled ={disable17}></button>
                 </div>
                 <div>
-                    <button id = "22"  onClick = {moveFigure} className = "white" disabled ={disable22}></button>
+                    <button id = "22"  onClick = {moveFigure} className = "white arrow4" disabled ={disable22}></button>
                     <button id = "209" onClick = {moveFigure} className = "mf-bottom-left" disabled ={disable209}></button>
                     <button id = "18"  onClick = {moveFigure} className = "white" disabled ={disable18}></button>
                 </div>

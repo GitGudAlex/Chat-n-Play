@@ -1,14 +1,10 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import $ from 'jquery';
 
 import './ChooseGame.css';
 
 import SocketContext from "../../../services/socket";
 import { useHistory } from 'react-router';
-
-import imgLudo from '../../../img/Ludo.png'
-import imgKlopfKlopf from '../../../img/KlopfKlopf.png'
-import imgSLF from '../../../img/SLF.png'
 
 function ChooseGame(props) {
 
@@ -17,6 +13,22 @@ function ChooseGame(props) {
 
     // Router Stuff
     const history = useHistory();
+
+    // Spiele bekommen
+    const [games, setGames] = useState([]);
+
+    // Spiele vom Server holen
+    useEffect(() => {
+        fetchGames();
+        
+    }, [socket]);
+
+    const fetchGames = async() => {
+        const data = await fetch("/api/games");
+        const games = await data.json();
+
+        setGames(games);
+    };
 
     // Spiel verlassen
     const leaveRoom = () => {
@@ -55,6 +67,31 @@ function ChooseGame(props) {
 
     // Spieler ist host
     if(props.isHost) {
+        if(games.length !== 0) {
+            return (
+                <div id='endgame-modal-content' className="modal-content">
+                    <div id='endgame-modal-header' className="modal-header text-center">
+                        <p id='endgame-modal-title' className="modal-title w-100">Wähle ein neues Spiel aus</p>
+                    </div>
+                    <div id='endgame-modal-body' className="modal-body text-center">
+                        <div id='endgame-modal-games-list'>
+                            {
+                                games.map((game) => {
+                                    return (
+                                        <div key={ game.id } className='endgame-modal-game' onClick={ () => changeGame(game.id) } >
+                                            <img key={ game.id  + '-img'} src={ game.endModalImgPath } alt="Bild Spiel" className="endgame-modal-game-img" />
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                        <small id='endgame-modal-error-output' className="text-danger" />
+                    </div>
+                </div>
+            );
+        }
+
+        // Ladesymbol wenn Spiel noch nicht geladen
         return (
             <div id='endgame-modal-content' className="modal-content">
                 <div id='endgame-modal-header' className="modal-header text-center">
@@ -62,14 +99,12 @@ function ChooseGame(props) {
                 </div>
                 <div id='endgame-modal-body' className="modal-body text-center">
                     <div className='endgame-modal-games-list'>
-                        <div className='endgame-modal-game' id="ludo" onClick={ () => changeGame(0) } >
-                        <img src={imgLudo} className="img-game" />
-                        </div>
-                        <div className='endgame-modal-game' id="uno" onClick={ () => changeGame(1) }>
-                            <img src={imgKlopfKlopf} className="img-game" />
-                        </div>
-                        <div className='endgame-modal-game' id="slf" onClick={ () => changeGame(2) }>
-                            <img src={imgSLF} className="img-game"/>
+                        <div style={{ height: '100%' }}>
+                            <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                                <div className="spinner-border" style={{ width: '4rem', height: '4rem' }} role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <small id='endgame-modal-error-output' className="text-danger" />
@@ -85,7 +120,7 @@ function ChooseGame(props) {
                 <p id='endgame-modal-title' className="modal-title w-100">Neues Spiel</p>
             </div>
             <div id='endgame-modal-body' className="modal-body  text-center">
-                <p className='endgame-modal-body-text'>Der*Die Host wählt ein Spiel aus.</p>
+                <p className='endgame-modal-body-text'>Es wird ein neues Spiel ausgewählt.</p>
             </div>
             <div id='endgame-modal-footer' className="modal-footer">
                 <small id='endgame-modal-error-output' className="text-danger" />

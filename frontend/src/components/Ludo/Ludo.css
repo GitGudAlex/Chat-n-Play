@@ -68,7 +68,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
     transform: scale(0.6);
   }
   #dice{
-    transform:scale(0.6);
+    transform:scale(1);
     top: 80px;
   }
 }
@@ -78,7 +78,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
     transform: scale(0.8);
   }
   #dice{
-    transform:scale(0.7);
+    transform:scale(1);
     top: 45px;
   }
 }
@@ -101,7 +101,7 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
     
   }
   #dice{
-    transform:scale(1.2);
+    transform:scale(1);
     top: -100px;
   }
 }
@@ -231,6 +231,38 @@ html, body, #root, .game-wrapper, .container-fluid, .game-body {
   background-size: auto 60%;
   background-repeat: no-repeat;
   background-position:center;
+}
+
+.arrow1{
+  background-image: url('../../img/PfeilIcon.png');
+  background-size: auto 40%;
+  background-repeat: no-repeat;
+  background-position:center;
+  transform: rotate(90deg);
+  
+}
+
+.arrow2{
+  background-image: url('../../img/PfeilIcon.png');
+  background-size: auto 40%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+
+.arrow3{
+  background-image: url('../../img/PfeilIcon.png');
+  background-size: auto 40%;
+  background-repeat: no-repeat;
+  background-position:center;
+  transform: rotate(180deg);
+}
+
+.arrow4{
+  background-image: url('../../img/PfeilIcon.png');
+  background-size: auto 40%;
+  background-repeat: no-repeat;
+  background-position:center;
+  transform: rotate(270deg);
 }
 
 .middle{

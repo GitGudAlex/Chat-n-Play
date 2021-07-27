@@ -4,9 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './CategorySelection.css';
 
-import { BiAddToQueue } from 'react-icons/bi';
-import { IconContext } from "react-icons";
-
 import Category from './Category/Category';
 import SocketContext from '../../../services/socket';
 

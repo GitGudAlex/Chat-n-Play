@@ -44,11 +44,11 @@ function Lobby(props) {
     // Sets the background image
     useLayoutEffect(() => {
     
-        if (props.gameId == 0) {
+        if (props.gameId === 0) {
             $("#game-content-wrapper").css({background: "url("+lobbyredtop+") top left, url("+lobbyredbottom+") bottom right"});
             $("#game-content-wrapper").css({"background-repeat" : "no-repeat"})
             $("#game-content-wrapper").css({"background-size" : "200px, 450px"})
-        } else if (props.gameId == 1) {
+        } else if (props.gameId === 1) {
             $("#game-content-wrapper").css({background: "url("+lobbygreentop+") top left, url("+lobbygreenbottom+") bottom right"});
             $("#game-content-wrapper").css({"background-repeat" : "no-repeat"})
             $("#game-content-wrapper").css({"background-size" : "200px, 450px"})

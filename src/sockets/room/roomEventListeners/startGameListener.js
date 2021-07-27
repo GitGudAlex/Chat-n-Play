@@ -1,7 +1,7 @@
 const { getRoom, isHost, setGameStarted } = require('../../../models/rooms');
 const { getPlayersInRoom, getPlayer, setColor, getColors } = require('../../../models/players');
-const { startGameLudo } = require('../../../ludo/startGame');
-const { initUno } = require('../../../uno/gameLogic');
+const { startGameLudo } = require('../../../games/ludo/startGame');
+const { initUno } = require('../../../games/uno/gameLogic');
 
 module.exports = (io, socket, callback) => {
     

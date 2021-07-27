@@ -3,9 +3,6 @@ import $ from 'jquery';
 
 import './StartGame.css'
 
-import Sprechblase_Host_warten from '../../../img/Sprechblase_Host_warten.png';
-import Sprechblase_Info from '../../../img/Sprechblase_Info.png';
-import Sprechblase_Gast_Hostinfo from '../../../img/Sprechblase_Gast_Hostinfo.png';
 import SprechblaseHost from '../../../img/SprechblaseHost.png'
 import SprechblaseGast from '../../../img/SprechblaseGast.png'
 

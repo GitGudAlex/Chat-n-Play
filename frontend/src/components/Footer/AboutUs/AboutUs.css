@@ -1,3 +1,14 @@
+
+#content-aboutus {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.container-about-us{
+    flex: 1;
+}
+
 #aboutus{
     background: url(../../../img/background_6.png), url(../../../img/background_7.png) top right, url(../../../img/background_8.png) 100% 560px, url(../../../img/background_4.png) 0% 600px;
     background-repeat: no-repeat;
@@ -39,3 +50,9 @@
     }
 }
 
+@media screen and (min-width: 1500px){
+    .row{
+        transform: scale(1.3);
+        margin-top: 80px;
+    }
+}

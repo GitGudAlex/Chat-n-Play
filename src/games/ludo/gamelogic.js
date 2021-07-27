@@ -1,4 +1,4 @@
-const {getPlayersInRoom} = require('../models/players.js');
+const {getPlayersInRoom} = require('../../models/players.js');
 
 //Überprüfen ob mind. eine Figur im Haus ist
 checkHouse = (currentPlayer) => {
