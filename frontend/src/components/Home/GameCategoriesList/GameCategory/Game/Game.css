@@ -27,6 +27,10 @@
     text-align: center;
 }
 
+#collapse-top{
+    margin-bottom: 30px;
+}
+
 #modal-header{
     border-bottom: none;
 }
