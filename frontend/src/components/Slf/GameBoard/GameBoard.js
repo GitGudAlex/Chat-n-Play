@@ -80,13 +80,13 @@ function GameBoard(props) {
         let inputHeight = 67;
         let padding = 50;
 
-        // Mehr oder gleich 6 Kategorien => 2 Spalten
-        if(categories.length >= 6) {
+        // Mehr oder gleich 4 Kategorien => 2 Spalten
+        if(categories.length >= 4) {
             setInputFlexBasis(50);
             $('#slf-categories-input-wrapper').css({ flexDirection: 'row', flexWrap: 'wrap' });
             $('#slf-categories-input-wrapper').css({ maxHeight: (categories.length / 2) * (inputHeight + padding + 18) });
 
-        // Weniger wie 6 Kategorien
+        // Weniger wie 4 Kategorien
         } else {
             setInputFlexBasis((1 / categories.length) * 100);
             $('#slf-categories-input-wrapper').css({ flexDirection: 'column', flexWrap: 'nowrap' });

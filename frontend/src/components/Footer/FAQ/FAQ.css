@@ -38,14 +38,15 @@
     font-size: large;
     margin-left: 310px;
     margin-right: 300px;
-    margin-bottom: 2.2rem;
+    margin-bottom: 0;
+    margin-top: 0;
 }
 
 .question-faq{
     margin-left: 280px;
     margin-right: 200px;
     font-size: x-large;
-    height: 50px;
+    height: 45px;
 }
 
 @media screen and (max-width: 985px){
