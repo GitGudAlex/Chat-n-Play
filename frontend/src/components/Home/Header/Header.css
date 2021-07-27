@@ -20,3 +20,19 @@
 #title-grafik{
     height: 80px;
 }
+
+@media screen and (max-width:650px){
+
+    #title-grafik{
+        height: 50px;
+    }
+    #logo{
+        height: 50px;
+        width: 50px;
+    }
+    #titleWrapper {
+        height: 80px;
+    }
+    
+}
+
