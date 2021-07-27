@@ -9,6 +9,45 @@
     margin-bottom: 20px;
 }
 
+.faq-question-text{
+    font-size: x-large;
+    margin-top: 0;
+    text-align: initial !important;
+}
+
+#paragraph-faq{
+    font-size: large;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 40px;
+    padding-bottom: 80px;
+}
+
+.button-faq{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    margin-top: -20px;
+    margin-right: 5px;
+    
+
+    transition: all 0.25s linear;
+}
+
+.answer{
+    font-size: large;
+    margin-left: 310px;
+    margin-right: 300px;
+    margin-bottom: 2.2rem;
+}
+
+.question-faq{
+    margin-left: 280px;
+    margin-right: 200px;
+    font-size: x-large;
+    height: 50px;
+}
+
 @media screen and (max-width: 985px){
     .question-faq{
         margin-left: 100px;

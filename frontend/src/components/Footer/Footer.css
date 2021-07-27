@@ -1,8 +1,3 @@
-
-body{
-    min-height: 100%;
-}
-
 .footer{
     height: 50px;
     background-color: #474747;
@@ -23,10 +18,6 @@ body{
     padding-right: 200px;
 }
 
-#mail{
-   float: right;
-}
-
 .title-footer{
     text-align: center;
     margin-top: 40px;
@@ -40,45 +31,9 @@ body{
     height: 150px;
 }
 
-
-.button-faq{
-    background-color: transparent;
-    border: none;
-    outline: none;
-    margin-top: -20px;
-    margin-right: 5px;
-    
-
-    transition: all 0.25s linear;
-}
-
-.answer{
-    font-size: large;
-    margin-left: 310px;
-    margin-right: 300px;
-    margin-bottom: 2.2rem;
-}
-
-.question-faq{
-    margin-left: 280px;
-    margin-right: 200px;
-    font-size: x-large;
-    height: 50px;
-}
-
-.faq-question-text{
-    font-size: x-large;
-    margin-top: 0;
-    text-align: initial !important;
-}
-
-#paragraph-faq{
-    font-size: large;
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-top: 40px;
-    padding-bottom: 80px;
-}
+#mail{
+    float: right;
+ }
 
 #image-mail{
     display: block;

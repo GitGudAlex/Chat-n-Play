@@ -110,8 +110,24 @@ function Ludo(props) {
                     if (oldPosition === 1 || oldPosition === 11 || oldPosition === 21 | oldPosition === 31){
                         $("#"+oldPosition).addClass('img');
                     }
+                    if (oldPosition === 2){
+                        $("#"+oldPosition).addClass('arrow1');
+                    }
+                    if (oldPosition === 12){
+                        $("#"+oldPosition).addClass('arrow3');
+                    }
+                    if (oldPosition === 22){
+                        $("#"+oldPosition).addClass('arrow4');
+                    }
+                    if (oldPosition === 32){
+                        $("#"+oldPosition).addClass('arrow2');
+                    }
                     color = $("#"+newPosition).css( "background-color" );
                     $("#"+newPosition).removeClass('img');
+                    $("#"+newPosition).removeClass('arrow1');
+                    $("#"+newPosition).removeClass('arrow2');
+                    $("#"+newPosition).removeClass('arrow3');
+                    $("#"+newPosition).removeClass('arrow4');
                     $("#"+newPosition).css({'background-color':move[1]}); 
             }, 300*i);  
         }
