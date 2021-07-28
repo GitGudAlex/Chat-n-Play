@@ -1,5 +1,5 @@
 import React, { useEffect,  useContext, useState, useCallback} from 'react';
-import $, { hasData } from "jquery";
+import $ from 'jquery';
 
 import './Ludo.css'
 
@@ -87,7 +87,6 @@ function Ludo(props) {
         let oldPosition = parseInt(move[2]);
         let newPosition = parseInt(move[2]);
         let color = '';
-        let classname = '';
 
         for(let i = 0; i < move[4]; i ++){
             setTimeout(function(){
@@ -233,7 +232,7 @@ function Ludo(props) {
             <div id='game-content'>
             <div id = 'ludo-selection' className='ludo-selection'>
                 <div id = "choose_game_mode">
-                    <img src={zugVorschau} id="move-preview"/>
+                    <img src={zugVorschau} id="move-preview" alt='Zug Vorschau' />
                     <label>Mögliche Spielzüge sollen vorgeschlagen und angezeigt werden:</label>
                     <br></br>
                     <label>(kann nur vor Spielbeginn geändert werden)</label>

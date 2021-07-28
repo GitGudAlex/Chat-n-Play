@@ -41,7 +41,7 @@ function FAQ () {
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question1" data-toggle="collapse" data-target="#answer1" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(0) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                     <p className="faq-question-text">Wie kann ich im Browser in den Vollbildmodus wechseln?</p>
@@ -53,7 +53,7 @@ function FAQ () {
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question2" data-toggle="collapse" data-target="#answer2" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(1) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <p className="faq-question-text">Wie kann ich mein Mikrofon in Chrome wechseln?</p>
@@ -65,7 +65,7 @@ function FAQ () {
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question3" data-toggle="collapse" data-target="#answer3" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(2) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <p className="faq-question-text">Zu wievielt kann ein Spiel gespielt werden?</p>
@@ -77,7 +77,7 @@ function FAQ () {
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question4" data-toggle="collapse" data-target="#answer4" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(3) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <p className="faq-question-text">Wie kann ich einen Raum erstellen?</p>
@@ -89,7 +89,7 @@ function FAQ () {
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question5" data-toggle="collapse" data-target="#answer5" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(4) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <p className="faq-question-text">Wie kann ich einem Raum beitreten?</p>
@@ -101,7 +101,7 @@ function FAQ () {
                 <div className="d-flex question-faq">
                     <button type="button" className ="button-faq" id="button-question6" data-toggle="collapse" data-target="#answer6" aria-expanded="false" aria-controls="collapseExample" onClick={ () => setCollapse(5) }>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                     </button>
                 <p className="faq-question-text">Werde ich aufgezeichnet? Sind die Aufnahmen dauerhaft im Internet zu finden?</p>

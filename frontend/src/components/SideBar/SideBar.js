@@ -113,38 +113,6 @@ function SideBar(props) {
     socket.emit("webcam:start");
   }
 
-  const disableWebcam = () => {
-    $('.sidebar-btn-tooltip').tooltip('dispose')
-
-    socket.emit("webcam:disable");
-
-    $("#enableWebcam").removeClass("d-none");
-    $("#enableWebcam").addClass("sidebar-btn-tooltip");
-
-    $("#disableWebcam").addClass("d-none");
-    $("#disableWebcam").removeClass("sidebar-btn-tooltip");
-
-    $('.sidebar-btn-tooltip').tooltip({
-      delay: { show: 1000, hide: 300 }
-  }); 
-  }
-
-  const enableWebcam = () => {
-    $('.sidebar-btn-tooltip').tooltip('dispose')
-
-    socket.emit("webcam:enable");
-
-    $("#enableWebcam").addClass("d-none");
-    $("#enableWebcam").removeClass("sidebar-btn-tooltip");
-
-    $("#disableWebcam").removeClass("d-none");
-    $("#disableWebcam").addClass("sidebar-btn-tooltip");
-
-    $('.sidebar-btn-tooltip').tooltip({
-      delay: { show: 1000, hide: 300 }
-  }); 
-  }
-
   const muteMic = () => {
     $('.sidebar-btn-tooltip').tooltip('dispose')
 
@@ -186,6 +154,37 @@ function SideBar(props) {
     let buttonEn = document.querySelector('#enableWebcam');
     let buttonDis = document.querySelector('#disableWebcam');
 
+    const disableWebcam = () => {
+      $('.sidebar-btn-tooltip').tooltip('dispose')
+  
+      socket.emit("webcam:disable");
+  
+      $("#enableWebcam").removeClass("d-none");
+      $("#enableWebcam").addClass("sidebar-btn-tooltip");
+  
+      $("#disableWebcam").addClass("d-none");
+      $("#disableWebcam").removeClass("sidebar-btn-tooltip");
+  
+      $('.sidebar-btn-tooltip').tooltip({
+        delay: { show: 1000, hide: 300 }
+      }); 
+    }
+  
+    const enableWebcam = () => {
+      $('.sidebar-btn-tooltip').tooltip('dispose')
+  
+      socket.emit("webcam:enable");
+  
+      $("#enableWebcam").addClass("d-none");
+      $("#enableWebcam").removeClass("sidebar-btn-tooltip");
+  
+      $("#disableWebcam").removeClass("d-none");
+      $("#disableWebcam").addClass("sidebar-btn-tooltip");
+  
+      $('.sidebar-btn-tooltip').tooltip({
+        delay: { show: 1000, hide: 300 }
+      }); 
+    }
 
     // Wenn die Kamera nicht erlaubt ist => button deaktivieren
     if(!props.allowCamera) {
@@ -202,7 +201,7 @@ function SideBar(props) {
       buttonDis.removeEventListener("click", disableWebcam)
     }
 
-  }, [props.allowCamera, enableWebcam, disableWebcam]);
+  }, [socket, props.allowCamera]);
 
   // Bootstrap Tooltips anzeigen
   $(document).ready(function() {

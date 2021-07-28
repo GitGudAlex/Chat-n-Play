@@ -126,7 +126,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} alt='Spielerprofil Bild'/>
                 </div>
                 <div className='player-name'>
                     <p style={ textAlignStyle }>{ props.username }</p>
@@ -158,7 +158,7 @@ function Player(props) {
             <div className={ props.position + ' player'} style={ playerStyle }>
                 <div style={{ border: '3px solid ' + props.color }} className='camera'>
                     <video id={ 'player-video-' + props.socketId } autoPlay playsInline />
-                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'} />
+                        <img id={ 'player-profile-' + props.socketId } className='player-profile' src={ '/PlayerProfiles/profile-' + color + '.png'}  alt='Spielerprofil Bild'/>
                 </div>
                 <div className='player-name-score' style={{ flexDirection: leftSide === true ? 'row' : 'row-reverse' }}>
                     <p>{ rank + props.username + (props.ready === true ? ` \u2713`: '') }</p>

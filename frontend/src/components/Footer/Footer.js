@@ -30,7 +30,7 @@ function Footer(){
         socket.off('footer:change', handleFooterEvent);
     };
     
-    }, [socket, handleFooterEvent]);
+    }, [handleFooterEvent]);
     
 
     const openAboutus = () => {
@@ -52,9 +52,9 @@ function Footer(){
     return(
         <footer className="footer">
             <div id="container-footer">
-                <a href = '#'><input id = "btn-startpage" type='button' value='Startseite' className="text-footer" onClick={ openStart } /></a>
+                <input id = "btn-startpage" type='button' value='Startseite' className="text-footer" onClick={ openStart } />
                 <input id = "btn-about-us" type='button' value='Über uns' className="text-footer" onClick={ openAboutus } />
-                <a href = '#'><input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } /></a>
+                <input id = "btn-faq" type='button' value='FAQ' className="text-footer" onClick={ openFaq } />
                 <input id = "btn-privacy-policy" type='button' value='Datenschutzerklärung' className="text-footer" onClick={ openPolicy } />
                 <span  id = "mail" className="text-footer">E-Mail: chat-n-play@web.de</span>
             </div>

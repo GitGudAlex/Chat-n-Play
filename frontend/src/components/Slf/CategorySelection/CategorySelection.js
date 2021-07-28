@@ -117,7 +117,7 @@ function CategorySelection(props) {
     } else {
         return (
             <div>
-                <img src={sprechblaseWartenHost} id="image-waiting-host"/> 
+                <img src={sprechblaseWartenHost} id="image-waiting-host" alt='Der Host startet bald das Spie' /> 
             </div>
         );
     }
