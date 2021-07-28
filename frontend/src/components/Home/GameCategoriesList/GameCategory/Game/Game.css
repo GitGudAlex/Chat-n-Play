@@ -15,6 +15,10 @@
     padding-left: 19rem;
 }
 
+#content-local-navigation{
+    margin-bottom: 0 !important;
+}
+
 .home-collapse-button {
     background-color: transparent;
     border: none;
