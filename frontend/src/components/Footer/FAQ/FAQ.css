@@ -49,6 +49,14 @@
     height: 45px;
 }
 
+#image-mail{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 150px;
+    margin-top: 80px;
+}
+
 @media screen and (max-width: 985px){
     .question-faq{
         margin-left: 100px;

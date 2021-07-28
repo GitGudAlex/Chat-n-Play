@@ -53,3 +53,9 @@
         height: 0;
     }
 }
+
+@media screen and (max-width: 400px) {
+    #banner{
+        height: 70px;
+    }
+}

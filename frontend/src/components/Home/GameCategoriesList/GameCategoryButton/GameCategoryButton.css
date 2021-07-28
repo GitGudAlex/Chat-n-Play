@@ -16,8 +16,14 @@
     color: black;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 900px) {
     .game-category-nav-item {
         font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .game-category-nav-item {
+        font-size: 20px;
     }
 }

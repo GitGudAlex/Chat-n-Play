@@ -44,9 +44,12 @@ function Description() {
     return (
         <div id="home-description">
             <div id='home-description-wrapper'>
+                <div className="d-sm-none" id="note-smartphone-user">
+                    <p> Diese Seite wurde für Tablets und Desktops erstellt und angepasst. Um dieses Seite effektiv nutzen zu können, verwende bitte ein anderes Gerät.</p>
+                </div>
                 <h2 className='text-center'>Willkommen zu Chat&nbsp;N'&nbsp;Play</h2>
                     <div>
-                        <img src={Grafik} id="img-Startseite" alt='Zwei Menschen nutzen mobile Geräte um miteinader zu kommunizieren'></img>
+                        <img src={Grafik} id="img-Startseite" alt=''></img>
                     </div>
                 <p id='home-description-text' className='text-center'>Hier kannst du mit deinen Freunden*innen auch über Distanz das Spieleabend-Feeling erleben.<br />
                 Erstelle einfach einen Raum und lade sie über einen Link ein<br />
