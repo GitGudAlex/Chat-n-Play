@@ -15,7 +15,7 @@ function PrivacyPolicy (){
             </header>
             <div id="content-privacy-policy">
                 <div id="main-privacy-policy">
-                    <img src={imagePrivacyPolicy} alt="Datenschutzerklärung" class="title-image-footer"/>
+                    <img src={imagePrivacyPolicy} alt="Datenschutzerklärung" className="title-image-footer"/>
                     <div id = 'privacy-policy-hdm'>
                         <p className="text-privacy-policy">Es werden langfristig keine personenbezogenen Daten abgespeichert. </p>
                         <h2 id="headline-privacy-policy">Audio, Video und Textdateien</h2>

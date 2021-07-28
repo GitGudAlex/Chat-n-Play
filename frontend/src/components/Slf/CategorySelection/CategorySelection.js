@@ -97,7 +97,7 @@ function CategorySelection(props) {
                             categories.length < 6 ? (
                                 <div id='add-category'>
                                     <button id='add-category-btn' className='btn btn-dark' onClick={addCategory}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" id="cancel-button" viewBox="0 0 16 16">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-lg" id="cancel-button" viewBox="0 0 16 16">
                                             <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
                                         </svg>
                                     </button>

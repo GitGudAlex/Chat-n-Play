@@ -236,15 +236,15 @@ function Ludo(props) {
                     <label>Mögliche Spielzüge sollen vorgeschlagen und angezeigt werden:</label>
                     <br></br>
                     <label>(kann nur vor Spielbeginn geändert werden)</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="game_mode" id="mode_easy" value = "Ja"  checked></input>
-                        <label class="form-check-label" for="fmode_easy" id ="mode_easy_label">
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="game_mode" id="mode_easy" value = "Ja"  checked></input>
+                        <label className="form-check-label" for="fmode_easy" id ="mode_easy_label">
                             Ja
                         </label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="game_mode" id="mode_hard" value = "Nein"  ></input>
-                        <label class="form-check-label" for="mode_hard" id ="mode_hard_label">
+                    <div className="form-check">
+                        <input className="form-check-input" type="radio" name="game_mode" id="mode_hard" value = "Nein"  ></input>
+                        <label className="form-check-label" for="mode_hard" id ="mode_hard_label">
                             Nein
                         </label>
                     </div>

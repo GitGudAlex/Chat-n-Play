@@ -12,11 +12,11 @@ module.exports = (io, socket, data) => {
 
     // Raum hohlen
     let room = getRoom(player.roomId);
-    console.log(room);
 
     if(room === undefined) return;
 
     room.gameTypeId = data.gameTypeId;
+    room.hasStarted = false;
 
     Object.keys(room).forEach(function(item) {
         if(item !== 'roomId' &&

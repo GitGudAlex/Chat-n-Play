@@ -15,8 +15,8 @@ function AboutUs (){
             </header>
             <div id="content-aboutus">
             <img src={imageAboutUs} alt="Über Uns" className="title-image-footer"/>
-            <div class="container container-about-us">
-                <div class="row about-us-main">
+            <div className="container container-about-us">
+                <div className="row about-us-main">
                     <div id = "aboutus-team" className = "col-sm aboutus-content">
                             <h2 className="aboutus-headline">Unser Team</h2>
                             <Member name = 'Timothy Geiger' role = 'Developer/ Design'></Member>
